@@ -35,7 +35,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.thoughtcrime.securesms.toast.Toast;
 
 import com.dd.CircularProgressButton;
 import com.google.android.gms.common.ConnectionResult;

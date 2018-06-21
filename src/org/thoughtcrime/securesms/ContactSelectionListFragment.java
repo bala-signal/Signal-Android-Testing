@@ -37,7 +37,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.thoughtcrime.securesms.toast.Toast;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
 

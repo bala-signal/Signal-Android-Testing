@@ -61,4 +61,5 @@
 
     <color name="core_red">#f44336</color>
     <color name="core_red_highlight">#ef5350</color>
+    <color name="toast_background">#9d202020</color>
 </resources>

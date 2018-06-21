@@ -50,7 +50,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.thoughtcrime.securesms.toast.Toast;
 import android.widget.ViewSwitcher;
 
 import org.thoughtcrime.securesms.ConversationAdapter.HeaderViewHolder;

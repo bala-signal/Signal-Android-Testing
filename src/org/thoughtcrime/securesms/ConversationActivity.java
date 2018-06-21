@@ -63,7 +63,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.thoughtcrime.securesms.toast.Toast;
 
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.protobuf.ByteString;
