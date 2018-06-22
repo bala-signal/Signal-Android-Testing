@@ -27,6 +27,7 @@ import org.thoughtcrime.securesms.components.SwitchPreferenceCompat;
 import org.thoughtcrime.securesms.jobs.LocalBackupJob;
 import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.preferences.widgets.ProgressPreference;
+import org.thoughtcrime.securesms.toast.Toast;
 import org.thoughtcrime.securesms.util.BackupUtil;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.Trimmer;
@@ -65,6 +66,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
     initializeListSummary((ListPreference) findPreference(TextSecurePreferences.MESSAGE_BODY_TEXT_SIZE_PREF));
 
     EventBus.getDefault().register(this);
+    setBackupSummary();
   }
 
   @Override
@@ -77,7 +79,6 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
     super.onResume();
     ((ApplicationPreferencesActivity)getActivity()).getSupportActionBar().setTitle(R.string.preferences__chats);
     setMediaDownloadSummaries();
-    setBackupSummary();
   }
 
   @Override
@@ -96,13 +97,14 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
     ProgressPreference preference = (ProgressPreference)findPreference(TextSecurePreferences.BACKUP_NOW);
 
     if (event.getType() == BackupEvent.Type.PROGRESS) {
-      preference.setEnabled(false);
+      //preference.setEnabled(false);
       preference.setSummary(getString(R.string.ChatsPreferenceFragment_in_progress));
       preference.setProgress(event.getCount());
     } else if (event.getType() == BackupEvent.Type.FINISHED) {
-      preference.setEnabled(true);
-      preference.setProgressVisible(false);
-      setBackupSummary();
+      Toast.makeText(getContext(),"Done",Toast.LENGTH_LONG).show();
+      //preference.setEnabled(true);
+      //preference.setProgressVisible(false);
+      //setBackupSummary();
     }
   }
 

@@ -12,7 +12,7 @@ import org.thoughtcrime.securesms.R;
 
 public class ProgressPreference extends Preference {
 
-  private View        container;
+  public View        container;
   private TextView    progressText;
 
   public ProgressPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
