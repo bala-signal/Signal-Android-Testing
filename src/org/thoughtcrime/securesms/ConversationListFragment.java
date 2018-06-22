@@ -299,7 +299,7 @@ public class ConversationListFragment extends Fragment
             dialog = ProgressDialog.show(getActivity(),
                                          getActivity().getString(R.string.ConversationListFragment_deleting),
                                          getActivity().getString(R.string.ConversationListFragment_deleting_selected_conversations),
-                                         true, false);
+                                         true, true);
           }
 
           @Override
@@ -311,7 +311,7 @@ public class ConversationListFragment extends Fragment
 
           @Override
           protected void onPostExecute(Void result) {
-            dialog.dismiss();
+            //dialog.dismiss();
             if (actionMode != null) {
               actionMode.finish();
               actionMode = null;

@@ -47,6 +47,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
     super.onCreate(paramBundle);
 
     initializeIdentitySelection();
+    TextSecurePreferences.setPushRegistered(getActivity(), true);
 
     Preference submitDebugLog = this.findPreference(SUBMIT_DEBUG_LOG_PREF);
     submitDebugLog.setOnPreferenceClickListener(new SubmitDebugLogListener());
@@ -174,7 +175,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
                          Toast.LENGTH_LONG).show();
           break;
         case SUCCESS:
-          TextSecurePreferences.setPushRegistered(getActivity(), false);
+          //TextSecurePreferences.setPushRegistered(getActivity(), false);
           initializePushMessagingToggle();
           break;
         }
@@ -182,7 +183,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
 
       @Override
       protected Integer doInBackground(Void... params) {
-        try {
+        /*try {
           Context                     context        = getActivity();
           SignalServiceAccountManager accountManager = AccountManagerFactory.createManager(context);
 
@@ -200,7 +201,8 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
         } catch (IOException ioe) {
           Log.w(TAG, ioe);
           return NETWORK_ERROR;
-        }
+        }*/
+        return SUCCESS;
       }
     }
 

@@ -9,7 +9,7 @@ import java.lang.ref.WeakReference;
 public abstract class ProgressDialogAsyncTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
 
   private final WeakReference<Context> contextReference;
-  private       ProgressDialog         progress;
+  public       ProgressDialog         progress;
   private final String                 title;
   private final String                 message;
 
@@ -27,12 +27,15 @@ public abstract class ProgressDialogAsyncTask<Params, Progress, Result> extends 
   @Override
   protected void onPreExecute() {
     final Context context = contextReference.get();
-    if (context != null) progress = ProgressDialog.show(context, title, message, true);
+    if (context != null) {
+      progress = ProgressDialog.show(context, title, message, true);
+      progress.setCancelable(true);
+    };
   }
 
   @Override
   protected void onPostExecute(Result result) {
-    if (progress != null) progress.dismiss();
+    //if (progress != null) progress.dismiss();
   }
 
   protected Context getContext() {
