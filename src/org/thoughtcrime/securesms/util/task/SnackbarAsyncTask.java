@@ -57,7 +57,7 @@ public abstract class SnackbarAsyncTask<Params>
       this.progressDialog = null;
     }
 
-    Snackbar.make(view, snackbarText, snackbarDuration)
+    Snackbar.make(view, snackbarText, Snackbar.LENGTH_INDEFINITE)
             .setAction(snackbarActionText, this)
             .setActionTextColor(snackbarActionColor)
             .show();
