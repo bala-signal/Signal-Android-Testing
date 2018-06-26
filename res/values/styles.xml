@@ -6,7 +6,7 @@
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
-    <style name="ToastStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="ToastStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:background">@android:color/transparent</item>
