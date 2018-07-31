@@ -67,6 +67,7 @@ import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.Util;
 import org.whispersystems.libsignal.util.guava.Optional;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -468,22 +469,25 @@ public class MmsDatabase extends MessagingDatabase {
     return result;
   }
 
-  public List<Pair<Long, Long>> setTimestampRead(SyncMessageId messageId, long expireStarted) {
+  public List<Pair<Long, Long>> setTimestampRead(SyncMessageId messageId, long proposedExpireStarted) {
     SQLiteDatabase         database        = databaseHelper.getWritableDatabase();
     List<Pair<Long, Long>> expiring        = new LinkedList<>();
     Cursor                 cursor          = null;
 
     try {
-      cursor = database.query(TABLE_NAME, new String[] {ID, THREAD_ID, MESSAGE_BOX, EXPIRES_IN, ADDRESS}, DATE_SENT + " = ?", new String[] {String.valueOf(messageId.getTimetamp())}, null, null, null, null);
+      cursor = database.query(TABLE_NAME, new String[] {ID, THREAD_ID, MESSAGE_BOX, EXPIRES_IN, EXPIRE_STARTED, ADDRESS}, DATE_SENT + " = ?", new String[] {String.valueOf(messageId.getTimetamp())}, null, null, null, null);
 
       while (cursor.moveToNext()) {
         Address theirAddress = Address.fromSerialized(cursor.getString(cursor.getColumnIndexOrThrow(ADDRESS)));
         Address ourAddress   = messageId.getAddress();
 
         if (ourAddress.equals(theirAddress) || theirAddress.isGroup()) {
-          long id        = cursor.getLong(cursor.getColumnIndexOrThrow(ID));
-          long threadId  = cursor.getLong(cursor.getColumnIndexOrThrow(THREAD_ID));
-          long expiresIn = cursor.getLong(cursor.getColumnIndexOrThrow(EXPIRES_IN));
+          long id            = cursor.getLong(cursor.getColumnIndexOrThrow(ID));
+          long threadId      = cursor.getLong(cursor.getColumnIndexOrThrow(THREAD_ID));
+          long expiresIn     = cursor.getLong(cursor.getColumnIndexOrThrow(EXPIRES_IN));
+          long expireStarted = cursor.getLong(cursor.getColumnIndexOrThrow(EXPIRE_STARTED));
+
+          expireStarted = expireStarted > 0 ? Math.min(proposedExpireStarted, expireStarted) : proposedExpireStarted;
 
           ContentValues values = new ContentValues();
           values.put(READ, 1);
@@ -1176,7 +1180,7 @@ public class MmsDatabase extends MessagingDatabase {
     }
   }
 
-  public class Reader {
+  public class Reader implements Closeable {
 
     private final Cursor cursor;
 
@@ -1337,8 +1341,11 @@ public class MmsDatabase extends MessagingDatabase {
       }
     }
 
+    @Override
     public void close() {
-      cursor.close();
+      if (cursor != null) {
+        cursor.close();
+      }
     }
   }
 

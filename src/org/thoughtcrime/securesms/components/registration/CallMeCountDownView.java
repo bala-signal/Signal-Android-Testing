@@ -70,7 +70,7 @@ public class CallMeCountDownView extends RelativeLayout {
     this.availableInText.setVisibility(View.VISIBLE);
     this.countDownText.setVisibility(View.VISIBLE);
 
-    this.countDown = countDown;
+    this.countDown = 0;
     updateCountDown();
   }
 
@@ -79,8 +79,8 @@ public class CallMeCountDownView extends RelativeLayout {
     this.phone.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.signal_primary), PorterDuff.Mode.SRC_IN));
     this.callMeText.setTextColor(getResources().getColor(R.color.signal_primary));
 
-    this.availableInText.setVisibility(View.GONE);
-    this.countDownText.setVisibility(View.GONE);
+    //this.availableInText.setVisibility(View.GONE);
+    //this.countDownText.setVisibility(View.GONE);
 
     this.phone.setOnClickListener(v -> handlePhoneCallRequest());
     this.callMeText.setOnClickListener(v -> handlePhoneCallRequest());
@@ -94,7 +94,7 @@ public class CallMeCountDownView extends RelativeLayout {
       int secondsRemaining = countDown - (minutesRemaining * 60);
 
       countDownText.setText(String.format("%02d:%02d", minutesRemaining, secondsRemaining));
-      countDownText.postDelayed(this::updateCountDown, 1000);
+      //countDownText.postDelayed(this::updateCountDown, 1000);
     } else if (countDown == 0) {
       setCallEnabled();
     }
