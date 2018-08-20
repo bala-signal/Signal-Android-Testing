@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -23,6 +22,7 @@ import org.thoughtcrime.securesms.toast.Toast;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.components.emoji.EmojiDrawer;
 import org.thoughtcrime.securesms.components.emoji.EmojiToggle;
+import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mms.GlideRequests;
 import org.thoughtcrime.securesms.mms.QuoteModel;
 import org.thoughtcrime.securesms.mms.SlideDeck;
@@ -121,7 +121,7 @@ public class InputPanel extends LinearLayout
   }
 
   public void setQuote(@NonNull GlideRequests glideRequests, long id, @NonNull Recipient author, @NonNull String body, @NonNull SlideDeck attachments) {
-    this.quoteView.setQuote(glideRequests, id, author, body, attachments);
+    this.quoteView.setQuote(glideRequests, id, author, body, false, attachments);
     this.quoteView.setVisibility(View.VISIBLE);
   }
 
@@ -131,7 +131,7 @@ public class InputPanel extends LinearLayout
 
   public Optional<QuoteModel> getQuote() {
     if (quoteView.getQuoteId() > 0 && quoteView.getVisibility() == View.VISIBLE) {
-      return Optional.of(new QuoteModel(quoteView.getQuoteId(), quoteView.getAuthor().getAddress(), quoteView.getBody(), quoteView.getAttachments()));
+      return Optional.of(new QuoteModel(quoteView.getQuoteId(), quoteView.getAuthor().getAddress(), quoteView.getBody(), false, quoteView.getAttachments()));
     } else {
       return Optional.absent();
     }
@@ -164,7 +164,7 @@ public class InputPanel extends LinearLayout
     long elapsedTime = onRecordHideEvent(x);
 
     if (listener != null) {
-      Log.w(TAG, "Elapsed time: " + elapsedTime);
+      Log.d(TAG, "Elapsed time: " + elapsedTime);
       if (elapsedTime > 1000) {
         listener.onRecorderFinished();
       } else {

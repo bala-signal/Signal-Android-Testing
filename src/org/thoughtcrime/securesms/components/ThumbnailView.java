@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.util.AttributeSet;
-import android.util.Log;
+import org.thoughtcrime.securesms.logging.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -249,19 +249,19 @@ public class ThumbnailView extends FrameLayout {
     }
 
     if (Util.equals(slide, this.slide)) {
-      Log.w(TAG, "Not re-loading slide " + slide.asAttachment().getDataUri());
+      Log.i(TAG, "Not re-loading slide " + slide.asAttachment().getDataUri());
       return new SettableFuture<>(false);
     }
 
     if (this.slide != null && this.slide.getFastPreflightId() != null &&
         this.slide.getFastPreflightId().equals(slide.getFastPreflightId()))
     {
-      Log.w(TAG, "Not re-loading slide for fast preflight: " + slide.getFastPreflightId());
+      Log.i(TAG, "Not re-loading slide for fast preflight: " + slide.getFastPreflightId());
       this.slide = slide;
       return new SettableFuture<>(false);
     }
 
-    Log.w(TAG, "loading part with id " + slide.asAttachment().getDataUri()
+    Log.i(TAG, "loading part with id " + slide.asAttachment().getDataUri()
                + ", progress " + slide.getTransferState() + ", fast preflight id: " +
                slide.asAttachment().getFastPreflightId());
 
@@ -380,8 +380,11 @@ public class ThumbnailView extends FrameLayout {
   private class DownloadClickDispatcher implements View.OnClickListener {
     @Override
     public void onClick(View view) {
+      Log.i(TAG, "onClick() for download button");
       if (downloadClickListener != null && slide != null) {
         downloadClickListener.onClick(view, slide);
+      } else {
+        Log.w(TAG, "Received a download button click, but unable to execute it. slide: " + String.valueOf(slide) + "  downloadClickListener: " + String.valueOf(downloadClickListener));
       }
     }
   }

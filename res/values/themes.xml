@@ -148,6 +148,7 @@
         <item name="conversation_editor_background">#22000000</item>
         <item name="conversation_editor_text_color">#ff111111</item>
         <item name="conversation_input_background">@drawable/compose_background_light</item>
+        <item name="conversation_input_inline_attach_icon_tint">@color/core_light_60</item>
         <item name="conversation_transport_sms_indicator">@drawable/ic_send_sms_insecure</item>
         <item name="conversation_transport_push_indicator">@drawable/ic_send_push</item>
         <item name="conversation_transport_popup_background">@color/white</item>
@@ -242,6 +243,8 @@
 
         <item name="pref_divider">@drawable/preference_divider_light</item>
 
+        <item name="quote_missing_icon_color">@color/core_light_60</item>
+
         <item name="group_members_dialog_icon">@drawable/ic_group_grey600_24dp</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Fix</item>
 
@@ -321,6 +324,7 @@
         <item name="conversation_editor_background">#22ffffff</item>
         <item name="conversation_editor_text_color">#ffeeeeee</item>
         <item name="conversation_input_background">@drawable/compose_background_dark</item>
+        <item name="conversation_input_inline_attach_icon_tint">@color/core_dark_05</item>
         <item name="conversation_transport_sms_indicator">@drawable/ic_send_sms_insecure_dark</item>
         <item name="conversation_transport_push_indicator">@drawable/ic_send_push</item>
         <item name="conversation_transport_popup_background">@color/black</item>
@@ -383,6 +387,8 @@
         <item name="pref_icon_tint">#FFFFFF</item>
 
         <item name="pref_divider">@drawable/preference_divider_dark</item>
+
+        <item name="quote_missing_icon_color">@color/core_dark_05</item>
 
         <item name="group_members_dialog_icon">@drawable/ic_group_white_24dp</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Fix</item>

@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import org.thoughtcrime.securesms.toast.Toast;
+import org.thoughtcrime.securesms.logging.Log;
+
 
 import org.thoughtcrime.securesms.database.Address;
 import org.thoughtcrime.securesms.database.DatabaseFactory;

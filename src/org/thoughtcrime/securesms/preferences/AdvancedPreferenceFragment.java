@@ -14,7 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
-import android.util.Log;
+import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.toast.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -47,7 +47,6 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
     super.onCreate(paramBundle);
 
     initializeIdentitySelection();
-    TextSecurePreferences.setPushRegistered(getActivity(), true);
 
     Preference submitDebugLog = this.findPreference(SUBMIT_DEBUG_LOG_PREF);
     submitDebugLog.setOnPreferenceClickListener(new SubmitDebugLogListener());
@@ -71,7 +70,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
   public void onActivityResult(int reqCode, int resultCode, Intent data) {
     super.onActivityResult(reqCode, resultCode, data);
 
-    Log.w(TAG, "Got result: " + resultCode + " for req: " + reqCode);
+    Log.i(TAG, "Got result: " + resultCode + " for req: " + reqCode);
     if (resultCode == Activity.RESULT_OK && reqCode == PICK_IDENTITY_CONTACT) {
       handleIdentitySelection(data);
     }
@@ -175,7 +174,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
                          Toast.LENGTH_LONG).show();
           break;
         case SUCCESS:
-          //TextSecurePreferences.setPushRegistered(getActivity(), false);
+          TextSecurePreferences.setPushRegistered(getActivity(), false);
           initializePushMessagingToggle();
           break;
         }
@@ -183,7 +182,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
 
       @Override
       protected Integer doInBackground(Void... params) {
-        /*try {
+        try {
           Context                     context        = getActivity();
           SignalServiceAccountManager accountManager = AccountManagerFactory.createManager(context);
 
@@ -201,8 +200,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
         } catch (IOException ioe) {
           Log.w(TAG, ioe);
           return NETWORK_ERROR;
-        }*/
-        return SUCCESS;
+        }
       }
     }
 
