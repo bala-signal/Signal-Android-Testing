@@ -138,7 +138,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
     Uri contactUri = data.getData();
 
     if (contactUri != null) {
-      TextSecurePreferences.setIdentityContactUri(getActivity(), contactUri.toString());
+      //TextSecurePreferences.setIdentityContactUri(getActivity(), contactUri.toString());
       initializeIdentitySelection();
     }
   }
@@ -182,7 +182,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
 
       @Override
       protected Integer doInBackground(Void... params) {
-        try {
+        /*try {
           Context                     context        = getActivity();
           SignalServiceAccountManager accountManager = AccountManagerFactory.createManager(context);
 
@@ -200,7 +200,8 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
         } catch (IOException ioe) {
           Log.w(TAG, ioe);
           return NETWORK_ERROR;
-        }
+        }*/
+        return SUCCESS;
       }
     }
 
