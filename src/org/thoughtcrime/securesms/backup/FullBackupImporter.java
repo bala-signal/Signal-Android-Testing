@@ -89,7 +89,6 @@ public class FullBackupImporter extends FullBackupBase {
       }
 
       trimEntriesForExpiredMessages(context, db);
-      restoreNotificationChannels(context);
 
       db.setTransactionSuccessful();
     } finally {
@@ -99,7 +98,11 @@ public class FullBackupImporter extends FullBackupBase {
     EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.FINISHED, count));
   }
 
-  private static void processVersion(@NonNull SQLiteDatabase db, DatabaseVersion version) {
+  private static void processVersion(@NonNull SQLiteDatabase db, DatabaseVersion version) throws IOException {
+    if (version.getVersion() > db.getVersion()) {
+      throw new DatabaseDowngradeException(db.getVersion(), version.getVersion());
+    }
+
     db.setVersion(version.getVersion());
   }
 
@@ -190,20 +193,6 @@ public class FullBackupImporter extends FullBackupBase {
     }
   }
 
-  private static void restoreNotificationChannels(@NonNull Context context) {
-    if (!NotificationChannels.supported()) {
-      return;
-    }
-
-    RecipientDatabase db = DatabaseFactory.getRecipientDatabase(context);
-
-    try (RecipientDatabase.RecipientReader reader = db.getRecipientsWithNotificationChannels()) {
-      Recipient recipient;
-      while ((recipient = reader.getNext()) != null) {
-        NotificationChannels.createChannelFor(context, recipient);
-      }
-    }
-  }
 
   private static class BackupRecordInputStream extends BackupStream {
 
@@ -343,4 +332,9 @@ public class FullBackupImporter extends FullBackupBase {
     }
   }
 
+  public static class DatabaseDowngradeException extends IOException {
+    DatabaseDowngradeException(int currentVersion, int backupVersion) {
+      super("Tried to import a backup with version " + backupVersion + " into a database with version " + currentVersion);
+    }
+  }
 }
