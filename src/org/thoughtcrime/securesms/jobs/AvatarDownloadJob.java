@@ -10,8 +10,7 @@ import org.thoughtcrime.securesms.database.GroupDatabase;
 import org.thoughtcrime.securesms.database.GroupDatabase.GroupRecord;
 import org.thoughtcrime.securesms.dependencies.InjectableType;
 import org.thoughtcrime.securesms.jobmanager.JobParameters;
-import org.thoughtcrime.securesms.jobmanager.requirements.NetworkRequirement;
-import org.thoughtcrime.securesms.jobs.requirements.MasterSecretRequirement;
+import org.thoughtcrime.securesms.jobmanager.SafeData;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mms.AttachmentStreamUriLoader.AttachmentModel;
 import org.thoughtcrime.securesms.util.BitmapDecodingException;
@@ -30,32 +29,50 @@ import java.io.InputStream;
 
 import javax.inject.Inject;
 
-public class AvatarDownloadJob extends MasterSecretJob implements InjectableType {
+import androidx.work.Data;
+import androidx.work.WorkerParameters;
+
+public class AvatarDownloadJob extends ContextJob implements InjectableType {
 
   private static final int MAX_AVATAR_SIZE = 20 * 1024 * 1024;
   private static final long serialVersionUID = 1L;
 
   private static final String TAG = AvatarDownloadJob.class.getSimpleName();
 
+  private static final String KEY_GROUP_ID = "group_id";
+
   @Inject transient SignalServiceMessageReceiver receiver;
 
-  private final byte[] groupId;
+  private byte[] groupId;
+
+  public AvatarDownloadJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
+    super(context, workerParameters);
+  }
 
   public AvatarDownloadJob(Context context, @NonNull byte[] groupId) {
     super(context, JobParameters.newBuilder()
-                                .withRequirement(new MasterSecretRequirement(context))
-                                .withRequirement(new NetworkRequirement(context))
-                                .withPersistence()
+                                .withNetworkRequirement()
                                 .create());
 
     this.groupId = groupId;
   }
 
   @Override
-  public void onAdded() {}
+  protected void initialize(@NonNull SafeData data) {
+    try {
+      groupId = GroupUtil.getDecodedId(data.getString(KEY_GROUP_ID));
+    } catch (IOException e) {
+      throw new AssertionError(e);
+    }
+  }
 
   @Override
-  public void onRun(MasterSecret masterSecret) throws IOException {
+  protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
+    return dataBuilder.putString(KEY_GROUP_ID, GroupUtil.getEncodedId(groupId, false)).build();
+  }
+
+  @Override
+  public void onRun() throws IOException {
     String                encodeId   = GroupUtil.getEncodedId(groupId, false);
     GroupDatabase         database   = DatabaseFactory.getGroupDatabase(context);
     Optional<GroupRecord> record     = database.getGroup(encodeId);
@@ -81,7 +98,7 @@ public class AvatarDownloadJob extends MasterSecretJob implements InjectableType
         attachment = File.createTempFile("avatar", "tmp", context.getCacheDir());
         attachment.deleteOnExit();
 
-        SignalServiceAttachmentPointer pointer     = new SignalServiceAttachmentPointer(avatarId, contentType, key, relay, Optional.of(0), Optional.absent(), 0, 0, digest, fileName, false);
+        SignalServiceAttachmentPointer pointer     = new SignalServiceAttachmentPointer(avatarId, contentType, key, Optional.of(0), Optional.absent(), 0, 0, digest, fileName, false, Optional.absent());
         InputStream                    inputStream = receiver.retrieveAttachment(pointer, attachment, MAX_AVATAR_SIZE);
         Bitmap                         avatar      = BitmapUtil.createScaledBitmap(context, new AttachmentModel(attachment, key, 0, digest), 500, 500);
 
@@ -100,7 +117,7 @@ public class AvatarDownloadJob extends MasterSecretJob implements InjectableType
   public void onCanceled() {}
 
   @Override
-  public boolean onShouldRetryThrowable(Exception exception) {
+  public boolean onShouldRetry(Exception exception) {
     if (exception instanceof IOException) return true;
     return false;
   }

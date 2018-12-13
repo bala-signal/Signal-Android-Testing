@@ -1,7 +1,10 @@
 package org.thoughtcrime.securesms.jobs;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import org.thoughtcrime.securesms.jobmanager.SafeData;
 import org.thoughtcrime.securesms.logging.Log;
 import android.webkit.MimeTypeMap;
 
@@ -20,15 +23,12 @@ import com.google.android.mms.smil.SmilHelper;
 import com.klinker.android.send_message.Utils;
 
 import org.thoughtcrime.securesms.attachments.Attachment;
-import org.thoughtcrime.securesms.crypto.MasterSecret;
 import org.thoughtcrime.securesms.database.Address;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.MmsDatabase;
 import org.thoughtcrime.securesms.database.NoSuchMessageException;
 import org.thoughtcrime.securesms.database.ThreadDatabase;
 import org.thoughtcrime.securesms.jobmanager.JobParameters;
-import org.thoughtcrime.securesms.jobmanager.requirements.NetworkRequirement;
-import org.thoughtcrime.securesms.jobs.requirements.MasterSecretRequirement;
 import org.thoughtcrime.securesms.mms.CompatMmsConnection;
 import org.thoughtcrime.securesms.mms.MediaConstraints;
 import org.thoughtcrime.securesms.mms.MmsException;
@@ -49,34 +49,52 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.work.Data;
+import androidx.work.WorkerParameters;
+
 public class MmsSendJob extends SendJob {
 
   private static final long serialVersionUID = 0L;
 
   private static final String TAG = MmsSendJob.class.getSimpleName();
 
-  private final long messageId;
+  private static final String KEY_MESSAGE_ID = "message_id";
+
+  private long messageId;
+
+  public MmsSendJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
+    super(context, workerParameters);
+  }
 
   public MmsSendJob(Context context, long messageId) {
     super(context, JobParameters.newBuilder()
                                 .withGroupId("mms-operation")
-                                .withRequirement(new NetworkRequirement(context))
-                                .withRequirement(new MasterSecretRequirement(context))
-                                .withPersistence()
+                                .withNetworkRequirement()
+                                .withRetryCount(15)
                                 .create());
 
     this.messageId = messageId;
   }
 
   @Override
-  public void onAdded() {
-    Log.i(TAG, "onAdded() messageId: " + messageId);
+  protected void initialize(@NonNull SafeData data) {
+    messageId = data.getLong(KEY_MESSAGE_ID);
   }
 
   @Override
-  public void onSend(MasterSecret masterSecret) throws MmsException, NoSuchMessageException, IOException {
+  protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
+    return dataBuilder.putLong(KEY_MESSAGE_ID, messageId).build();
+  }
+
+  @Override
+  public void onSend() throws MmsException, NoSuchMessageException, IOException {
     MmsDatabase          database = DatabaseFactory.getMmsDatabase(context);
     OutgoingMediaMessage message  = database.getOutgoingMessage(messageId);
+
+    if (database.isSent(messageId)) {
+      Log.w(TAG, "Message " + messageId + " was already sent. Ignoring.");
+      return;
+    }
 
     try {
       Log.i(TAG, "Sending message: " + messageId);
@@ -105,7 +123,7 @@ public class MmsSendJob extends SendJob {
   }
 
   @Override
-  public boolean onShouldRetryThrowable(Exception exception) {
+  public boolean onShouldRetry(Exception exception) {
     return false;
   }
 

@@ -2,6 +2,7 @@ package org.thoughtcrime.securesms.jobs;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.crypto.IdentityKeyUtil;
@@ -9,8 +10,7 @@ import org.thoughtcrime.securesms.crypto.MasterSecret;
 import org.thoughtcrime.securesms.crypto.PreKeyUtil;
 import org.thoughtcrime.securesms.dependencies.InjectableType;
 import org.thoughtcrime.securesms.jobmanager.JobParameters;
-import org.thoughtcrime.securesms.jobmanager.requirements.NetworkRequirement;
-import org.thoughtcrime.securesms.jobs.requirements.MasterSecretRequirement;
+import org.thoughtcrime.securesms.jobmanager.SafeData;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.whispersystems.libsignal.IdentityKeyPair;
@@ -20,27 +20,37 @@ import org.whispersystems.signalservice.api.push.exceptions.PushNetworkException
 
 import javax.inject.Inject;
 
-public class RotateSignedPreKeyJob extends MasterSecretJob implements InjectableType {
+import androidx.work.Data;
+import androidx.work.WorkerParameters;
 
-  private static final String TAG = RotateSignedPreKeyJob.class.getName();
+public class RotateSignedPreKeyJob extends ContextJob implements InjectableType {
+
+  private static final String TAG = RotateSignedPreKeyJob.class.getSimpleName();
 
   @Inject transient SignalServiceAccountManager accountManager;
 
+  public RotateSignedPreKeyJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
+    super(context, workerParameters);
+  }
+
   public RotateSignedPreKeyJob(Context context) {
     super(context, JobParameters.newBuilder()
-                                .withRequirement(new NetworkRequirement(context))
-                                .withRequirement(new MasterSecretRequirement(context))
+                                .withNetworkRequirement()
                                 .withRetryCount(5)
                                 .create());
   }
 
   @Override
-  public void onAdded() {
-
+  protected void initialize(@NonNull SafeData data) {
   }
 
   @Override
-  public void onRun(MasterSecret masterSecret) throws Exception {
+  protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
+    return dataBuilder.build();
+  }
+
+  @Override
+  public void onRun() throws Exception {
     Log.i(TAG, "Rotating signed prekey...");
 
     IdentityKeyPair    identityKey        = IdentityKeyUtil.getIdentityKeyPair(context);
@@ -58,7 +68,7 @@ public class RotateSignedPreKeyJob extends MasterSecretJob implements Injectable
   }
 
   @Override
-  public boolean onShouldRetryThrowable(Exception exception) {
+  public boolean onShouldRetry(Exception exception) {
     return exception instanceof PushNetworkException;
   }
 

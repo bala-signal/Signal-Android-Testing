@@ -4,19 +4,18 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.greenrobot.eventbus.EventBus;
+import org.signal.libsignal.metadata.certificate.InvalidCertificateException;
+import org.signal.libsignal.metadata.certificate.SenderCertificate;
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.TextSecureExpiredException;
 import org.thoughtcrime.securesms.attachments.Attachment;
 import org.thoughtcrime.securesms.contactshare.Contact;
 import org.thoughtcrime.securesms.contactshare.ContactModelMapper;
-import org.thoughtcrime.securesms.crypto.MasterSecret;
 import org.thoughtcrime.securesms.crypto.ProfileKeyUtil;
 import org.thoughtcrime.securesms.database.Address;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.events.PartProgressEvent;
 import org.thoughtcrime.securesms.jobmanager.JobParameters;
-import org.thoughtcrime.securesms.jobmanager.requirements.NetworkBackoffRequirement;
-import org.thoughtcrime.securesms.jobs.requirements.MasterSecretRequirement;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mms.DecryptableStreamUriLoader;
 import org.thoughtcrime.securesms.mms.OutgoingMediaMessage;
@@ -38,30 +37,36 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import androidx.work.WorkerParameters;
 
 public abstract class PushSendJob extends SendJob {
 
-  private static final long   serialVersionUID = 5906098204770900739L;
-  private static final String TAG              = PushSendJob.class.getSimpleName();
+  private static final long   serialVersionUID              = 5906098204770900739L;
+  private static final String TAG                           = PushSendJob.class.getSimpleName();
+  private static final long   CERTIFICATE_EXPIRATION_BUFFER = TimeUnit.DAYS.toMillis(1);
+
+  protected  PushSendJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
+    super(context, workerParameters);
+  }
 
   protected PushSendJob(Context context, JobParameters parameters) {
     super(context, parameters);
   }
 
-  protected static JobParameters constructParameters(Context context, Address destination) {
+  protected static JobParameters constructParameters(Address destination) {
     JobParameters.Builder builder = JobParameters.newBuilder();
-    builder.withPersistence();
     builder.withGroupId(destination.serialize());
-    builder.withRequirement(new MasterSecretRequirement(context));
-    builder.withRequirement(new NetworkBackoffRequirement(context));
+    builder.withNetworkRequirement();
     builder.withRetryDuration(TimeUnit.DAYS.toMillis(1));
 
     return builder.create();
   }
 
   @Override
-  protected final void onSend(MasterSecret masterSecret) throws Exception {
+  protected final void onSend() throws Exception {
     if (TextSecurePreferences.getSignedPreKeyFailureCount(context) > 5) {
       ApplicationContext.getInstance(context)
                         .getJobManager()
@@ -70,9 +75,7 @@ public abstract class PushSendJob extends SendJob {
       throw new TextSecureExpiredException("Too many signed prekey rotation failures");
     }
 
-    Log.i(TAG, "Starting message send attempt");
     onPushSend();
-    Log.i(TAG, "Message send completed");
   }
 
   @Override
@@ -80,7 +83,7 @@ public abstract class PushSendJob extends SendJob {
     super.onRetry();
     Log.i(TAG, "onRetry()");
 
-    if (getRunIteration() > 1) {
+    if (getRunAttemptCount() > 1) {
       Log.i(TAG, "Scheduling service outage detection job.");
       ApplicationContext.getInstance(context).getJobManager().add(new ServiceOutageDetectionJob(context));
     }
@@ -95,7 +98,6 @@ public abstract class PushSendJob extends SendJob {
   }
 
   protected SignalServiceAddress getPushAddress(Address address) {
-//    String relay = TextSecureDirectory.getInstance(context).getRelay(address.toPhoneString());
     String relay = null;
     return new SignalServiceAddress(address.toPhoneString(), Optional.fromNullable(relay));
   }
@@ -125,6 +127,7 @@ public abstract class PushSendJob extends SendJob {
                                     .withVoiceNote(attachment.isVoiceNote())
                                     .withWidth(attachment.getWidth())
                                     .withHeight(attachment.getHeight())
+                                    .withCaption(attachment.getCaption())
                                     .withListener((total, progress) -> EventBus.getDefault().postSticky(new PartProgressEvent(attachment, total, progress)))
                                     .build();
     } catch (IOException ioe) {
@@ -200,6 +203,30 @@ public abstract class PushSendJob extends SendJob {
     }
 
     return sharedContacts;
+  }
+
+  protected void rotateSenderCertificateIfNecessary() throws IOException {
+    try {
+      byte[] certificateBytes = TextSecurePreferences.getUnidentifiedAccessCertificate(context);
+
+      if (certificateBytes == null) {
+        throw new InvalidCertificateException("No certificate was present.");
+      }
+
+      SenderCertificate certificate = new SenderCertificate(certificateBytes);
+
+      if (System.currentTimeMillis() > (certificate.getExpiration() - CERTIFICATE_EXPIRATION_BUFFER)) {
+        throw new InvalidCertificateException("Certificate is expired, or close to it. Expires on: " + certificate.getExpiration() + ", currently: " + System.currentTimeMillis());
+      }
+
+      Log.d(TAG, "Certificate is valid.");
+    } catch (InvalidCertificateException e) {
+      Log.w(TAG, "Certificate was invalid at send time. Fetching a new one.", e);
+      RotateCertificateJob certificateJob = new RotateCertificateJob(context);
+      ApplicationContext.getInstance(context).injectDependencies(certificateJob);
+      certificateJob.setContext(context);
+      certificateJob.onRun();
+    }
   }
 
   protected abstract void onPushSend() throws Exception;

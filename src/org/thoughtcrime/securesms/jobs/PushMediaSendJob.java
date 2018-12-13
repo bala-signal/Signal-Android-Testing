@@ -1,22 +1,27 @@
 package org.thoughtcrime.securesms.jobs;
 
 import android.content.Context;
-import org.thoughtcrime.securesms.logging.Log;
+import android.support.annotation.NonNull;
 
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.attachments.Attachment;
+import org.thoughtcrime.securesms.crypto.UnidentifiedAccessUtil;
 import org.thoughtcrime.securesms.database.Address;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.MmsDatabase;
 import org.thoughtcrime.securesms.database.NoSuchMessageException;
+import org.thoughtcrime.securesms.database.RecipientDatabase.UnidentifiedAccessMode;
 import org.thoughtcrime.securesms.dependencies.InjectableType;
+import org.thoughtcrime.securesms.jobmanager.SafeData;
 import org.thoughtcrime.securesms.mms.MediaConstraints;
 import org.thoughtcrime.securesms.mms.MmsException;
 import org.thoughtcrime.securesms.mms.OutgoingMediaMessage;
+import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.service.ExpiringMessageManager;
 import org.thoughtcrime.securesms.transport.InsecureFallbackApprovalException;
 import org.thoughtcrime.securesms.transport.RetryLaterException;
 import org.thoughtcrime.securesms.transport.UndeliverableMessageException;
+import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.whispersystems.libsignal.util.guava.Optional;
 import org.whispersystems.signalservice.api.SignalServiceMessageSender;
 import org.whispersystems.signalservice.api.crypto.UntrustedIdentityException;
@@ -32,24 +37,43 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.work.Data;
+import androidx.work.WorkerParameters;
+
 public class PushMediaSendJob extends PushSendJob implements InjectableType {
 
   private static final long serialVersionUID = 1L;
 
   private static final String TAG = PushMediaSendJob.class.getSimpleName();
 
+  private static final String KEY_MESSAGE_ID = "message_id";
+
   @Inject transient SignalServiceMessageSender messageSender;
 
-  private final long messageId;
+  private long messageId;
+
+  public PushMediaSendJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
+    super(context, workerParameters);
+  }
 
   public PushMediaSendJob(Context context, long messageId, Address destination) {
-    super(context, constructParameters(context, destination));
+    super(context, constructParameters(destination));
     this.messageId = messageId;
   }
 
   @Override
-  public void onAdded() {
-    Log.i(TAG, "onAdded() messageId: " + messageId);
+  protected void initialize(@NonNull SafeData data) {
+    messageId = data.getLong(KEY_MESSAGE_ID);
+  }
+
+  @Override
+  protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
+    return dataBuilder.putLong(KEY_MESSAGE_ID, messageId).build();
+  }
+
+  @Override
+  protected void onAdded() {
+    DatabaseFactory.getMmsDatabase(context).markAsSending(messageId);
   }
 
   @Override
@@ -61,37 +85,59 @@ public class PushMediaSendJob extends PushSendJob implements InjectableType {
     MmsDatabase            database          = DatabaseFactory.getMmsDatabase(context);
     OutgoingMediaMessage   message           = database.getOutgoingMessage(messageId);
 
-    try {
-      Log.i(TAG, "Sending message: " + messageId);
+    if (database.isSent(messageId)) {
+      warn(TAG, "Message " + messageId + " was already sent. Ignoring.");
+      return;
+    }
 
-      deliver(message);
+    try {
+      log(TAG, "Sending message: " + messageId);
+      
+      Recipient              recipient  = message.getRecipient().resolve();
+      byte[]                 profileKey = recipient.getProfileKey();
+      UnidentifiedAccessMode accessMode = recipient.getUnidentifiedAccessMode();
+
+      boolean unidentified = deliver(message);
+
       database.markAsSent(messageId, true);
       markAttachmentsUploaded(messageId, message.getAttachments());
+      database.markUnidentified(messageId, unidentified);
+
+      if (TextSecurePreferences.isUnidentifiedDeliveryEnabled(context)) {
+        if (unidentified && accessMode == UnidentifiedAccessMode.UNKNOWN && profileKey == null) {
+          log(TAG, "Marking recipient as UD-unrestricted following a UD send.");
+          DatabaseFactory.getRecipientDatabase(context).setUnidentifiedAccessMode(recipient, UnidentifiedAccessMode.UNRESTRICTED);
+        } else if (unidentified && accessMode == UnidentifiedAccessMode.UNKNOWN) {
+          log(TAG, "Marking recipient as UD-enabled following a UD send.");
+          DatabaseFactory.getRecipientDatabase(context).setUnidentifiedAccessMode(recipient, UnidentifiedAccessMode.ENABLED);
+        } else if (!unidentified && accessMode != UnidentifiedAccessMode.DISABLED) {
+          log(TAG, "Marking recipient as UD-disabled following a non-UD send.");
+          DatabaseFactory.getRecipientDatabase(context).setUnidentifiedAccessMode(recipient, UnidentifiedAccessMode.DISABLED);
+        }
+      }
 
       if (message.getExpiresIn() > 0 && !message.isExpirationUpdate()) {
         database.markExpireStarted(messageId);
         expirationManager.scheduleDeletion(messageId, true, message.getExpiresIn());
       }
 
-      Log.i(TAG, "Sent message: " + messageId);
+      log(TAG, "Sent message: " + messageId);
 
     } catch (InsecureFallbackApprovalException ifae) {
-      Log.w(TAG, ifae);
+      warn(TAG, "Failure", ifae);
       database.markAsPendingInsecureSmsFallback(messageId);
       notifyMediaMessageDeliveryFailed(context, messageId);
       ApplicationContext.getInstance(context).getJobManager().add(new DirectoryRefreshJob(context, false));
     } catch (UntrustedIdentityException uie) {
-      Log.w(TAG, uie);
+      warn(TAG, "Failure", uie);
       database.addMismatchedIdentity(messageId, Address.fromSerialized(uie.getE164Number()), uie.getIdentityKey());
       database.markAsSentFailed(messageId);
     }
   }
 
   @Override
-  public boolean onShouldRetryThrowable(Exception exception) {
-    if (exception instanceof RequirementNotMetException) return true;
-    if (exception instanceof RetryLaterException)        return true;
-
+  public boolean onShouldRetry(Exception exception) {
+    if (exception instanceof RetryLaterException) return true;
     return false;
   }
 
@@ -101,7 +147,7 @@ public class PushMediaSendJob extends PushSendJob implements InjectableType {
     notifyMediaMessageDeliveryFailed(context, messageId);
   }
 
-  private void deliver(OutgoingMediaMessage message)
+  private boolean deliver(OutgoingMediaMessage message)
       throws RetryLaterException, InsecureFallbackApprovalException, UntrustedIdentityException,
              UndeliverableMessageException
   {
@@ -110,6 +156,8 @@ public class PushMediaSendJob extends PushSendJob implements InjectableType {
     }
 
     try {
+      rotateSenderCertificateIfNecessary();
+
       SignalServiceAddress                     address           = getPushAddress(message.getRecipient().getAddress());
       MediaConstraints                         mediaConstraints  = MediaConstraints.getPushMediaConstraints();
       List<Attachment>                         scaledAttachments = scaleAndStripExifFromAttachments(mediaConstraints, message.getAttachments());
@@ -128,15 +176,15 @@ public class PushMediaSendJob extends PushSendJob implements InjectableType {
                                                                                            .asExpirationUpdate(message.isExpirationUpdate())
                                                                                            .build();
 
-      messageSender.sendMessage(address, mediaMessage);
+      return messageSender.sendMessage(address, UnidentifiedAccessUtil.getAccessFor(context, message.getRecipient()), mediaMessage).getSuccess().isUnidentified();
     } catch (UnregisteredUserException e) {
-      Log.w(TAG, e);
+      warn(TAG, e);
       throw new InsecureFallbackApprovalException(e);
     } catch (FileNotFoundException e) {
-      Log.w(TAG, e);
+      warn(TAG, e);
       throw new UndeliverableMessageException(e);
     } catch (IOException e) {
-      Log.w(TAG, e);
+      warn(TAG, e);
       throw new RetryLaterException(e);
     }
   }

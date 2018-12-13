@@ -17,8 +17,6 @@
 package org.thoughtcrime.securesms;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.arch.lifecycle.DefaultLifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.ProcessLifecycleOwner;
@@ -27,24 +25,22 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
-import android.support.v4.app.NotificationManagerCompat;
 
 import com.google.android.gms.security.ProviderInstaller;
 
+import org.thoughtcrime.securesms.components.TypingStatusRepository;
+import org.thoughtcrime.securesms.components.TypingStatusSender;
 import org.thoughtcrime.securesms.crypto.PRNGFixes;
 import org.thoughtcrime.securesms.dependencies.AxolotlStorageModule;
 import org.thoughtcrime.securesms.dependencies.InjectableType;
 import org.thoughtcrime.securesms.dependencies.SignalCommunicationModule;
 import org.thoughtcrime.securesms.jobmanager.JobManager;
 import org.thoughtcrime.securesms.jobmanager.dependencies.DependencyInjector;
-import org.thoughtcrime.securesms.jobmanager.persistence.JavaJobSerializer;
-import org.thoughtcrime.securesms.jobmanager.requirements.NetworkRequirementProvider;
 import org.thoughtcrime.securesms.jobs.CreateSignedPreKeyJob;
 import org.thoughtcrime.securesms.jobs.GcmRefreshJob;
 import org.thoughtcrime.securesms.jobs.MultiDeviceContactUpdateJob;
-import org.thoughtcrime.securesms.jobs.requirements.MasterSecretRequirementProvider;
-import org.thoughtcrime.securesms.jobs.requirements.ServiceRequirementProvider;
-import org.thoughtcrime.securesms.jobs.requirements.SqlCipherMigrationRequirementProvider;
+import org.thoughtcrime.securesms.jobs.PushNotificationReceiveJob;
+import org.thoughtcrime.securesms.jobs.RefreshUnidentifiedDeliveryAbilityJob;
 import org.thoughtcrime.securesms.logging.AndroidLogger;
 import org.thoughtcrime.securesms.logging.CustomSignalProtocolLogger;
 import org.thoughtcrime.securesms.logging.Log;
@@ -54,7 +50,10 @@ import org.thoughtcrime.securesms.notifications.NotificationChannels;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.service.DirectoryRefreshListener;
 import org.thoughtcrime.securesms.service.ExpiringMessageManager;
+import org.thoughtcrime.securesms.service.IncomingMessageObserver;
+import org.thoughtcrime.securesms.service.KeyCachingService;
 import org.thoughtcrime.securesms.service.LocalBackupListener;
+import org.thoughtcrime.securesms.service.RotateSenderCertificateListener;
 import org.thoughtcrime.securesms.service.RotateSignedPreKeyListener;
 import org.thoughtcrime.securesms.service.UpdateApkRefreshListener;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
@@ -68,6 +67,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import androidx.work.Configuration;
+import androidx.work.WorkManager;
 import dagger.ObjectGraph;
 
 /**
@@ -82,10 +83,13 @@ public class ApplicationContext extends MultiDexApplication implements Dependenc
 
   private static final String TAG = ApplicationContext.class.getSimpleName();
 
-  private ExpiringMessageManager expiringMessageManager;
-  private JobManager             jobManager;
-  private ObjectGraph            objectGraph;
-  private PersistentLogger       persistentLogger;
+  private ExpiringMessageManager  expiringMessageManager;
+  private TypingStatusRepository  typingStatusRepository;
+  private TypingStatusSender      typingStatusSender;
+  private JobManager              jobManager;
+  private IncomingMessageObserver incomingMessageObserver;
+  private ObjectGraph             objectGraph;
+  private PersistentLogger        persistentLogger;
 
   private volatile boolean isAppVisible;
 
@@ -96,17 +100,23 @@ public class ApplicationContext extends MultiDexApplication implements Dependenc
   @Override
   public void onCreate() {
     super.onCreate();
+    Log.i(TAG, "onCreate()");
     initializeRandomNumberFix();
     initializeLogging();
     initializeCrashHandling();
     initializeDependencyInjection();
     initializeJobManager();
+    initializeMessageRetrieval();
     initializeExpiringMessageManager();
+    initializeTypingStatusRepository();
+    initializeTypingStatusSender();
     initializeGcmCheck();
     initializeSignedPreKeyCheck();
     initializePeriodicTasks();
     initializeCircumvention();
     initializeWebRtc();
+    initializePendingMessages();
+    initializeUnidentifiedDeliveryAbilityRefresh();
     NotificationChannels.create(this);
     ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
   }
@@ -116,12 +126,14 @@ public class ApplicationContext extends MultiDexApplication implements Dependenc
     isAppVisible = true;
     Log.i(TAG, "App is now visible.");
     executePendingContactSync();
+    KeyCachingService.onAppForegrounded(this);
   }
 
   @Override
   public void onStop(@NonNull LifecycleOwner owner) {
     isAppVisible = false;
     Log.i(TAG, "App is no longer visible.");
+    KeyCachingService.onAppBackgrounded(this);
   }
 
   @Override
@@ -137,6 +149,14 @@ public class ApplicationContext extends MultiDexApplication implements Dependenc
 
   public ExpiringMessageManager getExpiringMessageManager() {
     return expiringMessageManager;
+  }
+
+  public TypingStatusRepository getTypingStatusRepository() {
+    return typingStatusRepository;
+  }
+
+  public TypingStatusSender getTypingStatusSender() {
+    return typingStatusSender;
   }
 
   public boolean isAppVisible() {
@@ -164,16 +184,15 @@ public class ApplicationContext extends MultiDexApplication implements Dependenc
   }
 
   private void initializeJobManager() {
-    this.jobManager = JobManager.newBuilder(this)
-                                .withName("TextSecureJobs")
-                                .withDependencyInjector(this)
-                                .withJobSerializer(new JavaJobSerializer())
-                                .withRequirementProviders(new MasterSecretRequirementProvider(this),
-                                                          new ServiceRequirementProvider(this),
-                                                          new NetworkRequirementProvider(this),
-                                                          new SqlCipherMigrationRequirementProvider())
-                                .withConsumerThreads(5)
-                                .build();
+    WorkManager.initialize(this, new Configuration.Builder()
+                                                  .setMinimumLoggingLevel(android.util.Log.DEBUG)
+                                                  .build());
+
+    this.jobManager = new JobManager(this, WorkManager.getInstance());
+  }
+
+  public void initializeMessageRetrieval() {
+    this.incomingMessageObserver = new IncomingMessageObserver(this);
   }
 
   private void initializeDependencyInjection() {
@@ -201,10 +220,19 @@ public class ApplicationContext extends MultiDexApplication implements Dependenc
     this.expiringMessageManager = new ExpiringMessageManager(this);
   }
 
+  private void initializeTypingStatusRepository() {
+    this.typingStatusRepository = new TypingStatusRepository();
+  }
+
+  private void initializeTypingStatusSender() {
+    this.typingStatusSender = new TypingStatusSender(this);
+  }
+
   private void initializePeriodicTasks() {
     RotateSignedPreKeyListener.schedule(this);
     DirectoryRefreshListener.schedule(this);
     LocalBackupListener.schedule(this);
+    RotateSenderCertificateListener.schedule(this);
 
     if (BuildConfig.PLAY_STORE_DISABLED) {
       UpdateApkRefreshListener.schedule(this);
@@ -267,6 +295,20 @@ public class ApplicationContext extends MultiDexApplication implements Dependenc
   private void executePendingContactSync() {
     if (TextSecurePreferences.needsFullContactSync(this)) {
       ApplicationContext.getInstance(this).getJobManager().add(new MultiDeviceContactUpdateJob(this, true));
+    }
+  }
+
+  private void initializePendingMessages() {
+    if (TextSecurePreferences.getNeedsMessagePull(this)) {
+      Log.i(TAG, "Scheduling a message fetch.");
+      ApplicationContext.getInstance(this).getJobManager().add(new PushNotificationReceiveJob(this));
+      TextSecurePreferences.setNeedsMessagePull(this, false);
+    }
+  }
+
+  private void initializeUnidentifiedDeliveryAbilityRefresh() {
+    if (TextSecurePreferences.isMultiDevice(this) && !TextSecurePreferences.isUnidentifiedDeliveryEnabled(this)) {
+      jobManager.add(new RefreshUnidentifiedDeliveryAbilityJob(this));
     }
   }
 }

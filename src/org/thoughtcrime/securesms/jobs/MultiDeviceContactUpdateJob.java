@@ -13,15 +13,14 @@ import android.support.annotation.Nullable;
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.contacts.ContactAccessor;
 import org.thoughtcrime.securesms.contacts.ContactAccessor.ContactData;
-import org.thoughtcrime.securesms.crypto.MasterSecret;
 import org.thoughtcrime.securesms.crypto.ProfileKeyUtil;
+import org.thoughtcrime.securesms.crypto.UnidentifiedAccessUtil;
 import org.thoughtcrime.securesms.database.Address;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.IdentityDatabase;
 import org.thoughtcrime.securesms.dependencies.InjectableType;
 import org.thoughtcrime.securesms.jobmanager.JobParameters;
-import org.thoughtcrime.securesms.jobmanager.requirements.NetworkRequirement;
-import org.thoughtcrime.securesms.jobs.requirements.MasterSecretRequirement;
+import org.thoughtcrime.securesms.jobmanager.SafeData;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.recipients.Recipient;
@@ -50,7 +49,10 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-public class MultiDeviceContactUpdateJob extends MasterSecretJob implements InjectableType {
+import androidx.work.Data;
+import androidx.work.WorkerParameters;
+
+public class MultiDeviceContactUpdateJob extends ContextJob implements InjectableType {
 
   private static final long serialVersionUID = 2L;
 
@@ -58,11 +60,18 @@ public class MultiDeviceContactUpdateJob extends MasterSecretJob implements Inje
 
   private static final long FULL_SYNC_TIME = TimeUnit.HOURS.toMillis(6);
 
+  private static final String KEY_ADDRESS    = "address";
+  private static final String KEY_FORCE_SYNC = "force_sync";
+
   @Inject transient SignalServiceMessageSender messageSender;
 
-  private final @Nullable String address;
+  private @Nullable String address;
 
   private boolean forceSync;
+
+  public MultiDeviceContactUpdateJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
+    super(context, workerParameters);
+  }
 
   public MultiDeviceContactUpdateJob(@NonNull Context context) {
     this(context, false);
@@ -78,10 +87,8 @@ public class MultiDeviceContactUpdateJob extends MasterSecretJob implements Inje
 
   public MultiDeviceContactUpdateJob(@NonNull Context context, @Nullable Address address, boolean forceSync) {
     super(context, JobParameters.newBuilder()
-                                .withRequirement(new NetworkRequirement(context))
-                                .withRequirement(new MasterSecretRequirement(context))
+                                .withNetworkRequirement()
                                 .withGroupId(MultiDeviceContactUpdateJob.class.getSimpleName())
-                                .withPersistence()
                                 .create());
 
     this.forceSync = forceSync;
@@ -91,11 +98,24 @@ public class MultiDeviceContactUpdateJob extends MasterSecretJob implements Inje
   }
 
   @Override
-  public void onRun(MasterSecret masterSecret)
+  protected void initialize(@NonNull SafeData data) {
+    address   = data.getString(KEY_ADDRESS);
+    forceSync = data.getBoolean(KEY_FORCE_SYNC);
+  }
+
+  @Override
+  protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
+    return dataBuilder.putString(KEY_ADDRESS, address)
+                      .putBoolean(KEY_FORCE_SYNC, forceSync)
+                      .build();
+  }
+
+  @Override
+  public void onRun()
       throws IOException, UntrustedIdentityException, NetworkException
   {
     if (!TextSecurePreferences.isMultiDevice(context)) {
-      Log.w(TAG, "Not multi device, aborting...");
+      Log.i(TAG, "Not multi device, aborting...");
       return;
     }
 
@@ -196,14 +216,9 @@ public class MultiDeviceContactUpdateJob extends MasterSecretJob implements Inje
   }
 
   @Override
-  public boolean onShouldRetryThrowable(Exception exception) {
+  public boolean onShouldRetry(Exception exception) {
     if (exception instanceof PushNetworkException) return true;
     return false;
-  }
-
-  @Override
-  public void onAdded() {
-
   }
 
   @Override
@@ -223,7 +238,8 @@ public class MultiDeviceContactUpdateJob extends MasterSecretJob implements Inje
                                                                                 .build();
 
       try {
-        messageSender.sendMessage(SignalServiceSyncMessage.forContacts(new ContactsMessage(attachmentStream, complete)));
+        messageSender.sendMessage(SignalServiceSyncMessage.forContacts(new ContactsMessage(attachmentStream, complete)),
+                                  UnidentifiedAccessUtil.getAccessForSync(context));
       } catch (IOException ioe) {
         throw new NetworkException(ioe);
       }
@@ -236,9 +252,10 @@ public class MultiDeviceContactUpdateJob extends MasterSecretJob implements Inje
     }
     
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+      Uri displayPhotoUri = Uri.withAppendedPath(uri, ContactsContract.Contacts.Photo.DISPLAY_PHOTO);
+
       try {
-        Uri                 displayPhotoUri = Uri.withAppendedPath(uri, ContactsContract.Contacts.Photo.DISPLAY_PHOTO);
-        AssetFileDescriptor fd              = context.getContentResolver().openAssetFileDescriptor(displayPhotoUri, "r");
+        AssetFileDescriptor fd = context.getContentResolver().openAssetFileDescriptor(displayPhotoUri, "r");
 
         if (fd == null) {
           return Optional.absent();
@@ -250,7 +267,7 @@ public class MultiDeviceContactUpdateJob extends MasterSecretJob implements Inje
                                                   .withLength(fd.getLength())
                                                   .build());
       } catch (IOException e) {
-        Log.w(TAG, e);
+        Log.i(TAG, "Could not find avatar for URI: " + displayPhotoUri);
       }
     }
 

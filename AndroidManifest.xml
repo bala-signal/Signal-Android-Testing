@@ -383,7 +383,7 @@
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
     <activity android:name=".scribbles.StickerSelectActivity"
-              android:theme="@style/TextSecure.LightTheme"
+              android:theme="@style/TextSecure.ScribbleTheme"
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
     <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
@@ -422,12 +422,17 @@
               android:exported="true"
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
+    <activity android:name=".camera.CameraActivity"
+              android:theme="@style/TextSecure.ScribbleTheme"
+              android:windowSoftInputMode="stateHidden"
+              android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
         <activity android:name=".toast.ToastActivity" android:theme="@style/ToastStyle" android:excludeFromRecents="true"></activity>
 
     <service android:enabled="true" android:name="org.thoughtcrime.securesms.service.WebRtcCallService"/>
     <service android:enabled="true" android:name=".service.ApplicationMigrationService"/>
     <service android:enabled="true" android:exported="false" android:name=".service.KeyCachingService"/>
-    <service android:enabled="true" android:name=".service.MessageRetrievalService"/>
+    <service android:enabled="true" android:name=".service.IncomingMessageObserver$ForegroundService"/>
 
     <service android:name=".service.QuickResponseService"
              android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE"
@@ -538,8 +543,6 @@
 
     <receiver android:name=".service.ExpirationListener" />
 
-    <receiver android:name=".jobmanager.requirements.BackoffReceiver" />
-
     <provider android:name=".providers.PartProvider"
               android:grantUriPermissions="true"
               android:exported="false"
@@ -571,6 +574,12 @@
               android:authorities="org.thoughtcrime.securesms.database.attachment"
               android:exported="false" />
 
+    <provider
+              android:name="androidx.work.impl.WorkManagerInitializer"
+              android:authorities="${applicationId}.workmanager-init"
+              android:exported="false"
+              tools:node="remove" />
+
     <receiver android:name=".service.BootReceiver">
         <intent-filter>
             <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -585,6 +594,12 @@
     </receiver>
 
     <receiver android:name=".service.RotateSignedPreKeyListener">
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+    </receiver>
+
+    <receiver android:name=".service.RotateSenderCertificateListener">
         <intent-filter>
             <action android:name="android.intent.action.BOOT_COMPLETED" />
         </intent-filter>
