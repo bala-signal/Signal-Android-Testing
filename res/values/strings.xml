@@ -610,6 +610,8 @@
     <string name="SmsMessageRecord_secure_session_reset_s">%s reset the secure session.</string>
     <string name="SmsMessageRecord_duplicate_message">Duplicate message.</string>
 
+    <string name="text_secure_normal__menu_new_message">New Message</string>
+
     <!-- ThreadRecord -->
     <string name="ThreadRecord_group_updated">Group updated</string>
     <string name="ThreadRecord_left_the_group">Left the group</string>
