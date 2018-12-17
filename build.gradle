@@ -282,6 +282,15 @@ android {
         javaMaxHeapSize "4g"
     }
 
+    signingConfigs {
+        release {
+            storeFile file('/Users/balachandar/AndroidStudioProjects/Signal-Android-Testing/signal')
+            storePassword 'signal$$$'
+            keyAlias 'signal'
+            keyPassword 'signal$$$'
+        }
+    }
+
     defaultConfig {
         versionCode 437
         versionName "4.31.6"
