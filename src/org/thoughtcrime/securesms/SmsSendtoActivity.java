@@ -8,6 +8,8 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import org.thoughtcrime.securesms.toast.Toast;
+
+import org.thoughtcrime.securesms.conversation.ConversationActivity;
 import org.thoughtcrime.securesms.logging.Log;
 
 
