@@ -1,5 +1,6 @@
 package org.thoughtcrime.securesms.mediasend;
 
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -11,7 +12,9 @@ import android.text.TextUtils;
 
 import com.annimon.stream.Stream;
 
+import org.thoughtcrime.securesms.TransportOption;
 import org.thoughtcrime.securesms.mms.MediaConstraints;
+import org.thoughtcrime.securesms.providers.BlobProvider;
 import org.thoughtcrime.securesms.util.MediaUtil;
 import org.thoughtcrime.securesms.util.SingleLiveEvent;
 import org.thoughtcrime.securesms.util.Util;
@@ -19,6 +22,7 @@ import org.whispersystems.libsignal.util.guava.Optional;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,62 +31,125 @@ import java.util.Map;
  */
 class MediaSendViewModel extends ViewModel {
 
+  private static final int MAX_PUSH = 32;
+  private static final int MAX_SMS  = 1;
+
+  private final Application                        application;
   private final MediaRepository                    repository;
   private final MutableLiveData<List<Media>>       selectedMedia;
   private final MutableLiveData<List<Media>>       bucketMedia;
   private final MutableLiveData<Integer>           position;
-  private final MutableLiveData<Optional<String>>  bucketId;
+  private final MutableLiveData<String>            bucketId;
   private final MutableLiveData<List<MediaFolder>> folders;
+  private final MutableLiveData<CountButtonState>  countButtonState;
+  private final MutableLiveData<Boolean>           cameraButtonVisibility;
   private final SingleLiveEvent<Error>             error;
   private final Map<Uri, Object>                   savedDrawState;
 
-  private MediaConstraints mediaConstraints;
+  private MediaConstraints            mediaConstraints;
+  private CharSequence                body;
+  private CountButtonState.Visibility countButtonVisibility;
+  private boolean                     sentMedia;
+  private Optional<Media>             lastImageCapture;
+  private int                         maxSelection;
 
-  private MediaSendViewModel(@NonNull MediaRepository repository) {
-    this.repository     = repository;
-    this.selectedMedia  = new MutableLiveData<>();
-    this.bucketMedia    = new MutableLiveData<>();
-    this.position       = new MutableLiveData<>();
-    this.bucketId       = new MutableLiveData<>();
-    this.folders        = new MutableLiveData<>();
-    this.error          = new SingleLiveEvent<>();
-    this.savedDrawState = new HashMap<>();
+  private MediaSendViewModel(@NonNull Application application, @NonNull MediaRepository repository) {
+    this.application            = application;
+    this.repository             = repository;
+    this.selectedMedia          = new MutableLiveData<>();
+    this.bucketMedia            = new MutableLiveData<>();
+    this.position               = new MutableLiveData<>();
+    this.bucketId               = new MutableLiveData<>();
+    this.folders                = new MutableLiveData<>();
+    this.countButtonState       = new MutableLiveData<>();
+    this.cameraButtonVisibility = new MutableLiveData<>();
+    this.error                  = new SingleLiveEvent<>();
+    this.savedDrawState         = new HashMap<>();
+    this.countButtonVisibility  = CountButtonState.Visibility.CONDITIONAL;
+    this.lastImageCapture       = Optional.absent();
+    this.body                   = "";
 
     position.setValue(-1);
+    countButtonState.setValue(new CountButtonState(0, CountButtonState.Visibility.CONDITIONAL));
+    cameraButtonVisibility.setValue(false);
   }
 
-  void setMediaConstraints(@NonNull MediaConstraints mediaConstraints) {
-    this.mediaConstraints = mediaConstraints;
+  void setTransport(@NonNull TransportOption transport) {
+    if (transport.isSms()) {
+      maxSelection     = MAX_SMS;
+      mediaConstraints = MediaConstraints.getMmsMediaConstraints(transport.getSimSubscriptionId().or(-1));
+    } else {
+      maxSelection     = MAX_PUSH;
+      mediaConstraints = MediaConstraints.getPushMediaConstraints();
+    }
   }
 
-  void setInitialSelectedMedia(@NonNull Context context, @NonNull List<Media> newMedia) {
+  void onSelectedMediaChanged(@NonNull Context context, @NonNull List<Media> newMedia) {
     repository.getPopulatedMedia(context, newMedia, populatedMedia -> {
       List<Media> filteredMedia = getFilteredMedia(context, populatedMedia, mediaConstraints);
 
       if (filteredMedia.size() != newMedia.size()) {
         error.postValue(Error.ITEM_TOO_LARGE);
+      } else if (filteredMedia.size() > maxSelection) {
+        filteredMedia = filteredMedia.subList(0, maxSelection);
+        error.postValue(Error.TOO_MANY_ITEMS);
       }
 
-      boolean allBucketsPopulated = Stream.of(filteredMedia).reduce(true, (populated, m) -> populated && m.getBucketId().isPresent());
+      if (filteredMedia.size() > 0) {
+        String computedId = Stream.of(filteredMedia)
+                                  .skip(1)
+                                  .reduce(filteredMedia.get(0).getBucketId().or(Media.ALL_MEDIA_BUCKET_ID), (id, m) -> {
+                                    if (Util.equals(id, m.getBucketId().or(Media.ALL_MEDIA_BUCKET_ID))) {
+                                      return id;
+                                    } else {
+                                      return Media.ALL_MEDIA_BUCKET_ID;
+                                    }
+                                  });
+        bucketId.postValue(computedId);
+      } else {
+        bucketId.postValue(Media.ALL_MEDIA_BUCKET_ID);
+        countButtonVisibility = CountButtonState.Visibility.CONDITIONAL;
+      }
 
       selectedMedia.postValue(filteredMedia);
-      bucketId.postValue(allBucketsPopulated ? computeBucketId(filteredMedia) : Optional.absent());
+      countButtonState.postValue(new CountButtonState(filteredMedia.size(), countButtonVisibility));
     });
   }
 
-  void onSelectedMediaChanged(@NonNull Context context, @NonNull List<Media> newMedia) {
-    List<Media> filteredMedia = getFilteredMedia(context, newMedia, mediaConstraints);
+  void onMultiSelectStarted() {
+    countButtonVisibility = CountButtonState.Visibility.FORCED_ON;
+    countButtonState.setValue(new CountButtonState(getSelectedMediaOrDefault().size(), countButtonVisibility));
+  }
 
-    if (filteredMedia.size() != newMedia.size()) {
-      error.setValue(Error.ITEM_TOO_LARGE);
-    }
+  void onImageEditorStarted() {
+    countButtonVisibility = CountButtonState.Visibility.FORCED_OFF;
+    countButtonState.setValue(new CountButtonState(getSelectedMediaOrDefault().size(), countButtonVisibility));
+    cameraButtonVisibility.setValue(false);
+  }
 
-    selectedMedia.setValue(filteredMedia);
-    position.setValue(filteredMedia.isEmpty() ? -1 : 0);
+  void onImageEditorEnded() {
+    countButtonVisibility = CountButtonState.Visibility.CONDITIONAL;
+    countButtonState.setValue(new CountButtonState(getSelectedMediaOrDefault().size(), countButtonVisibility));
+  }
+
+  void onCameraStarted() {
+    cameraButtonVisibility.setValue(false);
+  }
+
+  void onItemPickerStarted() {
+    cameraButtonVisibility.setValue(true);
+  }
+
+  void onFolderPickerStarted() {
+    cameraButtonVisibility.setValue(true);
+  }
+
+  void onBodyChanged(@NonNull CharSequence body) {
+    this.body = body;
   }
 
   void onFolderSelected(@NonNull String bucketId) {
-    this.bucketId.setValue(Optional.of(bucketId));
+    this.bucketId.setValue(bucketId);
     bucketMedia.setValue(Collections.emptyList());
   }
 
@@ -90,10 +157,55 @@ class MediaSendViewModel extends ViewModel {
     this.position.setValue(position);
   }
 
-  void onMediaItemRemoved(int position) {
-    selectedMedia.getValue().remove(position);
+  void onMediaItemRemoved(@NonNull Context context, int position) {
+    Media removed = getSelectedMediaOrDefault().remove(position);
+
+    if (removed != null && BlobProvider.isAuthority(removed.getUri())) {
+      BlobProvider.getInstance().delete(context, removed.getUri());
+    }
+
     selectedMedia.setValue(selectedMedia.getValue());
   }
+
+  void onImageCaptured(@NonNull Media media) {
+    List<Media> selected = selectedMedia.getValue();
+
+    if (selected == null) {
+      selected = new LinkedList<>();
+    }
+
+    if (selected.size() >= maxSelection) {
+      error.postValue(Error.TOO_MANY_ITEMS);
+      return;
+    }
+
+    lastImageCapture = Optional.of(media);
+
+    selected.add(media);
+    selectedMedia.setValue(selected);
+    position.setValue(selected.size() - 1);
+    bucketId.setValue(Media.ALL_MEDIA_BUCKET_ID);
+
+    if (selected.size() == 1) {
+      countButtonVisibility = CountButtonState.Visibility.FORCED_OFF;
+    } else {
+      countButtonVisibility = CountButtonState.Visibility.CONDITIONAL;
+    }
+
+    countButtonState.setValue(new CountButtonState(selected.size(), countButtonVisibility));
+  }
+
+  void onImageCaptureUndo(@NonNull Context context) {
+    List<Media> selected = getSelectedMediaOrDefault();
+
+    if (lastImageCapture.isPresent() && selected.contains(lastImageCapture.get()) && selected.size() == 1) {
+      selected.remove(lastImageCapture.get());
+      selectedMedia.setValue(selected);
+      countButtonState.setValue(new CountButtonState(selected.size(), countButtonVisibility));
+      BlobProvider.getInstance().delete(context, lastImageCapture.get().getUri());
+    }
+  }
+
 
   void onCaptionChanged(@NonNull String newCaption) {
     if (position.getValue() >= 0 && !Util.isEmpty(selectedMedia.getValue())) {
@@ -106,15 +218,19 @@ class MediaSendViewModel extends ViewModel {
     savedDrawState.putAll(state);
   }
 
+  void onSendClicked() {
+    sentMedia = true;
+  }
+
   @NonNull Map<Uri, Object> getDrawState() {
     return savedDrawState;
   }
 
-  LiveData<List<Media>> getSelectedMedia() {
+  @NonNull LiveData<List<Media>> getSelectedMedia() {
     return selectedMedia;
   }
 
-  LiveData<List<Media>> getMediaInBucket(@NonNull Context context, @NonNull String bucketId) {
+  @NonNull LiveData<List<Media>> getMediaInBucket(@NonNull Context context, @NonNull String bucketId) {
     repository.getMediaInBucket(context, bucketId, bucketMedia::postValue);
     return bucketMedia;
   }
@@ -124,29 +240,37 @@ class MediaSendViewModel extends ViewModel {
     return folders;
   }
 
-  LiveData<Integer> getPosition() {
+  @NonNull LiveData<CountButtonState> getCountButtonState() {
+    return countButtonState;
+  }
+
+  @NonNull LiveData<Boolean> getCameraButtonVisibility() {
+    return cameraButtonVisibility;
+  }
+
+  @NonNull CharSequence getBody() {
+    return body;
+  }
+
+  @NonNull LiveData<Integer> getPosition() {
     return position;
   }
 
-  LiveData<Optional<String>> getBucketId() {
+  @NonNull LiveData<String> getBucketId() {
     return bucketId;
   }
 
-  LiveData<Error> getError() {
+  @NonNull LiveData<Error> getError() {
     return error;
   }
 
-  private Optional<String> computeBucketId(@NonNull List<Media> media) {
-    if (media.isEmpty() || !media.get(0).getBucketId().isPresent()) return Optional.absent();
+  int getMaxSelection() {
+    return maxSelection;
+  }
 
-    String candidate = media.get(0).getBucketId().get();
-    for (int i = 1; i < media.size(); i++) {
-      if (!Util.equals(candidate, media.get(i).getBucketId().orNull())) {
-        return Optional.of(Media.ALL_MEDIA_BUCKET_ID);
-      }
-    }
-
-    return Optional.of(candidate);
+  private @NonNull List<Media> getSelectedMediaOrDefault() {
+    return selectedMedia.getValue() == null ? Collections.emptyList()
+                                            : selectedMedia.getValue();
   }
 
   private @NonNull List<Media> getFilteredMedia(@NonNull Context context, @NonNull List<Media> media, @NonNull MediaConstraints mediaConstraints) {
@@ -161,21 +285,60 @@ class MediaSendViewModel extends ViewModel {
 
   }
 
+  @Override
+  protected void onCleared() {
+    if (!sentMedia) {
+      Stream.of(getSelectedMediaOrDefault())
+            .map(Media::getUri)
+            .filter(BlobProvider::isAuthority)
+            .forEach(uri -> BlobProvider.getInstance().delete(application.getApplicationContext(), uri));
+    }
+  }
+
   enum Error {
-    ITEM_TOO_LARGE
+    ITEM_TOO_LARGE, TOO_MANY_ITEMS
+  }
+
+  static class CountButtonState {
+    private final int        count;
+    private final Visibility visibility;
+
+    private CountButtonState(int count, @NonNull Visibility visibility) {
+      this.count      = count;
+      this.visibility = visibility;
+    }
+
+    int getCount() {
+      return count;
+    }
+
+    boolean isVisible() {
+      switch (visibility) {
+        case FORCED_ON:   return true;
+        case FORCED_OFF:  return false;
+        case CONDITIONAL: return count > 0;
+        default:          return false;
+      }
+    }
+
+    enum Visibility {
+      CONDITIONAL, FORCED_ON, FORCED_OFF
+    }
   }
 
   static class Factory extends ViewModelProvider.NewInstanceFactory {
 
+    private final Application     application;
     private final MediaRepository repository;
 
-    Factory(@NonNull MediaRepository repository) {
-      this.repository = repository;
+    Factory(@NonNull Application application, @NonNull MediaRepository repository) {
+      this.application = application;
+      this.repository  = repository;
     }
 
     @Override
     public @NonNull <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-      return modelClass.cast(new MediaSendViewModel(repository));
+      return modelClass.cast(new MediaSendViewModel(application, repository));
     }
   }
 }
