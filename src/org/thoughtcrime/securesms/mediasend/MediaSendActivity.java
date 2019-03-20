@@ -11,7 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
@@ -22,14 +24,11 @@ import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.TransportOption;
 import org.thoughtcrime.securesms.database.Address;
 import org.thoughtcrime.securesms.logging.Log;
-import org.thoughtcrime.securesms.mms.MediaConstraints;
 import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.providers.BlobProvider;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.scribbles.ScribbleFragment;
 import org.thoughtcrime.securesms.util.DynamicLanguage;
-import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
-import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.MediaUtil;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.concurrent.SimpleTask;
@@ -71,7 +70,6 @@ public class MediaSendActivity extends PassphraseRequiredActionBarActivity imple
   private static final String TAG_SEND          = "send";
   private static final String TAG_CAMERA        = "camera";
 
-  private final DynamicTheme    dynamicTheme    = new DynamicNoActionBarTheme();
   private final DynamicLanguage dynamicLanguage = new DynamicLanguage();
 
   private Recipient          recipient;
@@ -119,7 +117,6 @@ public class MediaSendActivity extends PassphraseRequiredActionBarActivity imple
 
   @Override
   protected void onPreCreate() {
-    dynamicTheme.onCreate(this);
     dynamicLanguage.onCreate(this);
   }
 
@@ -184,7 +181,6 @@ public class MediaSendActivity extends PassphraseRequiredActionBarActivity imple
   @Override
   protected void onResume() {
     super.onResume();
-    dynamicTheme.onResume(this);
     dynamicLanguage.onResume(this);
   }
 
@@ -218,7 +214,8 @@ public class MediaSendActivity extends PassphraseRequiredActionBarActivity imple
   }
 
   @Override
-  public void onMediaSelected(@NonNull String bucketId) {
+  public void onMediaSelected(@NonNull Media media) {
+    viewModel.onSingleMediaSelected(this, media);
     navigateToMediaSend(recipient, transport, dynamicLanguage.getCurrentLocale());
   }
 
@@ -297,7 +294,7 @@ public class MediaSendActivity extends PassphraseRequiredActionBarActivity imple
         Uri uri = BlobProvider.getInstance()
                               .forData(data)
                               .withMimeType(MediaUtil.IMAGE_JPEG)
-                              .createForSingleSessionOnDisk(this);
+                              .createForSingleSessionOnDisk(this, e -> Log.w(TAG, "Failed to write to disk.", e));
         return new Media(uri,
                          MediaUtil.IMAGE_JPEG,
                          System.currentTimeMillis(),
@@ -337,6 +334,9 @@ public class MediaSendActivity extends PassphraseRequiredActionBarActivity imple
 
       if (buttonState.getCount() > 0) {
         countButton.setOnClickListener(v -> navigateToMediaSend(recipient, transport, locale));
+        if (buttonState.isVisible()) {
+          animateButtonTextChange(countButton);
+        }
       } else {
         countButton.setOnClickListener(null);
       }
@@ -407,7 +407,7 @@ public class MediaSendActivity extends PassphraseRequiredActionBarActivity imple
                             : Camera1Fragment.newInstance();
   }
 
-  private void animateButtonVisibility(View button, int oldVisibility, int newVisibility) {
+  private void animateButtonVisibility(@NonNull View button, int oldVisibility, int newVisibility) {
     if (oldVisibility == newVisibility) return;
 
     if (button.getAnimation() != null) {
@@ -433,5 +433,26 @@ public class MediaSendActivity extends PassphraseRequiredActionBarActivity imple
 
       button.startAnimation(animation);
     }
+  }
+
+  private void animateButtonTextChange(@NonNull View button) {
+    if (button.getAnimation() != null) {
+      button.getAnimation().cancel();
+    }
+
+    Animation grow = new ScaleAnimation(1f, 1.3f, 1f, 1.3f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+    grow.setDuration(125);
+    grow.setInterpolator(new AccelerateInterpolator());
+    grow.setAnimationListener(new SimpleAnimationListener() {
+      @Override
+      public void onAnimationEnd(Animation animation) {
+        Animation shrink = new ScaleAnimation(1.3f, 1f, 1.3f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        shrink.setDuration(125);
+        shrink.setInterpolator(new DecelerateInterpolator());
+        button.startAnimation(shrink);
+      }
+    });
+
+    button.startAnimation(grow);
   }
 }

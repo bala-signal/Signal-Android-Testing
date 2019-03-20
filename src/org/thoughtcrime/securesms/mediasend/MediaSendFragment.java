@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.TransportOption;
@@ -241,7 +240,6 @@ public class MediaSendFragment extends Fragment implements ViewTreeObserver.OnGl
     super.onStop();
     fragmentPagerAdapter.saveAllState();
     viewModel.saveDrawState(fragmentPagerAdapter.getSavedState());
-    viewModel.onImageEditorEnded();
   }
 
   @Override
@@ -460,13 +458,12 @@ public class MediaSendFragment extends Fragment implements ViewTreeObserver.OnGl
               Uri uri = BlobProvider.getInstance()
                                     .forData(baos.toByteArray())
                                     .withMimeType(MediaUtil.IMAGE_JPEG)
-                                    .createForSingleSessionOnDisk(context);
+                                    .createForSingleSessionOnDisk(context, e -> Log.w(TAG, "Failed to write to disk.", e));
 
               Media updated = new Media(uri, MediaUtil.IMAGE_JPEG, media.getDate(), bitmap.getWidth(), bitmap.getHeight(), baos.size(), media.getBucketId(), media.getCaption());
 
               updatedMedia.add(updated);
               renderTimer.split("item");
-
             } catch (InterruptedException | ExecutionException | IOException e) {
               Log.w(TAG, "Failed to render image. Using base image.");
               updatedMedia.add(media);

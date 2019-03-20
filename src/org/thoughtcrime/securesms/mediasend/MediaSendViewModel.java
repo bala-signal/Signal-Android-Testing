@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import com.annimon.stream.Stream;
 
 import org.thoughtcrime.securesms.TransportOption;
+import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mms.MediaConstraints;
 import org.thoughtcrime.securesms.providers.BlobProvider;
 import org.thoughtcrime.securesms.util.MediaUtil;
@@ -30,6 +31,8 @@ import java.util.Map;
  * Manages the observable datasets available in {@link MediaSendActivity}.
  */
 class MediaSendViewModel extends ViewModel {
+
+  private static final String TAG = MediaSendViewModel.class.getSimpleName();
 
   private static final int MAX_PUSH = 32;
   private static final int MAX_SMS  = 1;
@@ -65,12 +68,12 @@ class MediaSendViewModel extends ViewModel {
     this.cameraButtonVisibility = new MutableLiveData<>();
     this.error                  = new SingleLiveEvent<>();
     this.savedDrawState         = new HashMap<>();
-    this.countButtonVisibility  = CountButtonState.Visibility.CONDITIONAL;
+    this.countButtonVisibility  = CountButtonState.Visibility.FORCED_OFF;
     this.lastImageCapture       = Optional.absent();
     this.body                   = "";
 
     position.setValue(-1);
-    countButtonState.setValue(new CountButtonState(0, CountButtonState.Visibility.CONDITIONAL));
+    countButtonState.setValue(new CountButtonState(0, countButtonVisibility));
     cameraButtonVisibility.setValue(false);
   }
 
@@ -86,33 +89,54 @@ class MediaSendViewModel extends ViewModel {
 
   void onSelectedMediaChanged(@NonNull Context context, @NonNull List<Media> newMedia) {
     repository.getPopulatedMedia(context, newMedia, populatedMedia -> {
-      List<Media> filteredMedia = getFilteredMedia(context, populatedMedia, mediaConstraints);
+      Util.runOnMain(() -> {
 
-      if (filteredMedia.size() != newMedia.size()) {
-        error.postValue(Error.ITEM_TOO_LARGE);
-      } else if (filteredMedia.size() > maxSelection) {
-        filteredMedia = filteredMedia.subList(0, maxSelection);
-        error.postValue(Error.TOO_MANY_ITEMS);
-      }
+        List<Media> filteredMedia = getFilteredMedia(context, populatedMedia, mediaConstraints);
 
-      if (filteredMedia.size() > 0) {
-        String computedId = Stream.of(filteredMedia)
-                                  .skip(1)
-                                  .reduce(filteredMedia.get(0).getBucketId().or(Media.ALL_MEDIA_BUCKET_ID), (id, m) -> {
-                                    if (Util.equals(id, m.getBucketId().or(Media.ALL_MEDIA_BUCKET_ID))) {
-                                      return id;
-                                    } else {
-                                      return Media.ALL_MEDIA_BUCKET_ID;
-                                    }
-                                  });
-        bucketId.postValue(computedId);
-      } else {
-        bucketId.postValue(Media.ALL_MEDIA_BUCKET_ID);
-        countButtonVisibility = CountButtonState.Visibility.CONDITIONAL;
-      }
+        if (filteredMedia.size() != newMedia.size()) {
+          error.setValue(Error.ITEM_TOO_LARGE);
+        } else if (filteredMedia.size() > maxSelection) {
+          filteredMedia = filteredMedia.subList(0, maxSelection);
+          error.setValue(Error.TOO_MANY_ITEMS);
+        }
 
-      selectedMedia.postValue(filteredMedia);
-      countButtonState.postValue(new CountButtonState(filteredMedia.size(), countButtonVisibility));
+        if (filteredMedia.size() > 0) {
+          String computedId = Stream.of(filteredMedia)
+                                    .skip(1)
+                                    .reduce(filteredMedia.get(0).getBucketId().or(Media.ALL_MEDIA_BUCKET_ID), (id, m) -> {
+                                      if (Util.equals(id, m.getBucketId().or(Media.ALL_MEDIA_BUCKET_ID))) {
+                                        return id;
+                                      } else {
+                                        return Media.ALL_MEDIA_BUCKET_ID;
+                                      }
+                                    });
+          bucketId.setValue(computedId);
+        } else {
+          bucketId.setValue(Media.ALL_MEDIA_BUCKET_ID);
+          countButtonVisibility = CountButtonState.Visibility.CONDITIONAL;
+        }
+
+        selectedMedia.setValue(filteredMedia);
+        countButtonState.setValue(new CountButtonState(filteredMedia.size(), countButtonVisibility));
+      });
+    });
+  }
+
+  void onSingleMediaSelected(@NonNull Context context, @NonNull Media media) {
+    repository.getPopulatedMedia(context, Collections.singletonList(media), populatedMedia -> {
+      Util.runOnMain(() -> {
+        List<Media> filteredMedia = getFilteredMedia(context, populatedMedia, mediaConstraints);
+
+        if (filteredMedia.isEmpty()) {
+          error.setValue(Error.ITEM_TOO_LARGE);
+        }
+
+        countButtonVisibility = CountButtonState.Visibility.FORCED_OFF;
+
+        bucketId.setValue(filteredMedia.get(0).getBucketId().or(Media.ALL_MEDIA_BUCKET_ID));
+        selectedMedia.setValue(filteredMedia);
+        countButtonState.setValue(new CountButtonState(filteredMedia.size(), countButtonVisibility));
+      });
     });
   }
 
@@ -127,20 +151,21 @@ class MediaSendViewModel extends ViewModel {
     cameraButtonVisibility.setValue(false);
   }
 
-  void onImageEditorEnded() {
+  void onCameraStarted() {
     countButtonVisibility = CountButtonState.Visibility.CONDITIONAL;
     countButtonState.setValue(new CountButtonState(getSelectedMediaOrDefault().size(), countButtonVisibility));
-  }
-
-  void onCameraStarted() {
     cameraButtonVisibility.setValue(false);
   }
 
   void onItemPickerStarted() {
+    countButtonVisibility = CountButtonState.Visibility.CONDITIONAL;
+    countButtonState.setValue(new CountButtonState(getSelectedMediaOrDefault().size(), countButtonVisibility));
     cameraButtonVisibility.setValue(true);
   }
 
   void onFolderPickerStarted() {
+    countButtonVisibility = CountButtonState.Visibility.CONDITIONAL;
+    countButtonState.setValue(new CountButtonState(getSelectedMediaOrDefault().size(), countButtonVisibility));
     cameraButtonVisibility.setValue(true);
   }
 
@@ -154,10 +179,20 @@ class MediaSendViewModel extends ViewModel {
   }
 
   void onPageChanged(int position) {
+    if (position < 0 || position >= getSelectedMediaOrDefault().size()) {
+      Log.w(TAG, "Tried to move to an out-of-bounds item. Size: " + getSelectedMediaOrDefault().size() + ", position: " + position);
+      return;
+    }
+
     this.position.setValue(position);
   }
 
   void onMediaItemRemoved(@NonNull Context context, int position) {
+    if (position < 0 || position >= getSelectedMediaOrDefault().size()) {
+      Log.w(TAG, "Tried to remove an out-of-bounds item. Size: " + getSelectedMediaOrDefault().size() + ", position: " + position);
+      return;
+    }
+
     Media removed = getSelectedMediaOrDefault().remove(position);
 
     if (removed != null && BlobProvider.isAuthority(removed.getUri())) {
@@ -175,7 +210,7 @@ class MediaSendViewModel extends ViewModel {
     }
 
     if (selected.size() >= maxSelection) {
-      error.postValue(Error.TOO_MANY_ITEMS);
+      error.setValue(Error.TOO_MANY_ITEMS);
       return;
     }
 
