@@ -308,8 +308,8 @@ android {
     }
 
     defaultConfig {
-        versionCode 471
-        versionName "4.37.0"
+        versionCode 472
+        versionName "4.37.1"
 
         minSdkVersion 19
         targetSdkVersion 26
@@ -341,7 +341,7 @@ android {
             abi {
                 enable true
                 reset()
-                include 'armeabi-v7a', 'x86', 'armeabi'
+                include 'armeabi-v7a', 'x86'
                 universalApk true
             }
         }
