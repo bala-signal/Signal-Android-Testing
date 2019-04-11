@@ -12,7 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import com.annimon.stream.Stream;
 

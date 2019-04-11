@@ -7,7 +7,7 @@ import android.support.annotation.ColorInt;
 import android.text.TextPaint;
 import android.text.style.URLSpan;
 import android.view.View;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import org.thoughtcrime.securesms.R;
 

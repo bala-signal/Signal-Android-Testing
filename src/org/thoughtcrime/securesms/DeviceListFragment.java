@@ -20,7 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 

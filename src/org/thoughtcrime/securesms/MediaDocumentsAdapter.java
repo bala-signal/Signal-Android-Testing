@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import org.thoughtcrime.securesms.MediaDocumentsAdapter.HeaderViewHolder;
 import org.thoughtcrime.securesms.MediaDocumentsAdapter.ViewHolder;

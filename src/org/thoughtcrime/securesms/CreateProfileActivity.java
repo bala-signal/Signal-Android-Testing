@@ -27,7 +27,7 @@ import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dd.CircularProgressButton;

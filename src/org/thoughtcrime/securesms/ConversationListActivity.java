@@ -34,7 +34,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 

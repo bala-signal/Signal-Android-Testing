@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.database.NoExternalStorageException;

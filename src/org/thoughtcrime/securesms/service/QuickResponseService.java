@@ -4,7 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.database.Address;

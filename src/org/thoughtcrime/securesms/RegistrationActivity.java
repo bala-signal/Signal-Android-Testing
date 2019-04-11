@@ -26,7 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import com.dd.CircularProgressButton;
 import com.google.android.gms.auth.api.phone.SmsRetriever;

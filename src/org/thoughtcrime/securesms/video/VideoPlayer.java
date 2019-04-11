@@ -26,7 +26,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 import android.widget.VideoView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;

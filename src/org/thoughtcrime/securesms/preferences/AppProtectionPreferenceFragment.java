@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 import android.view.View;
 
 import org.thoughtcrime.securesms.ApplicationContext;

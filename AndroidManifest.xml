@@ -435,8 +435,6 @@
               android:exported="true"
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
-        <activity android:name=".toast.ToastActivity" android:theme="@style/ToastStyle" android:excludeFromRecents="true"></activity>
-
     <service android:enabled="true" android:name="org.thoughtcrime.securesms.service.WebRtcCallService"/>
     <service android:enabled="true" android:name=".service.ApplicationMigrationService"/>
     <service android:enabled="true" android:exported="false" android:name=".service.KeyCachingService"/>

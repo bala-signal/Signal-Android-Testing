@@ -15,7 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
 import org.thoughtcrime.securesms.logging.Log;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 

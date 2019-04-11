@@ -3,7 +3,7 @@ package org.thoughtcrime.securesms.util;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.database.DatabaseFactory;

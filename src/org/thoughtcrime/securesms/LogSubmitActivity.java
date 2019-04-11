@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import org.thoughtcrime.securesms.logging.Log;
 import android.view.MenuItem;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import org.thoughtcrime.securesms.logsubmit.SubmitLogFragment;
 import org.thoughtcrime.securesms.util.DynamicTheme;

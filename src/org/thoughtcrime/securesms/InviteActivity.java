@@ -22,7 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import org.thoughtcrime.securesms.components.ContactFilterToolbar;
 import org.thoughtcrime.securesms.components.ContactFilterToolbar.OnFilterChangedListener;

@@ -26,7 +26,7 @@ import org.thoughtcrime.securesms.jobs.LocalBackupJob;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.preferences.widgets.ProgressPreference;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 import org.thoughtcrime.securesms.util.BackupUtil;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.Trimmer;

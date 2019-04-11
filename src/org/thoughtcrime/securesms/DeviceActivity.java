@@ -16,7 +16,7 @@ import org.thoughtcrime.securesms.logging.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import org.thoughtcrime.securesms.crypto.IdentityKeyUtil;
 import org.thoughtcrime.securesms.crypto.ProfileKeyUtil;

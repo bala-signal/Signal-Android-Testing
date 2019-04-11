@@ -69,7 +69,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 
 import com.annimon.stream.Stream;
 import com.google.android.gms.location.places.ui.PlacePicker;

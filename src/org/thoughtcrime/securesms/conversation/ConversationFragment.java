@@ -64,7 +64,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import org.thoughtcrime.securesms.toast.Toast;
+import org.signal.toast.Toast;
 import android.widget.ViewSwitcher;
 
 import com.annimon.stream.Stream;
