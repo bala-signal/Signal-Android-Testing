@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -22,7 +21,6 @@ import org.thoughtcrime.securesms.components.SwitchPreferenceCompat;
 import org.thoughtcrime.securesms.crypto.MasterSecretUtil;
 import org.thoughtcrime.securesms.dependencies.InjectableType;
 import org.thoughtcrime.securesms.jobs.MultiDeviceConfigurationUpdateJob;
-import org.thoughtcrime.securesms.jobs.MultiDeviceReadReceiptUpdateJob;
 import org.thoughtcrime.securesms.jobs.RefreshAttributesJob;
 import org.thoughtcrime.securesms.lock.RegistrationLockDialog;
 import org.thoughtcrime.securesms.service.KeyCachingService;
@@ -187,8 +185,7 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
       boolean enabled = (boolean)newValue;
       ApplicationContext.getInstance(getContext())
                         .getJobManager()
-                        .add(new MultiDeviceConfigurationUpdateJob(getContext(),
-                                                                   enabled,
+                        .add(new MultiDeviceConfigurationUpdateJob(enabled,
                                                                    TextSecurePreferences.isTypingIndicatorsEnabled(requireContext()),
                                                                    TextSecurePreferences.isShowUnidentifiedDeliveryIndicatorsEnabled(getContext()),
                                                                    TextSecurePreferences.isLinkPreviewsEnabled(getContext())));
@@ -203,8 +200,7 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
       boolean enabled = (boolean)newValue;
       ApplicationContext.getInstance(getContext())
                         .getJobManager()
-                        .add(new MultiDeviceConfigurationUpdateJob(getContext(),
-                                                                   TextSecurePreferences.isReadReceiptsEnabled(requireContext()),
+                        .add(new MultiDeviceConfigurationUpdateJob(TextSecurePreferences.isReadReceiptsEnabled(requireContext()),
                                                                    enabled,
                                                                    TextSecurePreferences.isShowUnidentifiedDeliveryIndicatorsEnabled(getContext()),
                                                                    TextSecurePreferences.isLinkPreviewsEnabled(getContext())));
@@ -223,8 +219,7 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
       boolean enabled = (boolean)newValue;
       ApplicationContext.getInstance(requireContext())
                         .getJobManager()
-                        .add(new MultiDeviceConfigurationUpdateJob(requireContext(),
-                                                                   TextSecurePreferences.isReadReceiptsEnabled(requireContext()),
+                        .add(new MultiDeviceConfigurationUpdateJob(TextSecurePreferences.isReadReceiptsEnabled(requireContext()),
                                                                    TextSecurePreferences.isTypingIndicatorsEnabled(requireContext()),
                                                                    TextSecurePreferences.isShowUnidentifiedDeliveryIndicatorsEnabled(requireContext()),
                                                                    enabled));
@@ -327,8 +322,7 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
       boolean enabled = (boolean) newValue;
       ApplicationContext.getInstance(getContext())
                         .getJobManager()
-                        .add(new MultiDeviceConfigurationUpdateJob(getContext(),
-                                                                   TextSecurePreferences.isReadReceiptsEnabled(getContext()),
+                        .add(new MultiDeviceConfigurationUpdateJob(TextSecurePreferences.isReadReceiptsEnabled(getContext()),
                                                                    TextSecurePreferences.isTypingIndicatorsEnabled(getContext()),
                                                                    enabled,
                                                                    TextSecurePreferences.isLinkPreviewsEnabled(getContext())));
@@ -342,7 +336,7 @@ public class AppProtectionPreferenceFragment extends CorrectedPreferenceFragment
     public boolean onPreferenceChange(Preference preference, Object o) {
       ApplicationContext.getInstance(getContext())
                         .getJobManager()
-                        .add(new RefreshAttributesJob(getContext()));
+                        .add(new RefreshAttributesJob());
       return true;
     }
   }
