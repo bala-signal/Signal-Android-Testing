@@ -259,6 +259,8 @@ public class ApplicationContext extends MultiDexApplication implements Dependenc
         add("Mi A1");
         add("E5823"); // Sony z5 compact
         add("Redmi Note 5");
+        add("FP2"); // Fairphone FP2
+        add("MI 5");
       }};
 
       Set<String> OPEN_SL_ES_WHITELIST = new HashSet<String>() {{
