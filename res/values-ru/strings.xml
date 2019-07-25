@@ -82,6 +82,15 @@
   <!--CameraActivity-->
   <string name="CameraActivity_image_save_failure">Не удалось сохранить изображение.</string>
   <!--CameraContacts-->
+  <string name="CameraContacts_recent_contacts">Недавние контакты</string>
+  <string name="CameraContacts_signal_contacts">Контакты Signal</string>
+  <string name="CameraContacts_signal_groups">Группы Signal</string>
+  <string name="CameraContacts_you_can_share_with_a_maximum_of_n_conversations">Вы можете поделиться максимум с %d разговорами.</string>
+  <string name="CameraContacts_select_signal_recipients">Выберите получателей Signal</string>
+  <string name="CameraContacts_no_signal_contacts">Нет контактов Signal</string>
+  <string name="CameraContacts_you_can_only_use_the_camera_button">Вы можете использовать кнопку камеры, чтобы отправлять фотографии только контактам, которые являются пользователями Signal.</string>
+  <string name="CameraContacts_cant_find_who_youre_looking_for">Не можете найти того, кого ищете?</string>
+  <string name="CameraContacts_invite_a_contact_to_join_signal">Пригласите контакт в Signal</string>
   <!--ClearProfileActivity-->
   <string name="ClearProfileActivity_remove">Удалить</string>
   <string name="ClearProfileActivity_remove_profile_photo">Удалить фото профиля?</string>
@@ -142,7 +151,7 @@
   <string name="ConversationActivity_calls_not_supported">Звонки не поддерживаются</string>
   <string name="ConversationActivity_this_device_does_not_appear_to_support_dial_actions">Это устройство, по-видимому, не поддерживает действия набора номеров.</string>
   <string name="ConversationActivity_leave_group">Покинуть группу?</string>
-  <string name="ConversationActivity_are_you_sure_you_want_to_leave_this_group">Вы уверены, что хотите покинуть эту группу?</string>
+  <string name="ConversationActivity_are_you_sure_you_want_to_leave_this_group">Вы действительно хотите покинуть эту группу?</string>
   <string name="ConversationActivity_transport_insecure_sms">Незащищенное SMS</string>
   <string name="ConversationActivity_transport_insecure_mms">Незащищенное MMS</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
@@ -446,6 +455,7 @@
   <string name="MediaSendActivity_camera_unavailable">Камера недоступна.</string>
   <string name="MediaSendActivity_message_to_s">Сообщение %s</string>
   <string name="MediaSendActivity_message">Сообщение</string>
+  <string name="MediaSendActivity_select_recipients">Выберите получателей</string>
   <plurals name="MediaSendActivity_cant_share_more_than_n_items">
     <item quantity="one">Вы не можете поделиться больше, чем %d элементом.</item>
     <item quantity="few">Вы не можете поделиться больше, чем %d элементами.</item>
@@ -948,7 +958,7 @@
   <string name="log_submit_activity__please_review_this_log_from_my_app">Пожалуйста, просмотрите этот журнал из моего приложения: %1$s</string>
   <string name="log_submit_activity__network_failure">Ошибка сети. Пожалуйста, попробуйте еще раз.</string>
   <!--database_migration_activity-->
-  <string name="database_migration_activity__would_you_like_to_import_your_existing_text_messages">Хотите ли вы импортировать свои существующие текстовые сообщения в зашифрованную базу данных Signal?</string>
+  <string name="database_migration_activity__would_you_like_to_import_your_existing_text_messages">Вы хотите импортировать свои существующие текстовые сообщения в зашифрованную базу данных Signal?</string>
   <string name="database_migration_activity__the_default_system_database_will_not_be_modified">Cистемная база данных по умолчанию не будет изменена каким-либо образом.</string>
   <string name="database_migration_activity__skip">Пропустить</string>
   <string name="database_migration_activity__import">Импортировать</string>
