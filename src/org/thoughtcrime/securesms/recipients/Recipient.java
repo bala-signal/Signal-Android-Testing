@@ -34,6 +34,7 @@ import org.thoughtcrime.securesms.phonenumbers.PhoneNumberFormatter;
 import org.thoughtcrime.securesms.util.GroupUtil;
 import org.thoughtcrime.securesms.util.Util;
 import org.whispersystems.libsignal.util.guava.Optional;
+import org.whispersystems.libsignal.util.guava.Preconditions;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,6 +83,7 @@ public class Recipient {
    */
   @AnyThread
   public static @NonNull LiveRecipient live(@NonNull RecipientId id) {
+    Preconditions.checkNotNull(id, "ID cannot be null.");
     return ApplicationDependencies.getRecipientCache().getLive(id);
   }
 
@@ -91,6 +93,7 @@ public class Recipient {
    */
   @WorkerThread
   public static @NonNull Recipient resolved(@NonNull RecipientId id) {
+    Preconditions.checkNotNull(id, "ID cannot be null.");
     return live(id).resolve();
   }
 
@@ -100,6 +103,8 @@ public class Recipient {
    */
   @WorkerThread
   public static @NonNull Recipient external(@NonNull Context context, @NonNull String address) {
+    Preconditions.checkNotNull(address, "Address cannot be null.");
+
     RecipientDatabase db = DatabaseFactory.getRecipientDatabase(context);
     RecipientId       id = null;
 
