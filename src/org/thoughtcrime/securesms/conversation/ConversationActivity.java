@@ -258,26 +258,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 {
   private static final String TAG = ConversationActivity.class.getSimpleName();
 
-  public static final class Breadcrumb {
-    public static final String SHORTCUT               = "shortcut";
-    public static final String SHARED_CONTACT         = "shared_contact";
-    public static final String SHARED_CONTACT_DETAILS = "shared_contact_details";
-    public static final String RECIPIENT_PREFERENCE   = "recipient_preference";
-    public static final String CONVERSATION_LIST      = "conversation_list";
-    public static final String SHARE                  = "share";
-    public static final String NOTIFICATION           = "notification";
-    public static final String SEARCH                 = "search";
-    public static final String ARCHIVE                = "archive";
-    public static final String POPUP                  = "popup";
-    public static final String GROUP_CREATE           = "group_create";
-    public static final String NOTIFIER               = "notifier";
-    public static final String NEW_CONVERSATION       = "new_conversation";
-    public static final String NOTIFICATION_STATE     = "notification_state";
-    public static final String SMS_SEND_TO            = "sms_send_to";
-  }
-
   public static final String RECIPIENT_EXTRA         = "recipient_id";
-  public static final String BREADCRUMB_EXTRA        = "breadcrumb";
   public static final String THREAD_ID_EXTRA         = "thread_id";
   public static final String IS_ARCHIVED_EXTRA       = "is_archived";
   public static final String TEXT_EXTRA              = "draft_text";
@@ -357,6 +338,16 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   protected void onCreate(Bundle state, boolean ready) {
     Log.i(TAG, "onCreate()");
 
+    RecipientId recipientId = getIntent().getParcelableExtra(RECIPIENT_EXTRA);
+
+    if (recipientId == null) {
+      Log.w(TAG, "[onCreate] Missing recipientId!");
+      startActivity(new Intent(this, ConversationListActivity.class));
+      finish();
+      return;
+    }
+
+
     setContentView(R.layout.conversation_activity);
 
     TypedArray typedArray = obtainStyledAttributes(new int[] {R.attr.conversation_background});
@@ -416,6 +407,15 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       saveDraft();
       attachmentManager.clear(glideRequests, false);
       silentlySetComposeText("");
+    }
+
+    RecipientId recipientId = intent.getParcelableExtra(RECIPIENT_EXTRA);
+
+    if (recipientId == null) {
+      Log.w(TAG, "[onNewIntent] Missing recipientId!");
+      startActivity(new Intent(this, ConversationListActivity.class));
+      finish();
+      return;
     }
 
     setIntent(intent);
@@ -1597,7 +1597,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void initializeResources() {
-    recipient        = Recipient.live(getRecipientFromIntentOrThrow(getIntent()));
+    recipient        = Recipient.live(getIntent().getParcelableExtra(RECIPIENT_EXTRA));
     threadId         = getIntent().getLongExtra(THREAD_ID_EXTRA, -1);
     archived         = getIntent().getBooleanExtra(IS_ARCHIVED_EXTRA, false);
     distributionType = getIntent().getIntExtra(DISTRIBUTION_TYPE_EXTRA, ThreadDatabase.DistributionTypes.DEFAULT);
@@ -1676,36 +1676,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     });
   }
 
-  private RecipientId getRecipientFromIntentOrThrow(@NonNull Intent intent) {
-    RecipientId id     = intent.getParcelableExtra(RECIPIENT_EXTRA);
-    String      source = intent.getStringExtra(BREADCRUMB_EXTRA);
-
-    Log.d(TAG, "Breadcrumb: " + source);
-
-    if (id == null) {
-      switch (source) {
-        case Breadcrumb.SHORTCUT:               throw new ShortcutBreadcrumbError();
-        case Breadcrumb.SHARED_CONTACT:         throw new SharedContactBreadcrumbError();
-        case Breadcrumb.SHARED_CONTACT_DETAILS: throw new SharedContactDetailsBreadcrumbError();
-        case Breadcrumb.RECIPIENT_PREFERENCE:   throw new RecipientPreferenceBreadcrumbError();
-        case Breadcrumb.CONVERSATION_LIST:      throw new ConversationListBreadcrumbError();
-        case Breadcrumb.SHARE:                  throw new ShareBreadcrumbError();
-        case Breadcrumb.NOTIFICATION:           throw new NotificationBreadcrumbError();
-        case Breadcrumb.SEARCH:                 throw new SearchBreadcrumbError();
-        case Breadcrumb.ARCHIVE:                throw new ArchiveBreadcrumbError();
-        case Breadcrumb.POPUP:                  throw new PopupBreadcrumbError();
-        case Breadcrumb.GROUP_CREATE:           throw new GroupCreateBreadcrumbError();
-        case Breadcrumb.NOTIFIER:               throw new NotifierBreadcrumbError();
-        case Breadcrumb.NEW_CONVERSATION:       throw new NewConversationBreadcrumbError();
-        case Breadcrumb.NOTIFICATION_STATE:     throw new NotificationStateBreadcrumbError();
-        case Breadcrumb.SMS_SEND_TO:            throw new SmsSendToBreadcrumbError();
-        default:                                throw new NullBreadcrumbError();
-      }
-    }
-
-    return id;
-  }
-
   private void showStickerIntroductionTooltip() {
     TextSecurePreferences.setMediaKeyboardMode(this, MediaKeyboardMode.STICKER);
     inputPanel.setMediaKeyboardToggleMode(true);
@@ -1743,7 +1713,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void onRecipientChanged(@NonNull Recipient recipient) {
-    Log.i(TAG, "onModified(" + recipient.requireAddress().serialize() + ") " + recipient.getRegistered());
+    Log.i(TAG, "onModified(" + recipient.getId() + ") " + recipient.getRegistered());
     titleView.setTitle(glideRequests, recipient);
     titleView.setVerified(identityRecords.isVerified());
     setBlockedUserState(recipient, isSecureText, isDefaultSms);
@@ -2861,22 +2831,4 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       }
     }
   }
-
-
-  private static final class ShortcutBreadcrumbError extends Error { }
-  private static final class SharedContactBreadcrumbError extends Error { }
-  private static final class SharedContactDetailsBreadcrumbError extends Error { }
-  private static final class RecipientPreferenceBreadcrumbError extends Error { }
-  private static final class ConversationListBreadcrumbError extends Error { }
-  private static final class ShareBreadcrumbError extends Error { }
-  private static final class NotificationBreadcrumbError extends Error { }
-  private static final class SearchBreadcrumbError extends Error { }
-  private static final class ArchiveBreadcrumbError extends Error { }
-  private static final class PopupBreadcrumbError extends Error { }
-  private static final class GroupCreateBreadcrumbError extends Error { }
-  private static final class NotifierBreadcrumbError extends Error { }
-  private static final class NewConversationBreadcrumbError extends Error { }
-  private static final class NotificationStateBreadcrumbError extends Error { }
-  private static final class SmsSendToBreadcrumbError extends Error { }
-  private static final class NullBreadcrumbError extends Error { }
 }
