@@ -179,76 +179,28 @@ public class RecipientDatabase extends Database {
     super(context, databaseHelper);
   }
 
-  public RecipientId getOrInsertFromE164(@NonNull String e164) {
-    if (TextUtils.isEmpty(e164)) {
-      throw new AssertionError("Phone number cannot be empty.");
-    }
+  public @NonNull Optional<RecipientId> getByE164(@NonNull String e164) {
+    return getByColumn(PHONE, e164);
+  }
 
-    SQLiteDatabase db    = databaseHelper.getWritableDatabase();
-    String         query = PHONE + " = ?";
-    String[]       args  = new String[] { e164 };
+  public @NonNull Optional<RecipientId> getByEmail(@NonNull String email) {
+    return getByColumn(EMAIL, email);
+  }
 
-    synchronized (this) {
-      try (Cursor cursor = db.query(TABLE_NAME, ID_PROJECTION, query, args, null, null, null)) {
-        if (cursor != null && cursor.moveToFirst()) {
-          return RecipientId.from(cursor.getLong(cursor.getColumnIndexOrThrow(ID)));
-        } else {
-          ContentValues values = new ContentValues();
-          values.put(PHONE, e164);
-          long id = db.insertOrThrow(TABLE_NAME, null, values);
-          if (id < 0) throw new AssertionError("Failed to insert recipient!");
-          return RecipientId.from(id);
-        }
-      }
-    }
+  public @NonNull Optional<RecipientId> getByGroupId(@NonNull String groupId) {
+    return getByColumn(GROUP_ID, groupId);
+  }
+
+  public @NonNull RecipientId getOrInsertFromE164(@NonNull String e164) {
+    return getOrInsertByColumn(PHONE, e164);
   }
 
   public RecipientId getOrInsertFromEmail(@NonNull String email) {
-    if (TextUtils.isEmpty(email)) {
-      throw new AssertionError("Email cannot be empty.");
-    }
-
-    SQLiteDatabase db    = databaseHelper.getWritableDatabase();
-    String         query = EMAIL + " = ?";
-    String[]       args  = new String[] { email };
-
-    synchronized (this) {
-      try (Cursor cursor = db.query(TABLE_NAME, ID_PROJECTION, query, args, null, null, null)) {
-        if (cursor != null && cursor.moveToFirst()) {
-          return RecipientId.from(cursor.getLong(cursor.getColumnIndexOrThrow(ID)));
-        } else {
-          ContentValues values = new ContentValues();
-          values.put(EMAIL, email);
-          long id = db.insertOrThrow(TABLE_NAME, null, values);
-          if (id < 0) throw new AssertionError("Failed to insert recipient!");
-          return RecipientId.from(id);
-        }
-      }
-    }
+    return getOrInsertByColumn(EMAIL, email);
   }
 
   public RecipientId getOrInsertFromGroupId(@NonNull String groupId) {
-    if (TextUtils.isEmpty(groupId)) {
-      throw new AssertionError("GroupId cannot be empty.");
-    }
-
-    SQLiteDatabase db    = databaseHelper.getWritableDatabase();
-    String         query = GROUP_ID + " = ?";
-    String[]       args  = new String[] { groupId };
-
-    synchronized (this) {
-      try (Cursor cursor = db.query(TABLE_NAME, ID_PROJECTION, query, args, null, null, null)) {
-        if (cursor != null && cursor.moveToFirst()) {
-          return RecipientId.from(cursor.getLong(cursor.getColumnIndexOrThrow(ID)));
-        } else {
-          ContentValues values = new ContentValues();
-          values.put(GROUP_ID, groupId);
-          long id = db.insertOrThrow(TABLE_NAME, null, values);
-          if (id < 0) throw new AssertionError("Failed to insert recipient!");
-          return RecipientId.from(id);
-        }
-      }
-    }
+    return getOrInsertByColumn(GROUP_ID, groupId);
   }
 
   public Cursor getBlocked() {
@@ -633,6 +585,49 @@ public class RecipientDatabase extends Database {
   private int update(@NonNull RecipientId id, ContentValues contentValues) {
     SQLiteDatabase database = databaseHelper.getWritableDatabase();
     return database.update(TABLE_NAME, contentValues, ID + " = ?", new String[] { id.serialize() });
+  }
+
+  private @NonNull Optional<RecipientId> getByColumn(@NonNull String column, String value) {
+    SQLiteDatabase db    = databaseHelper.getWritableDatabase();
+    String         query = column + " = ?";
+    String[]       args  = new String[] { value };
+
+    try (Cursor cursor = db.query(TABLE_NAME, ID_PROJECTION, query, args, null, null, null)) {
+      if (cursor != null && cursor.moveToFirst()) {
+        return Optional.of(RecipientId.from(cursor.getLong(cursor.getColumnIndexOrThrow(ID))));
+      } else {
+        return Optional.absent();
+      }
+    }
+  }
+
+  private @NonNull RecipientId getOrInsertByColumn(@NonNull String column, String value) {
+    if (TextUtils.isEmpty(value)) {
+      throw new AssertionError(column + " cannot be empty.");
+    }
+
+    Optional<RecipientId> existing = getByColumn(column, value);
+
+    if (existing.isPresent()) {
+      return existing.get();
+    } else {
+      ContentValues values = new ContentValues();
+      values.put(column, value);
+
+      long id = databaseHelper.getWritableDatabase().insert(TABLE_NAME, null, values);
+
+      if (id < 0) {
+        existing = getByColumn(column, value);
+
+        if (existing.isPresent()) {
+          return existing.get();
+        } else {
+          throw new AssertionError("Failed to insert recipient!");
+        }
+      }
+
+      return RecipientId.from(id);
+    }
   }
 
   public class BulkOperationsHandle {
