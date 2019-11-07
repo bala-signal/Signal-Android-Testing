@@ -79,6 +79,7 @@
   <!--CameraActivity-->
   <string name="CameraActivity_image_save_failure">Pildi salvestamine ebaõnnestus.</string>
   <!--CameraXFragment-->
+  <string name="CameraXFragment_tap_for_photo_hold_for_video">Koputa pildi, hoia all video tegemiseks</string>
   <string name="CameraXFragment_capture_description">Pildista</string>
   <string name="CameraXFragment_change_camera_description">Vaheta kaamerat</string>
   <string name="CameraXFragment_open_gallery_description">Ava galerii</string>
@@ -176,6 +177,8 @@
   <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">Luba Signalile ligipääs kaamerale fotode ja videote salvestamiseks.</string>
   <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">Signal vajab ligipääsu kaamerale, et salvestada fotosid ja videosid, kuid see on püsivalt keelatud. Palun ava rakenduse sätete menüü, vali \"Õigused\" ja luba \"Kaamera\".</string>
   <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">Signal vajab fotode ja videote salvestamiseks ligipääsu kaamerale</string>
+  <string name="ConversationActivity_enable_the_microphone_permission_to_capture_videos_with_sound">Luba mikrofoni kasutus, et teha heliga videoid.</string>
+  <string name="ConversationActivity_signal_needs_recording_permissions_to_capture_video">Signal vajab videote salvestamiseks mikrofoniluba.</string>
   <string name="ConversationActivity_quoted_contact_message">%1$s %2$s</string>
   <string name="ConversationActivity_signal_cannot_sent_sms_mms_messages_because_it_is_not_your_default_sms_app">Signal ei saa SMS/MMS sõnumeid saata, kuna see pole sinu vaikimisi SMS-i rakendus. Kas soovid seda muuta oma Androidi seadetes?</string>
   <string name="ConversationActivity_yes">Jah</string>
@@ -225,6 +228,8 @@
   <string name="ConversationFragment_quoted_message_not_found">Originaalsõnumit ei leitud</string>
   <string name="ConversationFragment_quoted_message_no_longer_available">Originaalsõnum pole enam saadaval</string>
   <string name="ConversationFragment_failed_to_open_message">Sõnumi avamine ebaõnnestus</string>
+  <string name="ConversationFragment_you_can_swipe_to_the_right_reply">Sa saad kiiresti vastamiseks mistahes sõnumil paremale viibata</string>
+  <string name="ConversationFragment_you_can_swipe_to_the_left_reply">Sa saad kiiresti vastamiseks mistahes sõnumil vasakule viibata</string>
   <!--ConversationListActivity-->
   <string name="ConversationListActivity_there_is_no_browser_installed_on_your_device">Sinu seadmesse pole installitud brauserit.</string>
   <!--ConversationListFragment-->
@@ -270,7 +275,7 @@
   <string name="CustomDefaultPreference_none">Puudub</string>
   <!--DateUtils-->
   <string name="DateUtils_just_now">Nüüd</string>
-  <string name="DateUtils_minutes_ago">%d min</string>
+  <string name="DateUtils_minutes_ago">%dm</string>
   <string name="DateUtils_today">Täna</string>
   <string name="DateUtils_yesterday">Eile</string>
   <!--DeliveryStatus-->
@@ -575,11 +580,14 @@
   <string name="RegistrationActivity_enter_your_phone_number_to_get_started">Sisesta alustamiseks oma telefoninumber</string>
   <string name="RegistrationActivity_you_will_receive_a_verification_code">Sa saad kinnituskoodi. Rakenduda võivad operaatoritasud.</string>
   <string name="RegistrationActivity_enter_the_code_we_sent_to_s">Sisesta kood, mulle saatsime numbrile %s</string>
+  <string name="RegistrationActivity_phone_number_description">Telefoninumber</string>
+  <string name="RegistrationActivity_country_code_description">Riigikood</string>
   <string name="RegistrationActivity_call">Helista</string>
   <!--RevealableMessageView-->
-  <string name="RevealableMessageView_view_photo">Vaata pilti</string>
-  <string name="RevealableMessageView_viewed">Vaadatud</string>
   <string name="RevealableMessageView_photo">Foto</string>
+  <string name="RevealableMessageView_video">Video</string>
+  <string name="RevealableMessageView_viewed">Vaadatud</string>
+  <string name="RevealableMessageView_outgoing_media">Meedia</string>
   <!--ScribbleActivity-->
   <string name="ScribbleActivity_save_failure">Pildi muutuste salvestamine ebaõnnestus</string>
   <!--Search-->
@@ -642,6 +650,7 @@
   <string name="ThreadRecord_media_message">Meediasõnum</string>
   <string name="ThreadRecord_sticker">Kleeps</string>
   <string name="ThreadRecord_disappearing_photo">Haihtuv foto</string>
+  <string name="ThreadRecord_disappearing_video">Haihtuv video</string>
   <string name="ThreadRecord_s_is_on_signal">%s on Signalis!</string>
   <string name="ThreadRecord_disappearing_messages_disabled">Haihtuvad sõnumid keelatud</string>
   <string name="ThreadRecord_disappearing_message_time_updated_to_s">Hävineva sõnumi ajaks on seatud %s</string>
@@ -676,6 +685,7 @@
   <string name="VerifyIdentityActivity_no_safety_number_to_compare_was_found_in_the_clipboard">Lõikelaualt ei leitud turvanumbrit, millega võrrelda</string>
   <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">Signal vajab kaamera luba, et skanneerida QR-koodi, ent see on püsivalt keelatud. Palun jätka rakenduse seadetes, vali \"Load\" ja luba \"Kaamera\".</string>
   <string name="VerifyIdentityActivity_unable_to_scan_qr_code_without_camera_permission">QR-koodi ei saa skanneerida ilma kaamera loata</string>
+  <!--ViewOnceMessageActivity-->
   <!--MessageDisplayHelper-->
   <string name="MessageDisplayHelper_bad_encrypted_message">Halb krüptitud sõnum</string>
   <string name="MessageDisplayHelper_message_encrypted_for_non_existing_session">Sõnum krüptitud mitteeksisteeriva sessiooni jaoks</string>
@@ -717,6 +727,7 @@
   <string name="MessageNotifier_media_message">Meediasõnum</string>
   <string name="MessageNotifier_sticker">Kleeps</string>
   <string name="MessageNotifier_disappearing_photo">Haihtuv foto</string>
+  <string name="MessageNotifier_disappearing_video">Haihtuv video</string>
   <string name="MessageNotifier_reply">Vasta</string>
   <string name="MessageNotifier_signal_message">Signali sõnum</string>
   <string name="MessageNotifier_unsecured_sms">Turvamata SMS</string>
@@ -852,6 +863,7 @@
   <string name="QuoteView_audio">Heli</string>
   <string name="QuoteView_video">Video</string>
   <string name="QuoteView_photo">Foto</string>
+  <string name="QuoteView_media">Meediasõnum</string>
   <string name="QuoteView_sticker">Kleeps</string>
   <string name="QuoteView_document">Dokument</string>
   <string name="QuoteView_you">Sina</string>
@@ -1063,8 +1075,8 @@
   <string name="arrays__max">Maksimaalne</string>
   <!--plurals.xml-->
   <plurals name="hours_ago">
-    <item quantity="one">%d tund</item>
-    <item quantity="other">%d tundi</item>
+    <item quantity="one">%dh</item>
+    <item quantity="other">%dh</item>
   </plurals>
   <!--preferences.xml-->
   <string name="preferences__sms_mms">SMS ja MMS</string>
@@ -1133,6 +1145,7 @@
   <string name="preferences__linked_devices">Lingitud seadmed</string>
   <string name="preferences__light_theme">Hele</string>
   <string name="preferences__dark_theme">Tume</string>
+  <string name="preferences__system_theme">Süsteem</string>
   <string name="preferences__appearance">Välimus</string>
   <string name="preferences__theme">Teema</string>
   <string name="preferences__default">Vaikimisi</string>
@@ -1336,6 +1349,9 @@
   <string name="RegistrationActivity_please_enter_the_verification_code_sent_to_s">Palun sisesta kinnituskood, mille saatsime numbrile %s.</string>
   <string name="RegistrationActivity_wrong_number">Vale number</string>
   <string name="RegistrationActivity_call_me_instead_available_in">Helista mulle selle asemel \n (Saadaval vahemikus %1$02d:%2$02d)</string>
+  <string name="RegistrationActivity_contact_signal_support">Võta ühendust Signal-i kasutajatoega</string>
+  <string name="RegistrationActivity_code_support_subject">Signali registreerimine - kinnituskood Androidile</string>
+  <string name="RegistrationActivity_code_support_body">Pealkiri: Signali registreerimine - kinnituskood Androidile\nSeadme teave: %1$s\nAndroidi versioon: %2$s\nSignali versioon: %3$s\nLokaal: %4$s</string>
   <string name="BackupUtil_never">Mitte kunagi</string>
   <string name="BackupUtil_unknown">Tundmatu</string>
   <string name="preferences_app_protection__screen_lock">Ekraanilukk</string>

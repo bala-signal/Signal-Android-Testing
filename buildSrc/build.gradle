@@ -2,9 +2,8 @@ apply plugin: 'java-gradle-plugin'
 
 repositories {
     google()
-    jcenter()
 }
 
 dependencies {
-    compile 'com.android.tools.build:apksig:3.5.0'
+    implementation 'com.android.tools.build:apksig:3.5.1'
 }
