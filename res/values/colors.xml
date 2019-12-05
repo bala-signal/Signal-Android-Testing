@@ -48,7 +48,6 @@
 
     <color name="MediaOverview_Media_selected_overlay">#88000000</color>
     <color name="toast_background">#9d202020</color>
-    <color name="MediaOverview_Media_selected_overlay">#99000000</color>
 
     <color name="logsubmit_confirmation_background">#44ff2d00</color>
 

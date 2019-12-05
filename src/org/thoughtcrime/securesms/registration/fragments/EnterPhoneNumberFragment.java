@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

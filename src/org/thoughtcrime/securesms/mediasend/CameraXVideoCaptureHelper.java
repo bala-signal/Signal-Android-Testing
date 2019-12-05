@@ -7,7 +7,7 @@ import android.util.Log;
 import android.util.Size;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
