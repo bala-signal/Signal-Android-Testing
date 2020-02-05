@@ -39,21 +39,23 @@ public class DeviceContactsInputStream extends ChunkedInputStream {
       throw new IOException("Missing contact address!");
     }
 
-    SignalServiceAddress                    address     = new SignalServiceAddress(UuidUtil.parseOrNull(details.getUuid()), details.getNumber());
-    Optional<String>                        name        = Optional.fromNullable(details.getName());
-    Optional<SignalServiceAttachmentStream> avatar      = Optional.absent();
-    Optional<String>                        color       = details.hasColor() ? Optional.of(details.getColor()) : Optional.<String>absent();
-    Optional<VerifiedMessage>               verified    = Optional.absent();
-    Optional<byte[]>                        profileKey  = Optional.absent();
-    boolean                                 blocked     = false;
-    Optional<Integer>                       expireTimer = Optional.absent();
+    SignalServiceAddress                    address       = new SignalServiceAddress(UuidUtil.parseOrNull(details.getUuid()), details.getNumber());
+    Optional<String>                        name          = Optional.fromNullable(details.getName());
+    Optional<SignalServiceAttachmentStream> avatar        = Optional.absent();
+    Optional<String>                        color         = details.hasColor() ? Optional.of(details.getColor()) : Optional.<String>absent();
+    Optional<VerifiedMessage>               verified      = Optional.absent();
+    Optional<byte[]>                        profileKey    = Optional.absent();
+    boolean                                 blocked       = false;
+    Optional<Integer>                       expireTimer   = Optional.absent();
+    Optional<Integer>                       inboxPosition = Optional.absent();
+    boolean                                 archived      = false;
 
     if (details.hasAvatar()) {
       long        avatarLength      = details.getAvatar().getLength();
       InputStream avatarStream      = new LimitedInputStream(in, avatarLength);
       String      avatarContentType = details.getAvatar().getContentType();
 
-      avatar = Optional.of(new SignalServiceAttachmentStream(avatarStream, avatarContentType, avatarLength, Optional.<String>absent(), false, null));
+      avatar = Optional.of(new SignalServiceAttachmentStream(avatarStream, avatarContentType, avatarLength, Optional.<String>absent(), false, null, null));
     }
 
     if (details.hasVerified()) {
@@ -89,9 +91,14 @@ public class DeviceContactsInputStream extends ChunkedInputStream {
       expireTimer = Optional.of(details.getExpireTimer());
     }
 
-    blocked = details.getBlocked();
+    if (details.hasInboxPosition()) {
+      inboxPosition = Optional.of(details.getInboxPosition());
+    }
 
-    return new DeviceContact(address, name, avatar, color, verified, profileKey, blocked, expireTimer);
+    blocked  = details.getBlocked();
+    archived = details.getArchived();
+
+    return new DeviceContact(address, name, avatar, color, verified, profileKey, blocked, expireTimer, inboxPosition, archived);
   }
 
 }
