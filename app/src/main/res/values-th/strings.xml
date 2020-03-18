@@ -295,6 +295,8 @@
   <string name="CustomDefaultPreference_using_custom">ใช้ค่าที่กำหนดเอง: %s</string>
   <string name="CustomDefaultPreference_using_default">ใช้ค่าเริ่มต้น: %s</string>
   <string name="CustomDefaultPreference_none">ไม่มี</string>
+  <!--AvatarSelectionBottomSheetDialogFragment-->
+  <string name="AvatarSelectionBottomSheetDialogFragment__remove_photo">ลบรูป</string>
   <!--DateUtils-->
   <string name="DateUtils_just_now">ตอนนี้</string>
   <string name="DateUtils_minutes_ago">%d m</string>
@@ -864,7 +866,7 @@
   <string name="NotificationChannel_messages">ค่าเริ่มต้น</string>
   <string name="NotificationChannel_calls">การโทร</string>
   <string name="NotificationChannel_failures">ความล้มเหลว</string>
-  <string name="NotificationChannel_backups">การสำรองข้อมูล</string>
+  <string name="NotificationChannel_backups">ข้อมูลสำรอง</string>
   <string name="NotificationChannel_locked_status">สถานะล็อก</string>
   <string name="NotificationChannel_app_updates">การอัปเดตแอป</string>
   <string name="NotificationChannel_other">อื่น</string>
@@ -1178,6 +1180,9 @@
   <string name="MessageRequestsMegaphone__new_message_requests">ใหม่: คำร้องขอส่งข้อความ</string>
   <string name="MessageRequestsMegaphone__add_name">เพิ่มชื่อ</string>
   <string name="MessageRequestsMegaphone__you_can_now_choose_whether_to_accept">ตอนนี้คุณสามารถเลือกได้ว่าจะยอมรับบทสนทนาใหม่หรือไม่ คุณจะเห็นตัวเลือกว่าจะ \"ยอมรับ\" \"ลบ\" หรือ \"ปิดกั้น\"</string>
+  <!--HelpFragment-->
+  <string name="HelpFragment__help">ช่วยเหลือ</string>
+  <string name="HelpFragment__next">ถัดไป</string>
   <!--arrays.xml-->
   <string name="arrays__import_export">นำเข้า</string>
   <string name="arrays__use_default">ใช้ค่าเริ่มต้น</string>
@@ -1255,6 +1260,7 @@
   <string name="preferences__fast">เร็ว</string>
   <string name="preferences__normal">ปกติ</string>
   <string name="preferences__slow">ช้า</string>
+  <string name="preferences__help">ช่วยเหลือ</string>
   <string name="preferences__advanced">ขั้นสูง</string>
   <string name="preferences__privacy">ความเป็นส่วนตัว</string>
   <string name="preferences__mms_user_agent">MMS User Agent</string>
@@ -1568,9 +1574,9 @@
   <string name="ExperienceUpgradeActivity_unlock_to_complete_update">ปลดล็อกเพื่อเสร็จสิ้นการอัปเดต</string>
   <string name="ExperienceUpgradeActivity_please_unlock_signal_to_complete_update">โปรดทำการปลดล็อก Signal เพื่อเสร็จสิ้นการอัปเดต</string>
   <string name="enter_backup_passphrase_dialog__backup_passphrase">วลีรหัสผ่านสำหรับข้อมูลสำรอง</string>
-  <string name="backup_enable_dialog__backups_will_be_saved_to_external_storage_and_encrypted_with_the_passphrase_below_you_must_have_this_passphrase_in_order_to_restore_a_backup">ข้อมูลสำรองจะถูกบันทึกไว้ที่ที่เก็บข้อมูลภายนอก และถูกเข้ารหัสลับด้วยวลีรหัสผ่านด้านล่างนี้ คุณจะต้องใช้วลีรหัสผ่านนี้เพื่อกู้คืนข้อมูลสำรอง</string>
-  <string name="backup_enable_dialog__i_have_written_down_this_passphrase">ฉันได้จดบันทึกวลีรหัสผ่านนี้แล้ว หากจำไม่ได้ ฉันจะไม่สามารถกู้คืนข้อมูลสำรองได้</string>
-  <string name="registration_activity__restore_backup">กู้คืนข้อมูลสำรอง</string>
+  <string name="backup_enable_dialog__backups_will_be_saved_to_external_storage_and_encrypted_with_the_passphrase_below_you_must_have_this_passphrase_in_order_to_restore_a_backup">ข้อมูลสำรองจะถูกบันทึกไว้ในที่เก็บข้อมูลภายนอก และถูกเข้ารหัสลับด้วยวลีรหัสผ่านด้านล่างนี้ คุณจะต้องใช้วลีรหัสผ่านนี้เพื่อกู้คืนข้อมูลสำรอง</string>
+  <string name="backup_enable_dialog__i_have_written_down_this_passphrase">ฉันได้จดบันทึกวลีรหัสผ่านนี้แล้ว หากจำไม่ได้ ฉันจะไม่สามารถกู้คืนจากข้อมูลสำรองได้</string>
+  <string name="registration_activity__restore_backup">กู้คืนจากข้อมูลสำรอง</string>
   <string name="registration_activity__skip">ข้าม</string>
   <string name="registration_activity__register">ลงทะเบียน</string>
   <string name="preferences_chats__chat_backups">ข้อมูลสำรองของการสนทนา</string>
@@ -1655,7 +1661,7 @@
   <string name="RegistrationLockDialog_disable">ปิดใช้งาน</string>
   <string name="RegistrationActivity_pin_incorrect">รหัส PIN ไม่ถูกต้อง </string>
   <string name="RegistrationActivity_you_have_d_tries_remaining">คุณเหลือความพยายามอีก %d ครั้ง</string>
-  <string name="preferences_chats__backups">การสำรองข้อมูล</string>
+  <string name="preferences_chats__backups">ข้อมูลสำรอง</string>
   <string name="prompt_passphrase_activity__signal_is_locked">Signal ได้ถูกล็อก</string>
   <string name="prompt_passphrase_activity__tap_to_unlock">แตะเพื่อปลดล็อก</string>
   <string name="RegistrationLockDialog_reminder">เตือนความจำ:</string>

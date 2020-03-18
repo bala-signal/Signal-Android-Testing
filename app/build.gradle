@@ -80,6 +80,9 @@ protobuf {
     }
 }
 
+def canonicalVersionCode = 612
+def canonicalVersionName = "4.57.1"
+
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
@@ -126,14 +129,13 @@ dependencies {
     implementation 'com.jpardogo.materialtabstrip:library:1.0.9'
     implementation 'org.apache.httpcomponents:httpclient-android:4.3.5'
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     annotationProcessor 'androidx.annotation:annotation:1.1.0'
     implementation 'com.makeramen:roundedimageview:2.1.0'
     implementation 'com.pnikosis:materialish-progress:1.5'
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'pl.tajchert:waitingdots:0.1.0'
-    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation 'com.melnykov:floatingactionbutton:1.3.0'
     implementation 'com.google.zxing:android-integration:3.1.0'
     implementation 'mobi.upod:time-duration-picker:1.1.3'
@@ -168,6 +170,9 @@ dependencies {
         exclude group: 'org.freemarker'
     }
 
+    flipperImplementation 'com.facebook.flipper:flipper:0.32.2'
+    flipperImplementation 'com.facebook.soloader:soloader:0.8.2'
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.11.1'
     testImplementation 'org.mockito:mockito-core:1.9.5'
@@ -182,15 +187,11 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation project(':toast')
 }
 
 dependencyVerification {
     configuration = '(play|website)(Debug|Release)RuntimeClasspath'
 }
-
-def canonicalVersionCode = 610
-def canonicalVersionName = "4.56.4"
 
 def postFixSize = 10
 def abiPostFix = ['universal'   : 0,
@@ -322,6 +323,10 @@ android {
             buildConfigField "String", "KEY_BACKUP_ENCLAVE_NAME", "\"a1e9c1d3f352b5c4f0fc7a421b98119e60e5ff703c28fbea85c66bfa7306deab\""
             buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BbqY1DzohE4NUZoVF+L18oUPrK3kILllLEJh2UnPSsEx\""
             buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"\""
+        }
+        flipper {
+            initWith debug
+            minifyEnabled false
         }
         release {
             minifyEnabled true
