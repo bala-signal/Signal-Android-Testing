@@ -17,7 +17,7 @@ buildscript {
     dependencies {
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0'
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.3'
     }
 }
 
@@ -376,6 +376,7 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation project(path: ':toast')
 }
 
 dependencyVerification {

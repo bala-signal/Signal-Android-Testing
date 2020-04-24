@@ -1,36 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/album_thumbnail_root"
-    android:layout_width="@dimen/album_total_width"
-    android:layout_height="@dimen/album_4_total_height">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/album_thumbnail_root" android:layout_height="@dimen/album_4_total_height" android:layout_width="@dimen/album_total_width">
 
-    <org.thoughtcrime.securesms.components.ThumbnailView
-        android:id="@+id/album_cell_1"
-        android:layout_width="@dimen/album_4_cell_size"
-        android:layout_height="@dimen/album_4_cell_size"
-        app:thumbnail_radius="0dp"/>
 
-    <org.thoughtcrime.securesms.components.ThumbnailView
-        android:id="@+id/album_cell_2"
-        android:layout_width="@dimen/album_4_cell_size"
-        android:layout_height="@dimen/album_4_cell_size"
-        android:layout_gravity="right|end|top"
-        app:thumbnail_radius="0dp"/>
 
-    <org.thoughtcrime.securesms.components.ThumbnailView
-        android:id="@+id/album_cell_3"
-        android:layout_width="@dimen/album_4_cell_size"
-        android:layout_height="@dimen/album_4_cell_size"
-        android:layout_gravity="left|start|bottom"
-        app:thumbnail_radius="0dp"/>
+    <org.thoughtcrime.securesms.components.ThumbnailView app:thumbnail_radius="0dp" android:id="@+id/album_cell_1" android:layout_height="@dimen/album_4_cell_size" android:layout_width="@dimen/album_4_cell_size" />
 
-    <org.thoughtcrime.securesms.components.ThumbnailView
-        android:id="@+id/album_cell_4"
-        android:layout_width="@dimen/album_4_cell_size"
-        android:layout_height="@dimen/album_4_cell_size"
-        android:layout_gravity="right|end|bottom"
-        app:thumbnail_radius="0dp"/>
+
+
+    <org.thoughtcrime.securesms.components.ThumbnailView app:thumbnail_radius="0dp" android:id="@+id/album_cell_2" android:layout_gravity="right|end|top" android:layout_height="@dimen/album_4_cell_size" android:layout_width="@dimen/album_4_cell_size" />
+
+
+
+    <org.thoughtcrime.securesms.components.ThumbnailView app:thumbnail_radius="0dp" android:id="@+id/album_cell_3" android:layout_gravity="left|start|bottom" android:layout_height="@dimen/album_4_cell_size" android:layout_width="@dimen/album_4_cell_size" />
+
+
+
+    <org.thoughtcrime.securesms.components.ThumbnailView app:thumbnail_radius="0dp" android:id="@+id/album_cell_4" android:layout_gravity="right|end|bottom" android:layout_height="@dimen/album_4_cell_size" android:layout_width="@dimen/album_4_cell_size" />
+
+
 
 </FrameLayout>

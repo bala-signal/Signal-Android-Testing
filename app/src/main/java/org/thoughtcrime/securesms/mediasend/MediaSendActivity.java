@@ -17,7 +17,7 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.signal.toast.Toast;;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

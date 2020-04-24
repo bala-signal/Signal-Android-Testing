@@ -58,7 +58,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -79,6 +79,7 @@ import com.bumptech.glide.request.transition.Transition;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.signal.toast.Toast;
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.ExpirationDialog;
 import org.thoughtcrime.securesms.GroupCreateActivity;

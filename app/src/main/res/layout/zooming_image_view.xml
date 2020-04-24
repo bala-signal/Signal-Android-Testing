@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:tools="http://schemas.android.com/tools"
-       tools:context="org.thoughtcrime.securesms.components.ZoomingImageView">
+<merge xmlns:android="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res/android" android:context="org.thoughtcrime.securesms.components.ZoomingImageView">
 
-    <com.github.chrisbanes.photoview.PhotoView android:id="@+id/image_view"
-                                               android:layout_width="match_parent"
-                                               android:layout_height="match_parent"
-                                               android:visibility="visible"/>
 
-    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-            android:id="@+id/subsampling_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
+
+    <com.github.chrisbanes.photoview.PhotoView app:id="@+id/image_view" app:layout_height="match_parent" app:layout_width="match_parent" app:visibility="visible" />
+
+
+
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView app:id="@+id/subsampling_image_view" app:layout_height="match_parent" app:layout_width="match_parent" app:visibility="gone" />
+
+
 
 </merge>

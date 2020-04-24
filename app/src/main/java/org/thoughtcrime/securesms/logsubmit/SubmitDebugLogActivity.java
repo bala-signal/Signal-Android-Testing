@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.signal.toast.Toast;;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;

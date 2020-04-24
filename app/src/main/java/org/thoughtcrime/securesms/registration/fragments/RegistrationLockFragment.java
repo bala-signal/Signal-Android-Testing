@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 
 import com.dd.CircularProgressButton;
 
+import org.signal.toast.Toast;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.jobs.StorageAccountRestoreJob;

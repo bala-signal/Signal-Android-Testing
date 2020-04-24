@@ -1,71 +1,49 @@
-<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="vertical">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:theme="?attr/actionBarStyle"
-        android:minHeight="?attr/actionBarSize"
-        android:elevation="4dp"
-        app:navigationIcon="@drawable/ic_check_24" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <androidx.appcompat.widget.Toolbar app:navigationIcon="@drawable/ic_check_24" android:elevation="4dp" android:id="@+id/toolbar" android:layout_height="?attr/actionBarSize" android:layout_width="match_parent" android:minHeight="?attr/actionBarSize" android:theme="?attr/actionBarStyle" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
 
-            <org.thoughtcrime.securesms.components.emoji.EmojiTextView
-                android:id="@+id/name_edit_display_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:textSize="20sp"
-                tools:text="Peter Parker"/>
 
-            <org.thoughtcrime.securesms.components.emoji.EmojiEditText
-                android:id="@+id/name_edit_prefix"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/ContactNameEditActivity_prefix"/>
+    <ScrollView android:layout_height="match_parent" android:layout_width="match_parent">
 
-            <org.thoughtcrime.securesms.components.emoji.EmojiEditText
-                android:id="@+id/name_edit_given_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/ContactNameEditActivity_given_name"/>
 
-            <org.thoughtcrime.securesms.components.emoji.EmojiEditText
-                android:id="@+id/name_edit_middle_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/ContactNameEditActivity_middle_name"/>
 
-            <org.thoughtcrime.securesms.components.emoji.EmojiEditText
-                android:id="@+id/name_edit_family_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/ContactNameEditActivity_family_name"/>
+        <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:padding="12dp">
 
-            <org.thoughtcrime.securesms.components.emoji.EmojiEditText
-                android:id="@+id/name_edit_suffix"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/ContactNameEditActivity_suffix"/>
+
+
+            <org.thoughtcrime.securesms.components.emoji.EmojiTextView android:id="@+id/name_edit_display_name" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:layout_width="match_parent" android:textSize="20sp" tools:text="Peter Parker" />
+
+
+
+            <org.thoughtcrime.securesms.components.emoji.EmojiEditText android:contentDescription="ContactNameEditActivity_prefix" android:hint="@string/ContactNameEditActivity_prefix" android:id="@+id/name_edit_prefix" android:layout_height="wrap_content" android:layout_width="match_parent" />
+
+
+
+            <org.thoughtcrime.securesms.components.emoji.EmojiEditText android:contentDescription="ContactNameEditActivity_given_name" android:hint="@string/ContactNameEditActivity_given_name" android:id="@+id/name_edit_given_name" android:layout_height="wrap_content" android:layout_width="match_parent" />
+
+
+
+            <org.thoughtcrime.securesms.components.emoji.EmojiEditText android:contentDescription="ContactNameEditActivity_middle_name" android:hint="@string/ContactNameEditActivity_middle_name" android:id="@+id/name_edit_middle_name" android:layout_height="wrap_content" android:layout_width="match_parent" />
+
+
+
+            <org.thoughtcrime.securesms.components.emoji.EmojiEditText android:contentDescription="ContactNameEditActivity_family_name" android:hint="@string/ContactNameEditActivity_family_name" android:id="@+id/name_edit_family_name" android:layout_height="wrap_content" android:layout_width="match_parent" />
+
+
+
+            <org.thoughtcrime.securesms.components.emoji.EmojiEditText android:contentDescription="ContactNameEditActivity_suffix" android:hint="@string/ContactNameEditActivity_suffix" android:id="@+id/name_edit_suffix" android:layout_height="wrap_content" android:layout_width="match_parent" />
+
+
 
         </LinearLayout>
 
+
+
     </ScrollView>
+
+
 
 </LinearLayout>
