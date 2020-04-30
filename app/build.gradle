@@ -17,7 +17,7 @@ buildscript {
     dependencies {
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0'
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.3'
     }
 }
 
@@ -305,6 +305,7 @@ dependencies {
     implementation 'org.signal:aesgcmprovider:0.0.3'
 
     implementation project(':libsignal-service')
+    implementation project(':toast')
     implementation 'org.signal:zkgroup-android:0.4.1'
 
     implementation 'org.signal:argon2:13.1@aar'

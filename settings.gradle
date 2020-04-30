@@ -1,4 +1,4 @@
-include ':app', ':libsignal-service'
+include ':app', ':libsignal-service', ':toast'
 
 project(':app').name = 'Signal-Android'
 
@@ -8,6 +8,5 @@ project(':').buildFileName = 'main.gradle'
 
 rootProject.name='Signal'
 
-include ':toast'
 include ':zkgroups'
 project(':zkgroups').projectDir = file('libsignal/zkgroups-api')
