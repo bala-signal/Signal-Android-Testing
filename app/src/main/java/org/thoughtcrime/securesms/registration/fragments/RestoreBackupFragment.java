@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.signal.toast.Toast;;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;

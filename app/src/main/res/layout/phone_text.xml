@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<EditText
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/input"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="7dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="16dp"
-    android:background="@color/transparent"
-    android:singleLine="true"
-    android:inputType="phone"
-    android:saveEnabled="false"
-    android:hint="@string/RegistrationActivity_phone_number_description"
-    tools:text="867-5309" />
+<EditText xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/tools" android:background="@color/transparent" android:contentDescription="RegistrationActivity_phone_number_description" android:hint="@string/RegistrationActivity_phone_number_description" android:id="@+id/input" android:inputType="phone" android:layout_height="wrap_content" android:layout_width="match_parent" android:paddingBottom="16dp" android:paddingEnd="16dp" android:paddingStart="16dp" android:paddingTop="7dp" android:saveEnabled="false" android:singleLine="true" app:text="867-5309" />

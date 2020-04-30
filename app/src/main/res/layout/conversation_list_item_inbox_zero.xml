@@ -1,31 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<org.thoughtcrime.securesms.conversationlist.ConversationListItemInboxZero
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="30dp">
-
-    <TextView android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:textSize="25sp"
-              android:gravity="center"
-              android:padding="16dp"
-              android:text="@string/conversation_list_item_inbox_zero__inbox_zeeerrro"/>
-
-    <ImageView
-            android:layout_gravity="center"
-            android:src="@drawable/inbox_zero"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+<org.thoughtcrime.securesms.conversationlist.ConversationListItemInboxZero xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" android:paddingTop="30dp">
 
 
-    <TextView android:id="@+id/description"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:textSize="20sp"
-              android:padding="16dp"
-              android:text="@string/conversation_list_item_inbox_zero__zip_zilch_zero_nada_nyou_re_all_caught_up"/>
+
+    <TextView android:contentDescription="conversation_list_item_inbox_zero__inbox_zeeerrro" android:gravity="center" android:layout_height="match_parent" android:layout_width="match_parent" android:padding="16dp" android:text="@string/conversation_list_item_inbox_zero__inbox_zeeerrro" android:textSize="25sp" />
+
+
+
+    <ImageView android:layout_gravity="center" android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/inbox_zero" />
+
+
+
+
+
+    <TextView android:contentDescription="conversation_list_item_inbox_zero__zip_zilch_zero_nada_nyou_re_all_caught_up" android:gravity="center" android:id="@+id/description" android:layout_height="match_parent" android:layout_width="match_parent" android:padding="16dp" android:text="@string/conversation_list_item_inbox_zero__zip_zilch_zero_nada_nyou_re_all_caught_up" android:textSize="20sp" />
+
+
 
 </org.thoughtcrime.securesms.conversationlist.ConversationListItemInboxZero>

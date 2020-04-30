@@ -45,7 +45,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.signal.toast.Toast;;
 
 import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;

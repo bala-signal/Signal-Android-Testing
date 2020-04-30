@@ -1,21 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".profiles.edit.EditProfileActivity">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/tools" xmlns:tools="http://schemas.android.com/apk/res-auto" android:layout_height="match_parent" android:layout_width="match_parent" app:context=".profiles.edit.EditProfileActivity">
 
-    <fragment
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/edit_profile" />
+
+
+    <fragment tools:defaultNavHost="true" tools:layout_constraintBottom_toBottomOf="parent" tools:layout_constraintLeft_toLeftOf="parent" tools:layout_constraintRight_toRightOf="parent" tools:layout_constraintTop_toTopOf="parent" tools:navGraph="@navigation/edit_profile" android:id="@+id/nav_host_fragment" android:layout_height="match_parent" android:layout_width="match_parent" android:name="androidx.navigation.fragment.NavHostFragment" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

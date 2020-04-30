@@ -38,7 +38,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.signal.toast.Toast;;
 import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;

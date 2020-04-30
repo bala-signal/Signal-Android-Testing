@@ -23,7 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.signal.toast.Toast;;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;

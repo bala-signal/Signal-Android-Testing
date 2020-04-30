@@ -1,62 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/tools" xmlns:tools="http://schemas.android.com/apk/res-auto" android:layout_height="wrap_content" android:layout_width="match_parent" app:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <org.thoughtcrime.securesms.components.AvatarImageView
-        android:id="@+id/message_request_avatar"
-        android:layout_width="112dp"
-        android:layout_height="112dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/message_request_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textAppearance="@style/Signal.Text.MessageRequest.Title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/message_request_avatar"
-        tools:text="Cayce Pollard" />
 
-    <TextView
-        android:id="@+id/message_request_subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textAppearance="@style/Signal.Text.MessageRequest.Subtitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/message_request_title"
-        tools:text="\@caycepollard" />
+    <org.thoughtcrime.securesms.components.AvatarImageView tools:layout_constraintEnd_toEndOf="parent" tools:layout_constraintStart_toStartOf="parent" tools:layout_constraintTop_toTopOf="parent" android:id="@+id/message_request_avatar" android:layout_height="112dp" android:layout_marginTop="32dp" android:layout_width="112dp" />
 
-    <org.thoughtcrime.securesms.components.emoji.EmojiTextView
-        android:id="@+id/message_request_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textAppearance="@style/Signal.Text.MessageRequest.Description"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/message_request_subtitle"
-        tools:text="Member of NYC Rock Climbers, Dinner Party and Friends" />
+
+
+    <TextView tools:layout_constraintEnd_toEndOf="parent" tools:layout_constraintStart_toStartOf="parent" tools:layout_constraintTop_toBottomOf="@id/message_request_avatar" android:gravity="center" android:id="@+id/message_request_title" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:layout_width="wrap_content" android:paddingEnd="16dp" android:paddingStart="16dp" android:textAppearance="@style/Signal.Text.MessageRequest.Title" app:text="Cayce Pollard" />
+
+
+
+    <TextView tools:layout_constraintEnd_toEndOf="parent" tools:layout_constraintStart_toStartOf="parent" tools:layout_constraintTop_toBottomOf="@id/message_request_title" android:gravity="center" android:id="@+id/message_request_subtitle" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:layout_width="wrap_content" android:paddingEnd="16dp" android:paddingStart="16dp" android:textAppearance="@style/Signal.Text.MessageRequest.Subtitle" app:text="\@caycepollard" />
+
+
+
+    <org.thoughtcrime.securesms.components.emoji.EmojiTextView tools:layout_constraintBottom_toBottomOf="parent" tools:layout_constraintEnd_toEndOf="parent" tools:layout_constraintStart_toStartOf="parent" tools:layout_constraintTop_toBottomOf="@id/message_request_subtitle" android:gravity="center" android:id="@+id/message_request_description" android:layout_height="wrap_content" android:layout_marginBottom="15dp" android:layout_marginTop="15dp" android:layout_width="wrap_content" android:paddingEnd="16dp" android:paddingStart="16dp" android:textAppearance="@style/Signal.Text.MessageRequest.Description" app:text="Member of NYC Rock Climbers, Dinner Party and Friends" />
+
+
 
 </merge>

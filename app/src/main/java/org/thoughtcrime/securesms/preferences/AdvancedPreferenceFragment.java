@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.widget.Toast;
+import org.signal.toast.Toast;;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

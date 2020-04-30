@@ -1,88 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="center" android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="vertical">
 
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_devices_white"
-            android:transitionName="devices"
-            android:tint="@color/core_grey_25"
-            android:layout_marginBottom="25dp"
-            android:contentDescription="@string/device_link_fragment__link_device"/>
 
-    <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp">
 
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:orientation="vertical"
-                      android:background="?device_link_item_card_background">
+    <ImageView android:contentDescription="device_link_fragment__link_device" android:layout_height="wrap_content" android:layout_marginBottom="25dp" android:layout_width="wrap_content" android:src="@drawable/ic_devices_white" android:tint="@color/core_grey_25" android:transitionName="devices" />
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textStyle="bold"
-                    android:text="@string/DeviceProvisioningActivity_link_this_device"
-                    android:textSize="16sp"/>
 
-            <View android:layout_width="match_parent"
-                  android:layout_height="0.5dp"
-                  android:background="#1E000000"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="@string/DeviceProvisioningActivity_content_intro"
-                    android:textSize="14sp"/>
+    <androidx.cardview.widget.CardView android:layout_height="wrap_content" android:layout_marginEnd="25dp" android:layout_marginStart="25dp" android:layout_width="match_parent">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="@string/DeviceProvisioningActivity_content_bullets"
-                    android:textSize="14sp"/>
 
-            <View android:layout_width="match_parent"
-                  android:layout_height="0.5dp"
-                  android:background="#1E000000"/>
 
-            <LinearLayout android:id="@+id/link_device"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:padding="10dp"
-                          android:gravity="center_vertical"
-                          android:clickable="true">
+        <LinearLayout android:background="?device_link_item_card_background" android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="vertical">
 
-                <ImageView android:id="@+id/check"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_marginEnd="16dp"
-                           android:src="@drawable/ic_check_white_24dp"
-                           android:tint="@color/blue_400"
-                           android:clickable="false"/>
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/blue_400"
-                        android:text="@string/device_link_fragment__link_device"
-                        android:clickable="false"/>
+
+            <TextView android:contentDescription="DeviceProvisioningActivity_link_this_device" android:layout_height="wrap_content" android:layout_width="wrap_content" android:padding="10dp" android:text="@string/DeviceProvisioningActivity_link_this_device" android:textSize="16sp" android:textStyle="bold" />
+
+
+
+            <View android:background="#1E000000" android:layout_height="0.5dp" android:layout_width="match_parent" />
+
+
+
+            <TextView android:contentDescription="DeviceProvisioningActivity_content_intro" android:layout_height="wrap_content" android:layout_width="wrap_content" android:padding="10dp" android:text="@string/DeviceProvisioningActivity_content_intro" android:textSize="14sp" />
+
+
+
+            <TextView android:contentDescription="DeviceProvisioningActivity_content_bullets" android:layout_height="wrap_content" android:layout_width="wrap_content" android:padding="10dp" android:text="@string/DeviceProvisioningActivity_content_bullets" android:textSize="14sp" />
+
+
+
+            <View android:background="#1E000000" android:layout_height="0.5dp" android:layout_width="match_parent" />
+
+
+
+            <LinearLayout android:clickable="true" android:gravity="center_vertical" android:id="@+id/link_device" android:layout_height="wrap_content" android:layout_width="match_parent" android:padding="10dp">
+
+
+
+                <ImageView android:clickable="false" android:id="@+id/check" android:layout_height="wrap_content" android:layout_marginEnd="16dp" android:layout_width="wrap_content" android:src="@drawable/ic_check_white_24dp" android:tint="@color/blue_400" />
+
+
+
+                <TextView android:clickable="false" android:contentDescription="device_link_fragment__link_device" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/device_link_fragment__link_device" android:textColor="@color/blue_400" android:textSize="14sp" />
+
+
 
             </LinearLayout>
+
+
 
         </LinearLayout>
 
 
+
+
+
     </androidx.cardview.widget.CardView>
+
+
 
 </LinearLayout>

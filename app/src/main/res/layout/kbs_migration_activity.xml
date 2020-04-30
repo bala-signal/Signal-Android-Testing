@@ -1,17 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".lock.v2.KbsMigrationActivity">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/tools" xmlns:tools="http://schemas.android.com/apk/res-auto" android:layout_height="match_parent" android:layout_width="match_parent" app:context=".lock.v2.KbsMigrationActivity">
 
-    <fragment
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/kbs_migration" />
+
+
+    <fragment tools:defaultNavHost="true" tools:navGraph="@navigation/kbs_migration" android:id="@+id/nav_host_fragment" android:layout_height="match_parent" android:layout_width="match_parent" android:name="androidx.navigation.fragment.NavHostFragment" />
+
+
 
 </FrameLayout>

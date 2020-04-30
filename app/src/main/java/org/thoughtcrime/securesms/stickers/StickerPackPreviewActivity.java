@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.signal.toast.Toast;;
 
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
