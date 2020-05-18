@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import org.thoughtcrime.securesms.logging.Log;
+import org.thoughtcrime.securesms.media.MediaInput;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -28,7 +29,7 @@ final class VideoThumbnailsExtractor {
     void failed();
   }
 
-  static void extractThumbnails(final @NonNull VideoInput input,
+  static void extractThumbnails(final @NonNull MediaInput input,
                                 final int thumbnailCount,
                                 final int thumbnailResolution,
                                 final @NonNull Callback callback)
@@ -84,7 +85,14 @@ final class VideoThumbnailsExtractor {
         decoder.configure(mediaFormat, outputSurface.getSurface(), null, 0);
         decoder.start();
 
-        long duration = mediaFormat.getLong(MediaFormat.KEY_DURATION);
+        long duration = 0;
+
+        if (mediaFormat.containsKey(MediaFormat.KEY_DURATION)) {
+          duration = mediaFormat.getLong(MediaFormat.KEY_DURATION);
+        } else {
+          Log.w(TAG, "Video is missing duration!");
+        }
+
         callback.durationKnown(duration);
 
         doExtract(extractor, decoder, outputSurface, outputWidthRotated, outputHeightRotated, duration, thumbnailCount, callback);

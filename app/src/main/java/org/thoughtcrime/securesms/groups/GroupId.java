@@ -14,12 +14,12 @@ import java.security.SecureRandom;
 
 public abstract class GroupId {
 
-  private static final String ENCODED_SIGNAL_GROUP_PREFIX = "__textsecure_group__!";
-  private static final String ENCODED_MMS_GROUP_PREFIX    = "__signal_mms_group__!";
-  private static final int    MMS_BYTE_LENGTH             = 16;
-  private static final int    V1_MMS_BYTE_LENGTH          = 16;
-  private static final int    V2_BYTE_LENGTH              = GroupIdentifier.SIZE;
-  private static final int    V2_ENCODED_LENGTH           = ENCODED_SIGNAL_GROUP_PREFIX.length() + V2_BYTE_LENGTH * 2;
+  private static final String ENCODED_SIGNAL_GROUP_V1_PREFIX = "__textsecure_group__!";
+  private static final String ENCODED_SIGNAL_GROUP_V2_PREFIX = "__signal_group__v2__!";
+  private static final String ENCODED_MMS_GROUP_PREFIX       = "__signal_mms_group__!";
+  private static final int    MMS_BYTE_LENGTH                = 16;
+  private static final int    V1_MMS_BYTE_LENGTH             = 16;
+  private static final int    V2_BYTE_LENGTH                 = GroupIdentifier.SIZE;
 
   private final String encodedId;
 
@@ -31,30 +31,46 @@ public abstract class GroupId {
     return new GroupId.Mms(mmsGroupIdBytes);
   }
 
-  public static @NonNull GroupId.V1 v1(byte[] gv1GroupIdBytes) {
+  public static @NonNull GroupId.V1 v1orThrow(byte[] gv1GroupIdBytes) {
+    try {
+      return v1(gv1GroupIdBytes);
+    } catch (BadGroupIdException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  public static @NonNull GroupId.V1 v1(byte[] gv1GroupIdBytes) throws BadGroupIdException {
     if (gv1GroupIdBytes.length == V2_BYTE_LENGTH) {
-      throw new AssertionError();
+      throw new BadGroupIdException();
     }
     return new GroupId.V1(gv1GroupIdBytes);
   }
 
   public static GroupId.V1 createV1(@NonNull SecureRandom secureRandom) {
-    return v1(Util.getSecretBytes(secureRandom, V1_MMS_BYTE_LENGTH));
+    return v1orThrow(Util.getSecretBytes(secureRandom, V1_MMS_BYTE_LENGTH));
   }
 
   public static GroupId.Mms createMms(@NonNull SecureRandom secureRandom) {
     return mms(Util.getSecretBytes(secureRandom, MMS_BYTE_LENGTH));
   }
 
-  public static GroupId.V2 v2(@NonNull byte[] bytes) {
+  public static GroupId.V2 v2orThrow(@NonNull byte[] bytes) {
+    try {
+      return v2(bytes);
+    } catch (BadGroupIdException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  public static GroupId.V2 v2(@NonNull byte[] bytes) throws BadGroupIdException {
     if (bytes.length != V2_BYTE_LENGTH) {
-      throw new AssertionError();
+      throw new BadGroupIdException();
     }
     return new GroupId.V2(bytes);
   }
 
   public static GroupId.V2 v2(@NonNull GroupIdentifier groupIdentifier) {
-    return v2(groupIdentifier.serialize());
+    return v2orThrow(groupIdentifier.serialize());
   }
 
   public static GroupId.V2 v2(@NonNull GroupMasterKey masterKey) {
@@ -63,24 +79,45 @@ public abstract class GroupId {
                                .getGroupIdentifier());
   }
 
-  public static @NonNull GroupId parse(@NonNull String encodedGroupId) {
+  public static GroupId.Push push(byte[] bytes) throws BadGroupIdException {
+    return bytes.length == V2_BYTE_LENGTH ? v2(bytes) : v1(bytes);
+  }
+
+  public static GroupId.Push pushOrThrow(byte[] bytes) {
     try {
-      if (!isEncodedGroup(encodedGroupId)) {
-        throw new IOException("Invalid encoding");
-      }
-
-      byte[] bytes = extractDecodedId(encodedGroupId);
-
-           if (encodedGroupId.startsWith(ENCODED_MMS_GROUP_PREFIX)) return mms(bytes);
-      else if (encodedGroupId.length() == V2_ENCODED_LENGTH)        return v2(bytes);
-      else                                                          return v1(bytes);
-
-    } catch (IOException e) {
+      return push(bytes);
+    } catch (BadGroupIdException e) {
       throw new AssertionError(e);
     }
   }
 
-  public static @Nullable GroupId parseNullable(@Nullable String encodedGroupId) {
+  public static @NonNull GroupId parseOrThrow(@NonNull String encodedGroupId) {
+    try {
+      return parse(encodedGroupId);
+    } catch (BadGroupIdException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  public static @NonNull GroupId parse(@NonNull String encodedGroupId) throws BadGroupIdException {
+    try {
+      if (!isEncodedGroup(encodedGroupId)) {
+        throw new BadGroupIdException("Invalid encoding");
+      }
+
+      byte[] bytes = extractDecodedId(encodedGroupId);
+
+      if      (encodedGroupId.startsWith(ENCODED_SIGNAL_GROUP_V2_PREFIX)) return v2(bytes);
+      else if (encodedGroupId.startsWith(ENCODED_SIGNAL_GROUP_V1_PREFIX)) return v1(bytes);
+      else if (encodedGroupId.startsWith(ENCODED_MMS_GROUP_PREFIX))       return mms(bytes);
+
+      throw new BadGroupIdException();
+    } catch (IOException e) {
+      throw new BadGroupIdException(e);
+    }
+  }
+
+  public static @Nullable GroupId parseNullable(@Nullable String encodedGroupId) throws BadGroupIdException {
     if (encodedGroupId == null) {
       return null;
     }
@@ -88,8 +125,18 @@ public abstract class GroupId {
     return parse(encodedGroupId);
   }
 
+  public static @Nullable GroupId parseNullableOrThrow(@Nullable String encodedGroupId) {
+    if (encodedGroupId == null) {
+      return null;
+    }
+
+    return parseOrThrow(encodedGroupId);
+  }
+
   public static boolean isEncodedGroup(@NonNull String groupId) {
-    return groupId.startsWith(ENCODED_SIGNAL_GROUP_PREFIX) || groupId.startsWith(ENCODED_MMS_GROUP_PREFIX);
+    return groupId.startsWith(ENCODED_SIGNAL_GROUP_V2_PREFIX) ||
+           groupId.startsWith(ENCODED_SIGNAL_GROUP_V1_PREFIX) ||
+           groupId.startsWith(ENCODED_MMS_GROUP_PREFIX);
   }
 
   private static byte[] extractDecodedId(@NonNull String encodedGroupId) throws IOException {
@@ -180,8 +227,8 @@ public abstract class GroupId {
   }
 
   public static abstract class Push extends GroupId {
-    private Push(@NonNull byte[] bytes) {
-      super(ENCODED_SIGNAL_GROUP_PREFIX, bytes);
+    private Push(@NonNull String prefix, @NonNull byte[] bytes) {
+      super(prefix, bytes);
     }
 
     @Override
@@ -198,7 +245,7 @@ public abstract class GroupId {
   public static final class V1 extends GroupId.Push {
 
     private V1(@NonNull byte[] bytes) {
-      super(bytes);
+      super(ENCODED_SIGNAL_GROUP_V1_PREFIX, bytes);
     }
 
     @Override
@@ -215,7 +262,7 @@ public abstract class GroupId {
   public static final class V2 extends GroupId.Push {
 
     private V2(@NonNull byte[] bytes) {
-      super(bytes);
+      super(ENCODED_SIGNAL_GROUP_V2_PREFIX, bytes);
     }
 
     @Override

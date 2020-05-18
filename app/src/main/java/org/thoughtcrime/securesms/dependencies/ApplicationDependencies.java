@@ -7,12 +7,17 @@ import androidx.annotation.NonNull;
 import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.IncomingMessageProcessor;
 import org.thoughtcrime.securesms.gcm.MessageRetriever;
+import org.thoughtcrime.securesms.groups.GroupsV2AuthorizationMemoryValueCache;
+import org.thoughtcrime.securesms.groups.v2.processing.GroupsV2StateProcessor;
 import org.thoughtcrime.securesms.jobmanager.JobManager;
 import org.thoughtcrime.securesms.keyvalue.KeyValueStore;
+import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.megaphone.MegaphoneRepository;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.LiveRecipientCache;
 import org.thoughtcrime.securesms.service.IncomingMessageObserver;
+import org.thoughtcrime.securesms.util.EarlyMessageCache;
+import org.thoughtcrime.securesms.util.FeatureFlags;
 import org.thoughtcrime.securesms.util.FrameRateTracker;
 import org.thoughtcrime.securesms.util.IasKeyStore;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
@@ -20,6 +25,8 @@ import org.whispersystems.signalservice.api.KeyBackupService;
 import org.whispersystems.signalservice.api.SignalServiceAccountManager;
 import org.whispersystems.signalservice.api.SignalServiceMessageReceiver;
 import org.whispersystems.signalservice.api.SignalServiceMessageSender;
+import org.thoughtcrime.securesms.groups.GroupsV2Authorization;
+import org.whispersystems.signalservice.api.groupsv2.GroupsV2Operations;
 
 /**
  * Location for storing and retrieving application-scoped singletons. Users must call
@@ -44,6 +51,10 @@ public class ApplicationDependencies {
   private static FrameRateTracker             frameRateTracker;
   private static KeyValueStore                keyValueStore;
   private static MegaphoneRepository          megaphoneRepository;
+  private static GroupsV2Authorization        groupsV2Authorization;
+  private static GroupsV2StateProcessor       groupsV2StateProcessor;
+  private static GroupsV2Operations           groupsV2Operations;
+  private static EarlyMessageCache            earlyMessageCache;
 
   public static synchronized void init(@NonNull Application application, @NonNull Provider provider) {
     if (ApplicationDependencies.application != null || ApplicationDependencies.provider != null) {
@@ -69,11 +80,42 @@ public class ApplicationDependencies {
     return accountManager;
   }
 
+  public static synchronized @NonNull GroupsV2Authorization getGroupsV2Authorization() {
+    assertInitialization();
+
+    if (groupsV2Authorization == null) {
+      GroupsV2Authorization.ValueCache authCache = new GroupsV2AuthorizationMemoryValueCache(SignalStore.groupsV2AuthorizationCache());
+      groupsV2Authorization = new GroupsV2Authorization(getSignalServiceAccountManager().getGroupsV2Api(), authCache);
+    }
+
+    return groupsV2Authorization;
+  }
+
+  public static synchronized @NonNull GroupsV2Operations getGroupsV2Operations() {
+    assertInitialization();
+
+    if (groupsV2Operations == null) {
+      groupsV2Operations = provider.provideGroupsV2Operations();
+    }
+
+    return groupsV2Operations;
+  }
+
   public static synchronized @NonNull KeyBackupService getKeyBackupService() {
     return getSignalServiceAccountManager().getKeyBackupService(IasKeyStore.getIasKeyStore(application),
-                                                                BuildConfig.KEY_BACKUP_ENCLAVE_NAME,
-                                                                BuildConfig.KEY_BACKUP_MRENCLAVE,
+                                                                BuildConfig.KBS_ENCLAVE_NAME,
+                                                                BuildConfig.KBS_MRENCLAVE,
                                                                 10);
+  }
+
+  public static synchronized @NonNull GroupsV2StateProcessor getGroupsV2StateProcessor() {
+    assertInitialization();
+
+    if (groupsV2StateProcessor == null) {
+      groupsV2StateProcessor = new GroupsV2StateProcessor(application);
+    }
+
+    return groupsV2StateProcessor;
   }
 
   public static synchronized @NonNull SignalServiceMessageSender getSignalServiceMessageSender() {
@@ -82,8 +124,11 @@ public class ApplicationDependencies {
     if (messageSender == null) {
       messageSender = provider.provideSignalServiceMessageSender();
     } else {
-      messageSender.setMessagePipe(IncomingMessageObserver.getPipe(), IncomingMessageObserver.getUnidentifiedPipe());
-      messageSender.setIsMultiDevice(TextSecurePreferences.isMultiDevice(application));
+      messageSender.update(
+              IncomingMessageObserver.getPipe(),
+              IncomingMessageObserver.getUnidentifiedPipe(),
+              TextSecurePreferences.isMultiDevice(application),
+              FeatureFlags.attachmentsV3());
     }
 
     return messageSender;
@@ -179,6 +224,16 @@ public class ApplicationDependencies {
     return megaphoneRepository;
   }
 
+  public static synchronized @NonNull EarlyMessageCache getEarlyMessageCache() {
+    assertInitialization();
+
+    if (earlyMessageCache == null) {
+      earlyMessageCache = provider.provideEarlyMessageCache();
+    }
+
+    return earlyMessageCache;
+  }
+
   private static void assertInitialization() {
     if (application == null || provider == null) {
       throw new UninitializedException();
@@ -186,6 +241,7 @@ public class ApplicationDependencies {
   }
 
   public interface Provider {
+    @NonNull GroupsV2Operations provideGroupsV2Operations();
     @NonNull SignalServiceAccountManager provideSignalServiceAccountManager();
     @NonNull SignalServiceMessageSender provideSignalServiceMessageSender();
     @NonNull SignalServiceMessageReceiver provideSignalServiceMessageReceiver();
@@ -197,6 +253,7 @@ public class ApplicationDependencies {
     @NonNull FrameRateTracker provideFrameRateTracker();
     @NonNull KeyValueStore provideKeyValueStore();
     @NonNull MegaphoneRepository provideMegaphoneRepository();
+    @NonNull EarlyMessageCache provideEarlyMessageCache();
   }
 
   private static class UninitializedException extends IllegalStateException {

@@ -1,10 +1,10 @@
 package org.thoughtcrime.securesms.keyvalue;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceDataStore;
 
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.logging.SignalUncaughtExceptionHandler;
-import org.thoughtcrime.securesms.util.FeatureFlags;
 
 /**
  * Simple, encrypted key-value store.
@@ -40,6 +40,10 @@ public final class SignalStore {
     return new StorageServiceValues(getStore());
   }
 
+  public static @NonNull GroupsV2AuthorizationSignalStoreCache groupsV2AuthorizationCache() {
+    return new GroupsV2AuthorizationSignalStoreCache(getStore());
+  }
+
   public static long getLastPrekeyRefreshTime() {
     return getStore().getLong(LAST_PREKEY_REFRESH_TIME, 0);
   }
@@ -54,6 +58,10 @@ public final class SignalStore {
 
   public static void setMessageRequestEnableTime(long time) {
     putLong(MESSAGE_REQUEST_ENABLE_TIME, time);
+  }
+
+  public static @NonNull PreferenceDataStore getPreferenceDataStore() {
+    return new SignalPreferenceDataStore(getStore());
   }
 
   /**

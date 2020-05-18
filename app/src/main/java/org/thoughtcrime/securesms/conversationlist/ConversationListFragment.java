@@ -20,7 +20,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -30,7 +29,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -92,6 +90,7 @@ import org.thoughtcrime.securesms.components.reminder.ServiceOutageReminder;
 import org.thoughtcrime.securesms.components.reminder.ShareReminder;
 import org.thoughtcrime.securesms.components.reminder.SystemSmsImportReminder;
 import org.thoughtcrime.securesms.components.reminder.UnauthorizedReminder;
+import org.thoughtcrime.securesms.conversation.ConversationFragment;
 import org.thoughtcrime.securesms.conversationlist.ConversationListAdapter.ItemClickListener;
 import org.thoughtcrime.securesms.conversationlist.model.MessageResult;
 import org.thoughtcrime.securesms.conversationlist.model.SearchResult;
@@ -104,7 +103,7 @@ import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.events.ReminderUpdateEvent;
 import org.thoughtcrime.securesms.insights.InsightsLauncher;
 import org.thoughtcrime.securesms.jobs.ServiceOutageDetectionJob;
-import org.thoughtcrime.securesms.lock.RegistrationLockDialog;
+import org.thoughtcrime.securesms.lock.RegistrationLockV1Dialog;
 import org.thoughtcrime.securesms.lock.v2.CreateKbsPinActivity;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mediasend.MediaSendActivity;
@@ -116,10 +115,11 @@ import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.notifications.MarkReadReceiver;
 import org.thoughtcrime.securesms.notifications.MessageNotifier;
 import org.thoughtcrime.securesms.permissions.Permissions;
-import org.thoughtcrime.securesms.profiles.ProfileName;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.service.KeyCachingService;
+import org.thoughtcrime.securesms.sms.MessageSender;
 import org.thoughtcrime.securesms.util.AvatarUtil;
+import org.thoughtcrime.securesms.util.CachedInflater;
 import org.thoughtcrime.securesms.util.ServiceUtil;
 import org.thoughtcrime.securesms.util.StickyHeaderDecoration;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
@@ -240,7 +240,7 @@ public class ConversationListFragment extends MainFragment implements LoaderMana
 
     RatingManager.showRatingDialogIfNecessary(requireContext());
 
-    RegistrationLockDialog.showReminderIfNecessary(this);
+    RegistrationLockV1Dialog.showReminderIfNecessary(this);
 
     TooltipCompat.setTooltipText(searchAction, getText(R.string.SearchToolbar_search_for_conversations_contacts_and_messages));
   }
@@ -264,6 +264,12 @@ public class ConversationListFragment extends MainFragment implements LoaderMana
       list.removeItemDecoration(searchAdapterDecoration);
       list.setAdapter(defaultAdapter);
     }
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    ConversationFragment.prepare(requireContext());
   }
 
   @Override
@@ -305,6 +311,10 @@ public class ConversationListFragment extends MainFragment implements LoaderMana
 
   @Override
   public boolean onBackPressed() {
+    return closeSearchIfOpen();
+  }
+
+  private boolean closeSearchIfOpen() {
     if (searchToolbar.isVisible() || activeAdapter == searchAdapter) {
       activeAdapter = defaultAdapter;
       list.removeItemDecoration(searchAdapterDecoration);
@@ -345,7 +355,6 @@ public class ConversationListFragment extends MainFragment implements LoaderMana
     getNavigator().goToConversation(threadRecord.getRecipient().getId(),
                                     threadRecord.getThreadId(),
                                     threadRecord.getDistributionType(),
-                                    threadRecord.getLastSeen(),
                                     -1);
   }
 
@@ -358,7 +367,6 @@ public class ConversationListFragment extends MainFragment implements LoaderMana
       getNavigator().goToConversation(contact.getId(),
                                       threadId,
                                       ThreadDatabase.DistributionTypes.DEFAULT,
-                                      -1,
                                       -1);
     });
   }
@@ -373,7 +381,6 @@ public class ConversationListFragment extends MainFragment implements LoaderMana
       getNavigator().goToConversation(message.conversationRecipient.getId(),
                                       message.threadId,
                                       ThreadDatabase.DistributionTypes.DEFAULT,
-                                      -1,
                                       startingPosition);
     });
   }
@@ -689,8 +696,8 @@ public class ConversationListFragment extends MainFragment implements LoaderMana
     actionMode.setTitle(String.valueOf(defaultAdapter.getBatchSelections().size()));
   }
 
-  private void handleCreateConversation(long threadId, Recipient recipient, int distributionType, long lastSeen) {
-    getNavigator().goToConversation(recipient.getId(), threadId, distributionType, lastSeen, -1);
+  private void handleCreateConversation(long threadId, Recipient recipient, int distributionType) {
+    getNavigator().goToConversation(recipient.getId(), threadId, distributionType, -1);
   }
 
   @Override
@@ -724,8 +731,7 @@ public class ConversationListFragment extends MainFragment implements LoaderMana
   @Override
   public void onItemClick(ConversationListItem item) {
     if (actionMode == null) {
-      handleCreateConversation(item.getThreadId(), item.getRecipient(),
-                               item.getDistributionType(), item.getLastSeen());
+      handleCreateConversation(item.getThreadId(), item.getRecipient(), item.getDistributionType());
     } else {
       ConversationListAdapter adapter = (ConversationListAdapter)list.getAdapter();
       adapter.toggleThreadInBatchSet(item.getThreadId());
@@ -818,6 +824,12 @@ public class ConversationListFragment extends MainFragment implements LoaderMana
   @Subscribe(threadMode = ThreadMode.MAIN)
   public void onEvent(ReminderUpdateEvent event) {
     updateReminders();
+  }
+
+  @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+  public void onEvent(MessageSender.MessageSentEvent event) {
+    EventBus.getDefault().removeStickyEvent(event);
+    closeSearchIfOpen();
   }
 
   protected @IdRes int getToolbarRes() {

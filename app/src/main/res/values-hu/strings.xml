@@ -33,7 +33,7 @@
   <string name="ApplicationPreferencesActivity_disable_signal_messages_and_calls_by_unregistering">Signal üzenetek és hívások letiltása a kiszolgálóról történő leregisztrálással. Ha a jövőben újra szeretnéd használni ezeket a szolgáltatásokat, akkor újra kell regisztrálnod telefonszámoddal.</string>
   <string name="ApplicationPreferencesActivity_error_connecting_to_server">Hiba történt a kiszolgálóhoz történő kapcsolódás során!</string>
   <string name="ApplicationPreferencesActivity_sms_enabled">SMS engedélyezve</string>
-  <string name="ApplicationPreferencesActivity_touch_to_change_your_default_sms_app">Koppints ide az alapértelmezett SMS alkalmazás megváltoztatásához</string>
+  <string name="ApplicationPreferencesActivity_touch_to_change_your_default_sms_app">Koppints az alapértelmezett SMS alkalmazás megváltoztatásához!</string>
   <string name="ApplicationPreferencesActivity_sms_disabled">SMS letiltva</string>
   <string name="ApplicationPreferencesActivity_touch_to_make_signal_your_default_sms_app">Koppints ide, hogy a Signal legyen az alapértelmezett SMS alkalmazás!</string>
   <string name="ApplicationPreferencesActivity_on">be</string>
@@ -76,6 +76,19 @@
   <string name="AudioSlidePlayer_error_playing_audio">Hiba történt a hang lejátszása során!</string>
   <!--BlockedContactsActivity-->
   <string name="BlockedContactsActivity_blocked_contacts">Blokkolt kontaktok</string>
+  <!--BlockUnblockDialog-->
+  <string name="BlockUnblockDialog_block_and_leave_s">%1$s letiltása és kilépés?</string>
+  <string name="BlockUnblockDialog_block_s">Letiltod %1$s-t?</string>
+  <string name="BlockUnblockDialog_you_will_no_longer_receive_messages_or_updates">Többé nem kapsz üzeneteket és frissítéseket ebből a csoportból, valamint a tagok nem fognak tudni újra hozzáadni a csoporthoz.</string>
+  <string name="BlockUnblockDialog_group_members_wont_be_able_to_add_you">A csoport tagjai nem fognak tudni újra hozzáadni ehhez a csoporthoz.</string>
+  <string name="BlockUnblockDialog_group_members_will_be_able_to_add_you">A tagok ezután újra hozzáadhatnak majd a csoporthoz.</string>
+  <string name="BlockUnblockDialog_you_will_be_able_to_call_and_message_each_other">Újra fogadhatsz üzeneteket és hívásokat ettől a kontakttól.</string>
+  <string name="BlockUnblockDialog_blocked_people_wont_be_able_to_call_you_or_send_you_messages">A letiltott személyek nem fognak tudni sem felhívni, sem pedig üzenetet küldeni neked.</string>
+  <string name="BlockUnblockDialog_unblock_s">Feloldod %1$s tiltását?</string>
+  <string name="BlockUnblockDialog_unblock">Tiltás feloldása</string>
+  <string name="BlockUnblockDialog_block">Letiltás</string>
+  <string name="BlockUnblockDialog_block_and_leave">Tiltás és kilépés</string>
+  <string name="BlockUnblockDialog_block_and_delete">Tiltás és törlés</string>
   <!--BucketedThreadMedia-->
   <string name="BucketedThreadMedia_Today">Ma</string>
   <string name="BucketedThreadMedia_Yesterday">Tegnap</string>
@@ -107,8 +120,10 @@
   <!--ClearProfileActivity-->
   <string name="ClearProfileActivity_remove">Eltávolítás</string>
   <string name="ClearProfileActivity_remove_profile_photo">Eltávolítod a profilképed?</string>
+  <string name="ClearProfileActivity_remove_group_photo">Eltávolítod a csoport képét?</string>
   <!--CommunicationActions-->
   <string name="CommunicationActions_no_browser_found">Nem található böngésző.</string>
+  <string name="CommunicationActions_no_email_app_found">Nem található e-mail alkalmazás.</string>
   <string name="CommunicationActions_a_cellular_call_is_already_in_progress">Egy mobilhívás épp folyamatban van.</string>
   <string name="CommunicationActions_start_video_call">Szeretnél videóhívást indítani?</string>
   <string name="CommunicationActions_start_voice_call">Szeretnél hanghívást indítani?</string>
@@ -157,6 +172,7 @@
   <string name="ConversationItem_read_more"> Tovább</string>
   <string name="ConversationItem_download_more"> További letöltése</string>
   <string name="ConversationItem_pending"> Függőben</string>
+  <string name="ConversationItem_this_message_was_deleted">Ez az üzenet ki lett törölve.</string>
   <!--ConversationActivity-->
   <string name="ConversationActivity_reset_secure_session_question">Újraindítod a biztonsági munkamenetet?</string>
   <string name="ConversationActivity_this_may_help_if_youre_having_encryption_problems">Ez akkor segíthet, ha titkosítással kapcsolatos problémák léptek fel ebben a beszélgetésben. Az üzeneteid meg lesznek tartva.</string>
@@ -191,7 +207,6 @@
   <string name="ConversationActivity_there_is_no_app_available_to_handle_this_link_on_your_device">Nem található eszközödön megfelelő alkalmazás a hivatkozás kezeléséhez.</string>
   <string name="ConversationActivity_to_send_audio_messages_allow_signal_access_to_your_microphone">Hangüzenetek küldéséhez engedélyezd, hogy a Signal hozzáférhessen a mikrofonhoz!</string>
   <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">A Signal-nak szüksége van a Mikrofon engedélyre, hogy hangüzeneteket küldhessen, de ez jelenleg nincs megadva. Kérlek menj az alkalmazásbeállításokhoz, válaszd az \"Engedélyek\"-et és engedélyezd az \"Mikrofon\"-t.</string>
-  <string name="ConversationActivity_to_call_s_signal_needs_access_to_your_microphone_and_camera">%s hívásához a Signal-nak hozzá kell férnie mikrofonodhoz és kamerádhoz.</string>
   <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">A Signal-nak szüksége van Mikrofon és Kamera engedélyekre %s felhívásához, de ez jelenleg nincs megadva. Kérlek menj az alkalmazásbeállításokhoz, válaszd az \"Engedélyek\"-et és engedélyezd a \"Mikrofon\"-t és a \"Kamera\"-t.</string>
   <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">Fotók és videók készítéséhez engedélyezd a Signal-nak a kamerához való hozzáférést!</string>
   <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">A Signal-nak szüksége van a Kamera engedélyre, hogy fotót vagy videót készíthessen, de ez jelenleg nincs megadva. Kérlek menj az alkalmazásbeállításokhoz, válaszd az \"Engedélyek\"-et és engedélyezd a \"Kamera\"-t.</string>
@@ -207,15 +222,6 @@
   <string name="ConversationActivity_no_results">Nincs találat</string>
   <string name="ConversationActivity_sticker_pack_installed">Matricacsomag telepítve</string>
   <string name="ConversationActivity_new_say_it_with_stickers">Új! Fejezd el matricákkal</string>
-  <string name="ConversationActivity_block_s">Letiltod %1$s-t?</string>
-  <string name="ConversationActivity_block_and_leave_s">%1$s letiltása és kilépés?</string>
-  <string name="ConversationActivity_unblock_s">Feloldod %1$s tiltását?</string>
-  <string name="ConversationActivity_you_will_be_able_to_message_and_call_each_other">Újra fogadhatsz üzeneteket és hívásokat ettől a kontakttól.</string>
-  <string name="ConversationActivity_group_members_will_be_able_to_add_you_to_this_group_again">A tagok ezután újra hozzáadhatnak majd a csoporthoz.</string>
-  <string name="ConversationActivity_blocked_people_will_not_be_able_to_call_you_or_send_you_messages">A letiltott felhasználók nem tudna sem felhívni, sem pedig üzenetet küldeni neked.</string>
-  <string name="ConversationActivity_you_will_leave_this_group_and_no_longer_receive_messages_or_updates">A csoport elhagyásával többé nem kapsz onnan sem üzeneteket sem frissítéseket.</string>
-  <string name="ConversationActivity_block">Letiltás</string>
-  <string name="ConversationActivity_block_and_delete">Letiltás és törlés</string>
   <string name="ConversationActivity_cancel">Mégse</string>
   <string name="ConversationActivity_delete_conversation">Beszélgetés törlése?</string>
   <string name="ConversationActivity_delete_and_leave_group">Csoport törlése és elhagyása?</string>
@@ -223,6 +229,8 @@
   <string name="ConversationActivity_you_will_leave_this_group_and_it_will_be_deleted_from_all_of_your_devices">Ha kilépsz a csoportból, akkor a csoport a többi társított eszközödön is törölve lesz.</string>
   <string name="ConversationActivity_delete">Törlés</string>
   <string name="ConversationActivity_delete_and_leave">Törlés és kilépés</string>
+  <string name="ConversationActivity__to_call_s_signal_needs_access_to_your_microphone">%1$s hívásához a Signalnak hozzá kell férnie mikrofonodhoz</string>
+  <string name="ConversationActivity__to_call_s_signal_needs_access_to_your_microphone_and_camera">%1$s hívásához a Signalnak hozzá kell férnie mikrofonodhoz és kamerádhoz.</string>
   <!--ConversationAdapter-->
   <plurals name="ConversationAdapter_n_unread_messages">
     <item quantity="one">%d olvasatlan üzenet</item>
@@ -261,6 +269,8 @@
   <string name="ConversationFragment_sms">SMS</string>
   <string name="ConversationFragment_deleting">Törlés</string>
   <string name="ConversationFragment_deleting_messages">Üzenetek törlése…</string>
+  <string name="ConversationFragment_delete_for_me">Törlés számomra</string>
+  <string name="ConversationFragment_delete_for_everyone">Törlés mindenki számára</string>
   <string name="ConversationFragment_quoted_message_not_found">Az eredeti üzenet nem található</string>
   <string name="ConversationFragment_quoted_message_no_longer_available">Az eredeti üzenet már nem érhető el</string>
   <string name="ConversationFragment_failed_to_open_message">Nem sikerült megnyitni az üzenetet</string>
@@ -361,6 +371,7 @@
   <!--GroupCreateActivity-->
   <string name="GroupCreateActivity_actionbar_title">Új csoport</string>
   <string name="GroupCreateActivity_actionbar_edit_title">Csoport szerkesztése</string>
+  <string name="GroupCreateActivity_actionbar_manage_title">Csoport kezelése</string>
   <string name="GroupCreateActivity_group_name_hint">Csoport neve</string>
   <string name="GroupCreateActivity_actionbar_mms_title">Új MMS csoport</string>
   <string name="GroupCreateActivity_contacts_dont_support_push">Olyan kontaktot is kiválasztottál, aki nem támogatja a Signal csoportokat, így ez a csoport MMS lesz.</string>
@@ -374,12 +385,83 @@
   <string name="GroupCreateActivity_cannot_add_non_push_to_existing_group">Nem lehet %1$s-t hozzáadni, mert nem Signal felhasználó.</string>
   <string name="GroupCreateActivity_loading_group_details">A csoport részletes adatainak betöltése…</string>
   <string name="GroupCreateActivity_youre_already_in_the_group">Már a csoportban vagy.</string>
+  <string name="GroupCreateActivity_remove_member_description">Tag eltávolítása</string>
   <!--GroupShareProfileView-->
   <string name="GroupShareProfileView_share_your_profile_name_and_photo_with_this_group">Megosztod a profilneved- és képed ezzel a csoporttal?</string>
   <string name="GroupShareProfileView_do_you_want_to_make_your_profile_name_and_photo_visible_to_all_current_and_future_members_of_this_group">Szeretnéd láthatóvá tenni profilneved- és képed a csoport összes jelenlegi és jövőbeli tagja számára?</string>
   <string name="GroupShareProfileView_make_visible">Láthatóvá tétel</string>
   <!--GroupMembersDialog-->
   <string name="GroupMembersDialog_you">Te</string>
+  <!--GV2 access levels-->
+  <string name="GroupManagement_access_level_anyone">Bárki</string>
+  <string name="GroupManagement_access_level_all_members">Összes tag</string>
+  <string name="GroupManagement_access_level_only_admins">Csak adminisztrátorok</string>
+  <!--PendingMembersActivity-->
+  <string name="PendingMemberInvitesActivity_pending_group_invites">Függőben lévő csoportmeghívók</string>
+  <string name="PendingMembersActivity_people_you_invited">Általad meghívott személyek</string>
+  <string name="PendingMembersActivity_you_have_no_pending_invites">Nincsenek függőben lévő meghívóid.</string>
+  <string name="PendingMembersActivity_invites_by_other_group_members">Más tagok csoportmeghívói</string>
+  <string name="PendingMembersActivity_no_pending_invites_by_other_group_members">Nincsenek a csoport más tagjaitól származó, függőben lévő meghívók.</string>
+  <string name="PendingMembersActivity_missing_detail_explanation">A csoport más tagjai által meghívott személyek részletes információi nem jelennek meg. Amint a meghívott elfogadja a felkérést, ezek az információk megosztásra kerülnek az egész csoporttal. A csatlakozás elfogadásáig a meghívottak nem tudják elolvasni az üzeneteket.</string>
+  <string name="PendingMembersActivity_cancel_invite">Meghívó törlése</string>
+  <string name="PendingMembersActivity_cancel_invites">Meghívók törlése</string>
+  <plurals name="PendingMembersActivity_cancel_d_invites">
+    <item quantity="one">Meghívó törlése</item>
+    <item quantity="other">%1$d meghívó törlése</item>
+  </plurals>
+  <plurals name="PendingMembersActivity_error_canceling_invite">
+    <item quantity="one">Nem sikerült törölni a meghívót</item>
+    <item quantity="other">Nem sikerült törölni a meghívókat</item>
+  </plurals>
+  <!--AddGroupDetailsFragment-->
+  <string name="AddGroupDetailsFragment__name_this_group">Csoport elnevezése</string>
+  <string name="AddGroupDetailsFragment__create">Létrehozás</string>
+  <string name="AddGroupDetailsFragment__members">Tagok</string>
+  <string name="AddGroupDetailsFragment__group_name_required">Csoport neve (kötelező)</string>
+  <string name="AddGroupDetailsFragment__this_field_is_required">A mező kitöltése kötelező.</string>
+  <string name="AddGroupDetailsFragment__groups_require_at_least_two_members">Egy csoportnak legalább két tagból kell állnia.</string>
+  <string name="AddGroupDetailsFragment__group_creation_failed">A csoport létrehozása nem sikerült.</string>
+  <string name="AddGroupDetailsFragment__try_again_later">Próbáld újra később.</string>
+  <string name="AddGroupDetailsFragment__youve_selected_a_contact_that_doesnt">Olyan kontaktot választottál ki, aki nem támogatja a Signal csoportokat, így ez a csoport MMS lesz.</string>
+  <string name="AddGroupDetailsFragment__remove">Eltávolítás</string>
+  <string name="AddGroupDetailsFragment__sms_contact">SMS kontakt</string>
+  <!--ManageGroupActivity-->
+  <string name="ManageGroupActivity_disappearing_messages">Eltűnő üzenetek</string>
+  <string name="ManageGroupActivity_pending_group_invites">Függőben lévő csoportmeghívók</string>
+  <string name="ManageGroupActivity_who_can_edit_group_membership">Ki szerkesztheti a csoporttagságot</string>
+  <string name="ManageGroupActivity_who_can_edit_group_info">Ki szerkesztheti a csoport adatait</string>
+  <string name="ManageGroupActivity_block_group">Csoport letiltása</string>
+  <string name="ManageGroupActivity_leave_group">Kilépés a csoportból</string>
+  <string name="ManageGroupActivity_mute_notifications">Értesítések némítása</string>
+  <string name="ManageGroupActivity_custom_notifications">Egyedi értesítések</string>
+  <string name="ManageGroupActivity_until_s">%1$s-ig</string>
+  <string name="ManageGroupActivity_off">kikapcsolva</string>
+  <string name="ManageGroupActivity_on">Be</string>
+  <string name="ManageGroupActivity_add_members">Tagok hozzáadása</string>
+  <string name="ManageGroupActivity_view_all_members">Összes tag megtekintés</string>
+  <string name="ManageGroupActivity_you_dont_have_the_rights_to_do_this">Ehhez nincs elegendő jogosultságod</string>
+  <string name="ManageGroupActivity_not_capable">Egy általad hozzáadott csoporttag nem támogatja az új csoportokat, és frissítenie kell a Signalt</string>
+  <string name="ManageGroupActivity_failed_to_update_the_group">Nem sikerült a csoport frissítése</string>
+  <string name="ManageGroupActivity_youre_not_a_member_of_the_group">Nem vagy a csoport tagja</string>
+  <string name="ManageGroupActivity_edit_name_and_picture">Név és kép szerkesztése</string>
+  <string name="GroupManagement_choose_who_can_add_or_invite_new_members">Add meg, hogy ki adhat hozzá és hívhat meg új tagokat</string>
+  <string name="GroupManagement_choose_who_can_change_the_group_name_and_photo">Add meg, hogy ki változtathatja meg a csoport nevét és képét</string>
+  <plurals name="GroupMemberList_invited">
+    <item quantity="one">%1$s meghívott 1 személyt</item>
+    <item quantity="other">%1$s meghívott %2$d személyt</item>
+  </plurals>
+  <!--CustomNotificationsDialogFragment-->
+  <string name="CustomNotificationsDialogFragment__custom_notifications">Egyedi értesítések</string>
+  <string name="CustomNotificationsDialogFragment__messages">Üzenetek</string>
+  <string name="CustomNotificationsDialogFragment__use_custom_notifications">Egyéni értesítések használata</string>
+  <string name="CustomNotificationsDialogFragment__notification_sound">Értesítés hangja</string>
+  <string name="CustomNotificationsDialogFragment__vibrate">Rezgés</string>
+  <!--GV2 Invite cancellation confirmation-->
+  <string name="GroupManagement_cancel_own_single_invite">Biztosan vissza szeretnéd vonni a %1$s részére küldött meghívót?</string>
+  <plurals name="GroupManagement_cancel_others_invites">
+    <item quantity="one">Biztosan vissza szeretnéd vonni a %1$s által küldött meghívót?</item>
+    <item quantity="other">Biztosan vissza szeretnéd vonni a %1$s által küldött %2$d db meghívót?</item>
+  </plurals>
   <!--CropImageActivity-->
   <string name="CropImageActivity_group_avatar">Csoport avatar</string>
   <string name="CropImageActivity_profile_avatar">Avatar</string>
@@ -408,6 +490,8 @@
   <string name="InviteActivity_friends_dont_let_friends_text_unencrypted">Az igaz barátok nem hagyják barátaiknak, hogy titkosítatlanul csevegjenek.</string>
   <!--Job-->
   <string name="Job_working_in_the_background">Feldolgozás a háttérben…</string>
+  <!--LearnMoreTextView-->
+  <string name="LearnMoreTextView_learn_more">További információ</string>
   <!--MessageDetailsRecipient-->
   <string name="MessageDetailsRecipient_failed_to_send">Nem sikerült elküldeni</string>
   <string name="MessageDetailsRecipient_new_safety_number">Új biztonsági szám</string>
@@ -503,6 +587,7 @@
   <!--MediaRepository-->
   <string name="MediaRepository_all_media">Összes médiafájl</string>
   <!--MessageRecord-->
+  <string name="MessageRecord_unknown">Ismeretlen</string>
   <string name="MessageRecord_message_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported">Egy olyan üzenet érkezett, amely a Signal egy régebbi, már nem támogatott verziójával lett titkosítva. Kérd meg a feladót, hogy frissítsen a legfrissebb verzióra, majd küldje el újra az üzenetet!</string>
   <string name="MessageRecord_left_group">Kiléptél a csoportból.</string>
   <string name="MessageRecord_you_updated_group">Frissítetted a csoportot.</string>
@@ -518,6 +603,64 @@
   <string name="MessageRecord_s_disabled_disappearing_messages">%1$s letiltotta az eltűnő üzeneteket.</string>
   <string name="MessageRecord_you_set_disappearing_message_time_to_s">Beállítottad, hogy az üzenetek ennyi idő után tűnjenek el: %1$s.</string>
   <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s beállította, hogy az üzenetek ennyi idő után tűnjenek el: %2$s.</string>
+  <!--GV2 specific-->
+  <string name="MessageRecord_you_created_the_group">Létrehoztad a csoportot.</string>
+  <string name="MessageRecord_group_updated">Csoport frissítve. </string>
+  <!--GV2 member additions-->
+  <string name="MessageRecord_you_added_s">Hozzáadtad %1$s-t.</string>
+  <string name="MessageRecord_s_added_s">%1$s hozzáadta %2$s-t.</string>
+  <string name="MessageRecord_s_added_you">%1$s hozzáadott a csoporthoz.</string>
+  <string name="MessageRecord_you_joined_the_group">Csatlakoztál a csoporthoz.</string>
+  <string name="MessageRecord_s_joined_the_group">%1$s csatlakozott a csoporthoz.</string>
+  <!--GV2 member removals-->
+  <string name="MessageRecord_you_removed_s">Eltávolítottad %1$s-t.</string>
+  <string name="MessageRecord_s_removed_s">%1$s eltávolította %2$s-t.</string>
+  <string name="MessageRecord_s_removed_you_from_the_group">%1$s eltávolított téged a csoportból.</string>
+  <string name="MessageRecord_you_left_the_group">Kiléptél a csoportból.</string>
+  <string name="MessageRecord_s_left_the_group">%1$s kilépett a csoportból.</string>
+  <!--GV2 role change-->
+  <string name="MessageRecord_you_made_s_an_admin">%1$s admin jogosultságokat kapott tőled.</string>
+  <string name="MessageRecord_s_made_s_an_admin">%1$s admin jogosultságokat adott neki: %2$s </string>
+  <string name="MessageRecord_s_made_you_an_admin">%1$s admin jogosultságokat adott neked.</string>
+  <string name="MessageRecord_you_revoked_admin_privileges_from_s">Visszavontad %1$s admin jogosultságait.</string>
+  <string name="MessageRecord_s_revoked_your_admin_privileges">%1$s visszavonta admin jogosultságaidat.</string>
+  <string name="MessageRecord_s_revoked_admin_privileges_from_s">%1$s visszavonta %2$s admin jogosultságait.</string>
+  <!--GV2 invitations-->
+  <string name="MessageRecord_you_invited_s_to_the_group">Meghívtad %1$s-t a csoportba.</string>
+  <string name="MessageRecord_s_invited_you_to_the_group">%1$s meghívott a csoportba.</string>
+  <plurals name="MessageRecord_s_invited_members">
+    <item quantity="one">%1$s meghívott 1 db személyt a csoportba.</item>
+    <item quantity="other">%1$s meghívott %2$d db személyt a csoportba.</item>
+  </plurals>
+  <!--GV2 invitation revokes-->
+  <plurals name="MessageRecord_you_revoked_invites">
+    <item quantity="one">Visszavontál egy csoportmeghívót.</item>
+    <item quantity="other">Visszavontál %1$d db csoportmeghívót.</item>
+  </plurals>
+  <plurals name="MessageRecord_s_revoked_invites">
+    <item quantity="one">%1$s visszavont egy csoportmeghívót.</item>
+    <item quantity="other">%1$s visszavont %2$d db csoportmeghívót.</item>
+  </plurals>
+  <string name="MessageRecord_someone_declined_an_invitation_to_the_group">Valaki visszautasított egy meghívót a csoportba.</string>
+  <string name="MessageRecord_you_declined_the_invitation_to_the_group">Visszautasítottad a meghívást a csoportba.</string>
+  <!--GV2 invitation acceptance-->
+  <string name="MessageRecord_you_accepted_invite">Elfogadtad a meghívást a csoportba.</string>
+  <string name="MessageRecord_s_accepted_invite">%1$s elfogadott egy meghívót a csoportba.</string>
+  <string name="MessageRecord_you_added_invited_member_s">Hozzáadtad a %1$s nevű meghívott tagot.</string>
+  <string name="MessageRecord_s_added_invited_member_s">%1$s hozzáadta a %2$s nevű meghívott tagot.</string>
+  <!--GV2 title change-->
+  <string name="MessageRecord_you_changed_the_group_name_to_s">Megváltoztattad a csoport nevét erre: \"%1$s\".</string>
+  <string name="MessageRecord_s_changed_the_group_name_to_s">%1$s megváltoztatta a csoport nevét erre: \"%2$s\".</string>
+  <!--GV2 avatar change-->
+  <string name="MessageRecord_you_changed_the_group_avatar">Megváltoztattad a csoport képét.</string>
+  <string name="MessageRecord_s_changed_the_group_avatar">%1$s megváltoztatta a csoport képét.</string>
+  <!--GV2 attribute access level change-->
+  <string name="MessageRecord_you_changed_who_can_edit_group_info_to_s">Megváltoztattad a csoport információinak szerkeszthetőségét erre: \"%1$s\".</string>
+  <string name="MessageRecord_s_changed_who_can_edit_group_info_to_s">%1$s megváltoztattad a csoport információinak szerkeszthetőségét erre: \"%2$s\".</string>
+  <!--GV2 membership access level change-->
+  <string name="MessageRecord_you_changed_who_can_edit_group_membership_to_s">Megváltoztattad a csoport tagjainak szerkeszthetőségét erre: \"%1$s\".</string>
+  <string name="MessageRecord_s_changed_who_can_edit_group_membership_to_s">%1$s megváltoztatta a csoport tagjainak szerkeszthetőségét erre: \"%2$s\".</string>
+  <!--End of GV2 specific update messages-->
   <string name="MessageRecord_your_safety_number_with_s_has_changed">Megváltozott a biztonsági számod vele: %s.</string>
   <string name="MessageRecord_you_marked_your_safety_number_with_s_verified">Biztonsági számodat ellenőrzöttnek jelölted a következővel: %s</string>
   <string name="MessageRecord_you_marked_your_safety_number_with_s_verified_from_another_device">Biztonsági számodat egy másik eszközről megerősítetlennek jelölted %s nevű partnereddel</string>
@@ -530,6 +673,7 @@
   <string name="MessageRequestBottomView_unblock">Tiltás feloldása</string>
   <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_they_wont_know_youve_seen_their_messages_until_you_accept">Engedélyezed, hogy %1$s üzenetet küldjön számodra? Amíg ebbe bele nem egyezel, addig nem értesül arról sem, hogy elolvastad-e az üzeneteit.</string>
   <string name="MessageRequestBottomView_do_you_want_to_join_the_group_s_they_wont_know_youve_seen_their_messages_until_you_accept">Szeretnél csatlakozni a(z) %1$s csoporthoz? Amíg ebbe bele nem egyezel, addig nem értesülnek arról sem, hogy elolvastad-e üzeneteiket.</string>
+  <string name="MessageRequestBottomView_you_were_invited_to_join_the_group_s">Meghívtak a %1$s csoportba. Engedélyezed, hogy a csoport tagjai üzenetet küldhessenek neked?</string>
   <string name="MessageRequestBottomView_unblock_s_to_message_and_call_each_other">Oldd fel %1$s tiltását, hogy üzenhessetek egymásnak és hívhassátok egymást.</string>
   <string name="MessageRequestBottomView_unblock_to_allow_group_members_to_add_you_to_this_group_again">Oldd fel a tiltást, hogy a csoport tagjai újra hozzáadhassanak a csoporthoz.</string>
   <string name="MessageRequestProfileView_member_of_one_group">%1$s tagja</string>
@@ -590,6 +734,27 @@
   <!--PlayServicesProblemFragment-->
   <string name="PlayServicesProblemFragment_the_version_of_google_play_services_you_have_installed_is_not_functioning">Az általad használt Google Play Szolgáltatások nem működnek megfelelően.
 Kérlek telepítsd újra a Google Play Szolgáltatásokat, majd próbáld újra!</string>
+  <!--PinRestoreEntryFragment-->
+  <string name="PinRestoreEntryFragment_incorrect_pin">Hibás PIN</string>
+  <string name="PinRestoreEntryFragment_skip_pin_entry">Kihagyod a PIN bevitelét?</string>
+  <string name="PinRestoreEntryFragment_need_help">Segítségre van szükséged?</string>
+  <string name="PinRestoreEntryFragment_your_pin_is_a_d_digit_code">A PIN kódod egy általad létrehozott %1$d+ jegyű kód, amely lehet numerikus és alfanumerikus is.\n\nAmennyiben nem emlékszel PIN kódodra, lehetőséged van létrehozni egy újat. Ezután regisztrálhatsz, majd használhatod a fiókodat, de mentett beállításaid egy része, mint például a profil-információid elvesznek.</string>
+  <string name="PinRestoreEntryFragment_if_you_cant_remember_your_pin">Ha nem emlékszel PIN kódodra, létrehozhatsz egy újat. Regisztrálhatsz, majd használhatod a fiókodat, de mentett beállításaid egy része, mint például a profil-információid elvesznek.</string>
+  <string name="PinRestoreEntryFragment_create_new_pin">Új PIN létrehozása</string>
+  <string name="PinRestoreEntryFragment_contact_support">Segítségkérés</string>
+  <string name="PinRestoreEntryFragment_cancel">Mégse</string>
+  <string name="PinRestoreEntryFragment_skip">Kihagyás</string>
+  <plurals name="PinRestoreEntryFragment_you_have_d_attempt_remaining">
+    <item quantity="one">Már csak %1$d próbálkozásod maradt. Ha kifogysz belőlük, lehetőséged lesz új PIN létrehozására. Regisztrálhatsz újra, majd használatba veheted a fiókodat, de mentett beállításaid egy része, mint például a profilinformációid elvesznek. </item>
+    <item quantity="other">Még %1$d próbálkozásod maradt. Ha kifogysz belőlük, lehetőséged lesz új PIN létrehozására.  Regisztrálhatsz újra, majd használatba veheted a fiókodat, de mentett beállításaid egy része, mint például a profil-információid elvesznek. </item>
+  </plurals>
+  <string name="PinRestoreEntryFragment_signal_registration_need_help_with_pin">Signal regisztráció - Segítségkérés a PIN kód használatához Androidon</string>
+  <string name="PinRestoreEntryFragment_enter_alphanumeric_pin">Add meg az alfanumerikus PIN kódot</string>
+  <string name="PinRestoreEntryFragment_enter_numeric_pin">Add meg a számjegyekből álló PIN kódot</string>
+  <!--PinRestoreLockedFragment-->
+  <string name="PinRestoreLockedFragment_create_your_pin">PIN létrehozása</string>
+  <string name="PinRestoreLockedFragment_youve_run_out_of_pin_guesses">Kifogytál a PIN megadási lehetőségekből, de továbbra is hozzáférhetsz fiókodhoz, amennyiben létrehozol egy új PIN-t. A magánszférád védelme és a biztonságod érdekében fiókod csak a mentett profilbeállítások nélkül állítható vissza.</string>
+  <string name="PinRestoreLockedFragment_create_new_pin">Új PIN létrehozása</string>
   <!--RatingManager-->
   <string name="RatingManager_rate_this_app">Értékeld az alkalmazást</string>
   <string name="RatingManager_if_you_enjoy_using_this_app_please_take_a_moment">Ha szívesen használod ezt az alkalmazást, akkor kérlek szánj rá egy percet, hogy segíts nekünk értékelésed leadásával.</string>
@@ -604,16 +769,7 @@ Kérlek telepítsd újra a Google Play Szolgáltatásokat, majd próbáld újra!
   <!--ReactionsRecipientAdapter-->
   <string name="ReactionsRecipientAdapter_you">Te</string>
   <!--RecipientPreferencesActivity-->
-  <string name="RecipientPreferenceActivity_block_this_contact_question">Blokkolod ezt a kontaktot?</string>
-  <string name="RecipientPreferenceActivity_you_will_no_longer_receive_messages_and_calls_from_this_contact">Többé nem kapsz üzeneteket és hívásokat ettől a kontakttól.</string>
-  <string name="RecipientPreferenceActivity_block_and_leave_group">Letiltod és kilépsz a csoportból?</string>
-  <string name="RecipientPreferenceActivity_block_group">Letiltod a csoportot?</string>
-  <string name="RecipientPreferenceActivity_block_and_leave_group_description">Többé nem kapsz üzeneteket és frissítéseket ebből a csoportból.</string>
   <string name="RecipientPreferenceActivity_block">Blokkolás</string>
-  <string name="RecipientPreferenceActivity_unblock_this_contact_question">Feloldod a kontakt blokkolását?</string>
-  <string name="RecipientPreferenceActivity_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact">Újra kaphatsz üzeneteket és hívásokat ettől a kontakttól.</string>
-  <string name="RecipientPreferenceActivity_unblock_this_group_question">Feloldod a csoport blokkolását?</string>
-  <string name="RecipientPreferenceActivity_unblock_this_group_description">A csoport tagjai újra hozzáadhatnak a csoporthoz a későbbiekben.</string>
   <string name="RecipientPreferenceActivity_error_leaving_group">Hiba történt a csoportból történő kilépéskor</string>
   <string name="RecipientPreferenceActivity_unblock">Feloldás</string>
   <string name="RecipientPreferenceActivity_enabled">Engedélyezve</string>
@@ -633,6 +789,14 @@ Kérlek telepítsd újra a Google Play Szolgáltatásokat, majd próbáld újra!
   <string name="RedPhone_number_not_registered">A szám nincs regisztrálva!</string>
   <string name="RedPhone_the_number_you_dialed_does_not_support_secure_voice">Az általad tárcsázott szám nem támogatja a biztonságos hangátvitelt!</string>
   <string name="RedPhone_got_it">Rendben</string>
+  <!--WebRtcCallActivity-->
+  <string name="WebRtcCallActivity__tap_here_to_turn_on_your_video">Koppintsd ide a videókép bekapcsolásához</string>
+  <string name="WebRtcCallActivity__to_call_s_signal_needs_access_to_your_camera">%1$s hívásához a Signalnak hozzá kell férnie kamerádhoz</string>
+  <string name="WebRtcCallActivity__signal_s">Signal %1$s</string>
+  <string name="WebRtcCallActivity__calling">Hívás…</string>
+  <!--WebRtcCallView-->
+  <string name="WebRtcCallView__signal_voice_call">Signal hanghívás…</string>
+  <string name="WebRtcCallView__signal_video_call">Signal videóhívás…</string>
   <!--RegistrationActivity-->
   <string name="RegistrationActivity_select_your_country">Saját ország kiválasztása </string>
   <string name="RegistrationActivity_you_must_specify_your_country_code">Meg kell adnod az
@@ -674,6 +838,12 @@ szám (%s) érvénytelen.
   <string name="RegistrationActivity_phone_number_description">Telefonszám</string>
   <string name="RegistrationActivity_country_code_description">Országkód</string>
   <string name="RegistrationActivity_call">Hívás</string>
+  <!--RegistrationLockV2Dialog-->
+  <string name="RegistrationLockV2Dialog_turn_on_registration_lock">Bekapcsolod a regisztrációs zárat?</string>
+  <string name="RegistrationLockV2Dialog_turn_off_registration_lock">Kikapcsolod a regisztrációs zárat?</string>
+  <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Amennyiben elfelejted Signal PIN kódodat a következő Signal regisztáció alkalmával, 7 napra ki leszel zárva a fiókodból.</string>
+  <string name="RegistrationLockV2Dialog_turn_on">Bekapcsolás</string>
+  <string name="RegistrationLockV2Dialog_turn_off">Kikapcsolás</string>
   <!--RevealableMessageView-->
   <string name="RevealableMessageView_view_photo">Fotó megtekintése</string>
   <string name="RevealableMessageView_view_video">Videó megtekintése</string>
@@ -718,7 +888,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="SmsMessageRecord_secure_session_reset_s">%s újraindította a biztonságos munkamenetet.</string>
   <string name="SmsMessageRecord_duplicate_message">Üzenet duplikálása.</string>
   <string name="SmsMessageRecord_this_message_could_not_be_processed_because_it_was_sent_from_a_newer_version">Ez az üzenet nem dolgozható fel, mert a Signal egy újabb verziójából lett küldve. Kérd meg a partnered, hogy frissítés után ismét küldje el az üzenetet!   </string>
-  <string name="SmsMessageRecord_error_handling_incoming_message">Nem sikerült kezelni a bejövő üzenetet.</string>
+  <string name="SmsMessageRecord_error_handling_incoming_message">A bejövő üzenet kezelése sikertelen volt.</string>
   <!--StickerManagementActivity-->
   <string name="StickerManagementActivity_stickers">Matricák</string>
   <!--StickerManagementAdapter-->
@@ -738,8 +908,8 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="StickerPackPreviewActivity_failed_to_load_sticker_pack">Nem sikerült betölteni a matricacsomagot</string>
   <!--SubmitDebugLogActivity-->
   <string name="SubmitDebugLogActivity_edit">Szerkesztés</string>
-  <string name="SubmitDebugLogActivity_done">Kész</string>
-  <string name="SubmitDebugLogActivity_tap_a_line_to_delete_it">Koppints egy sorra annak törléséhez</string>
+  <string name="SubmitDebugLogActivity_done">Befejezés</string>
+  <string name="SubmitDebugLogActivity_tap_a_line_to_delete_it">Koppints egy sorra a törléshez</string>
   <string name="SubmitDebugLogActivity_submit">Küldés</string>
   <string name="SubmitDebugLogActivity_failed_to_submit_logs">Nem sikerült elküldeni a naplót</string>
   <string name="SubmitDebugLogActivity_success">Sikerült!</string>
@@ -747,6 +917,14 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="SubmitDebugLogActivity_copied_to_clipboard">Vágólapra másolva</string>
   <string name="SubmitDebugLogActivity_ok">Ok</string>
   <string name="SubmitDebugLogActivity_share">Megosztás</string>
+  <!--SupportEmailUtil-->
+  <string name="SupportEmailUtil_subject">Tárgy:</string>
+  <string name="SupportEmailUtil_signal_android_support_request">Signal Android támogatási kérés</string>
+  <string name="SupportEmailUtil_device_info">Eszköz információ:</string>
+  <string name="SupportEmailUtil_android_version">Android verzió:</string>
+  <string name="SupportEmailUtil_signal_version">Signal verzió:</string>
+  <string name="SupportEmailUtil_signal_package">Signal csomag:</string>
+  <string name="SupportEmailUtil_locale">Régió:</string>
   <!--ThreadRecord-->
   <string name="ThreadRecord_group_updated">Csoport frissítve</string>
   <string name="ThreadRecord_left_the_group">Elhagyta a csoportot</string>
@@ -760,6 +938,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="ThreadRecord_view_once_photo">Egyszer megjelenő fotó</string>
   <string name="ThreadRecord_view_once_video">Egyszer megjelenő videó</string>
   <string name="ThreadRecord_view_once_media">Egyszer megjelenő médiafájl</string>
+  <string name="ThreadRecord_this_message_was_deleted">Ez az üzenet ki lett törölve.</string>
   <string name="ThreadRecord_s_is_on_signal">%s a Signal-on van!</string>
   <string name="ThreadRecord_disappearing_messages_disabled">Eltűnő üzenetek letiltva</string>
   <string name="ThreadRecord_disappearing_message_time_updated_to_s">Eltűnő üzenet ideje beállítva erre: %s</string>
@@ -770,6 +949,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="ThreadRecord_message_could_not_be_processed">Az üzenet nem dolgozható fel</string>
   <string name="ThreadRecord_message_request">Kezdeményezett beszélgetés</string>
   <string name="ThreadRecord_s_added_you_to_the_group">%1$s hozzáadott a csoporthoz</string>
+  <string name="ThreadRecord_s_invited_you_to_the_group">%1$s meghívott a csoportba.</string>
   <!--UpdateApkReadyListener-->
   <string name="UpdateApkReadyListener_Signal_update">Signal frissítés</string>
   <string name="UpdateApkReadyListener_a_new_version_of_signal_is_available_tap_to_update">A Signal egy új verziója érhető el, koppints a frissítéshez</string>
@@ -869,6 +1049,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="MessageNotifier_reacted_s_to_your_view_once_photo">Reakció az egyszer megtekinthető fotódra: %1$s</string>
   <string name="MessageNotifier_reacted_s_to_your_view_once_video">Reakció az egyszer megtekinthető videódra: %1$s</string>
   <string name="MessageNotifier_reacted_s_to_your_sticker">Reakció a matricádra: %1$s</string>
+  <string name="MessageNotifier_this_message_was_deleted">Ez az üzenet ki lett törölve.</string>
   <!--Notification Channels-->
   <string name="NotificationChannel_messages">Alapértelmezett</string>
   <string name="NotificationChannel_calls">Hívások</string>
@@ -912,6 +1093,9 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <!--WebRtcCallActivity-->
   <string name="WebRtcCallActivity_to_answer_the_call_from_s_give_signal_access_to_your_microphone">Hogy felvedd a tőle érkező hívást: %s, adj engedélyt a Signal-nak mikrofonod eléréséhez!</string>
   <string name="WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls">A Signal-nak szüksége van a Mikrofon és Kamera engedélyekre, hogy képes legyen hívások indítására és fogadására, de ez jelenleg nincs megadva. Kérlek menj az alkalmazásbeállításokhoz, válaszd az \"Engedélyek\"-et és engedélyezd a \"Mikrofon\"-t és a \"Kamera\"-t.</string>
+  <string name="WebRtcCallActivity__answered_on_a_linked_device">Fogadva egy társított eszközön.</string>
+  <string name="WebRtcCallActivity__declined_on_a_linked_device">Elutasítva egy társított eszközön.</string>
+  <string name="WebRtcCallActivity__busy_on_a_linked_device">Foglalt egy társított eszközön.</string>
   <!--WebRtcCallScreen-->
   <string name="WebRtcCallScreen_new_safety_numbers">A biztonsági számod megváltozott a vele folytatott beszélgetésedhez: %1$s. Ez jelentheti azt, hogy valaki megpróbálja lehallgatni a kommunikációdat, vagy azt, hogy %2$s egyszerűen újratelepítette a Signal-t.
     </string>
@@ -919,6 +1103,14 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="WebRtcCallScreen_new_safety_number_title">Új biztonsági szám</string>
   <string name="WebRtcCallScreen_accept">Elfogadás</string>
   <string name="WebRtcCallScreen_end_call">Hívás befejezése</string>
+  <!--WebRtcCallScreen V2-->
+  <string name="WebRtcCallScreen__decline">Elutasítás</string>
+  <string name="WebRtcCallScreen__answer">Válasz</string>
+  <string name="WebRtcCallScreen__answer_without_video">Válasz videó nélkül</string>
+  <!--WebRtcAudioOutputToggle-->
+  <string name="WebRtcAudioOutputToggle__phone">Telefonszám</string>
+  <string name="WebRtcAudioOutputToggle__speaker">Hangszóró</string>
+  <string name="WebRtcAudioOutputToggle__bluetooth">Bluetooth</string>
   <!--WebRtcCallControls-->
   <string name="WebRtcCallControls_tap_to_enable_your_video">Koppints a videód engedélyezéséhez</string>
   <!--WebRtcCallControls Content Descriptions-->
@@ -953,6 +1145,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <!--contact_selection_activity-->
   <string name="contact_selection_activity__enter_name_or_number">Adj meg nevet vagy számot</string>
   <string name="contact_selection_activity__invite_to_signal">Meghívás a Signal-ba</string>
+  <string name="contact_selection_activity__new_group">Új csoport</string>
   <!--contact_filter_toolbar-->
   <string name="contact_filter_toolbar__clear_entered_text_description">Beírt szöveg törlése</string>
   <string name="contact_filter_toolbar__show_keyboard_description">Billentyázet megjelenítése</string>
@@ -1017,6 +1210,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <!--country_selection_fragment-->
   <string name="country_selection_fragment__loading_countries">Országok betöltése…</string>
   <string name="country_selection_fragment__search">Keresés</string>
+  <string name="country_selection_fragment__no_matching_countries">Nem található egyező ország</string>
   <!--device_add_fragment-->
   <string name="device_add_fragment__scan_the_qr_code_displayed_on_the_device_to_link">Szkenneld be az eszközön megjelenített QR kódot a társításhoz!</string>
   <!--device_link_fragment-->
@@ -1079,7 +1273,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="log_submit_activity__thanks">Köszönjük a segítségedet!</string>
   <string name="log_submit_activity__submitting">Küldés</string>
   <string name="log_submit_activity__no_browser_installed">Nincs telepítve böngésző</string>
-  <string name="log_submit_activity__button_dont_submit">Nincs küldés</string>
+  <string name="log_submit_activity__button_dont_submit">Mégse</string>
   <string name="log_submit_activity__button_submit">Küldés</string>
   <string name="log_submit_activity__button_got_it">Rendben</string>
   <string name="log_submit_activity__button_compose_email">E-mail írása</string>
@@ -1128,6 +1322,9 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="CreateProfileActivity_next">Tovább</string>
   <string name="CreateProfileActivity__username">Felhasználónév</string>
   <string name="CreateProfileActivity__create_a_username">Felhasználónév létrehozása</string>
+  <!--EditProfileFragment-->
+  <string name="EditProfileFragment__edit_group_name_and_photo">Csoport nevének és képének szerkesztése</string>
+  <string name="EditProfileFragment__group_name">Csoport neve</string>
   <!--recipient_preferences_activity-->
   <string name="recipient_preference_activity__shared_media">Megosztott médiafájlok</string>
   <!--recipient_preferences-->
@@ -1198,26 +1395,32 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="MessageRequestsMegaphone__you_can_now_choose_whether_to_accept">Mostantól minden új beszélgetés előtt eldöntheted, hogy jóváhagyod-e azt. Ehhez a következő új opciók fognak megjelenni: \"Elfogadás\", \"Törlés\" és \"Tiltás\"</string>
   <!--HelpFragment-->
   <string name="HelpFragment__help">Súgó</string>
-  <string name="HelpFragment__have_you_read_our_faq_yet">Olvastad már a GYIK-et?</string>
+  <string name="HelpFragment__have_you_read_our_faq_yet">Láttad már a GYIK-et?</string>
   <string name="HelpFragment__next">Tovább</string>
   <string name="HelpFragment__contact_us">Kapcsolat</string>
-  <string name="HelpFragment__tell_us_whats_going_on">Mondd el, mi a helzyet</string>
-  <string name="HelpFragment__include_debug_log">Mellékelj hibakeresési naplót.</string>
+  <string name="HelpFragment__tell_us_whats_going_on">Mondd el, mi történt</string>
+  <string name="HelpFragment__include_debug_log">Hibakeresési napló csatolása</string>
   <string name="HelpFragment__whats_this">Mi ez?</string>
   <string name="HelpFragment__how_do_you_feel">Hogy érzed magad? (opcionális)</string>
   <string name="HelpFragment__support_info">Támogatás információ</string>
-  <string name="HelpFragment__subject">Tárgy:</string>
   <string name="HelpFragment__signal_android_support_request">Signal Android támogatási kérés</string>
-  <string name="HelpFragment__device_info">Eszköz információ:</string>
-  <string name="HelpFragment__android_version">Android verzió:</string>
-  <string name="HelpFragment__signal_version">Signal verzió:</string>
-  <string name="HelpFragment__locale">Régió:</string>
   <string name="HelpFragment__debug_log">Hibakeresési napló:</string>
   <string name="HelpFragment__na">ismeretlen</string>
   <string name="HelpFragment__could_not_upload_logs">Nem sikerült feltölteni a naplót</string>
   <string name="HelpFragment__signal_support">Signal támogatás</string>
   <string name="HelpFragment__please_be_as_descriptive_as_possible">Hogy megérthessük a problémát, fogalmazz olyan pontosan, amennyire csak lehetséges!</string>
   <string name="HelpFragment__no_email_app_found">Nem található e-mail alkalmazás.</string>
+  <!--ReactWithAnyEmojiBottomSheetDialogFragment-->
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__recently_used">Nemrég használt</string>
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__smileys_and_people">Smiley-k és emberek</string>
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__nature">Természet</string>
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__food">Étel</string>
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__activities">Tevékenységek</string>
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__places">Helyek</string>
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__objects">Tárgyak</string>
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__symbols">Szimbólumok</string>
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__flags">Zászlók</string>
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__emoticons">Emotikonok</string>
   <!--arrays.xml-->
   <string name="arrays__import_export">Importálás</string>
   <string name="arrays__use_default">Alapértelmezett használata</string>
@@ -1257,8 +1460,8 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="preferences__use_signal_for_viewing_and_storing_all_incoming_multimedia_messages">Signal használata minden bejövő multimédia üzenethez</string>
   <string name="preferences__pref_enter_sends_title">Küldés az Enter lenyomásával</string>
   <string name="preferences__pressing_the_enter_key_will_send_text_messages">Az Enter billentyű megnyomása elküldi a szöveges üzeneteket</string>
-  <string name="preferences__send_link_previews">Hivatkozások előnézeti képének küldése</string>
-  <string name="preferences__previews_are_supported_for">Az előnézeti képek az Imgur, Instagram, Pinterest, Reddit és YouTube szolgáltatásokhoz érhetőek el.</string>
+  <string name="preferences__send_link_previews">Előnézeti képek küldése</string>
+  <string name="preferences__previews_are_supported_for">Az előnézeti képek az Imgur, az Instagram, a Pinterest, a Reddit és a YouTube szolgáltatásokhoz érhetőek el.</string>
   <string name="preferences__choose_identity">Azonosító választása</string>
   <string name="preferences__choose_your_contact_entry_from_the_contacts_list">Válaszd ki saját névjegyed a névjegyzékből.</string>
   <string name="preferences__change_passphrase">Jelmondat megváltoztatása</string>
@@ -1275,7 +1478,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="preferences__led_color">LED színe</string>
   <string name="preferences__led_color_unknown">Ismeretlen</string>
   <string name="preferences__pref_led_blink_title">LED villogás mintázata</string>
-  <string name="preferences__sound">Hang</string>
+  <string name="preferences__sound">Dallam</string>
   <string name="preferences__silent">Csendes</string>
   <string name="preferences__repeat_alerts">Figyelmeztetések ismétlése</string>
   <string name="preferences__never">Soha</string>
@@ -1314,7 +1517,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="preferences__storage">Tárolás</string>
   <string name="preferences__conversation_length_limit">Beszélgetés hosszának korlátja</string>
   <string name="preferences__trim_all_conversations_now">Összes beszélgetés csonkítása most</string>
-  <string name="preferences__scan_through_all_conversations_and_enforce_conversation_length_limits">Az összes beszélgetés vizsgálata és a beszélgetésekre vonatkozó hosszkorlátozás érvényesítése</string>
+  <string name="preferences__scan_through_all_conversations_and_enforce_conversation_length_limits">Az összes beszélgetés vizsgálata, és a beszélgetésekre vonatkozó hosszkorlátozás érvényesítése</string>
   <string name="preferences__linked_devices">Társított eszközök</string>
   <string name="preferences__light_theme">Világos</string>
   <string name="preferences__dark_theme">Sötét</string>
@@ -1326,20 +1529,20 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="preferences__signal_messages_and_calls">Signal üzenetek és hívások</string>
   <string name="preferences__free_private_messages_and_calls">Ingyenes és privát üzenetek, valamint hívások Signal felhasználók részére</string>
   <string name="preferences__submit_debug_log">Hibakeresési napló küldése</string>
-  <string name="preferences__support_wifi_calling">\'WiFi Hívás\' kompatibilitási mód</string>
-  <string name="preferences__enable_if_your_device_supports_sms_mms_delivery_over_wifi">Engedélyezd, amennyiben eszközöd az SMS-eket és MMS-eket WiFi-n keresztül kézbesíti (csak akkor engedélyezd, ha a \'WiFi hívás\' is engedélyezve van eszközödön)</string>
+  <string name="preferences__support_wifi_calling">\'WiFi hívás\' kompatibilitási mód</string>
+  <string name="preferences__enable_if_your_device_supports_sms_mms_delivery_over_wifi">Akkor engedélyezd, ha eszközöd az SMS-eket és MMS-eket WiFi-n keresztül kézbesíti (csak akkor engedélyezd, ha a \'WiFi hívás\' is engedélyezve van eszközödön)</string>
   <string name="preferences__incognito_keyboard">Inkognitó billentyűzet</string>
   <string name="preferences__read_receipts">Olvasási nyugták</string>
   <string name="preferences__if_read_receipts_are_disabled_you_wont_be_able_to_see_read_receipts">Ha az olvasási nyugták le vannak tiltva, te sem fogod látni mások olvasási nyugtáit.</string>
-  <string name="preferences__typing_indicators">Gépelésindikátorok</string>
-  <string name="preferences__if_typing_indicators_are_disabled_you_wont_be_able_to_see_typing_indicators">Ha a gépelés-indikátorod ki van kapcsolva, nem fogod látni mások gépelés-indikátorát sem.</string>
+  <string name="preferences__typing_indicators">Gépelés-indikátorok</string>
+  <string name="preferences__if_typing_indicators_are_disabled_you_wont_be_able_to_see_typing_indicators">Ha a gépelés-indikátorod ki van kapcsolva, te sem fogsz értesülni róla, ha mások épp gépelnek.</string>
   <string name="preferences__request_keyboard_to_disable_personalized_learning">Tanulás letiltásának kérése a billentyűzettől (személyre szabás kikapcsolása)</string>
   <string name="preferences_app_protection__blocked_contacts">Blokkolt kontaktok</string>
-  <string name="preferences_chats__when_using_mobile_data">Mobilinternet használatakor</string>
-  <string name="preferences_chats__when_using_wifi">Wi-Fi használatakor</string>
+  <string name="preferences_chats__when_using_mobile_data">Mobilinternet használata során</string>
+  <string name="preferences_chats__when_using_wifi">Wi-Fi használata során</string>
   <string name="preferences_chats__when_roaming">Barangoláskor</string>
   <string name="preferences_chats__media_auto_download">Médiafájlok automatikus letöltése</string>
-  <string name="preferences_chats__message_trimming">Üzenetek csonkítása</string>
+  <string name="preferences_chats__message_trimming">Beszélgetések csonkítása</string>
   <string name="preferences_storage__storage_usage">Tárhelyhasználat</string>
   <string name="preferences_storage__photos">Fotók</string>
   <string name="preferences_storage__videos">Videók</string>
@@ -1350,7 +1553,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="preferences_advanced__disable_signal_built_in_emoji_support">A Signal beépített emoji-támogatásának letiltása</string>
   <string name="preferences_advanced__relay_all_calls_through_the_signal_server_to_avoid_revealing_your_ip_address">A hívások átjátszása a Signal szerverein annak érdekében, hogy IP címed telefonhívás során is rejtve maradjon partnered előtt. Engedélyezésével a hívások minősége gyengébb lesz.</string>
   <string name="preferences_advanced__always_relay_calls">Összes hívás átjátszása</string>
-  <string name="preferences_app_protection__app_access">Alkalmazás hozzáférés</string>
+  <string name="preferences_app_protection__app_access">Hozzáférés az alkalmazáshoz</string>
   <string name="preferences_app_protection__communication">Kommunikáció</string>
   <string name="preferences_chats__chats">Csevegések</string>
   <string name="preferences_notifications__messages">Üzenetek</string>
@@ -1368,7 +1571,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="preferences_communication__sealed_sender_display_indicators">Indikátorok megjelenítése</string>
   <string name="preferences_communication__sealed_sender_display_indicators_description">Jelenítsen meg egy státuszikont a rejtett feladóval kézbesített üzenetek \"Üzenet részletei\" menüpontjában.</string>
   <string name="preferences_communication__sealed_sender_allow_from_anyone">Engedélyezés mindenkitől</string>
-  <string name="preferences_communication__sealed_sender_allow_from_anyone_description">Rejtett feladóval érkező üzenetek engedélyezése olyan nem-kontaktoktól és személyektől is, akikkel nem osztottad meg profilod.</string>
+  <string name="preferences_communication__sealed_sender_allow_from_anyone_description">Rejtett feladóval érkező üzenetek engedélyezése olyan nem-kontaktoktól és személyektől is, akikkel nem osztottad meg a profilodat.</string>
   <string name="preferences_communication__sealed_sender_learn_more">További információ</string>
   <!--****************************************-->
   <!--menus-->
@@ -1407,7 +1610,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="conversation_list_search_description">Keresés</string>
   <!--conversation_list_item_view-->
   <string name="conversation_list_item_view__contact_photo_image">Kontakt fotó kép</string>
-  <string name="conversation_list_item_view__archived">Archivált</string>
+  <string name="conversation_list_item_view__archived">Archív</string>
   <string name="conversation_list_item_inbox_zero__inbox_zeeerrro">Bejövő nuuulllla</string>
   <string name="conversation_list_item_inbox_zero__zip_zilch_zero_nada_nyou_re_all_caught_up">Zéró. Nulla. Semmi.\nMindet elolvastad!</string>
   <!--conversation_list_fragment-->
@@ -1423,10 +1626,12 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <!--conversation-->
   <string name="conversation__menu_add_attachment">Melléklet hozzáadása</string>
   <string name="conversation__menu_edit_group">Csoport szerkesztése</string>
+  <string name="conversation__menu_manage_group">Csoport kezelése</string>
   <string name="conversation__menu_leave_group">Kilépés a csoportból</string>
   <string name="conversation__menu_view_all_media">Összes médiafájl</string>
   <string name="conversation__menu_conversation_settings">Beszélgetés beállításai</string>
   <string name="conversation__menu_add_shortcut">Hozzáadás a kezdőképernyőhöz</string>
+  <string name="conversation__menu_pending_members">Függőben lévő tagok</string>
   <!--conversation_popup-->
   <string name="conversation_popup__menu_expand_popup">Felugró ablak nagyítása</string>
   <!--conversation_callable_insecure-->
@@ -1457,8 +1662,8 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="reminder_header_expired_build_details">A továbbiakban üzeneteidet nem lehet sikeresen elküldeni. Koppints ide a legfrissebb verzióra történő frissítéshez.</string>
   <string name="reminder_header_sms_default_title">Alapértelmezett SMS alkalmazás</string>
   <string name="reminder_header_sms_default_text">Koppints a Signal alapértelmezett SMS alkalmazássá tételéhez.</string>
-  <string name="reminder_header_sms_import_title">Rendszer SMS importálása</string>
-  <string name="reminder_header_sms_import_text">Koppints a telefonod SMS üzeneteinek a Signal titkosított adatbázisába történő másolásához.</string>
+  <string name="reminder_header_sms_import_title">SMS-ek importálása</string>
+  <string name="reminder_header_sms_import_text">Koppints a telefonod SMS üzeneteinek átmásolásához a Signal titkosított adatbázisába!</string>
   <string name="reminder_header_push_title">Signal üzenetek és hívások engedélyezése</string>
   <string name="reminder_header_push_text">Tedd jobbá kommunikációs élményedet!</string>
   <string name="reminder_header_invite_title">Meghívás Signal-ba</string>
@@ -1485,17 +1690,17 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="Insights__percent">%</string>
   <string name="Insights__title">Statisztikák</string>
   <string name="InsightsDashboardFragment__title">Statisztikák</string>
-  <string name="InsightsDashboardFragment__signal_protocol_automatically_protected">A Signal protokoll automatikusan védelem alá helyezte kimenő üzeneteid %1$d%%-t az elmúlt %2$d nap során. A Signal felhasználók közti üzenetek minden esetben végpontok közti titkosítással vannak ellátva. </string>
+  <string name="InsightsDashboardFragment__signal_protocol_automatically_protected">A Signal protokoll az elmúlt %2$d nap során küldött üzeneteid %1$d%%-át helyezte automatikusan védelem alá. A Signal felhasználók közti üzenetek minden esetben végpontok közti titkosítással vannak ellátva. </string>
   <string name="InsightsDashboardFragment__boost_your_signal">Signal erősítés</string>
   <string name="InsightsDashboardFragment__not_enough_data">Nincs elegendő adat</string>
   <string name="InsightsDashboardFragment__your_insights_percentage_is_calculated_based_on">A százalékot az elmúlt %1$d nap során küldött nem törölt és nem eltűnő üzeneteid alapján kalkuláltuk.</string>
   <string name="InsightsDashboardFragment__start_a_conversation">Új beszélgetés indítása…</string>
   <string name="InsightsDashboardFragment__invite_your_contacts">Kezdj neki a biztonságos kommunikációnak, és hívj meg minél több kontaktot a Signal-ra annak érdekében, hogy hozzáférhess a legújabb funkciókhoz, amelyek túlmutatnak a titkosítatlan SMS üzeneteken!</string>
-  <string name="InsightsDashboardFragment__this_stat_was_generated_locally">Ezek a statisztikák a saját eszközödön készültek és csak számodra láthatóak. Soha nem lettek továbbítva sehova.</string>
+  <string name="InsightsDashboardFragment__this_stat_was_generated_locally">Ezek a statisztikák a saját eszközödön készültek, és kizárólag számodra láthatóak. Soha nem lesznek elküldve sehova.</string>
   <string name="InsightsDashboardFragment__encrypted_messages">Titkosított üzenetek</string>
   <string name="InsightsDashboardFragment__cancel">Mégse</string>
   <string name="InsightsDashboardFragment__send">Küldés</string>
-  <string name="InsightsModalFragment__title">A statisztikák bemutatása</string>
+  <string name="InsightsModalFragment__title">Bemutatkozik a Statisztikák</string>
   <string name="InsightsModalFragment__description">Tudd meg, hogy hány kimenő üzeneted volt titkosítva, majd hívd meg minél több ismerősödet, hogy megnöveld Signal-százalékodat.</string>
   <string name="InsightsModalFragment__view_insights">Statisztikák megtekintése</string>
   <string name="FirstInviteReminder__title">Meghívás a Signal-ba</string>
@@ -1519,25 +1724,22 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
     <item quantity="other">A PIN kódnak legalább %1$d számjegyből kell állnia.</item>
   </plurals>
   <string name="CreateKbsPinFragment__create_a_new_pin">Új PIN létrehozása</string>
-  <plurals name="CreateKbsPinFragment__you_can_choose_a_new_pin_because_this_device_is_registered">
-    <item quantity="one">Mivel ez a készülék regisztrálva van, ezért lehetőséged van új PIN kód választására. Ha elfelejted a kódodat, csak %1$d várakozást követően regisztrálhatsz újra.</item>
-    <item quantity="other">Mivel ez a készülék regisztrálva van, ezért lehetőséged van új PIN kód választására. Ha elfelejted a kódodat, csak %1$d várakozást követően regisztrálhatsz újra.</item>
-  </plurals>
+  <string name="CreateKbsPinFragment__you_can_choose_a_new_pin_as_long_as_this_device_is_registered">PIN kódodat mindaddig megváltoztathatod, míg ez az eszköz regisztrálva van.</string>
   <string name="CreateKbsPinFragment__create_your_pin">PIN létrehozása</string>
-  <string name="CreateKbsPinFragment__pins_add_extra_security_to_your_account">A PIN kód használata növeli fiókod biztonságát, és nem lehet helyreállítani. Minden olyan esetben szükséged lesz rá, amikor a Signal-ra szeretnéd regisztrálni.</string>
+  <string name="CreateKbsPinFragment__pins_keep_information_stored_with_signal_encrypted">A PIN-nek köszönhetően a Signal által tárolt információk titkosítva vannak, így csak te férhetsz hozzájuk. Újratelepítés esetén profilod, beállításaid és kontaktjaid visszaállításra kerülnek.</string>
+  <string name="CreateKbsPinFragment__choose_a_stronger_pin">Válassz egy erősebb PIN kódot</string>
   <!--ConfirmKbsPinFragment-->
   <string name="ConfirmKbsPinFragment__pins_dont_match">A PIN kódok nem egyeznek. Próbáld újra!</string>
-  <string name="ConfirmKbsPinFragment__confirm_your_pin">PIN visszaellenőrzése.</string>
+  <string name="ConfirmKbsPinFragment__confirm_your_pin">PIN ellenőrzése.</string>
   <string name="ConfirmKbsPinFragment__pin_creation_failed">PIN kód létrehozása sikertelen.</string>
   <string name="ConfirmKbsPinFragment__your_pin_was_not_saved">A PIN kódodat nem sikerült elmenteni. Később újra megpróbálkozunk vele.</string>
   <string name="ConfirmKbsPinFragment__pin_created">PIN kód létrehozva.</string>
-  <string name="ConfirmKbsPinFragment__re_enter_pin">PIN újraellenőrzése</string>
+  <string name="ConfirmKbsPinFragment__re_enter_your_pin">Add meg újra PIN kódodat</string>
   <string name="ConfirmKbsPinFragment__creating_pin">PIN létrehozása…</string>
   <!--KbsSplashFragment-->
   <string name="KbsSplashFragment__introducing_pins">A PIN kódok bemutatása</string>
-  <string name="KbsSplashFragment__pins_add_another_level_of_security_to_your_account">A PIN kódok extra védelmi réteget adnak fiókod védelméhez. Hozz létre egyet most!</string>
+  <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">A PIN-nek köszönhetően a Signal által tárolt információk titkosítva vannak, így csak te férhetsz hozzájuk. Újratelepítés esetén profilod, beállításaid és kontaktjaid visszaállításra kerülnek.</string>
   <string name="KbsSplashFragment__learn_more">Tudj meg többet</string>
-  <string name="KbsSplashFragment__learn_more_link">https://support.signal.org/hc/en-us/articles/360007059792-Registration-Lock</string>
   <string name="KbsSplashFragment__registration_lock_equals_pin">Regisztrációs kód = PIN</string>
   <string name="KbsSplashFragment__your_registration_lock_is_now_called_a_pin">A regisztrációs zárat mostantól PIN kódnak hívják, és többet tud. Frissítsd most!</string>
   <string name="KbsSplashFragment__read_more_about_pins">Bővebben a PIN kódokról.</string>
@@ -1555,7 +1757,6 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="AccountLockedFragment__your_account_has_been_locked_to_protect_your_privacy">Biztonságod és személyes adataid védelme érdekében fiókodat zároltuk. %1$d nap inaktivitást követően újraregisztrálhatod ezt a telefonszámot a PIN kód használata nélkül. Az összes adat törlésre kerül.</string>
   <string name="AccountLockedFragment__next">Tovább</string>
   <string name="AccountLockedFragment__learn_more">Tudj meg többet</string>
-  <string name="AccountLockedFragment__learn_more_url">https://support.signal.org/hc/en-us/articles/360007059792-Registration-Lock</string>
   <!--KbsLockFragment-->
   <string name="RegistrationLockFragment__enter_your_pin">Add meg PIN kódodat</string>
   <string name="RegistrationLockFragment__enter_the_pin_you_created">Gépeld be a fiókodhoz létrehozott PIN kódodat. Ez nem azonos az SMS-ben regisztrációkor kapott ellenőrző kóddal.</string>
@@ -1587,12 +1788,14 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
     <item quantity="one">%1$d lehetőséged maradt.</item>
     <item quantity="other">%1$d lehetőséged maradt.</item>
   </plurals>
+  <!--CalleeMustAcceptMessageRequestDialogFragment-->
+  <string name="CalleeMustAcceptMessageRequestDialogFragment__okay">OK</string>
+  <string name="CalleeMustAcceptMessageRequestDialogFragment__s_will_get_a_message_request_from_you">%1$s üzenet-felkérést fog kapni tőled. A jóváhagyást követően felhívhatod.</string>
   <!--KBS Megaphone-->
   <string name="KbsMegaphone__create_a_pin">PIN létrehozása</string>
-  <string name="KbsMegaphone__pins_add_another_layer_of_security_to_your_signal_account">A PIN kódok extra védelmi réteget adnak fiókod védelméhez.</string>
+  <string name="KbsMegaphone__pins_keep_information_thats_stored_with_signal_encrytped">A PIN-nek köszönhetően a Signal által tárolt információk titkosítva vannak.</string>
   <string name="KbsMegaphone__create_pin">PIN létrehozása</string>
   <string name="KbsMegaphone__introducing_pins">A PIN kódok bemutatása</string>
-  <string name="KbsMegaphone__your_registration_lock_is_now_called_a_pin">A regisztrációs zárat mostantól PIN kódnak hívják. A frissítés pár pillanatot vesz igénybe.</string>
   <string name="KbsMegaphone__update_pin">PIN kód frissítése</string>
   <string name="KbsMegaphone__well_remind_you_later_creating_a_pin">Később emlékeztetni fogunk. A PIN létrehozása %1$d nap múlva kötelező lesz.</string>
   <string name="KbsMegaphone__well_remind_you_later_confirming_your_pin">Később emlékeztetni fogunk. A PIN megerősítése %1$d nap múlva kötelező lesz.</string>
@@ -1626,7 +1829,7 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="preferences_chats__backup_chats_to_external_storage">Csevegések biztonsági mentése külső tárolóra</string>
   <string name="preferences_chats__create_backup">Biztonsági mentés létrehozása</string>
   <string name="preferences_chats__verify_backup_passphrase">Biztonsági mentés jelmondatának megerősítése</string>
-  <string name="preferences_chats__test_your_backup_passphrase_and_verify_that_it_matches">Ellenőrizd, hogy a biztonsági mentés jelmondata megfelelő-e</string>
+  <string name="preferences_chats__test_your_backup_passphrase_and_verify_that_it_matches">Ellenőrzi, hogy a biztonsági mentés jelmondata megfelelő-e</string>
   <string name="RegistrationActivity_enter_backup_passphrase">Biztonsági mentés jelmondatának megadása</string>
   <string name="RegistrationActivity_restore">Visszaállítás</string>
   <string name="RegistrationActivity_backup_failure_downgrade">Nem sikerült beolvasni a Signal újabb verziójából származó biztonsági mentést</string>
@@ -1658,17 +1861,18 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="RegistrationActivity_call_me_instead_available_in">Hívást kérek inkább \n (elérhető %1$02d:%2$02d múlva)</string>
   <string name="RegistrationActivity_contact_signal_support">Kapcsolatfelvétel a Signal támogatással</string>
   <string name="RegistrationActivity_code_support_subject">Signal regisztráció - megerősítő kód Androidhoz</string>
-  <string name="RegistrationActivity_code_support_body">Tárgy: Signal regisztráció - megerősítő kód Androidhoz\nEszközinformáció: %1$s\nAndroid verzió: %2$s\nSignal verzió: %3$s\nRégió: %4$s</string>
   <string name="BackupUtil_never">Soha</string>
   <string name="BackupUtil_unknown">Ismeretlen</string>
   <string name="preferences_app_protection__screen_lock">Képernyőzár</string>
   <string name="preferences_app_protection__lock_signal_access_with_android_screen_lock_or_fingerprint">Signal-hoz való hozzáférés védelme Android képernyőzárral vagy ujjlenyomattal</string>
-  <string name="preferences_app_protection__screen_lock_inactivity_timeout">Képernyő lezárása ennyi tétlenséget követően</string>
+  <string name="preferences_app_protection__screen_lock_inactivity_timeout">Inaktív képernyő lezárása előtti türelmi idő</string>
   <string name="preferences_app_protection__signal_pin">Signal PIN</string>
-  <string name="preferences_app_protection__pin">PIN</string>
-  <string name="preferences_app_protection__change">Változtatás</string>
-  <string name="preferences_app_protection__create">Létrehozás</string>
-  <string name="preferences_app_protection__your_pin_adds_an_extra_layer_of_security_to_your_account">A PIN kód egy extra biztonsági réteg, ami növeli fiókod biztonságát. Minden olyan esetben meg kell adnod, amikor telefonszámodat a Signal-ra szeretnéd regisztrálni. Amennyiben elfelejted PIN kódodat, 7 napig ki leszel zárva fiókodból.</string>
+  <string name="preferences_app_protection__create_a_pin">PIN létrehozása</string>
+  <string name="preferences_app_protection__change_your_pin">PIN kód megváltoztatása</string>
+  <string name="preferences_app_protection__pins_keep_information_stored_with_signal_encrypted">A PIN-nek köszönhetően a Signal által tárolt információk titkosítva vannak, így csak te férhetsz hozzájuk. Újratelepítés esetén profilod, beállításaid és kontaktjaid visszaállításra kerülnek.</string>
+  <string name="preferences_app_protection__add_extra_security_by_requiring_your_signal_pin_to_register">Növeld a biztonságot azáltal, hogy a telefonszámod regisztrációját Signal PIN kódod megadásához kötöd.</string>
+  <string name="preferences_app_protection__failed_to_enable_registration_lock">Nem sikerült engedélyezni a regisztrációs zárat.</string>
+  <string name="preferences_app_protection__failed_to_disable_registration_lock">Nem sikerült kikapcsolni a regisztrációs zárat.</string>
   <string name="AppProtectionPreferenceFragment_none">Egyik sem</string>
   <string name="registration_activity__the_registration_lock_pin_is_not_the_same_as_the_sms_verification_code_you_just_received_please_enter_the_pin_you_previously_configured_in_the_application">A regisztrációs zár PIN nem ugyanaz, mint az SMS ellenőrző kód, amit az imént kaptál. Kérlek add meg a PIN kódot, amelyet korábban az alkalmazásban állítottál be!</string>
   <string name="registration_activity__registration_lock_pin">Regisztrációs zár PIN</string>
@@ -1710,5 +1914,19 @@ Kulcs-csere üzenet érkezett érvénytelen protokoll verzióhoz.
   <string name="RegistrationLockDialog_reminder">Emlékeztető:</string>
   <string name="recipient_preferences__about">Névjegy</string>
   <string name="Recipient_unknown">Ismeretlen</string>
+  <!--RecipientBottomSheet-->
+  <string name="RecipientBottomSheet_message">Üzenet</string>
+  <string name="RecipientBottomSheet_call">Hívás</string>
+  <string name="RecipientBottomSheet_block">Letiltás</string>
+  <string name="RecipientBottomSheet_unblock">Tiltás feloldása</string>
+  <string name="RecipientBottomSheet_view_safety_number">Biztonsági szám megjelenítése</string>
+  <string name="RecipientBottomSheet_make_group_admin">Csoportadmin jogosultság megadása</string>
+  <string name="RecipientBottomSheet_remove_as_admin">Admin jogosultság elvétele</string>
+  <string name="RecipientBottomSheet_remove_from_group">Eltávolítás a csoportból</string>
+  <string name="RecipientBottomSheet_remove_s_as_group_admin">Eltávolítod %1$s-t a csoport adminjai közül?</string>
+  <string name="RecipientBottomSheet_s_will_be_able_to_edit_group">%1$s szerkesztheti a csoportot és annak tagjait</string>
+  <string name="RecipientBottomSheet_remove_s_from_s">Eltávolítod %1$s-t innen: \"%2$s\"?</string>
+  <string name="RecipientBottomSheet_remove">Eltávolítás</string>
+  <string name="GroupRecipientListItem_admin">Admin</string>
   <!--EOF-->
 </resources>

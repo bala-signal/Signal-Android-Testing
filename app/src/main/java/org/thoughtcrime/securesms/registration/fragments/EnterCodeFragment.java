@@ -31,6 +31,8 @@ import org.thoughtcrime.securesms.registration.service.CodeVerificationRequest;
 import org.thoughtcrime.securesms.registration.service.RegistrationCodeRequest;
 import org.thoughtcrime.securesms.registration.service.RegistrationService;
 import org.thoughtcrime.securesms.registration.viewmodel.RegistrationViewModel;
+import org.thoughtcrime.securesms.util.CommunicationActions;
+import org.thoughtcrime.securesms.util.SupportEmailUtil;
 import org.thoughtcrime.securesms.util.concurrent.AssertedSuccessListener;
 import org.whispersystems.signalservice.internal.contacts.entities.TokenResponse;
 
@@ -305,23 +307,13 @@ public final class EnterCodeFragment extends BaseRegistrationFragment {
   }
 
   private void sendEmailToSupport() {
-    Intent intent = new Intent(Intent.ACTION_SENDTO);
-    intent.setData(Uri.parse("mailto:"));
-    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ getString(R.string.RegistrationActivity_support_email) });
-    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.RegistrationActivity_code_support_subject));
-    intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.RegistrationActivity_code_support_body,
-                                                 getDevice(),
-                                                 getAndroidVersion(),
-                                                 BuildConfig.VERSION_NAME,
-                                                 Locale.getDefault()));
-    startActivity(intent);
-  }
-
-  private static String getDevice() {
-    return String.format("%s %s (%s)", Build.MANUFACTURER, Build.MODEL, Build.PRODUCT);
-  }
-
-  private static String getAndroidVersion() {
-    return String.format("%s (%s, %s)", Build.VERSION.RELEASE, Build.VERSION.INCREMENTAL, Build.DISPLAY);
+    String body = SupportEmailUtil.generateSupportEmailBody(requireContext(),
+                                                            getString(R.string.RegistrationActivity_code_support_subject),
+                                                            null,
+                                                            null);
+    CommunicationActions.openEmail(requireContext(),
+                                   SupportEmailUtil.getSupportEmailAddress(requireContext()),
+                                   getString(R.string.RegistrationActivity_code_support_subject),
+                                   body);
   }
 }

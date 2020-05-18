@@ -22,9 +22,11 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 
 import com.annimon.stream.Stream;
 
+import org.greenrobot.eventbus.EventBus;
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.attachments.Attachment;
 import org.thoughtcrime.securesms.attachments.AttachmentId;
@@ -51,10 +53,13 @@ import org.thoughtcrime.securesms.jobs.AttachmentCopyJob;
 import org.thoughtcrime.securesms.jobs.AttachmentMarkUploadedJob;
 import org.thoughtcrime.securesms.jobs.AttachmentUploadJob;
 import org.thoughtcrime.securesms.jobs.MmsSendJob;
+import org.thoughtcrime.securesms.jobs.ProfileKeySendJob;
 import org.thoughtcrime.securesms.jobs.PushGroupSendJob;
 import org.thoughtcrime.securesms.jobs.PushMediaSendJob;
 import org.thoughtcrime.securesms.jobs.PushTextSendJob;
 import org.thoughtcrime.securesms.jobs.ReactionSendJob;
+import org.thoughtcrime.securesms.jobs.RemoteDeleteSendJob;
+import org.thoughtcrime.securesms.jobs.ResumableUploadSpecJob;
 import org.thoughtcrime.securesms.jobs.SmsSendJob;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mms.MmsException;
@@ -78,6 +83,14 @@ public class MessageSender {
 
   private static final String TAG = MessageSender.class.getSimpleName();
 
+  /**
+   * Suitable for a 1:1 conversation or a GV1 group only.
+   */
+  @WorkerThread
+  public static void sendProfileKey(final Context context, final long threadId) {
+    ApplicationDependencies.getJobManager().add(ProfileKeySendJob.create(context, threadId));
+  }
+
   public static long send(final Context context,
                           final OutgoingTextMessage message,
                           final long threadId,
@@ -99,6 +112,7 @@ public class MessageSender {
     long messageId = database.insertMessageOutbox(allocatedThreadId, message, forceSms, System.currentTimeMillis(), insertListener);
 
     sendTextMessage(context, recipient, forceSms, keyExchange, messageId);
+    onMessageSent();
 
     return allocatedThreadId;
   }
@@ -125,6 +139,7 @@ public class MessageSender {
       long      messageId = database.insertMessageOutbox(message, allocatedThreadId, forceSms, insertListener);
 
       sendMediaMessage(context, recipient, forceSms, messageId, Collections.emptyList());
+      onMessageSent();
 
       return allocatedThreadId;
     } catch (MmsException e) {
@@ -164,6 +179,7 @@ public class MessageSender {
       attachmentDatabase.updateMessageId(attachmentIds, messageId);
 
       sendMediaMessage(context, recipient, false, messageId, jobIds);
+      onMessageSent();
 
       return allocatedThreadId;
     } catch (MmsException e) {
@@ -241,6 +257,7 @@ public class MessageSender {
         }
       }
 
+      onMessageSent();
       mmsDatabase.setTransactionSuccessful();
     } catch (MmsException e) {
       Log.w(TAG, "Failed to send messages.", e);
@@ -262,15 +279,17 @@ public class MessageSender {
       AttachmentDatabase attachmentDatabase = DatabaseFactory.getAttachmentDatabase(context);
       DatabaseAttachment databaseAttachment = attachmentDatabase.insertAttachmentForPreUpload(attachment);
 
-      Job compressionJob = AttachmentCompressionJob.fromAttachment(databaseAttachment, false, -1);
-      Job uploadJob      = new AttachmentUploadJob(databaseAttachment.getAttachmentId());
+      Job compressionJob         = AttachmentCompressionJob.fromAttachment(databaseAttachment, false, -1);
+      Job resumableUploadSpecJob = new ResumableUploadSpecJob();
+      Job uploadJob              = new AttachmentUploadJob(databaseAttachment.getAttachmentId());
 
       ApplicationDependencies.getJobManager()
                              .startChain(compressionJob)
+                             .then(resumableUploadSpecJob)
                              .then(uploadJob)
                              .enqueue();
 
-      return new PreUploadResult(databaseAttachment.getAttachmentId(), Arrays.asList(compressionJob.getId(), uploadJob.getId()));
+      return new PreUploadResult(databaseAttachment.getAttachmentId(), Arrays.asList(compressionJob.getId(), resumableUploadSpecJob.getId(), uploadJob.getId()));
     } catch (MmsException e) {
       Log.w(TAG, "preUploadPushAttachment() - Failed to upload!", e);
       return null;
@@ -285,6 +304,7 @@ public class MessageSender {
 
     try {
       ApplicationDependencies.getJobManager().add(ReactionSendJob.create(context, messageId, isMms, reaction, false));
+      onMessageSent();
     } catch (NoSuchMessageException e) {
       Log.w(TAG, "[sendNewReaction] Could not find message! Ignoring.");
     }
@@ -297,14 +317,29 @@ public class MessageSender {
 
     try {
       ApplicationDependencies.getJobManager().add(ReactionSendJob.create(context, messageId, isMms, reaction, true));
+      onMessageSent();
     } catch (NoSuchMessageException e) {
       Log.w(TAG, "[sendReactionRemoval] Could not find message! Ignoring.");
+    }
+  }
+
+  public static void sendRemoteDelete(@NonNull Context context, long messageId, boolean isMms) {
+    MessagingDatabase db = isMms ? DatabaseFactory.getMmsDatabase(context) : DatabaseFactory.getSmsDatabase(context);
+    db.markAsRemoteDelete(messageId);
+    db.markAsSending(messageId);
+
+    try {
+      ApplicationDependencies.getJobManager().add(RemoteDeleteSendJob.create(context, messageId, isMms));
+      onMessageSent();
+    } catch (NoSuchMessageException e) {
+      Log.w(TAG, "[sendNewReaction] Could not find message! Ignoring.");
     }
   }
 
   public static void resendGroupMessage(Context context, MessageRecord messageRecord, RecipientId filterRecipientId) {
     if (!messageRecord.isMms()) throw new AssertionError("Not Group");
     sendGroupPush(context, messageRecord.getRecipient(), messageRecord.getId(), filterRecipientId, Collections.emptyList());
+    onMessageSent();
   }
 
   public static void resend(Context context, MessageRecord messageRecord) {
@@ -318,6 +353,12 @@ public class MessageSender {
     } else {
       sendTextMessage(context, recipient, forceSms, keyExchange, messageId);
     }
+
+    onMessageSent();
+  }
+
+  public static void onMessageSent() {
+    EventBus.getDefault().postSticky(MessageSentEvent.INSTANCE);
   }
 
   private static void sendMediaMessage(Context context, Recipient recipient, boolean forceSms, long messageId, @NonNull Collection<String> uploadJobIds)
@@ -342,7 +383,7 @@ public class MessageSender {
     } else if (!forceSms && isPushTextSend(context, recipient, keyExchange)) {
       sendTextPush(recipient, messageId);
     } else {
-      sendSms(context, recipient, messageId);
+      sendSms(recipient, messageId);
     }
   }
 
@@ -373,9 +414,9 @@ public class MessageSender {
     }
   }
 
-  private static void sendSms(Context context, Recipient recipient, long messageId) {
+  private static void sendSms(Recipient recipient, long messageId) {
     JobManager jobManager = ApplicationDependencies.getJobManager();
-    jobManager.add(new SmsSendJob(context, messageId, recipient));
+    jobManager.add(new SmsSendJob(messageId, recipient));
   }
 
   private static void sendMms(Context context, long messageId) {
@@ -466,7 +507,7 @@ public class MessageSender {
         expirationManager.scheduleDeletion(messageId, true, message.getExpiresIn());
       }
     } catch (NoSuchMessageException | MmsException e) {
-      Log.w("Failed to update self-sent message.", e);
+      Log.w(TAG, "Failed to update self-sent message.", e);
     }
   }
 
@@ -489,7 +530,7 @@ public class MessageSender {
         expirationManager.scheduleDeletion(message.getId(), message.isMms(), message.getExpiresIn());
       }
     } catch (NoSuchMessageException e) {
-      Log.w("Failed to update self-sent message.", e);
+      Log.w(TAG, "Failed to update self-sent message.", e);
     }
   }
 
@@ -537,5 +578,9 @@ public class MessageSender {
       dest.writeParcelable(attachmentId, flags);
       ParcelUtil.writeStringCollection(dest, jobIds);
     }
+  }
+
+  public enum MessageSentEvent {
+    INSTANCE
   }
 }

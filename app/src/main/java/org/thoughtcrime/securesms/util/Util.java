@@ -172,6 +172,10 @@ public class Util {
     return "";
   }
 
+  public static @NonNull String emptyIfNull(@Nullable String value) {
+    return value != null ? value : "";
+  }
+
   public static <E> List<List<E>> chunk(@NonNull List<E> list, int chunkSize) {
     List<List<E>> chunks = new ArrayList<>(list.size() / chunkSize);
 
@@ -453,7 +457,13 @@ public class Util {
 
   public static void assertMainThread() {
     if (!isMainThread()) {
-      throw new AssertionError("Main-thread assertion failed.");
+      throw new AssertionError("Must run on main thread.");
+    }
+  }
+
+  public static void assertNotMainThread() {
+    if (isMainThread()) {
+      throw new AssertionError("Cannot run on main thread.");
     }
   }
 

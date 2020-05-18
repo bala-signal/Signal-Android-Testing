@@ -15,9 +15,9 @@ buildscript {
         }
     }
     dependencies {
+        classpath 'com.android.tools.build:gradle:3.6.3'
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0'
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
-        classpath 'com.android.tools.build:gradle:3.6.3'
     }
 }
 
@@ -80,8 +80,8 @@ protobuf {
     }
 }
 
-def canonicalVersionCode = 619
-def canonicalVersionName = "4.58.5"
+def canonicalVersionCode = 632
+def canonicalVersionName = "4.60.1"
 
 def postFixSize = 10
 def abiPostFix = ['universal'   : 0,
@@ -129,15 +129,16 @@ android {
         buildConfigField "String", "SIGNAL_URL", "\"https://textsecure-service.whispersystems.org\""
         buildConfigField "String", "STORAGE_URL", "\"https://storage.signal.org\""
         buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\""
+        buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn2.signal.org\""
         buildConfigField "String", "SIGNAL_CONTACT_DISCOVERY_URL", "\"https://api.directory.signal.org\""
         buildConfigField "String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\""
         buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api.backup.signal.org\""
         buildConfigField "String", "CONTENT_PROXY_HOST", "\"contentproxy.signal.org\""
         buildConfigField "int", "CONTENT_PROXY_PORT", "443"
         buildConfigField "String", "SIGNAL_AGENT", "\"OWA\""
-        buildConfigField "String", "MRENCLAVE", "\"cd6cfc342937b23b1bdd3bbf9721aa5615ac9ff50a75c5527d441cd3276826c9\""
-        buildConfigField "String", "KEY_BACKUP_ENCLAVE_NAME", "\"fe7c1bfae98f9b073d220366ea31163ee82f6d04bead774f71ca8e5c40847bfe\""
-        buildConfigField "String", "KEY_BACKUP_MRENCLAVE", "\"a3baab19ef6ce6f34ab9ebb25ba722725ae44a8872dc0ff08ad6d83a9489de87\""
+        buildConfigField "String", "CDS_MRENCLAVE", "\"cd6cfc342937b23b1bdd3bbf9721aa5615ac9ff50a75c5527d441cd3276826c9\""
+        buildConfigField "String", "KBS_ENCLAVE_NAME", "\"fe7c1bfae98f9b073d220366ea31163ee82f6d04bead774f71ca8e5c40847bfe\""
+        buildConfigField "String", "KBS_MRENCLAVE", "\"a3baab19ef6ce6f34ab9ebb25ba722725ae44a8872dc0ff08ad6d83a9489de87\""
         buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BXu6QIKVz5MA8gstzfOgRQGqyLqOwNKHL6INkv3IHWMF\""
         buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"\""
         buildConfigField "String[]", "LANGUAGES", "new String[]{\"" + autoResConfig().collect { s -> s.replace('-r', '_') }.join('", "') + '"}'
@@ -208,10 +209,11 @@ android {
             buildConfigField "String", "SIGNAL_URL", "\"https://textsecure-service-staging.whispersystems.org\""
             buildConfigField "String", "STORAGE_URL", "\"https://storage-staging.signal.org\""
             buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn-staging.signal.org\""
+            buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn2-staging.signal.org\""
             buildConfigField "String", "SIGNAL_CONTACT_DISCOVERY_URL", "\"https://api-staging.directory.signal.org\""
             buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api-staging.backup.signal.org\""
-            buildConfigField "String", "MRENCLAVE", "\"ba4ebb438bc07713819ee6c98d94037747006d7df63fc9e44d2d6f1fec962a79\""
-            buildConfigField "String", "KEY_BACKUP_ENCLAVE_NAME", "\"a1e9c1d3f352b5c4f0fc7a421b98119e60e5ff703c28fbea85c66bfa7306deab\""
+            buildConfigField "String", "CDS_MRENCLAVE", "\"ba4ebb438bc07713819ee6c98d94037747006d7df63fc9e44d2d6f1fec962a79\""
+            buildConfigField "String", "KBS_ENCLAVE_NAME", "\"823a3b2c037ff0cbe305cc48928cfcc97c9ed4a8ca6d49af6f7d6981fb60a4e9\""
             buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BbqY1DzohE4NUZoVF+L18oUPrK3kILllLEJh2UnPSsEx\""
             buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"\""
         }
@@ -268,9 +270,11 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
+    lintChecks project(':lintchecks')
+
+    implementation 'androidx.appcompat:appcompat:1.2.0-rc01'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
@@ -288,6 +292,10 @@ dependencies {
     implementation "androidx.camera:camera-camera2:1.0.0-beta01"
     implementation "androidx.camera:camera-lifecycle:1.0.0-beta01"
     implementation "androidx.concurrent:concurrent-futures:1.0.0"
+    implementation "androidx.autofill:autofill:1.0.0"
+    implementation "androidx.paging:paging-common:2.1.2"
+    implementation "androidx.paging:paging-runtime:2.1.2"
+
 
     implementation('com.google.firebase:firebase-messaging:17.3.4') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
@@ -307,10 +315,11 @@ dependencies {
     implementation project(':libsignal-service')
     implementation project(':toast')
     implementation 'org.signal:zkgroup-android:0.4.1'
+    implementation 'org.signal:zkgroup-android:0.7.0'
 
     implementation 'org.signal:argon2:13.1@aar'
 
-    implementation 'org.signal:ringrtc-android:1.2.0'
+    implementation 'org.signal:ringrtc-android:2.0.3'
 
     implementation "me.leolin:ShortcutBadger:1.1.16"
     implementation 'se.emilsjolander:stickylistheaders:2.7.0'
@@ -357,6 +366,7 @@ dependencies {
         exclude group: 'com.fasterxml.jackson.core'
         exclude group: 'org.freemarker'
     }
+    implementation 'dnsjava:dnsjava:2.1.9'
 
     flipperImplementation 'com.facebook.flipper:flipper:0.32.2'
     flipperImplementation 'com.facebook.soloader:soloader:0.8.2'

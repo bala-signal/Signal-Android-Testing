@@ -159,10 +159,12 @@ public class TextSecurePreferences {
   @Deprecated
   private static final String REGISTRATION_LOCK_PIN_PREF_V1            = "pref_registration_lock_pin";
 
+  public static final  String REGISTRATION_LOCK_PREF_V2                = "pref_registration_lock_v2";
+
   private static final String REGISTRATION_LOCK_LAST_REMINDER_TIME_POST_KBS = "pref_registration_lock_last_reminder_time_post_kbs";
   private static final String REGISTRATION_LOCK_NEXT_REMINDER_INTERVAL      = "pref_registration_lock_next_reminder_interval";
 
-  public  static final String KBS_PIN_CHANGE = "pref_kbs_change";
+  public  static final String SIGNAL_PIN_CHANGE = "pref_kbs_change";
 
   private static final String SERVICE_OUTAGE         = "pref_service_outage";
   private static final String LAST_OUTAGE_CHECK_TIME = "pref_last_outage_check_time";
@@ -179,7 +181,6 @@ public class TextSecurePreferences {
   private static final String NEEDS_MESSAGE_PULL = "pref_needs_message_pull";
 
   private static final String UNIDENTIFIED_ACCESS_CERTIFICATE_ROTATION_TIME_PREF = "pref_unidentified_access_certificate_rotation_time";
-  private static final String UNIDENTIFIED_ACCESS_CERTIFICATE_LEGACY             = "pref_unidentified_access_certificate";
   private static final String UNIDENTIFIED_ACCESS_CERTIFICATE                    = "pref_unidentified_access_certificate_uuid";
   public  static final String UNIVERSAL_UNIDENTIFIED_ACCESS                      = "pref_universal_unidentified_access";
   public  static final String SHOW_UNIDENTIFIED_DELIVERY_INDICATORS              = "pref_show_unidentifed_delivery_indicators";
@@ -252,7 +253,7 @@ public class TextSecurePreferences {
     return getStringPreference(context, REGISTRATION_LOCK_PIN_PREF_V1, null);
   }
 
-  public static void clearOldRegistrationLockPin(@NonNull Context context) {
+  public static void clearRegistrationLockV1(@NonNull Context context) {
     //noinspection deprecation
     PreferenceManager.getDefaultSharedPreferences(context)
                      .edit()
@@ -264,7 +265,7 @@ public class TextSecurePreferences {
    * @deprecated Use only for migrations to the Key Backup Store registration pinV2.
    */
   @Deprecated
-  public static void setDeprecatedRegistrationLockPin(@NonNull Context context, String pin) {
+  public static void setV1RegistrationLockPin(@NonNull Context context, String pin) {
     //noinspection deprecation
     setStringPreference(context, REGISTRATION_LOCK_PIN_PREF_V1, pin);
   }
@@ -597,14 +598,6 @@ public class TextSecurePreferences {
 
   public static byte[] getUnidentifiedAccessCertificate(Context context) {
     return parseCertificate(getStringPreference(context, UNIDENTIFIED_ACCESS_CERTIFICATE, null));
-  }
-
-  public static void setUnidentifiedAccessCertificateLegacy(Context context, byte[] value) {
-    setStringPreference(context, UNIDENTIFIED_ACCESS_CERTIFICATE_LEGACY, Base64.encodeBytes(value));
-  }
-
-  public static byte[] getUnidentifiedAccessCertificateLegacy(Context context) {
-    return parseCertificate(getStringPreference(context, UNIDENTIFIED_ACCESS_CERTIFICATE_LEGACY, null));
   }
 
   private static byte[] parseCertificate(String raw) {

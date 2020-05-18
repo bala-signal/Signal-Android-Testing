@@ -1,17 +1,26 @@
 package org.thoughtcrime.securesms.recipients;
 
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.AnyThread;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.annimon.stream.Stream;
 
+import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
+import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.util.DelimiterUtil;
 import org.thoughtcrime.securesms.util.Util;
+import org.whispersystems.signalservice.api.push.SignalServiceAddress;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
 public class RecipientId implements Parcelable, Comparable<RecipientId> {
 
@@ -38,6 +47,26 @@ public class RecipientId implements Parcelable, Comparable<RecipientId> {
     }
   }
 
+  @AnyThread
+  public static @NonNull RecipientId from(@NonNull SignalServiceAddress address) {
+    return from(address.getUuid().orNull(), address.getNumber().orNull());
+  }
+
+  /**
+   * Always supply both {@param uuid} and {@param e164} if you have both.
+   */
+  @AnyThread
+  @SuppressLint("WrongThread")
+  public static @NonNull RecipientId from(@Nullable UUID uuid, @Nullable String e164) {
+    RecipientId recipientId = RecipientIdCache.INSTANCE.get(uuid, e164);
+
+    if (recipientId == null) {
+      recipientId = Recipient.externalPush(ApplicationDependencies.getApplication(), uuid, e164).getId();
+    }
+
+    return recipientId;
+  }
+
   private RecipientId(long id) {
     this.id = id;
   }
@@ -60,6 +89,12 @@ public class RecipientId implements Parcelable, Comparable<RecipientId> {
     }
 
     return out;
+  }
+
+  public static boolean serializedListContains(@NonNull String serialized, @NonNull RecipientId recipientId) {
+    return Pattern.compile("\\b" + recipientId.serialize() + "\\b")
+                  .matcher(serialized)
+                  .find();
   }
 
   public boolean isUnknown() {

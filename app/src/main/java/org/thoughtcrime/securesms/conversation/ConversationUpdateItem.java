@@ -1,26 +1,22 @@
 package org.thoughtcrime.securesms.conversation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+
 import org.thoughtcrime.securesms.BindableConversationItem;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.VerifyIdentityActivity;
-import org.thoughtcrime.securesms.crypto.IdentityKeyParcelable;
-import org.thoughtcrime.securesms.database.IdentityDatabase;
 import org.thoughtcrime.securesms.database.IdentityDatabase.IdentityRecord;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.logging.Log;
@@ -107,7 +103,7 @@ public class ConversationUpdateItem extends LinearLayout
     }
 
     if (this.messageRecord != null && messageRecord.isGroupAction()) {
-      GroupUtil.getDescription(getContext(), messageRecord.getBody()).removeObserver(this);
+      GroupUtil.getDescription(getContext(), messageRecord.getBody(), messageRecord.isGroupV2()).removeObserver(this);
     }
 
     this.messageRecord = messageRecord;
@@ -117,7 +113,7 @@ public class ConversationUpdateItem extends LinearLayout
     this.sender.observeForever(this);
 
     if (this.messageRecord != null && messageRecord.isGroupAction()) {
-      GroupUtil.getDescription(getContext(), messageRecord.getBody()).addObserver(this);
+      GroupUtil.getDescription(getContext(), messageRecord.getBody(), messageRecord.isGroupV2()).addObserver(this);
     }
 
     present(messageRecord);
@@ -240,7 +236,7 @@ public class ConversationUpdateItem extends LinearLayout
       sender.removeForeverObserver(this);
     }
     if (this.messageRecord != null && messageRecord.isGroupAction()) {
-      GroupUtil.getDescription(getContext(), messageRecord.getBody()).removeObserver(this);
+      GroupUtil.getDescription(getContext(), messageRecord.getBody(), messageRecord.isGroupV2()).removeObserver(this);
     }
   }
 
@@ -269,12 +265,7 @@ public class ConversationUpdateItem extends LinearLayout
         @Override
         public void onSuccess(Optional<IdentityRecord> result) {
           if (result.isPresent()) {
-            Intent intent = new Intent(getContext(), VerifyIdentityActivity.class);
-            intent.putExtra(VerifyIdentityActivity.RECIPIENT_EXTRA, sender.getId());
-            intent.putExtra(VerifyIdentityActivity.IDENTITY_EXTRA, new IdentityKeyParcelable(result.get().getIdentityKey()));
-            intent.putExtra(VerifyIdentityActivity.VERIFIED_EXTRA, result.get().getVerifiedStatus() == IdentityDatabase.VerifiedStatus.VERIFIED);
-
-            getContext().startActivity(intent);
+            getContext().startActivity(VerifyIdentityActivity.newIntent(getContext(), result.get()));
           }
         }
 

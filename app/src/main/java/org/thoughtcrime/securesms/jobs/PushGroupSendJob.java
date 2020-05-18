@@ -8,6 +8,7 @@ import androidx.annotation.WorkerThread;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.google.protobuf.ByteString;
 
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.attachments.Attachment;
@@ -26,14 +27,16 @@ import org.thoughtcrime.securesms.jobmanager.Job;
 import org.thoughtcrime.securesms.jobmanager.JobManager;
 import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint;
 import org.thoughtcrime.securesms.logging.Log;
+import org.thoughtcrime.securesms.mms.MessageGroupContext;
 import org.thoughtcrime.securesms.mms.MmsException;
-import org.thoughtcrime.securesms.mms.OutgoingGroupMediaMessage;
+import org.thoughtcrime.securesms.mms.OutgoingGroupUpdateMessage;
 import org.thoughtcrime.securesms.mms.OutgoingMediaMessage;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.recipients.RecipientUtil;
 import org.thoughtcrime.securesms.transport.RetryLaterException;
 import org.thoughtcrime.securesms.transport.UndeliverableMessageException;
+import org.thoughtcrime.securesms.util.GroupUtil;
 import org.whispersystems.libsignal.util.guava.Optional;
 import org.whispersystems.signalservice.api.SignalServiceMessageSender;
 import org.whispersystems.signalservice.api.crypto.UnidentifiedAccessPair;
@@ -44,10 +47,12 @@ import org.whispersystems.signalservice.api.messages.SignalServiceDataMessage;
 import org.whispersystems.signalservice.api.messages.SignalServiceDataMessage.Preview;
 import org.whispersystems.signalservice.api.messages.SignalServiceDataMessage.Quote;
 import org.whispersystems.signalservice.api.messages.SignalServiceGroup;
+import org.whispersystems.signalservice.api.messages.SignalServiceGroupV2;
 import org.whispersystems.signalservice.api.messages.shared.SharedContact;
 import org.whispersystems.signalservice.api.push.SignalServiceAddress;
 import org.whispersystems.signalservice.api.util.UuidUtil;
 import org.whispersystems.signalservice.internal.push.SignalServiceProtos.GroupContext;
+import org.whispersystems.signalservice.internal.push.SignalServiceProtos.GroupContextV2;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -102,12 +107,11 @@ public class PushGroupSendJob extends PushSendJob {
         throw new MmsException("Inactive group!");
       }
 
-      MmsDatabase          database                    = DatabaseFactory.getMmsDatabase(context);
-      OutgoingMediaMessage message                     = database.getOutgoingMessage(messageId);
-      JobManager.Chain     compressAndUploadAttachment = createCompressingAndUploadAttachmentsChain(jobManager, message);
+      MmsDatabase            database                    = DatabaseFactory.getMmsDatabase(context);
+      OutgoingMediaMessage   message                     = database.getOutgoingMessage(messageId);
+      Set<String>            attachmentUploadIds         = enqueueCompressingAndUploadAttachmentsChains(jobManager, message);
 
-      compressAndUploadAttachment.then(new PushGroupSendJob(messageId, destination, filterAddress))
-                                 .enqueue();
+      jobManager.add(new PushGroupSendJob(messageId, destination, filterAddress), attachmentUploadIds);
 
     } catch (NoSuchMessageException | MmsException e) {
       Log.w(TAG, "Failed to enqueue message.", e);
@@ -147,20 +151,20 @@ public class PushGroupSendJob extends PushSendJob {
       return;
     }
 
-    if (!message.getRecipient().isPushGroup()) {
+    Recipient groupRecipient = message.getRecipient().fresh();
+
+    if (!groupRecipient.isPushGroup()) {
       throw new MmsException("Message recipient isn't a group!");
     }
 
     try {
       log(TAG, "Sending message: " + messageId);
 
-      if (!message.getRecipient().resolve().isProfileSharing() && !database.isGroupQuitMessage(messageId)) {
-        RecipientUtil.shareProfileIfFirstSecureMessage(context, message.getRecipient());
+      if (!groupRecipient.resolve().isProfileSharing() && !database.isGroupQuitMessage(messageId)) {
+        RecipientUtil.shareProfileIfFirstSecureMessage(context, groupRecipient);
       }
 
       List<RecipientId> target;
-
-      Recipient groupRecipient = message.getRecipient().fresh();
 
       if      (filterRecipient != null)            target = Collections.singletonList(Recipient.resolved(filterRecipient).getId());
       else if (!existingNetworkFailures.isEmpty()) target = Stream.of(existingNetworkFailures).map(nf -> nf.getRecipientId(context)).toList();
@@ -243,7 +247,7 @@ public class PushGroupSendJob extends PushSendJob {
     rotateSenderCertificateIfNecessary();
 
     SignalServiceMessageSender                 messageSender      = ApplicationDependencies.getSignalServiceMessageSender();
-    GroupId                                    groupId            = groupRecipient.requireGroupId();
+    GroupId.Push                               groupId            = groupRecipient.requireGroupId().requirePush();
     Optional<byte[]>                           profileKey         = getProfileKey(groupRecipient);
     Optional<Quote>                            quote              = getQuoteFor(message);
     Optional<SignalServiceDataMessage.Sticker> sticker            = getStickerFor(message);
@@ -260,37 +264,62 @@ public class PushGroupSendJob extends PushSendJob {
                                                                       .toList();
 
     if (message.isGroup()) {
-      OutgoingGroupMediaMessage  groupMessage     = (OutgoingGroupMediaMessage) message;
-      GroupContext               groupContext     = groupMessage.getGroupContext();
-      SignalServiceAttachment    avatar           = attachmentPointers.isEmpty() ? null                         : attachmentPointers.get(0);
-      SignalServiceGroup.Type    type             = groupMessage.isGroupQuit()   ? SignalServiceGroup.Type.QUIT : SignalServiceGroup.Type.UPDATE;
-      List<SignalServiceAddress> members          = Stream.of(groupContext.getMembersList())
-                                                          .map(m -> new SignalServiceAddress(UuidUtil.parseOrNull(m.getUuid()), m.getE164()))
-                                                          .toList();
-      SignalServiceGroup         group            = new SignalServiceGroup(type, groupId.getDecodedId(), groupContext.getName(), members, avatar);
-      SignalServiceDataMessage   groupDataMessage = SignalServiceDataMessage.newBuilder()
+      OutgoingGroupUpdateMessage groupMessage = (OutgoingGroupUpdateMessage) message;
+
+      if (groupMessage.isV2Group()) {
+        MessageGroupContext.GroupV2Properties properties   = groupMessage.requireGroupV2Properties();
+        GroupContextV2                        groupContext = properties.getGroupContext();
+        SignalServiceGroupV2.Builder          builder      = SignalServiceGroupV2.newBuilder(properties.getGroupMasterKey())
+                                                                                 .withRevision(groupContext.getRevision());
+
+        ByteString groupChange = groupContext.getGroupChange();
+        if (groupChange != null) {
+          builder.withSignedGroupChange(groupChange.toByteArray());
+        }
+
+        SignalServiceGroupV2     group            = builder.build();
+        SignalServiceDataMessage groupDataMessage = SignalServiceDataMessage.newBuilder()
                                                                             .withTimestamp(message.getSentTimeMillis())
                                                                             .withExpiration(groupRecipient.getExpireMessages())
                                                                             .asGroupMessage(group)
                                                                             .build();
 
-      return messageSender.sendMessage(addresses, unidentifiedAccess, isRecipientUpdate, groupDataMessage);
+        return messageSender.sendMessage(addresses, unidentifiedAccess, isRecipientUpdate, groupDataMessage);
+      } else {
+        MessageGroupContext.GroupV1Properties properties = groupMessage.requireGroupV1Properties();
+
+        GroupContext               groupContext     = properties.getGroupContext();
+        SignalServiceAttachment    avatar           = attachmentPointers.isEmpty() ? null : attachmentPointers.get(0);
+        SignalServiceGroup.Type    type             = properties.isQuit() ? SignalServiceGroup.Type.QUIT : SignalServiceGroup.Type.UPDATE;
+        List<SignalServiceAddress> members          = Stream.of(groupContext.getMembersList())
+                                                            .map(m -> new SignalServiceAddress(UuidUtil.parseOrNull(m.getUuid()), m.getE164()))
+                                                            .toList();
+        SignalServiceGroup         group            = new SignalServiceGroup(type, groupId.getDecodedId(), groupContext.getName(), members, avatar);
+        SignalServiceDataMessage   groupDataMessage = SignalServiceDataMessage.newBuilder()
+                                                                              .withTimestamp(message.getSentTimeMillis())
+                                                                              .withExpiration(message.getRecipient().getExpireMessages())
+                                                                              .asGroupMessage(group)
+                                                                              .build();
+
+        return messageSender.sendMessage(addresses, unidentifiedAccess, isRecipientUpdate, groupDataMessage);
+      }
     } else {
-      SignalServiceGroup       group        = new SignalServiceGroup(groupId.getDecodedId());
-      SignalServiceDataMessage groupMessage = SignalServiceDataMessage.newBuilder()
-                                                                      .withTimestamp(message.getSentTimeMillis())
-                                                                      .asGroupMessage(group)
-                                                                      .withAttachments(attachmentPointers)
-                                                                      .withBody(message.getBody())
-                                                                      .withExpiration((int)(message.getExpiresIn() / 1000))
-                                                                      .withViewOnce(message.isViewOnce())
-                                                                      .asExpirationUpdate(message.isExpirationUpdate())
-                                                                      .withProfileKey(profileKey.orNull())
-                                                                      .withQuote(quote.orNull())
-                                                                      .withSticker(sticker.orNull())
-                                                                      .withSharedContacts(sharedContacts)
-                                                                      .withPreviews(previews)
-                                                                      .build();
+      SignalServiceDataMessage.Builder builder = SignalServiceDataMessage.newBuilder()
+                                                                         .withTimestamp(message.getSentTimeMillis());
+
+      GroupUtil.setDataMessageGroupContext(context, builder, groupId);
+
+      SignalServiceDataMessage groupMessage = builder.withAttachments(attachmentPointers)
+                                                     .withBody(message.getBody())
+                                                     .withExpiration((int)(message.getExpiresIn() / 1000))
+                                                     .withViewOnce(message.isViewOnce())
+                                                     .asExpirationUpdate(message.isExpirationUpdate())
+                                                     .withProfileKey(profileKey.orNull())
+                                                     .withQuote(quote.orNull())
+                                                     .withSticker(sticker.orNull())
+                                                     .withSharedContacts(sharedContacts)
+                                                     .withPreviews(previews)
+                                                     .build();
 
       return messageSender.sendMessage(addresses, unidentifiedAccess, isRecipientUpdate, groupMessage);
     }
@@ -298,10 +327,21 @@ public class PushGroupSendJob extends PushSendJob {
 
   private @NonNull List<RecipientId> getGroupMessageRecipients(@NonNull GroupId groupId, long messageId) {
     List<GroupReceiptInfo> destinations = DatabaseFactory.getGroupReceiptDatabase(context).getGroupReceiptInfo(messageId);
-    if (!destinations.isEmpty()) return Stream.of(destinations).map(GroupReceiptInfo::getRecipientId).toList();
 
-    List<Recipient> members = DatabaseFactory.getGroupDatabase(context).getGroupMembers(groupId, GroupDatabase.MemberSet.FULL_MEMBERS_EXCLUDING_SELF);
-    return Stream.of(members).map(Recipient::getId).toList();
+    if (!destinations.isEmpty()) {
+      return Stream.of(destinations).map(GroupReceiptInfo::getRecipientId).toList();
+    }
+
+    List<RecipientId> members = Stream.of(DatabaseFactory.getGroupDatabase(context)
+                                                         .getGroupMembers(groupId, GroupDatabase.MemberSet.FULL_MEMBERS_EXCLUDING_SELF))
+                                      .map(Recipient::getId)
+                                      .toList();
+
+    if (members.size() > 0) {
+      Log.w(TAG, "No destinations found for group message " + groupId + " using current group membership");
+    }
+    
+    return members;
   }
 
   public static class Factory implements Job.Factory<PushGroupSendJob> {

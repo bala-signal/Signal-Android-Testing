@@ -86,6 +86,7 @@ public class Recipient {
   private final Uri                    contactUri;
   private final ProfileName            profileName;
   private final String                 profileAvatar;
+  private final boolean                hasProfileImage;
   private final boolean                profileSharing;
   private final String                 notificationChannel;
   private final UnidentifiedAccessMode unidentifiedAccessMode;
@@ -150,6 +151,10 @@ public class Recipient {
    */
   @WorkerThread
   public static @NonNull Recipient externalPush(@NonNull Context context, @Nullable UUID uuid, @Nullable String e164) {
+    if (UuidUtil.UNKNOWN_UUID.equals(uuid)) {
+      throw new AssertionError();
+    }
+
     RecipientDatabase     db       = DatabaseFactory.getRecipientDatabase(context);
     Optional<RecipientId> uuidUser = uuid != null ? db.getByUuid(uuid) : Optional.absent();
     Optional<RecipientId> e164User = e164 != null ? db.getByE164(e164) : Optional.absent();
@@ -271,7 +276,7 @@ public class Recipient {
         }
       }
     } else if (GroupId.isEncodedGroup(identifier)) {
-      id = db.getOrInsertFromGroupId(GroupId.parse(identifier));
+      id = db.getOrInsertFromGroupId(GroupId.parseOrThrow(identifier));
     } else if (NumberUtil.isValidEmail(identifier)) {
       id = db.getOrInsertFromEmail(identifier);
     } else {
@@ -316,6 +321,7 @@ public class Recipient {
     this.contactUri             = null;
     this.profileName            = ProfileName.EMPTY;
     this.profileAvatar          = null;
+    this.hasProfileImage        = false;
     this.profileSharing         = false;
     this.notificationChannel    = null;
     this.unidentifiedAccessMode = UnidentifiedAccessMode.DISABLED;
@@ -357,6 +363,7 @@ public class Recipient {
     this.contactUri             = details.contactUri;
     this.profileName            = details.profileName;
     this.profileAvatar          = details.profileAvatar;
+    this.hasProfileImage        = details.hasProfileImage;
     this.profileSharing         = details.profileSharing;
     this.notificationChannel    = details.notificationChannel;
     this.unidentifiedAccessMode = details.unidentifiedAccessMode;
@@ -412,11 +419,25 @@ public class Recipient {
                                  context.getString(R.string.Recipient_unknown));
   }
 
+  public @NonNull String getShortDisplayName(@NonNull Context context) {
+    return Util.getFirstNonEmpty(getName(context),
+                                 getProfileName().getGivenName(),
+                                 getDisplayName(context));
+  }
+
   public @NonNull MaterialColor getColor() {
-    if      (isGroupInternal()) return MaterialColor.GROUP;
-    else if (color != null)     return color;
-    else if (name != null)      return ContactColors.generateFor(name);
-    else                        return ContactColors.UNKNOWN_COLOR;
+    if (isGroupInternal()) {
+      return MaterialColor.GROUP;
+    } else if (color != null) {
+      return color;
+     } else if (name != null) {
+      Log.i(TAG, "Saving color for " + id);
+      MaterialColor color = ContactColors.generateFor(name);
+      DatabaseFactory.getRecipientDatabase(ApplicationDependencies.getApplication()).setColor(id, color);
+      return color;
+    } else {
+      return ContactColors.UNKNOWN_COLOR;
+    }
   }
 
   public @NonNull Optional<UUID> getUuid() {
@@ -446,6 +467,17 @@ public class Recipient {
   public @NonNull Optional<String> getSmsAddress() {
     return Optional.fromNullable(e164).or(Optional.fromNullable(email));
   }
+
+  public @NonNull UUID requireUuid() {
+    UUID resolved = resolving ? resolve().uuid : uuid;
+
+    if (resolved == null) {
+      throw new MissingAddressError();
+    }
+
+    return resolved;
+  }
+
 
   public @NonNull String requireE164() {
     String resolved = resolving ? resolve().e164 : e164;
@@ -575,12 +607,26 @@ public class Recipient {
     return groupId != null && groupId.isPush();
   }
 
+  public boolean isPushV1Group() {
+    GroupId groupId = resolve().groupId;
+    return groupId != null && groupId.isV1();
+  }
+
+  public boolean isPushV2Group() {
+    GroupId groupId = resolve().groupId;
+    return groupId != null && groupId.isV2();
+  }
+
   public @NonNull List<Recipient> getParticipants() {
     return new ArrayList<>(participants);
   }
 
   public @NonNull Drawable getFallbackContactPhotoDrawable(Context context, boolean inverted) {
     return getFallbackContactPhotoDrawable(context, inverted, DEFAULT_FALLBACK_PHOTO_PROVIDER);
+  }
+
+  public @NonNull Drawable getSmallFallbackContactPhotoDrawable(Context context, boolean inverted) {
+    return getSmallFallbackContactPhotoDrawable(context, inverted, DEFAULT_FALLBACK_PHOTO_PROVIDER);
   }
 
   public @NonNull Drawable getFallbackContactPhotoDrawable(Context context, boolean inverted, @Nullable FallbackPhotoProvider fallbackPhotoProvider) {
@@ -608,7 +654,7 @@ public class Recipient {
     if      (localNumber)                                    return null;
     else if (isGroupInternal() && groupAvatarId.isPresent()) return new GroupRecordContactPhoto(groupId, groupAvatarId.get());
     else if (systemContactPhoto != null)                     return new SystemContactPhoto(id, systemContactPhoto, 0);
-    else if (profileAvatar != null)                          return new ProfileContactPhoto(this, profileAvatar);
+    else if (profileAvatar != null && hasProfileImage)       return new ProfileContactPhoto(this, profileAvatar);
     else                                                     return null;
   }
 
@@ -630,6 +676,10 @@ public class Recipient {
 
   public boolean isMuted() {
     return System.currentTimeMillis() <= muteUntil;
+  }
+
+  public long getMuteUntil() {
+    return muteUntil;
   }
 
   public boolean isBlocked() {
@@ -688,6 +738,10 @@ public class Recipient {
 
   public Capability getGroupsV2Capability() {
     return groupsV2Capability;
+  }
+
+  public Capability getUuidCapability() {
+    return uuidCapability;
   }
 
   public @Nullable byte[] getProfileKey() {

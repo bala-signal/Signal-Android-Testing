@@ -180,7 +180,7 @@
   <string name="ConversationActivity_there_is_no_app_available_to_handle_this_link_on_your_device">ਇਸ ਲਿੰਕ ਨੂੰ ਚਲੌਨ ਲਈ ਕੋਈ ਐੱਪ ਨਹੀਂ ਹੈ ਤੁਹਾਡੇ ਫੋਨ ਤੇ </string>
   <string name="ConversationActivity_to_send_audio_messages_allow_signal_access_to_your_microphone">ਆਡੀਓ ਸੁਨੇਹਾ ਭੇਜਣ ਲਈ, Signal ਨੂੰ ਮਾਈਕ੍ਰੋਫੋਨ ਦੀ ਆਗਿਆ ਦਿਓ </string>
   <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">ਆਡੀਓ ਸੁਨੇਹਾ ਭੇਜਣ ਲਈ ਲਈ Signal ਨੂੰ ਮਾਈਕ੍ਰੋਫੋਨ ਅਨੁਮਤੀ ਦੀ ਲੋੜ ਹੈ,ਜੋ ਇਸ ਕੋਲ ਨਹੀਂ ਹਨ | ਕਿਰਪਾ ਕਰਕੇ ਐਪ ਸੈਟਿੰਗਾਂ ਚ ਜਾਓ, \"ਅਨੁਮਤੀਆਂ\" ਚੁਣੋ ਅਤੇ \"ਮਾਈਕ੍ਰੋਫੋਨ\" ਨੂੰ ਸਮਰੱਥ ਕਰੋ.</string>
-  <string name="ConversationActivity_to_call_s_signal_needs_access_to_your_microphone_and_camera">%sਨੂੰ ਕਾਲ ਕਰਨ ਲਈ , Signal ਨੂੰ ਮਾਈਕ੍ਰੋਫੋਨ ਦੀ ਆਗਿਆ ਦੀ ਲੋੜ ਹੈ </string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_to_call_s_signal_needs_access_to_your_microphone_and_camera">%sਨੂੰ ਕਾਲ ਕਰਨ ਲਈ , Signal ਨੂੰ ਮਾਈਕ੍ਰੋਫੋਨ ਦੀ ਆਗਿਆ ਦੀ ਲੋੜ ਹੈ </string> -->
   <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">%s ਨੂੰ ਕਾਲ ਕਰਨ ਲਈ Signal ਨੂੰ ਮਾਈਕ੍ਰੋਫੋਨ ਅਤੇ ਕੈਮਰਾ ਅਨੁਮਤੀਆਂ ਦੀ ਲੋੜ ਹੈ,ਜੋ ਇਸ ਕੋਲ ਨਹੀਂ ਹਨ | ਕਿਰਪਾ ਕਰਕੇ ਐਪ ਸੈਟਿੰਗਾਂ ਚ ਜਾਓ, \"ਅਨੁਮਤੀਆਂ\" ਚੁਣੋ ਅਤੇ \"ਮਾਈਕ੍ਰੋਫੋਨ\" ਅਤੇ \"ਕੈਮਰਾ\" ਨੂੰ ਸਮਰੱਥ ਕਰੋ.</string>
   <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">ਵੀਡੀਓ ਅਤੇ ਫੋਟੋਆਂ ਖਿੱਚਣ ਲਈ Signal ਨੂੰ ਕੈਮਰੇ ਦੀ ਅਨੁਮਤੀ ਦਿਓ </string>
   <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">ਵੀਡੀਓ ਅਤੇ ਫੋਟੋਆਂ ਖਿੱਚਣ ਲਈ Signal ਨੂੰ ਕੈਮਰੇ ਦੀ ਅਨੁਮਤੀ ਦੀ ਲੋੜ ਹੈ, ਜੋ ਇਸ ਕੋਲ ਨਹੀਂ ਹਨ | ਕਿਰਪਾ ਕਰਕੇ ਐਪ ਸੈਟਿੰਗਾਂ ਚ ਜਾਓ , \"ਅਨੁਮਤੀਆਂ\" ਚੁਣੋ ਅਤੇ \"ਕੈਮਰਾ\" ਨੂੰ ਸਮਰੱਥ ਕਰੋ.</string>
@@ -196,7 +196,7 @@
   <string name="ConversationActivity_no_results">ਕੋਈ ਨਤੀਜੇ ਨਹੀਂ</string>
   <string name="ConversationActivity_sticker_pack_installed">ਸਟਿੱਕਰ ਪੈਕ ਇੰਸਟਾਲ ਕੀਤਾ ਗਿਆ </string>
   <string name="ConversationActivity_new_say_it_with_stickers">ਨਵਾਂ ! ਹੁਣ ਸਟਿੱਕਰ ਨਾਲ ਗੱਲਾਂਬਾਤਾਂ ਕਰੋ </string>
-  <string name="ConversationActivity_block">ਬਲਾਕ</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_block">ਬਲਾਕ</string> -->
   <string name="ConversationActivity_cancel">ਰੱਦ ਕਰੋ</string>
   <string name="ConversationActivity_delete">ਮਿਟਾਓ </string>
   <!--ConversationAdapter-->
@@ -507,16 +507,16 @@
   <!--ReactionsRecipientAdapter-->
   <string name="ReactionsRecipientAdapter_you">ਤੁਸੀਂ</string>
   <!--RecipientPreferencesActivity-->
-  <string name="RecipientPreferenceActivity_block_this_contact_question">ਇਸ ਸੰਪਰਕ ਨੂੰ ਬਲੌਕ ਕਰੋ ?</string>
-  <string name="RecipientPreferenceActivity_you_will_no_longer_receive_messages_and_calls_from_this_contact">ਤੁਸੀਂ ਹੁਣ ਇਸ ਸੰਪਰਕ ਤੋਂ ਸੰਦੇਸ਼ ਅਤੇ ਕਾਲ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕਰੋਗੇ</string>
-  <string name="RecipientPreferenceActivity_block_and_leave_group">ਬਲਾਕ ਕਰੋ ਅਤੇ ਇਸ ਸਮੂਹ ਨੂੰ ਛੱਡੋ ?</string>
-  <string name="RecipientPreferenceActivity_block_group">ਇਸ ਗਰੁੱਪ ਨੂੰ ਬਲੌਕ ਕਰੋ ?</string>
-  <string name="RecipientPreferenceActivity_block_and_leave_group_description">ਤੁਸੀਂ ਹੁਣ ਇਸ ਸਮੂਹ ਤੋਂ ਸੰਦੇਸ਼ ਜਾਂ ਅਪਡੇਟਸ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕਰੋਗੇ.</string>
+  <!-- Removed by excludeNonTranslatables <string name="RecipientPreferenceActivity_block_this_contact_question">ਇਸ ਸੰਪਰਕ ਨੂੰ ਬਲੌਕ ਕਰੋ ?</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="RecipientPreferenceActivity_you_will_no_longer_receive_messages_and_calls_from_this_contact">ਤੁਸੀਂ ਹੁਣ ਇਸ ਸੰਪਰਕ ਤੋਂ ਸੰਦੇਸ਼ ਅਤੇ ਕਾਲ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕਰੋਗੇ</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="RecipientPreferenceActivity_block_and_leave_group">ਬਲਾਕ ਕਰੋ ਅਤੇ ਇਸ ਸਮੂਹ ਨੂੰ ਛੱਡੋ ?</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="RecipientPreferenceActivity_block_group">ਇਸ ਗਰੁੱਪ ਨੂੰ ਬਲੌਕ ਕਰੋ ?</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="RecipientPreferenceActivity_block_and_leave_group_description">ਤੁਸੀਂ ਹੁਣ ਇਸ ਸਮੂਹ ਤੋਂ ਸੰਦੇਸ਼ ਜਾਂ ਅਪਡੇਟਸ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕਰੋਗੇ.</string> -->
   <string name="RecipientPreferenceActivity_block">ਬਲਾਕ</string>
-  <string name="RecipientPreferenceActivity_unblock_this_contact_question">ਇਸ ਸੰਪਰਕ ਨੂੰ ਅਨਬਲੌਕ ਕਰੋ ?</string>
-  <string name="RecipientPreferenceActivity_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact">ਤੁਸੀਂ ਇੱਕ ਵਾਰ ਫਿਰ ਇਸ ਸੰਪਰਕ ਤੋਂ ਸੰਦੇਸ਼ ਅਤੇ ਕਾਲ ਪ੍ਰਾਪਤ ਕਰਨ ਦੇ ਯੋਗ ਹੋਵੋਗੇ</string>
-  <string name="RecipientPreferenceActivity_unblock_this_group_question">ਇਸ ਗਰੁੱਪ ਨੂੰ ਅਨਬਲੌਕ ਕਰੋ ?</string>
-  <string name="RecipientPreferenceActivity_unblock_this_group_description">ਮੌਜੂਦਾ ਮੈਂਬਰ ਤੁਹਾਨੂੰ ਦੁਬਾਰਾ ਗਰੁੱਪ ਵਿੱਚ ਜੋੜਨ ਦੇ ਯੋਗ ਹੋਣਗੇ.</string>
+  <!-- Removed by excludeNonTranslatables <string name="RecipientPreferenceActivity_unblock_this_contact_question">ਇਸ ਸੰਪਰਕ ਨੂੰ ਅਨਬਲੌਕ ਕਰੋ ?</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="RecipientPreferenceActivity_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact">ਤੁਸੀਂ ਇੱਕ ਵਾਰ ਫਿਰ ਇਸ ਸੰਪਰਕ ਤੋਂ ਸੰਦੇਸ਼ ਅਤੇ ਕਾਲ ਪ੍ਰਾਪਤ ਕਰਨ ਦੇ ਯੋਗ ਹੋਵੋਗੇ</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="RecipientPreferenceActivity_unblock_this_group_question">ਇਸ ਗਰੁੱਪ ਨੂੰ ਅਨਬਲੌਕ ਕਰੋ ?</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="RecipientPreferenceActivity_unblock_this_group_description">ਮੌਜੂਦਾ ਮੈਂਬਰ ਤੁਹਾਨੂੰ ਦੁਬਾਰਾ ਗਰੁੱਪ ਵਿੱਚ ਜੋੜਨ ਦੇ ਯੋਗ ਹੋਣਗੇ.</string> -->
   <string name="RecipientPreferenceActivity_error_leaving_group">ਗਰੁੱਪ ਛੱਡਣ ਵਿੱਚ ਗਲਤੀ</string>
   <string name="RecipientPreferenceActivity_unblock">ਅਨਬਲੌਕ ਕਰੋ</string>
   <string name="RecipientPreferenceActivity_enabled">ਸਮਰਥਿਤ</string>
@@ -1376,7 +1376,7 @@
   <string name="RegistrationActivity_call_me_instead_available_in">ਇਸ ਦੀ ਬਜਾਏ ਮੈਨੂੰ ਕਾਲ ਕਰੋ \n ( ਵਿੱਚ ਉਪਲੱਬਧ %1$02d:%2$02d)</string>
   <string name="RegistrationActivity_contact_signal_support">ਸੰਪਰਕ Signal ਸਹਾਇਤਾ</string>
   <string name="RegistrationActivity_code_support_subject">Signal ਰਜਿਸਟ੍ਰੇਸ਼ਨ - ਐਂਡਰਾਇਡ ਲਈ ਪੁਸ਼ਟੀਕਰਣ ਕੋਡ</string>
-  <string name="RegistrationActivity_code_support_body">ਵਿਸ਼ਾ: Signal ਰਜਿਸਟ੍ਰੇਸ਼ਨ - ਐਂਡਰਾਇਡ ਲਈ ਪੁਸ਼ਟੀਕਰਣ ਕੋਡ \ n ਡਿਵਾਈਸ ਜਾਣਕਾਰੀ: %1$s\nਐਂਡਰਾਇਡ ਵਰਜ਼ਨ: %2$s\nਸਿਗਨਲ ਸੰਸਕਰਣ: %3$s \nਲੋਕੇਲ: %4$s</string>
+  <!-- Removed by excludeNonTranslatables <string name="RegistrationActivity_code_support_body">ਵਿਸ਼ਾ: Signal ਰਜਿਸਟ੍ਰੇਸ਼ਨ - ਐਂਡਰਾਇਡ ਲਈ ਪੁਸ਼ਟੀਕਰਣ ਕੋਡ \ n ਡਿਵਾਈਸ ਜਾਣਕਾਰੀ: %1$s\nਐਂਡਰਾਇਡ ਵਰਜ਼ਨ: %2$s\nਸਿਗਨਲ ਸੰਸਕਰਣ: %3$s \nਲੋਕੇਲ: %4$s</string> -->
   <string name="BackupUtil_never">ਕਦੇ ਨਹੀਂ</string>
   <string name="BackupUtil_unknown">ਅਣਜਾਣ</string>
   <string name="preferences_app_protection__screen_lock">ਸਕ੍ਰੀਨ ਲੌਕ</string>
