@@ -45,10 +45,12 @@ import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.profiles.ProfileName;
 import org.thoughtcrime.securesms.providers.BlobProvider;
 import org.thoughtcrime.securesms.registration.RegistrationUtil;
+import org.thoughtcrime.securesms.util.CommunicationActions;
 import org.thoughtcrime.securesms.util.FeatureFlags;
 import org.thoughtcrime.securesms.util.StringUtil;
 import org.thoughtcrime.securesms.util.concurrent.SimpleTask;
 import org.thoughtcrime.securesms.util.text.AfterTextChanged;
+import org.thoughtcrime.securesms.util.views.LearnMoreTextView;
 import org.whispersystems.libsignal.util.guava.Optional;
 
 import java.io.IOException;
@@ -131,10 +133,6 @@ public class EditProfileFragment extends Fragment {
     initializeProfileAvatar();
     initializeProfileName();
     initializeUsername();
-
-    if (groupId == null) {
-      requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-    }
   }
 
   @Override
@@ -244,6 +242,7 @@ public class EditProfileFragment extends Fragment {
 
     if (isEditingGroup) {
       givenName.setHint(R.string.EditProfileFragment__group_name);
+      givenName.requestFocus();
       toolbar.setTitle(R.string.EditProfileFragment__edit_group_name_and_photo);
       preview.setVisibility(View.GONE);
       familyName.setVisibility(View.GONE);
@@ -255,6 +254,9 @@ public class EditProfileFragment extends Fragment {
                                                                          trimInPlace(s, false);
                                                                          viewModel.setFamilyName(s.toString());
                                                                        }));
+      LearnMoreTextView descriptionText = view.findViewById(R.id.description_text);
+      descriptionText.setLearnMoreVisible(true);
+      descriptionText.setOnLinkClickListener(v -> CommunicationActions.openBrowserLink(requireContext(), getString(R.string.EditProfileFragment__support_link)));
     }
 
     this.finishButton.setOnClickListener(v -> {

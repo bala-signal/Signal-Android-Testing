@@ -68,12 +68,13 @@ public final class GroupManager {
                                               @NonNull  GroupId groupId,
                                               @Nullable byte[]  avatar,
                                                         boolean avatarChanged,
-                                              @Nullable String  name)
+                                              @NonNull  String  name,
+                                                        boolean nameChanged)
     throws GroupChangeFailedException, GroupInsufficientRightsException, IOException, GroupNotAMemberException, GroupChangeBusyException
   {
     if (groupId.isV2()) {
       try (GroupManagerV2.GroupEditor edit = new GroupManagerV2(context).edit(groupId.requireV2())) {
-        return edit.updateGroupTitleAndAvatar(name, avatar, avatarChanged);
+        return edit.updateGroupTitleAndAvatar(nameChanged ? name : null, avatar, avatarChanged);
       }
     } else {
       List<Recipient> members = DatabaseFactory.getGroupDatabase(context)
@@ -147,12 +148,13 @@ public final class GroupManager {
   @WorkerThread
   public static void updateGroupFromServer(@NonNull Context context,
                                            @NonNull GroupMasterKey groupMasterKey,
-                                           int version,
-                                           long timestamp)
+                                           int revision,
+                                           long timestamp,
+                                           @Nullable byte[] signedGroupChange)
       throws GroupChangeBusyException, IOException, GroupNotAMemberException
   {
     try (GroupManagerV2.GroupUpdater updater = new GroupManagerV2(context).updater(groupMasterKey)) {
-      updater.updateLocalToServerVersion(version, timestamp);
+      updater.updateLocalToServerRevision(revision, timestamp, signedGroupChange);
     }
   }
 
@@ -246,7 +248,7 @@ public final class GroupManager {
     } else {
       GroupDatabase.GroupRecord groupRecord = DatabaseFactory.getGroupDatabase(context).requireGroup(groupId);
       List<RecipientId>         members     = groupRecord.getMembers();
-      byte[]                    avatar      = Util.readFully(AvatarHelper.getAvatar(context, groupRecord.getRecipientId()));
+      byte[]                    avatar      = groupRecord.hasAvatar() ? Util.readFully(AvatarHelper.getAvatar(context, groupRecord.getRecipientId())) : null;
       Set<RecipientId>          addresses   = new HashSet<>(members);
 
       addresses.addAll(newMembers);

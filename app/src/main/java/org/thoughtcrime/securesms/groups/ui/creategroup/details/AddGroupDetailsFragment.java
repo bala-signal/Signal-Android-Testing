@@ -1,5 +1,6 @@
 package org.thoughtcrime.securesms.groups.ui.creategroup.details;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -7,10 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -20,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -37,6 +36,7 @@ import org.thoughtcrime.securesms.mediasend.AvatarSelectionBottomSheetDialogFrag
 import org.thoughtcrime.securesms.mediasend.Media;
 import org.thoughtcrime.securesms.mms.DecryptableStreamUriLoader;
 import org.thoughtcrime.securesms.mms.GlideApp;
+import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.profiles.AvatarHelper;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
@@ -58,38 +58,6 @@ public class AddGroupDetailsFragment extends Fragment {
   private Drawable                 avatarPlaceholder;
   private EditText                 name;
   private Toolbar                  toolbar;
-  private ActionMode               actionMode;
-
-  private ActionMode.Callback recipientActionModeCallback = new ActionMode.Callback() {
-    @Override
-    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-      mode.getMenuInflater().inflate(R.menu.add_group_details_fragment_context_menu, menu);
-
-      return true;
-    }
-
-    @Override
-    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-      return false;
-    }
-
-    @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-      if (item.getItemId() == R.id.action_delete) {
-        viewModel.deleteSelected();
-        mode.finish();
-        return true;
-      }
-
-      return false;
-    }
-
-    @Override
-    public void onDestroyActionMode(ActionMode mode) {
-      actionMode = null;
-      viewModel.clearSelected();
-    }
-  };
 
   @Override
   public void onAttach(@NonNull Context context) {
@@ -123,7 +91,7 @@ public class AddGroupDetailsFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     create  = view.findViewById(R.id.create);
-    name    = view.findViewById(R.id.group_name);
+    name    = view.findViewById(R.id.name);
     toolbar = view.findViewById(R.id.toolbar);
 
     setCreateEnabled(false, false);
@@ -140,16 +108,25 @@ public class AddGroupDetailsFragment extends Fragment {
 
     initializeViewModel();
 
-    avatar.setOnClickListener(v -> AvatarSelectionBottomSheetDialogFragment.create(false, true, REQUEST_CODE_AVATAR, true)
-                                                                           .show(getChildFragmentManager(), "BOTTOM"));
-    members.setRecipientLongClickListener(this::handleRecipientLongClick);
+    avatar.setOnClickListener(v -> showAvatarSelectionBottomSheet());
     members.setRecipientClickListener(this::handleRecipientClick);
     name.addTextChangedListener(new AfterTextChanged(editable -> viewModel.setName(editable.toString())));
     toolbar.setNavigationOnClickListener(unused -> callback.onNavigationButtonPressed());
     create.setOnClickListener(v -> handleCreateClicked());
-    viewModel.getMembers().observe(getViewLifecycleOwner(), members::setMembers);
+    viewModel.getMembers().observe(getViewLifecycleOwner(), recipients -> {
+      members.setMembers(recipients);
+      if (recipients.isEmpty()) {
+        toast(R.string.AddGroupDetailsFragment__groups_require_at_least_two_members);
+        callback.onNavigationButtonPressed();
+      }
+    });
     viewModel.getCanSubmitForm().observe(getViewLifecycleOwner(), isFormValid -> setCreateEnabled(isFormValid, true));
-    viewModel.getIsMms().observe(getViewLifecycleOwner(), isMms -> mmsWarning.setVisibility(isMms ? View.VISIBLE : View.GONE));
+    viewModel.getIsMms().observe(getViewLifecycleOwner(), isMms -> {
+      mmsWarning.setVisibility(isMms ? View.VISIBLE : View.GONE);
+      name.setVisibility(isMms ? View.GONE : View.VISIBLE);
+      avatar.setVisibility(isMms ? View.GONE : View.VISIBLE);
+      toolbar.setTitle(isMms ? R.string.AddGroupDetailsFragment__create_group : R.string.AddGroupDetailsFragment__name_this_group);
+    });
     viewModel.getAvatar().observe(getViewLifecycleOwner(), avatarBytes -> {
       if (avatarBytes == null) {
         avatar.setImageDrawable(new InsetDrawable(avatarPlaceholder, ViewUtil.dpToPx(AVATAR_PLACEHOLDER_INSET_DP)));
@@ -162,11 +139,19 @@ public class AddGroupDetailsFragment extends Fragment {
                 .into(avatar);
       }
     });
+
+    name.requestFocus();
   }
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     if (requestCode == REQUEST_CODE_AVATAR && resultCode == Activity.RESULT_OK && data != null) {
+
+      if (data.getBooleanExtra("delete", false)) {
+        viewModel.setAvatar(null);
+        return;
+      }
+
       final Media                                     result         = data.getParcelableExtra(AvatarSelectionActivity.EXTRA_MEDIA);
       final DecryptableStreamUriLoader.DecryptableUri decryptableUri = new DecryptableStreamUriLoader.DecryptableUri(result.getUri());
 
@@ -211,29 +196,15 @@ public class AddGroupDetailsFragment extends Fragment {
   }
 
   private void handleRecipientClick(@NonNull Recipient recipient) {
-    if (actionMode == null) {
-      return;
-    }
-
-    int size = viewModel.toggleSelected(recipient);
-    if (size == 0) {
-      actionMode.finish();
-    }
-  }
-
-  private boolean handleRecipientLongClick(@NonNull Recipient recipient) {
-    if (actionMode != null) {
-      return false;
-    }
-
-    actionMode = toolbar.startActionMode(recipientActionModeCallback);
-
-    if (actionMode != null) {
-      viewModel.toggleSelected(recipient);
-      return true;
-    }
-
-    return false;
+    new AlertDialog.Builder(requireContext())
+                   .setMessage(getString(R.string.AddGroupDetailsFragment__remove_s_from_this_group, recipient.getDisplayName(requireContext())))
+                   .setCancelable(true)
+                   .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel())
+                   .setPositiveButton(R.string.AddGroupDetailsFragment__remove, (dialog, which) -> {
+                     viewModel.delete(recipient.getId());
+                     dialog.dismiss();
+                   })
+                   .show();
   }
 
   private void handleGroupCreateResult(@NonNull GroupCreateResult groupCreateResult) {
@@ -258,6 +229,7 @@ public class AddGroupDetailsFragment extends Fragment {
         break;
       case ERROR_INVALID_MEMBER_COUNT:
         toast(R.string.AddGroupDetailsFragment__groups_require_at_least_two_members);
+        callback.onNavigationButtonPressed();
         break;
       default:
         throw new IllegalStateException("Unexpected error: " + error.getErrorType().name());
@@ -278,6 +250,15 @@ public class AddGroupDetailsFragment extends Fragment {
     create.animate()
           .setDuration(animate ? 300 : 0)
           .alpha(isEnabled ? 1f : 0.5f);
+  }
+
+  private void showAvatarSelectionBottomSheet() {
+    Permissions.with(this)
+               .request(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+               .ifNecessary()
+               .onAnyResult(() -> AvatarSelectionBottomSheetDialogFragment.create(viewModel.hasAvatar(), true, REQUEST_CODE_AVATAR, true)
+                                                                          .show(getChildFragmentManager(), "BOTTOM"))
+               .execute();
   }
 
   public interface Callback {

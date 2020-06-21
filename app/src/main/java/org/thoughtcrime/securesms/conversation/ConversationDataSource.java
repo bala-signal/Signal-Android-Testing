@@ -13,10 +13,13 @@ import org.thoughtcrime.securesms.database.MmsSmsDatabase;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.util.Util;
+import org.thoughtcrime.securesms.util.concurrent.SignalExecutors;
+import org.thoughtcrime.securesms.util.paging.Invalidator;
+import org.thoughtcrime.securesms.util.paging.SizeFixResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.concurrent.Executor;
 
 /**
  * Core data source for loading an individual conversation.
@@ -25,14 +28,17 @@ class ConversationDataSource extends PositionalDataSource<MessageRecord> {
 
   private static final String TAG = Log.tag(ConversationDataSource.class);
 
+  public static final Executor EXECUTOR = SignalExecutors.newFixedLifoThreadExecutor("signal-conversation", 1, 1);
+
   private final Context             context;
   private final long                threadId;
-  private final DataUpdatedCallback dataUpdateCallback;
 
-  private ConversationDataSource(@NonNull Context context, long threadId, @NonNull DataUpdatedCallback dataUpdateCallback) {
+  private ConversationDataSource(@NonNull Context context,
+                                 long threadId,
+                                 @NonNull Invalidator invalidator)
+  {
     this.context            = context;
     this.threadId           = threadId;
-    this.dataUpdateCallback = dataUpdateCallback;
 
     ContentObserver contentObserver = new ContentObserver(null) {
       @Override
@@ -42,6 +48,11 @@ class ConversationDataSource extends PositionalDataSource<MessageRecord> {
       }
     };
 
+    invalidator.observe(() -> {
+      invalidate();
+      context.getContentResolver().unregisterContentObserver(contentObserver);
+    });
+
     context.getContentResolver().registerContentObserver(DatabaseContentProviders.Conversation.getUriForThread(threadId), true, contentObserver);
   }
 
@@ -49,33 +60,26 @@ class ConversationDataSource extends PositionalDataSource<MessageRecord> {
   public void loadInitial(@NonNull LoadInitialParams params, @NonNull LoadInitialCallback<MessageRecord> callback) {
     long start = System.currentTimeMillis();
 
-    MmsSmsDatabase      db      = DatabaseFactory.getMmsSmsDatabase(context);
-    List<MessageRecord> records = new ArrayList<>(params.requestedLoadSize);
+    MmsSmsDatabase      db             = DatabaseFactory.getMmsSmsDatabase(context);
+    List<MessageRecord> records        = new ArrayList<>(params.requestedLoadSize);
+    int                 totalCount     = db.getConversationCount(threadId);
+    int                 effectiveCount = params.requestedStartPosition;
 
     try (MmsSmsDatabase.Reader reader = db.readerFor(db.getConversation(threadId, params.requestedStartPosition, params.requestedLoadSize))) {
       MessageRecord record;
-      while ((record = reader.getNext()) != null && !isInvalid()) {
+      while ((record = reader.getNext()) != null && effectiveCount < totalCount && !isInvalid()) {
         records.add(record);
+        effectiveCount++;
       }
     }
 
-    int effectiveCount = records.size() + params.requestedStartPosition;
-    int totalCount     = db.getConversationCount(threadId);
+    if (!isInvalid()) {
+      SizeFixResult<MessageRecord> result = SizeFixResult.ensureMultipleOfPageSize(records, params.requestedStartPosition, params.pageSize, totalCount);
 
-    if (effectiveCount > totalCount) {
-      Log.w(TAG, String.format(Locale.ENGLISH, "Miscalculation! Records: %d, Start Position: %d, Total: %d. Adjusting total.",
-                                               records.size(),
-                                               params.requestedStartPosition,
-                                               totalCount));
-      totalCount = effectiveCount;
+      callback.onResult(result.getItems(), params.requestedStartPosition, result.getTotal());
     }
 
-    records = ensureMultipleOfPageSize(records, params.pageSize, totalCount);
-
-    callback.onResult(records, params.requestedStartPosition, totalCount);
-    Util.runOnMain(dataUpdateCallback::onDataUpdated);
-
-    Log.d(TAG, "[Initial Load] " + (System.currentTimeMillis() - start) + " ms" + (isInvalid() ? " -- invalidated" : ""));
+    Log.d(TAG, "[Initial Load] " + (System.currentTimeMillis() - start) + " ms | thread: " + threadId + ", start: " + params.requestedStartPosition + ", size: " + params.requestedLoadSize + (isInvalid() ? " -- invalidated" : ""));
   }
 
   @Override
@@ -93,39 +97,25 @@ class ConversationDataSource extends PositionalDataSource<MessageRecord> {
     }
 
     callback.onResult(records);
-    Util.runOnMain(dataUpdateCallback::onDataUpdated);
 
-    Log.d(TAG, "[Update] " + (System.currentTimeMillis() - start) + " ms" + (isInvalid() ? " -- invalidated" : ""));
-  }
-
-  private static @NonNull List<MessageRecord> ensureMultipleOfPageSize(@NonNull List<MessageRecord> records, int pageSize, int total) {
-    if (records.size() != total && records.size() % pageSize != 0) {
-      int overflow = records.size() % pageSize;
-      return records.subList(0, records.size() - overflow);
-    } else {
-      return records;
-    }
-  }
-
-  interface DataUpdatedCallback {
-    void onDataUpdated();
+    Log.d(TAG, "[Update] " + (System.currentTimeMillis() - start) + " ms | thread: " + threadId + ", start: " + params.startPosition + ", size: " + params.loadSize + (isInvalid() ? " -- invalidated" : ""));
   }
 
   static class Factory extends DataSource.Factory<Integer, MessageRecord> {
 
     private final Context             context;
     private final long                threadId;
-    private final DataUpdatedCallback callback;
+    private final Invalidator         invalidator;
 
-    Factory(Context context, long threadId, @NonNull DataUpdatedCallback callback) {
-      this.context  = context;
-      this.threadId = threadId;
-      this.callback = callback;
+    Factory(Context context, long threadId, @NonNull Invalidator invalidator) {
+      this.context     = context;
+      this.threadId    = threadId;
+      this.invalidator = invalidator;
     }
 
     @Override
     public @NonNull DataSource<Integer, MessageRecord> create() {
-      return new ConversationDataSource(context, threadId, callback);
+      return new ConversationDataSource(context, threadId, invalidator);
     }
   }
 }

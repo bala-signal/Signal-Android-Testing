@@ -319,6 +319,9 @@ public class MediaSendActivity extends PassphraseRequiredActionBarActivity imple
     MediaSendFragment sendFragment  = (MediaSendFragment) getSupportFragmentManager().findFragmentByTag(TAG_SEND);
 
     if (sendFragment == null || !sendFragment.isVisible() || !hud.isInputOpen()) {
+      if (captionAndRail != null) {
+        captionAndRail.setVisibility(View.VISIBLE);
+      }
       super.onBackPressed();
     } else {
       hud.hideCurrentInput(composeText);
@@ -714,6 +717,10 @@ public class MediaSendActivity extends PassphraseRequiredActionBarActivity imple
           break;
         case ITEM_TOO_LARGE:
           Toast.makeText(this, R.string.MediaSendActivity_an_item_was_removed_because_it_exceeded_the_size_limit, Toast.LENGTH_LONG).show();
+          break;
+        case ONLY_ITEM_TOO_LARGE:
+          Toast.makeText(this, R.string.MediaSendActivity_an_item_was_removed_because_it_exceeded_the_size_limit, Toast.LENGTH_LONG).show();
+          onNoMediaAvailable();
           break;
         case TOO_MANY_ITEMS:
           int maxSelection = viewModel.getMaxSelection();

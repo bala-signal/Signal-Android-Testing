@@ -26,13 +26,15 @@ public final class ProfileUploadJob extends BaseJob {
 
   public static final String KEY = "ProfileUploadJob";
 
+  public static final String QUEUE = "ProfileAlteration";
+
   private final Context                     context;
   private final SignalServiceAccountManager accountManager;
 
   public ProfileUploadJob() {
     this(new Job.Parameters.Builder()
                             .addConstraint(NetworkConstraint.KEY)
-                            .setQueue(KEY)
+                            .setQueue(QUEUE)
                             .setLifespan(Parameters.IMMORTAL)
                             .setMaxAttempts(Parameters.UNLIMITED)
                             .setMaxInstances(1)
@@ -53,7 +55,7 @@ public final class ProfileUploadJob extends BaseJob {
     String      avatarPath  = null;
 
     try (StreamDetails avatar = AvatarHelper.getSelfProfileAvatarStream(context)) {
-      if (FeatureFlags.VERSIONED_PROFILES) {
+      if (FeatureFlags.versionedProfiles()) {
         avatarPath = accountManager.setVersionedProfile(Recipient.self().getUuid().get(), profileKey, profileName.serialize(), avatar).orNull();
       } else {
         accountManager.setProfileName(profileKey, profileName.serialize());

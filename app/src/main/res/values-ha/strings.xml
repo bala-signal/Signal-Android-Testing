@@ -75,7 +75,6 @@
   <string name="BlockedContactsActivity_blocked_contacts">Tosheshen lambobin sadarwa</string>
   <!--BlockUnblockDialog-->
   <string name="BlockUnblockDialog_group_members_will_be_able_to_add_you">Membobin rukuni suna da damar dawowa da kai/ke rukunin. </string>
-  <string name="BlockUnblockDialog_you_will_be_able_to_call_and_message_each_other">Zaku samu damar aikawa juna sakonni da kiran juna. </string>
   <string name="BlockUnblockDialog_unblock">Bude</string>
   <string name="BlockUnblockDialog_block">Toshe</string>
   <string name="BlockUnblockDialog_block_and_delete">Toshe ka/ki goge</string>
@@ -157,6 +156,7 @@
   <string name="ConversationItem_read_more">  Kara karatu</string>
   <string name="ConversationItem_download_more">  Sauke kari</string>
   <string name="ConversationItem_pending">  Yana tafiya</string>
+  <string name="ConversationItem_this_message_was_deleted">An goge sakon</string>
   <!--ConversationActivity-->
   <string name="ConversationActivity_reset_secure_session_question">Kara saitin mahajin bayanai masu tsaro?</string>
   <string name="ConversationActivity_this_may_help_if_youre_having_encryption_problems">Wannan zai iya taimakawa idan akasamu matsala da tsaro a wannan hiran. Ba zaka/ki rasa sakwanninka ba.</string>
@@ -285,13 +285,13 @@
   <string name="ConversationListItemAction_archived_conversations_d">Ajiyayyen hira (%d)</string>
   <!--ConversationTitleView-->
   <string name="ConversationTitleView_verified">Tabbatacce</string>
+  <string name="ConversationTitleView_you">Kai/Ke</string>
   <!--CreateProfileActivity-->
   <string name="CreateProfileActivity__profile">Furofayil</string>
   <string name="CreateProfileActivity_error_setting_profile_photo">Kuskure wajen saitin hoton furofayil</string>
   <string name="CreateProfileActivity_problem_setting_profile">As samu matsalar saitin furofayil</string>
   <string name="CreateProfileActivity_profile_photo">Hoton furofayil</string>
   <string name="CreateProfileActivity_set_up_your_profile">Saita furofayil</string>
-  <string name="CreateProfileActivity_signal_profiles_are_end_to_end_encrypted">Furofayil don Signal na amfani da tsari, kuma sabis din Signal bashi da daman samun wannan bayanan.</string>
   <string name="CreateProfileActivity_set_avatar_description">Sa alamar hoto.</string>
   <!--CustomDefaultPreference-->
   <string name="CustomDefaultPreference_using_custom">Amfani da tanadadde: %s</string>
@@ -339,22 +339,7 @@
   <!--GiphyFragmentPageAdapter-->
   <string name="GiphyFragmentPagerAdapter_gifs">GIFs</string>
   <string name="GiphyFragmentPagerAdapter_stickers">Sitika</string>
-  <!--GroupCreateActivity-->
-  <string name="GroupCreateActivity_actionbar_title">Sabon rukuni</string>
-  <string name="GroupCreateActivity_actionbar_edit_title">Gyara rukuni.</string>
-  <string name="GroupCreateActivity_group_name_hint">Sunan rukuni</string>
-  <string name="GroupCreateActivity_actionbar_mms_title">Sabon rukunin MMS.</string>
-  <string name="GroupCreateActivity_contacts_dont_support_push">Ka/kin zabi lambar sadarwa da baya daukan rukunonin Signal don haka rukuninnan zai zama MMS.</string>
-  <string name="GroupCreateActivity_youre_not_registered_for_signal">Baka/ki yi rijistar Signal ba, domin haka an sake rukunoni Signal dinki/ka. Yi kokari ka/ki yi rijistar acikin saiti da gt;Advanced.</string>
-  <string name="GroupCreateActivity_contacts_no_members">Ka/ki na Bukatan Ko Da Mutum Daya Ne A Wannan Rukunnin</string>
-  <string name="GroupCreateActivity_contacts_invalid_number">Daya daya cikin mutanen da suke cikin rukuninka na da lambar da ba daidai bane. Gyara wannan lambar ko kuma cireshi ka/ki kara gwada sawa.</string>
-  <string name="GroupCreateActivity_avatar_content_description">Hoton na\'ura</string>
-  <string name="GroupCreateActivity_menu_apply_button">Sa</string>
-  <string name="GroupCreateActivity_creating_group"> Samar da %1$s…</string>
-  <string name="GroupCreateActivity_updating_group">Sabuntarwa %1$s…</string>
-  <string name="GroupCreateActivity_cannot_add_non_push_to_existing_group">An kasa sa %1$s sabida basua amfani da Signal.</string>
-  <string name="GroupCreateActivity_loading_group_details">Ana karban cikakken bayanin rukuni.</string>
-  <string name="GroupCreateActivity_youre_already_in_the_group">Ka/kin riga ka/kin shiga wannan rukunin.</string>
+  <!--AddToGroupActivity-->
   <!--GroupShareProfileView-->
   <string name="GroupShareProfileView_share_your_profile_name_and_photo_with_this_group">Bar membobin rukuninnan suga hoto da sunan furifayil dinka/ki?</string>
   <string name="GroupShareProfileView_do_you_want_to_make_your_profile_name_and_photo_visible_to_all_current_and_future_members_of_this_group">Ka/ki na so a bayyanawa membobin rukuninnan na yanzu da na gaba hoto da sunan furofayil dinka/ki?</string>
@@ -366,6 +351,8 @@
   <string name="PendingMembersActivity_people_you_invited">Mutane da ka/kika gayyata</string>
   <string name="PendingMembersActivity_invites_by_other_group_members">Gayyatar wasu membobin rukuni</string>
   <string name="PendingMembersActivity_missing_detail_explanation">Ba\'a nuna wa kowa bayanan mutane da wasu membobin rukuni suka gayyata. Idan waddanda aka gayyata suka shiga mutanen rukuni zasu ga bayanansu a lokacin. Su kuma ba za su ga ko wanne sako a rukunin ba sai sun shiga. </string>
+  <!--AddMembersActivity-->
+  <string name="AddMembersActivity__done">Angama</string>
   <!--AddGroupDetailsFragment-->
   <string name="AddGroupDetailsFragment__create">kirkira</string>
   <string name="AddGroupDetailsFragment__members">Membobi</string>
@@ -380,15 +367,32 @@
   <string name="ManageGroupActivity_on">Kunna</string>
   <string name="ManageGroupActivity_add_members">Kara membobi</string>
   <string name="ManageGroupActivity_view_all_members">Kalli dukkan membobi</string>
+  <string name="ManageGroupActivity_none">Babu.</string>
+  <!--ManageRecipientActivity-->
+  <string name="ManageRecipientActivity_disappearing_messages">Sakwanni masu bacewa</string>
+  <string name="ManageRecipientActivity_block">Toshe</string>
+  <string name="ManageRecipientActivity_unblock">Bude</string>
+  <string name="ManageRecipientActivity_view_safety_number">Kalli lambar tsari</string>
+  <string name="ManageRecipientActivity_mute_notifications">Yi tsit da sanarwa</string>
+  <string name="ManageRecipientActivity_custom_notifications">Tanadadden sanarwa</string>
+  <string name="ManageRecipientActivity_off">Kashe</string>
+  <string name="ManageRecipientActivity_on">Kunna</string>
+  <string name="ManageRecipientActivity_message_description">Sako</string>
   <!--CustomNotificationsDialogFragment-->
   <string name="CustomNotificationsDialogFragment__custom_notifications">Tanadadden sanarwa</string>
   <string name="CustomNotificationsDialogFragment__messages">Sakwanni</string>
   <string name="CustomNotificationsDialogFragment__notification_sound">Sautin sanarwa</string>
   <string name="CustomNotificationsDialogFragment__vibrate">Girgiza</string>
+  <string name="CustomNotificationsDialogFragment__call_settings">Saitin kira</string>
+  <string name="CustomNotificationsDialogFragment__ringtone">Sautin kira</string>
+  <string name="CustomNotificationsDialogFragment__enabled">Bada dama</string>
+  <string name="CustomNotificationsDialogFragment__disabled">Hana dama</string>
+  <string name="CustomNotificationsDialogFragment__default">Tanadadde</string>
   <!--GV2 Invite cancellation confirmation-->
   <!--CropImageActivity-->
   <string name="CropImageActivity_group_avatar">Hoton rukuni</string>
   <string name="CropImageActivity_profile_avatar">Alamar hoto.</string>
+  <!--ImageEditorHud-->
   <!--InputPanel-->
   <string name="InputPanel_tap_and_hold_to_record_a_voice_message_release_to_send">Taba kuma ka/ki rike nan domin daukar sakon mura, sake ka/ki tura</string>
   <!--InviteActivity-->
@@ -416,9 +420,6 @@
   <string name="Job_working_in_the_background">Ana karasa aiki a bango…</string>
   <!--LearnMoreTextView-->
   <string name="LearnMoreTextView_learn_more">Karin bayani</string>
-  <!--MessageDetailsRecipient-->
-  <string name="MessageDetailsRecipient_failed_to_send">Turawa ya gaza</string>
-  <string name="MessageDetailsRecipient_new_safety_number">Sabon lambar tsaro</string>
   <!--LongMessageActivity-->
   <string name="LongMessageActivity_unable_to_find_message">Ba\'a ga sako ba</string>
   <string name="LongMessageActivity_message_from_s">Sakon daga %1$s</string>
@@ -686,6 +687,7 @@
   <string name="RegistrationActivity_country_code_description">Lambar kasa</string>
   <string name="RegistrationActivity_call">Kira</string>
   <!--RegistrationLockV2Dialog-->
+  <string name="RegistrationLockV2Dialog_if_you_forget_your_signal_pin_when_registering_again">Idan ka/kika manta da lambobin sirrin Signal dinka/ki duk sanda zaka/ki yi rijistar Signal nan gaba, za\'a kulle asusunka/ki har tsawon kwana 7. </string>
   <!--RevealableMessageView-->
   <string name="RevealableMessageView_view_photo">Kalli hoto</string>
   <string name="RevealableMessageView_view_video">Kalli bidiyo</string>
@@ -763,6 +765,7 @@
   <string name="ThreadRecord_view_once_photo">Photo mai kallo daya</string>
   <string name="ThreadRecord_view_once_video">Bidiyo mai kallo daya</string>
   <string name="ThreadRecord_view_once_media">Midiya mai kallo daya</string>
+  <string name="ThreadRecord_this_message_was_deleted">An goge sakon</string>
   <string name="ThreadRecord_s_is_on_signal">%s ya/tana Signal!</string>
   <string name="ThreadRecord_disappearing_messages_disabled">An kashe bacewar sako</string>
   <string name="ThreadRecord_disappearing_message_time_updated_to_s">An saita bacewar sako zuwa %s</string>
@@ -772,6 +775,12 @@
   <string name="ThreadRecord_you_marked_unverified">Ka/kin shaida cewar ba ingantattce ba</string>
   <string name="ThreadRecord_message_could_not_be_processed">An kasa sarrafa sako</string>
   <string name="ThreadRecord_message_request">Neman izinin sako</string>
+  <string name="ThreadRecord_photo">Hoto</string>
+  <string name="ThreadRecord_gif">GIF</string>
+  <string name="ThreadRecord_voice_message">Sakon murya</string>
+  <string name="ThreadRecord_contact">Lambar sadarwa</string>
+  <string name="ThreadRecord_file">Fayil</string>
+  <string name="ThreadRecord_video">Bidiyo</string>
   <!--UpdateApkReadyListener-->
   <string name="UpdateApkReadyListener_Signal_update">Sabuntuwar Signal</string>
   <string name="UpdateApkReadyListener_a_new_version_of_signal_is_available_tap_to_update">An samu sabon Signal, taba domin sabuntarwa</string>
@@ -813,6 +822,7 @@
   <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">Signal na bukatar izinin Kyamara domin yin sikanin QR code, amma an hana wannan damar dindindin. Ci gaba da shigar saitin Signal, Zabi Permissions sannan ka/ki kunna Kyamara.</string>
   <string name="VerifyIdentityActivity_unable_to_scan_qr_code_without_camera_permission">Sikanin lambar sirri QR ba zai yi ba tareda izinin Kyamara ba.</string>
   <!--ViewOnceMessageActivity-->
+  <!--AudioView-->
   <!--MessageDisplayHelper-->
   <string name="MessageDisplayHelper_bad_encrypted_message">Sako mai tsari mara kyau</string>
   <string name="MessageDisplayHelper_message_encrypted_for_non_existing_session">An tsare sako don mahadin bayanai da babu shi </string>
@@ -871,6 +881,7 @@
   <string name="MessageNotifier_reacted_s_to_your_view_once_photo">Ya/ta yi martanin %1$s akan hotonka/ki mai kallo daya.</string>
   <string name="MessageNotifier_reacted_s_to_your_view_once_video">Ya/ta yi martanin %1$s akan bidiyonka/ki mai kallo daya.</string>
   <string name="MessageNotifier_reacted_s_to_your_sticker">Ya/ta yi martanin%1$s akan sitikarka/ki.</string>
+  <string name="MessageNotifier_this_message_was_deleted">An goge sakon</string>
   <!--Notification Channels-->
   <string name="NotificationChannel_messages">Tanadadde</string>
   <string name="NotificationChannel_calls">Kira</string>
@@ -923,7 +934,6 @@
   <!--WebRtcCallScreen V2-->
   <string name="WebRtcCallScreen__answer">Amsa</string>
   <!--WebRtcAudioOutputToggle-->
-  <string name="WebRtcAudioOutputToggle__phone">Lambar waya</string>
   <string name="WebRtcAudioOutputToggle__speaker">Sipika</string>
   <string name="WebRtcAudioOutputToggle__bluetooth">Bluetooth</string>
   <!--WebRtcCallControls-->
@@ -961,6 +971,7 @@
   <string name="contact_selection_activity__enter_name_or_number">Sa suna ko lamba</string>
   <string name="contact_selection_activity__invite_to_signal">Gayyace shi/ta zuwa Signal.</string>
   <string name="contact_selection_activity__new_group">Sabon rukuni</string>
+  <!--temporary for internal testing-->
   <!--contact_filter_toolbar-->
   <string name="contact_filter_toolbar__clear_entered_text_description">Goge rubutu</string>
   <string name="contact_filter_toolbar__show_keyboard_description">Nuna allon haruffa</string>
@@ -981,6 +992,7 @@
   <!--contact_selection_list_fragment-->
   <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them">Signal na bukatar daman samun abokan sadarwarka/ki domin nuna su</string>
   <string name="contact_selection_list_fragment__show_contacts">Nuna lambobin sadarwa</string>
+  <!--contact_selection_list_item-->
   <!--conversation_activity-->
   <string name="conversation_activity__type_message_push">Sakon Signal</string>
   <string name="conversation_activity__type_message_sms_insecure">SMS mara tsaro</string>
@@ -1140,19 +1152,6 @@
   <string name="EditProfileFragment__group_name">Sunan rukuni</string>
   <!--recipient_preferences_activity-->
   <string name="recipient_preference_activity__shared_media">Midiya da aka tura/turo</string>
-  <!--recipient_preferences-->
-  <string name="recipient_preferences__mute_conversation">Yi tsit da hira</string>
-  <string name="recipient_preferences__custom_notifications">Tanadadden sanarwa</string>
-  <string name="recipient_preferences__custom_notifications_settings">Saitin sanarwar tsarin na\'ura</string>
-  <string name="recipient_preferences__notification_sound">Sautin sanarwa</string>
-  <string name="recipient_preferences__vibrate">Girgiza</string>
-  <string name="recipient_preferences__block">Toshe</string>
-  <string name="recipient_preferences__color">Launi</string>
-  <string name="recipient_preferences__view_safety_number">Kalli lambar tsari</string>
-  <string name="recipient_preferences__chat_settings">Saitin hira</string>
-  <string name="recipient_preferences__privacy">Sirri</string>
-  <string name="recipient_preferences__call_settings">Saitin kira</string>
-  <string name="recipient_preferences__ringtone">Sautin kira</string>
   <!--- redphone_call_controls-->
   <string name="redphone_call_card__signal_call">Kiran Signal</string>
   <!--registration_activity-->
@@ -1184,9 +1183,10 @@
   <string name="message_details_header__received">An karba</string>
   <string name="message_details_header__disappears">Ya bace</string>
   <string name="message_details_header__via">Ta</string>
-  <string name="message_details_header__to">Zuwa</string>
-  <string name="message_details_header__from">Daga</string>
-  <string name="message_details_header__with">Da</string>
+  <!--message_details_recipient_header-->
+  <!--message_Details_recipient-->
+  <string name="message_details_recipient__failed_to_send">Turawa ya gaza</string>
+  <string name="message_details_recipient__new_safety_number">Sabon lambar tsaro</string>
   <!--AndroidManifest.xml-->
   <string name="AndroidManifest__create_passphrase">Kirkiri kalmomin sirri</string>
   <string name="AndroidManifest__select_contacts">Zabi lambar sadarwa</string>
@@ -1387,6 +1387,7 @@
   <string name="conversation_list_batch__menu_select_all">Zabi Duka</string>
   <string name="conversation_list_batch_archive__menu_archive_selected">An zabi ajiyayyen sako</string>
   <string name="conversation_list_batch_unarchive__menu_unarchive_selected">Fitar da zababbe daga wajen da aka adana</string>
+  <string name="conversation_list_batch__menu_unarchive_selected">Fitar da zababbe daga wajen da aka adana</string>
   <!--conversation_list-->
   <string name="conversation_list_settings_shortcut">Saitin gajeren hanya</string>
   <string name="conversation_list_search_description">Duba</string>
@@ -1498,6 +1499,7 @@
   <string name="CreateKbsPinFragment__create_a_new_pin">Kirkiri sabon lambobin sirri</string>
   <string name="CreateKbsPinFragment__you_can_choose_a_new_pin_as_long_as_this_device_is_registered">Zaka/ki iya canza lambobin sirrinka/ki idan da rijista akan wannan na\'ura. </string>
   <string name="CreateKbsPinFragment__create_your_pin">Kirkiri lambobin sirrinka/ki</string>
+  <string name="CreateKbsPinFragment__pins_keep_information_stored_with_signal_encrypted">Ka/ki tsare bayanai da ka/kika ajiye da Signal domin ya Zaman to kai/ke kadai ne/ceke damar isonshi. Furofayil, saiti, da lambobin sadarwarka/ki za su dawo saitin ainihi idan ka/kika sake girka Signal. </string>
   <string name="CreateKbsPinFragment__choose_a_stronger_pin">Zabi lambobin sirri masu karfi</string>
   <!--ConfirmKbsPinFragment-->
   <string name="ConfirmKbsPinFragment__pins_dont_match">An samu kuskuren lambobin sirri. Kara gwadawa.</string>
@@ -1508,6 +1510,7 @@
   <string name="ConfirmKbsPinFragment__creating_pin">Ana kirkirar lambobin sirri</string>
   <!--KbsSplashFragment-->
   <string name="KbsSplashFragment__introducing_pins">Gabatar da lambobin sirri</string>
+  <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">Ka/ki tsare bayanai da ka/kika ajiye da Signal domin ya Zaman to kai/ke kadai ne/ceke damar isonshi. Furofayil, saiti, da lambobin sadarwarka/ki za su dawo saitin ainihi idan ka/kika sake girka Signal. </string>
   <string name="KbsSplashFragment__learn_more">Karin bayani</string>
   <string name="KbsSplashFragment__registration_lock_equals_pin">Makullin rijista = Lambobin sirri</string>
   <string name="KbsSplashFragment__read_more_about_pins">Karanta karin bayanin akan ambobin sirri.</string>
@@ -1602,6 +1605,10 @@
   <string name="preferences_app_protection__signal_pin">Lambobin sirrin Signal</string>
   <string name="preferences_app_protection__create_a_pin">Kirkira lambobin sirri</string>
   <string name="preferences_app_protection__change_your_pin">Canza lambobin sirri</string>
+  <string name="preferences_app_protection__pins_keep_information_stored_with_signal_encrypted">Ka/ki tsare bayanai da ka/kika ajiye da Signal domin ya Zaman to kai/ke kadai ne/ceke damar isonshi. Furofayil, saiti, da lambobin sadarwarka/ki za su dawo saitin ainihi idan ka/kika sake girka Signal. </string>
+  <string name="preferences_app_protection__confirm_pin">Tabbatar da lambar sirri</string>
+  <string name="preferences_app_protection__confirm_your_signal_pin">Tabbatar. I lambobin sirrin Signal dinka/ki. </string>
+  <string name="preferences_app_protection__incorrect_pin_try_again">Lambobin sirrinnan ba dai dai bane. Kara gwadawa.</string>
   <string name="AppProtectionPreferenceFragment_none">Babu.</string>
   <string name="registration_activity__the_registration_lock_pin_is_not_the_same_as_the_sms_verification_code_you_just_received_please_enter_the_pin_you_previously_configured_in_the_application">Lambar sirrin rijista ba daya bane da lambar sirrin tabbatarwar SMS da ka/kika samu. Dan shigar da lambar sirrin that ka/kika fara sakawa a manhajar.</string>
   <string name="registration_activity__registration_lock_pin">Lambar sirrin rijista</string>
@@ -1627,7 +1634,6 @@
   <string name="RegistrationLockDialog_i_forgot_my_pin">Na manta lambar sirrina</string>
   <string name="RegistrationLockDialog_forgotten_pin">An manta da lambar sirri?</string>
   <string name="RegistrationLockDialog_registration_lock_helps_protect_your_phone_number_from_unauthorized_registration_attempts">Mukullin rijista na taimakawa wajen kare lambar wayarka/ki daga gwajin rijista da ba\'a yarda dashi ba. Za\'a iya nakashe wannan fasalin ko da yaushe a cikin saitin sirri na Signal dinka/ki.</string>
-  <string name="RegistrationLockDialog_registration_lock">Mukullin rijista</string>
   <string name="RegistrationLockDialog_enable">Karfafa</string>
   <string name="RegistrationLockDialog_the_registration_lock_pin_must_be_at_least_d_digits">Dole sai lambobin sirrin rijista sun kai wa\'adi %d .</string>
   <string name="RegistrationLockDialog_the_two_pins_you_entered_do_not_match">Lambobin sirri da ka/kika shigar basu dace ba</string>
@@ -1643,12 +1649,13 @@
   <string name="recipient_preferences__about">Game da</string>
   <string name="Recipient_unknown">Ba suna</string>
   <!--RecipientBottomSheet-->
-  <string name="RecipientBottomSheet_message">Sako</string>
-  <string name="RecipientBottomSheet_call">Kira</string>
   <string name="RecipientBottomSheet_block">Toshe</string>
   <string name="RecipientBottomSheet_unblock">Bude</string>
+  <string name="RecipientBottomSheet_add_to_contacts">Sa a lambobin sadarwa</string>
   <string name="RecipientBottomSheet_view_safety_number">Kalli lambar tsari</string>
+  <string name="RecipientBottomSheet_message_description">Sako</string>
   <string name="RecipientBottomSheet_remove">Cire</string>
+  <string name="RecipientBottomSheet_copied_to_clipboard">An kwafa zuwa allon rubutu</string>
   <string name="GroupRecipientListItem_admin">Mai gudanarwa</string>
   <!--EOF-->
 </resources>

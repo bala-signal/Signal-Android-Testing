@@ -7,8 +7,6 @@ project(':app').name = 'Signal-Android'
 
 project(':libsignal-service').projectDir = file('libsignal/service')
 
-project(':').buildFileName = 'main.gradle'
-
 rootProject.name='Signal'
 
 include ':zkgroups'

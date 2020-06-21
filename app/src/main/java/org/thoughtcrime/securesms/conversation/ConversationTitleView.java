@@ -2,15 +2,15 @@ package org.thoughtcrime.securesms.conversation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
@@ -22,7 +22,6 @@ import org.thoughtcrime.securesms.recipients.LiveRecipient;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.ExpirationUtil;
 import org.thoughtcrime.securesms.util.FeatureFlags;
-import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
@@ -114,16 +113,9 @@ public class ConversationTitleView extends RelativeLayout {
   }
 
   private void setRecipientTitle(Recipient recipient) {
-    if (FeatureFlags.profileDisplay()) {
-      if      (recipient.isGroup())       setGroupRecipientTitle(recipient);
-      else if (recipient.isLocalNumber()) setSelfTitle();
-      else                                setIndividualRecipientTitle(recipient);
-    } else {
-      if      (recipient.isGroup())                                setGroupRecipientTitle(recipient);
-      else if (recipient.isLocalNumber())                          setSelfTitle();
-      else if (TextUtils.isEmpty(recipient.getName(getContext()))) setNonContactRecipientTitle(recipient);
-      else                                                         setContactRecipientTitle(recipient);
-    }
+    if      (recipient.isGroup())       setGroupRecipientTitle(recipient);
+    else if (recipient.isLocalNumber()) setSelfTitle();
+    else                                setIndividualRecipientTitle(recipient);
   }
 
   @SuppressLint("SetTextI18n")
@@ -139,30 +131,12 @@ public class ConversationTitleView extends RelativeLayout {
     updateSubtitleVisibility();
   }
 
-  private void setContactRecipientTitle(Recipient recipient) {
-    this.title.setText(recipient.getName(getContext()));
-
-    if (TextUtils.isEmpty(recipient.getCustomLabel())) {
-      this.subtitle.setText(null);
-    } else {
-      this.subtitle.setText(recipient.getCustomLabel());
-    }
-
-    updateSubtitleVisibility();
-  }
-
   private void setGroupRecipientTitle(Recipient recipient) {
-    String localNumber = TextSecurePreferences.getLocalNumber(getContext());
-
-    if (FeatureFlags.profileDisplay()) {
-      this.title.setText(recipient.getDisplayName(getContext()));
-    } else {
-      this.title.setText(recipient.getName(getContext()));
-    }
-
+    this.title.setText(recipient.getDisplayName(getContext()));
     this.subtitle.setText(Stream.of(recipient.getParticipants())
-                                .filterNot(Recipient::isLocalNumber)
-                                .map(r -> r.toShortString(getContext()))
+                                .sorted((a, b) -> Boolean.compare(a.isLocalNumber(), b.isLocalNumber()))
+                                .map(r -> r.isLocalNumber() ? getResources().getString(R.string.ConversationTitleView_you)
+                                                            : r.getDisplayName(getContext()))
                                 .collect(Collectors.joining(", ")));
 
     updateSubtitleVisibility();

@@ -19,7 +19,6 @@ package org.thoughtcrime.securesms;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import org.signal.toast.Toast;
@@ -122,7 +121,7 @@ public class NewConversationActivity extends ContactSelectionActivity
   }
 
   @Override
-  public void onNewGroup() {
+  public void onNewGroup(boolean forceV1) {
     handleCreateGroup();
     finish();
   }

@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 
 import org.thoughtcrime.securesms.jobmanager.persistence.ConstraintSpec;
@@ -22,6 +23,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Manages the queue of jobs. This is the only class that should write to {@link JobStorage} to
@@ -97,7 +100,7 @@ class JobController {
   }
 
   @WorkerThread
-  synchronized void submitJobWithExistingDependencies(@NonNull Job job, @NonNull Collection<String> dependsOn) {
+  synchronized void submitJobWithExistingDependencies(@NonNull Job job, @NonNull Collection<String> dependsOn, @Nullable String dependsOnQueue) {
     List<List<Job>> chain = Collections.singletonList(Collections.singletonList(job));
 
     if (chainExceedsMaximumInstances(chain)) {
@@ -106,11 +109,17 @@ class JobController {
       return;
     }
 
-    dependsOn = Stream.of(dependsOn)
-                      .filter(id -> jobStorage.getJobSpec(id) != null)
-                      .toList();
+    Set<String> dependsOnSet = Stream.of(dependsOn)
+                                     .filter(id -> jobStorage.getJobSpec(id) != null)
+                                     .collect(Collectors.toSet());
 
-    FullSpec fullSpec = buildFullSpec(job, dependsOn);
+    if (dependsOnQueue != null) {
+      dependsOnSet.addAll(Stream.of(jobStorage.getJobsInQueue(dependsOnQueue))
+                                .map(JobSpec::getId)
+                                .toList());
+    }
+
+    FullSpec fullSpec = buildFullSpec(job, dependsOnSet);
     jobStorage.insertJobs(Collections.singletonList(fullSpec));
 
     scheduleJobs(Collections.singletonList(job));
@@ -140,6 +149,14 @@ class JobController {
         Log.w(TAG, "Tried to cancel JOB::" + id + ", but it could not be found.");
       }
     }
+  }
+
+  @WorkerThread
+  synchronized void cancelAllInQueue(@NonNull String queue) {
+    Stream.of(runningJobs.values())
+          .filter(j -> Objects.equals(j.getParameters().getQueue(), queue))
+          .map(Job::getId)
+          .forEach(this::cancelJob);
   }
 
   @WorkerThread

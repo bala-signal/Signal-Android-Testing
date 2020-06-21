@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 
 import org.thoughtcrime.securesms.jobmanager.impl.DefaultExecutorFactory;
@@ -38,7 +39,7 @@ public class JobManager implements ConstraintObserver.Notifier {
 
   private static final String TAG = JobManager.class.getSimpleName();
 
-  public static final int CURRENT_VERSION = 6;
+  public static final int CURRENT_VERSION = 7;
 
   private final Application     application;
   private final Configuration   configuration;
@@ -138,7 +139,33 @@ public class JobManager implements ConstraintObserver.Notifier {
     jobTracker.onStateChange(job, JobTracker.JobState.PENDING);
 
     executor.execute(() -> {
-      jobController.submitJobWithExistingDependencies(job, dependsOn);
+      jobController.submitJobWithExistingDependencies(job, dependsOn, null);
+      wakeUp();
+    });
+  }
+
+  /**
+   * Enqueues a single job that depends on a collection of job ID's, as well as any unfinished
+   * items in the specified queue.
+   */
+  public void add(@NonNull Job job, @Nullable String dependsOnQueue) {
+    jobTracker.onStateChange(job, JobTracker.JobState.PENDING);
+
+    executor.execute(() -> {
+      jobController.submitJobWithExistingDependencies(job, Collections.emptyList(), dependsOnQueue);
+      wakeUp();
+    });
+  }
+
+  /**
+   * Enqueues a single job that depends on a collection of job ID's, as well as any unfinished
+   * items in the specified queue.
+   */
+  public void add(@NonNull Job job, @NonNull Collection<String> dependsOn, @Nullable String dependsOnQueue) {
+    jobTracker.onStateChange(job, JobTracker.JobState.PENDING);
+
+    executor.execute(() -> {
+      jobController.submitJobWithExistingDependencies(job, dependsOn, dependsOnQueue);
       wakeUp();
     });
   }
@@ -169,6 +196,13 @@ public class JobManager implements ConstraintObserver.Notifier {
    */
   public void cancel(@NonNull String id) {
     executor.execute(() -> jobController.cancelJob(id));
+  }
+
+  /**
+   * Cancels all jobs in the specified queue. See {@link #cancel(String)} for details.
+   */
+  public void cancelAllInQueue(@NonNull String queue) {
+    executor.execute(() -> jobController.cancelAllInQueue(queue));
   }
 
   /**
