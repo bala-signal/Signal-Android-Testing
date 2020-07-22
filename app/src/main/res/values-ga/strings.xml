@@ -130,7 +130,7 @@
   <string name="ContactShareEditActivity_type_missing">Eile</string>
   <string name="ContactShareEditActivity_invalid_contact">Ní raibh an teagmhálaí roghnaithe bailí</string>
   <!--ConversationItem-->
-  <string name="ConversationItem_error_not_delivered">Theip ar an seoladh. Cnag air chun sonraí a fheiceáil</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationItem_error_not_delivered">Theip ar an seoladh. Cnag air chun sonraí a fheiceáil</string> -->
   <string name="ConversationItem_received_key_exchange_message_tap_to_process">Teachtaireacht malartú eochracha faighta. Brúigh chun próiséiseáil.</string>
   <string name="ConversationItem_group_action_left">D\'fhág %1$s an bhaicle.</string>
   <string name="ConversationItem_click_to_approve_unencrypted">Theip ar an seoladh, cnag air i gcomhair rogha nach bhfuil slán</string>
@@ -163,7 +163,7 @@
   <string name="ConversationActivity_transport_insecure_mms">MMS easlán</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">Téimís i muinín Signal %1$s</string>
-  <string name="ConversationActivity_error_leaving_group">Tharla botún ag fágáil an bhaicle</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">Tharla botún ag fágáil an bhaicle</string> -->
   <string name="ConversationActivity_specify_recipient">Roghnaigh teagmhálaí</string>
   <string name="ConversationActivity_unblock_this_contact_question">Bain an bac den teagmhálaí seo?</string>
   <string name="ConversationActivity_unblock_this_group_question">Bain an bac den bhaicle sin?</string>
@@ -416,7 +416,7 @@
   <string name="PassphraseChangeActivity_enter_new_passphrase_exclamation">Cuir isteach nath faire nua!</string>
   <!--DeviceProvisioningActivity-->
   <string name="DeviceProvisioningActivity_link_this_device">Nasc an gléas?</string>
-  <string name="DeviceProvisioningActivity_cancel">CEALAIGH</string>
+  <!-- Removed by excludeNonTranslatables <string name="DeviceProvisioningActivity_cancel">CEALAIGH</string> -->
   <string name="DeviceProvisioningActivity_continue">LEAN AR AGHAIDH</string>
   <string name="DeviceProvisioningActivity_content_intro">Beidh sé in ann</string>
   <string name="DeviceProvisioningActivity_content_bullets">Léigh do theachtaireachtaí ar fad\n\nSeol teachtaireachtaí le do ainm</string>

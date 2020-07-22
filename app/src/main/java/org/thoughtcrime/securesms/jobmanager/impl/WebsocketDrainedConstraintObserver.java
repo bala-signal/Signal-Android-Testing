@@ -6,17 +6,25 @@ import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.jobmanager.ConstraintObserver;
 
 /**
- * An observer for {@link WebsocketDrainedConstraint}. Will fire when the
- * {@link org.thoughtcrime.securesms.messages.InitialMessageRetriever} is caught up.
+ * An observer for {@link WebsocketDrainedConstraint}. Will fire when the websocket is drained
+ * (i.e. it has received an empty response).
  */
 public class WebsocketDrainedConstraintObserver implements ConstraintObserver {
 
   private static final String REASON = WebsocketDrainedConstraintObserver.class.getSimpleName();
 
+  private volatile Notifier notifier;
+
+  public WebsocketDrainedConstraintObserver() {
+    ApplicationDependencies.getIncomingMessageObserver().addWebsocketDrainedListener(() -> {
+      if (notifier != null) {
+        notifier.onConstraintMet(REASON);
+      }
+    });
+  }
+
   @Override
   public void register(@NonNull Notifier notifier) {
-    ApplicationDependencies.getInitialMessageRetriever().addListener(() -> {
-      notifier.onConstraintMet(REASON);
-    });
+    this.notifier = notifier;
   }
 }

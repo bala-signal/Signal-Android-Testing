@@ -3,6 +3,7 @@ package org.thoughtcrime.securesms.groups.ui.managegroup;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,13 +17,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import org.thoughtcrime.securesms.AvatarPreviewActivity;
+import org.thoughtcrime.securesms.LoggingFragment;
+import org.thoughtcrime.securesms.MainActivity;
 import org.thoughtcrime.securesms.MediaPreviewActivity;
 import org.thoughtcrime.securesms.MuteDialog;
 import org.thoughtcrime.securesms.PushContactSelectionActivity;
@@ -35,7 +37,9 @@ import org.thoughtcrime.securesms.contacts.avatars.FallbackPhoto80dp;
 import org.thoughtcrime.securesms.groups.GroupId;
 import org.thoughtcrime.securesms.groups.ui.GroupMemberListView;
 import org.thoughtcrime.securesms.groups.ui.LeaveGroupDialog;
+import org.thoughtcrime.securesms.groups.ui.managegroup.dialogs.GroupInviteSentDialog;
 import org.thoughtcrime.securesms.groups.ui.managegroup.dialogs.GroupRightsDialog;
+import org.thoughtcrime.securesms.groups.ui.managegroup.dialogs.GroupsLearnMoreBottomSheetDialogFragment;
 import org.thoughtcrime.securesms.groups.ui.pendingmemberinvites.PendingMemberInvitesActivity;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mediaoverview.MediaOverviewActivity;
@@ -48,12 +52,13 @@ import org.thoughtcrime.securesms.recipients.ui.bottomsheet.RecipientBottomSheet
 import org.thoughtcrime.securesms.recipients.ui.notifications.CustomNotificationsDialogFragment;
 import org.thoughtcrime.securesms.util.DateUtils;
 import org.thoughtcrime.securesms.util.LifecycleCursorWrapper;
+import org.thoughtcrime.securesms.util.views.LearnMoreTextView;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class ManageGroupFragment extends Fragment {
+public class ManageGroupFragment extends LoggingFragment {
   private static final String GROUP_ID = "GROUP_ID";
 
   private static final String TAG = Log.tag(ManageGroupFragment.class);
@@ -67,6 +72,7 @@ public class ManageGroupFragment extends Fragment {
   private TextView                           pendingMembersCount;
   private Toolbar                            toolbar;
   private TextView                           groupName;
+  private LearnMoreTextView                  groupV1Indicator;
   private TextView                           memberCountUnderAvatar;
   private TextView                           memberCountAboveList;
   private AvatarImageView                    avatar;
@@ -122,6 +128,7 @@ public class ManageGroupFragment extends Fragment {
     avatar                      = view.findViewById(R.id.group_avatar);
     toolbar                     = view.findViewById(R.id.toolbar);
     groupName                   = view.findViewById(R.id.name);
+    groupV1Indicator            = view.findViewById(R.id.manage_group_group_v1_indicator);
     memberCountUnderAvatar      = view.findViewById(R.id.member_count);
     memberCountAboveList        = view.findViewById(R.id.member_count_2);
     groupMemberList             = view.findViewById(R.id.group_members);
@@ -150,6 +157,9 @@ public class ManageGroupFragment extends Fragment {
     customNotificationsButton   = view.findViewById(R.id.group_custom_notifications_button);
     customNotificationsRow      = view.findViewById(R.id.group_custom_notifications_row);
     toggleAllMembers            = view.findViewById(R.id.toggle_all_members);
+
+    groupV1Indicator.setOnLinkClickListener(v -> GroupsLearnMoreBottomSheetDialogFragment.show(requireFragmentManager()));
+    groupV1Indicator.setLearnMoreVisible(true);
 
     return view;
   }
@@ -205,6 +215,7 @@ public class ManageGroupFragment extends Fragment {
 
     viewModel.getTitle().observe(getViewLifecycleOwner(), groupName::setText);
     viewModel.getMemberCountSummary().observe(getViewLifecycleOwner(), memberCountUnderAvatar::setText);
+    viewModel.getShowLegacyIndicator().observe(getViewLifecycleOwner(), showLegacyIndicators -> groupV1Indicator.setVisibility(showLegacyIndicators ? View.VISIBLE : View.GONE));
     viewModel.getFullMemberCountSummary().observe(getViewLifecycleOwner(), memberCountAboveList::setText);
     viewModel.getGroupRecipient().observe(getViewLifecycleOwner(), groupRecipient -> {
       avatar.setRecipient(groupRecipient);
@@ -233,10 +244,7 @@ public class ManageGroupFragment extends Fragment {
     });
 
     leaveGroup.setVisibility(groupId.isPush() ? View.VISIBLE : View.GONE);
-    leaveGroup.setOnClickListener(v -> LeaveGroupDialog.handleLeavePushGroup(context,
-                                                                             getLifecycle(),
-                                                                             groupId.requirePush(),
-                                                                             null));
+    leaveGroup.setOnClickListener(v -> LeaveGroupDialog.handleLeavePushGroup(requireActivity(), groupId.requirePush(), () -> startActivity(new Intent(requireActivity(), MainActivity.class))));
 
     viewModel.getDisappearingMessageTimer().observe(getViewLifecycleOwner(), string -> disappearingMessages.setText(string));
 
@@ -318,6 +326,7 @@ public class ManageGroupFragment extends Fragment {
     }
 
     viewModel.getSnackbarEvents().observe(getViewLifecycleOwner(), this::handleSnackbarEvent);
+    viewModel.getInvitedDialogEvents().observe(getViewLifecycleOwner(), this::handleInvitedDialogEvent);
 
     viewModel.getCanLeaveGroup().observe(getViewLifecycleOwner(), canLeave -> leaveGroup.setVisibility(canLeave ? View.VISIBLE : View.GONE));
     viewModel.getCanBlockGroup().observe(getViewLifecycleOwner(), canBlock -> {
@@ -362,7 +371,11 @@ public class ManageGroupFragment extends Fragment {
   }
 
   private void handleSnackbarEvent(@NonNull ManageGroupViewModel.SnackbarEvent snackbarEvent) {
-    Snackbar.make(requireView(), buildSnackbarString(snackbarEvent), Snackbar.LENGTH_SHORT).show();
+    Snackbar.make(requireView(), buildSnackbarString(snackbarEvent), Snackbar.LENGTH_SHORT).setTextColor(Color.WHITE).show();
+  }
+
+  private void handleInvitedDialogEvent(@NonNull ManageGroupViewModel.InvitedDialogEvent invitedDialogEvent) {
+    GroupInviteSentDialog.showInvitesSent(requireContext(), invitedDialogEvent.getNewInvitedMembers());
   }
 
   private @NonNull String buildSnackbarString(@NonNull ManageGroupViewModel.SnackbarEvent snackbarEvent) {

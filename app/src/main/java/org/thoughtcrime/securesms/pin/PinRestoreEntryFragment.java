@@ -2,7 +2,6 @@ package org.thoughtcrime.securesms.pin;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -19,12 +18,12 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.autofill.HintConstants;
 import androidx.core.view.ViewCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.dd.CircularProgressButton;
 
+import org.thoughtcrime.securesms.LoggingFragment;
 import org.thoughtcrime.securesms.MainActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
@@ -41,7 +40,7 @@ import org.thoughtcrime.securesms.util.ServiceUtil;
 import org.thoughtcrime.securesms.util.SupportEmailUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
-public class PinRestoreEntryFragment extends Fragment {
+public class PinRestoreEntryFragment extends LoggingFragment {
   private static final String TAG = Log.tag(PinRestoreActivity.class);
 
   private static final int MINIMUM_PIN_LENGTH = 4;
@@ -126,7 +125,6 @@ public class PinRestoreEntryFragment extends Fragment {
 
       errorLabel.setText(R.string.PinRestoreEntryFragment_incorrect_pin);
       helpButton.setVisibility(View.VISIBLE);
-      skipButton.setVisibility(View.VISIBLE);
     } else {
       if (triesRemaining.getCount() == 1) {
         helpButton.setVisibility(View.VISIBLE);
@@ -193,7 +191,10 @@ public class PinRestoreEntryFragment extends Fragment {
     new AlertDialog.Builder(requireContext())
                    .setTitle(R.string.PinRestoreEntryFragment_need_help)
                    .setMessage(getString(R.string.PinRestoreEntryFragment_your_pin_is_a_d_digit_code, KbsConstants.MINIMUM_PIN_LENGTH))
-                   .setPositiveButton(R.string.PinRestoreEntryFragment_create_new_pin, null)
+                   .setPositiveButton(R.string.PinRestoreEntryFragment_create_new_pin, ((dialog, which) -> {
+                     PinState.onPinRestoreForgottenOrSkipped();
+                     ((PinRestoreActivity) requireActivity()).navigateToPinCreation();
+                   }))
                    .setNeutralButton(R.string.PinRestoreEntryFragment_contact_support, (dialog, which) -> {
                      String body = SupportEmailUtil.generateSupportEmailBody(requireContext(),
                                                                              getString(R.string.PinRestoreEntryFragment_signal_registration_need_help_with_pin),
@@ -236,7 +237,7 @@ public class PinRestoreEntryFragment extends Fragment {
       profile.putExtra("next_intent", main);
       startActivity(profile);
     } else {
-      RegistrationUtil.markRegistrationPossiblyComplete();
+      RegistrationUtil.maybeMarkRegistrationComplete(requireContext());
       ApplicationDependencies.getJobManager().add(new ProfileUploadJob());
       startActivity(new Intent(activity, MainActivity.class));
     }
@@ -284,13 +285,5 @@ public class PinRestoreEntryFragment extends Fragment {
       button.setIndeterminateProgressMode(false);
       button.setClickable(true);
     }
-  }
-
-  private static String getDevice() {
-    return String.format("%s %s (%s)", Build.MANUFACTURER, Build.MODEL, Build.PRODUCT);
-  }
-
-  private static String getAndroidVersion() {
-    return String.format("%s (%s, %s)", Build.VERSION.RELEASE, Build.VERSION.INCREMENTAL, Build.DISPLAY);
   }
 }

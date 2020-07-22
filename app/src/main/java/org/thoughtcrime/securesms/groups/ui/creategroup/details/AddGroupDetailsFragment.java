@@ -20,7 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
@@ -29,6 +28,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.dd.CircularProgressButton;
 
+import org.thoughtcrime.securesms.LoggingFragment;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.groups.ui.GroupMemberListView;
 import org.thoughtcrime.securesms.mediasend.AvatarSelectionActivity;
@@ -44,13 +44,13 @@ import org.thoughtcrime.securesms.util.BitmapUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.text.AfterTextChanged;
 
+import java.util.List;
 import java.util.Objects;
 
-public class AddGroupDetailsFragment extends Fragment {
+public class AddGroupDetailsFragment extends LoggingFragment {
 
-  private static final int    AVATAR_PLACEHOLDER_INSET_DP = 18;
-  private static final short  REQUEST_CODE_AVATAR         = 27621;
-  private static final String ARG_RECIPIENT_IDS           = "recipient_ids";
+  private static final int   AVATAR_PLACEHOLDER_INSET_DP = 18;
+  private static final short REQUEST_CODE_AVATAR         = 27621;
 
   private CircularProgressButton   create;
   private Callback                 callback;
@@ -68,16 +68,6 @@ public class AddGroupDetailsFragment extends Fragment {
     } else {
       throw new ClassCastException("Parent context should implement AddGroupDetailsFragment.Callback");
     }
-  }
-
-  public static Fragment create(@NonNull RecipientId[] recipientIds) {
-    AddGroupDetailsFragment fragment  = new AddGroupDetailsFragment();
-    Bundle                  arguments = new Bundle();
-
-    arguments.putParcelableArray(ARG_RECIPIENT_IDS, recipientIds);
-    fragment.setArguments(arguments);
-
-    return fragment;
   }
 
   @Override
@@ -212,7 +202,7 @@ public class AddGroupDetailsFragment extends Fragment {
   }
 
   private void handleGroupCreateResultSuccess(@NonNull GroupCreateResult.Success success) {
-    callback.onGroupCreated(success.getGroupRecipient().getId(), success.getThreadId());
+    callback.onGroupCreated(success.getGroupRecipient().getId(), success.getThreadId(), success.getInvitedMembers());
   }
 
   private void handleGroupCreateResultError(@NonNull GroupCreateResult.Error error) {
@@ -262,7 +252,7 @@ public class AddGroupDetailsFragment extends Fragment {
   }
 
   public interface Callback {
-    void onGroupCreated(@NonNull RecipientId recipientId, long threadId);
+    void onGroupCreated(@NonNull RecipientId recipientId, long threadId, @NonNull List<Recipient> invitedMembers);
     void onNavigationButtonPressed();
   }
 }

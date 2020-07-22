@@ -24,7 +24,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBar;
@@ -35,7 +34,7 @@ import android.widget.ImageView;
 import org.signal.toast.Toast;;
 
 import org.thoughtcrime.securesms.ContactSelectionListFragment;
-import org.thoughtcrime.securesms.PassphraseRequiredActionBarActivity;
+import org.thoughtcrime.securesms.PassphraseRequiredActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.components.SearchToolbar;
 import org.thoughtcrime.securesms.contacts.ContactsCursorLoader.DisplayMode;
@@ -51,7 +50,6 @@ import org.thoughtcrime.securesms.util.DynamicLanguage;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
-import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.concurrent.SimpleTask;
 import org.thoughtcrime.securesms.util.views.SimpleProgressDialog;
 import org.whispersystems.libsignal.util.Pair;
@@ -67,7 +65,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Handles contact selection when necessary, but also serves as an entry point for when the contact
  * is known (such as choosing someone in a direct share).
  */
-public class ShareActivity extends PassphraseRequiredActionBarActivity
+public class ShareActivity extends PassphraseRequiredActivity
     implements ContactSelectionListFragment.OnContactSelectedListener, SwipeRefreshLayout.OnRefreshListener
 {
   private static final String TAG = ShareActivity.class.getSimpleName();
@@ -294,14 +292,16 @@ public class ShareActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void openConversation(long threadId, @NonNull RecipientId recipientId, @Nullable ShareData shareData) {
-    Intent           intent       = new Intent(this, ConversationActivity.class);
-    String           textExtra    = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-    ArrayList<Media> mediaExtra   = getIntent().getParcelableArrayListExtra(ConversationActivity.MEDIA_EXTRA);
-    StickerLocator   stickerExtra = getIntent().getParcelableExtra(ConversationActivity.STICKER_EXTRA);
+    Intent           intent          = new Intent(this, ConversationActivity.class);
+    String           textExtra       = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+    ArrayList<Media> mediaExtra      = getIntent().getParcelableArrayListExtra(ConversationActivity.MEDIA_EXTRA);
+    StickerLocator   stickerExtra    = getIntent().getParcelableExtra(ConversationActivity.STICKER_EXTRA);
+    boolean          borderlessExtra = getIntent().getBooleanExtra(ConversationActivity.BORDERLESS_EXTRA, false);
 
     intent.putExtra(ConversationActivity.TEXT_EXTRA, textExtra);
     intent.putExtra(ConversationActivity.MEDIA_EXTRA, mediaExtra);
     intent.putExtra(ConversationActivity.STICKER_EXTRA, stickerExtra);
+    intent.putExtra(ConversationActivity.BORDERLESS_EXTRA, borderlessExtra);
 
     if (shareData != null && shareData.isForIntent()) {
       Log.i(TAG, "Shared data is a single file.");

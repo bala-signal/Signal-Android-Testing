@@ -1,1 +1,0 @@
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/sticker_image" android:layout_height="120dp" android:layout_width="120dp" android:padding="16dp" android:scaleType="centerInside" />

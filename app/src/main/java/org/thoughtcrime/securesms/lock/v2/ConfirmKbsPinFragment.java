@@ -2,9 +2,7 @@ package org.thoughtcrime.securesms.lock.v2;
 
 import android.animation.Animator;
 import android.app.Activity;
-import android.content.Intent;
 import android.view.View;
-import android.view.autofill.AutofillManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RawRes;
@@ -21,7 +19,6 @@ import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.animation.AnimationCompleteListener;
 import org.thoughtcrime.securesms.animation.AnimationRepeatListener;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
-import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.megaphone.Megaphones;
 import org.thoughtcrime.securesms.registration.RegistrationUtil;
 import org.thoughtcrime.securesms.storage.StorageSyncHelper;
@@ -117,7 +114,7 @@ public class ConfirmKbsPinFragment extends BaseKbsPinFragment<ConfirmKbsPinViewM
           public void onAnimationEnd(Animator animation) {
             requireActivity().setResult(Activity.RESULT_OK);
             closeNavGraphBranch();
-            RegistrationUtil.markRegistrationPossiblyComplete();
+            RegistrationUtil.maybeMarkRegistrationComplete(requireContext());
             StorageSyncHelper.scheduleSyncForDataChange();
           }
         });
@@ -126,7 +123,7 @@ public class ConfirmKbsPinFragment extends BaseKbsPinFragment<ConfirmKbsPinViewM
         startEndAnimationOnNextProgressRepetition(R.raw.lottie_kbs_failure, new AnimationCompleteListener() {
           @Override
           public void onAnimationEnd(Animator animation) {
-            RegistrationUtil.markRegistrationPossiblyComplete();
+            RegistrationUtil.maybeMarkRegistrationComplete(requireContext());
             displayFailedDialog();
           }
         });
@@ -184,15 +181,6 @@ public class ConfirmKbsPinFragment extends BaseKbsPinFragment<ConfirmKbsPinViewM
                      closeNavGraphBranch();
                    })
                    .show();
-  }
-
-  private void closeNavGraphBranch() {
-    Intent activityIntent = requireActivity().getIntent();
-    if (activityIntent != null && activityIntent.hasExtra("next_intent")) {
-      startActivity(activityIntent.getParcelableExtra("next_intent"));
-    }
-
-    requireActivity().finish();
   }
 
   private void markMegaphoneSeenIfNecessary() {

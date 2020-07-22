@@ -123,7 +123,7 @@
   <string name="ContactShareEditActivity_type_missing">Інший</string>
   <string name="ContactShareEditActivity_invalid_contact">Обраний контакт не дійсний</string>
   <!--ConversationItem-->
-  <string name="ConversationItem_error_not_delivered">Помилка відправлення, торкніться для подробиць</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationItem_error_not_delivered">Помилка відправлення, торкніться для подробиць</string> -->
   <string name="ConversationItem_received_key_exchange_message_tap_to_process">Отримано повідомлення обміну ключами, торкніться, щоб продовжити.</string>
   <string name="ConversationItem_group_action_left">%1$s покидає групу.</string>
   <string name="ConversationItem_click_to_approve_unencrypted_sms_dialog_title">Скористатися незашифрованим SMS як запасним варіантом?</string>
@@ -157,7 +157,7 @@
   <string name="ConversationActivity_transport_insecure_mms">Незахищене MMS</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">Давай перейдемо у Signal %1$s</string>
-  <string name="ConversationActivity_error_leaving_group">Помилка при виході з групи</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">Помилка при виході з групи</string> -->
   <string name="ConversationActivity_specify_recipient">Будь ласка, виберіть контакт</string>
   <string name="ConversationActivity_unblock_this_contact_question">Розблокувати цей контакт?</string>
   <string name="ConversationActivity_unblock_this_group_question">Розблокувати цю групу?</string>
@@ -462,7 +462,7 @@
   <string name="PassphraseChangeActivity_enter_new_passphrase_exclamation">Введіть нову фразу-пароль!</string>
   <!--DeviceProvisioningActivity-->
   <string name="DeviceProvisioningActivity_link_this_device">З\'язати цей пристрій?</string>
-  <string name="DeviceProvisioningActivity_cancel">СКАСУВАТИ</string>
+  <!-- Removed by excludeNonTranslatables <string name="DeviceProvisioningActivity_cancel">СКАСУВАТИ</string> -->
   <string name="DeviceProvisioningActivity_continue">ПРОДОВЖИТИ</string>
   <string name="DeviceProvisioningActivity_content_intro">Він зможе</string>
   <string name="DeviceProvisioningActivity_content_bullets">

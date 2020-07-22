@@ -15,13 +15,26 @@ import org.thoughtcrime.securesms.ContactSelectionActivity;
 import org.thoughtcrime.securesms.ContactSelectionListFragment;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.contacts.ContactsCursorLoader;
+import org.thoughtcrime.securesms.contacts.sync.DirectoryHelper;
+import org.thoughtcrime.securesms.database.RecipientDatabase;
+import org.thoughtcrime.securesms.groups.GroupsV2CapabilityChecker;
 import org.thoughtcrime.securesms.groups.ui.creategroup.details.AddGroupDetailsActivity;
+import org.thoughtcrime.securesms.logging.Log;
+import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.util.FeatureFlags;
+import org.thoughtcrime.securesms.util.Stopwatch;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
+import org.thoughtcrime.securesms.util.concurrent.SimpleTask;
+import org.thoughtcrime.securesms.util.views.SimpleProgressDialog;
 import org.whispersystems.libsignal.util.guava.Optional;
 
+import java.io.IOException;
+import java.util.List;
+
 public class CreateGroupActivity extends ContactSelectionActivity {
+
+  private static final String TAG = Log.tag(CreateGroupActivity.class);
 
   private static final int   MINIMUM_GROUP_SIZE       = 1;
   private static final short REQUEST_CODE_ADD_DETAILS = 17275;
@@ -109,10 +122,53 @@ public class CreateGroupActivity extends ContactSelectionActivity {
   }
 
   private void handleNextPressed() {
-    RecipientId[] ids = Stream.of(contactsFragment.getSelectedContacts())
-                              .map(selectedContact -> selectedContact.getOrCreateRecipientId(this))
-                              .toArray(RecipientId[]::new);
+    Stopwatch                              stopwatch         = new Stopwatch("Recipient Refresh");
+    SimpleProgressDialog.DismissibleDialog dismissibleDialog = SimpleProgressDialog.showDelayed(this);
 
-    startActivityForResult(AddGroupDetailsActivity.newIntent(this, ids), REQUEST_CODE_ADD_DETAILS);
+    SimpleTask.run(getLifecycle(), () -> {
+      RecipientId[] ids = Stream.of(contactsFragment.getSelectedContacts())
+                                .map(selectedContact -> selectedContact.getOrCreateRecipientId(this))
+                                .toArray(RecipientId[]::new);
+
+      List<Recipient> resolved = Stream.of(ids)
+                                       .map(Recipient::resolved)
+                                       .toList();
+
+      stopwatch.split("resolve");
+
+      List<Recipient> registeredChecks = Stream.of(resolved)
+                                               .filter(r -> r.getRegistered() == RecipientDatabase.RegisteredState.UNKNOWN)
+                                               .toList();
+
+      Log.i(TAG, "Need to do " + registeredChecks.size() + " registration checks.");
+
+      for (Recipient recipient : registeredChecks) {
+        try {
+          DirectoryHelper.refreshDirectoryFor(this, recipient, false);
+        } catch (IOException e) {
+          Log.w(TAG, "Failed to refresh registered status for " + recipient.getId(), e);
+        }
+      }
+
+      stopwatch.split("registered");
+
+      if (FeatureFlags.groupsV2()) {
+        try {
+          new GroupsV2CapabilityChecker().refreshCapabilitiesIfNecessary(resolved);
+        } catch (IOException e) {
+          Log.w(TAG, "Failed to refresh all recipient capabilities.", e);
+        }
+      }
+
+      stopwatch.split("capabilities");
+
+      return ids;
+    }, ids -> {
+      dismissibleDialog.dismiss();
+
+      stopwatch.stop(TAG);
+
+      startActivityForResult(AddGroupDetailsActivity.newIntent(this, ids), REQUEST_CODE_ADD_DETAILS);
+    });
   }
 }

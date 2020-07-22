@@ -104,7 +104,7 @@ import static org.whispersystems.libsignal.SessionCipher.SESSION_LOCK;
  * @author Moxie Marlinspike
  */
 @SuppressLint("StaticFieldLeak")
-public class VerifyIdentityActivity extends PassphraseRequiredActionBarActivity implements ScanListener, View.OnClickListener {
+public class VerifyIdentityActivity extends PassphraseRequiredActivity implements ScanListener, View.OnClickListener {
 
   private static final String TAG = Log.tag(VerifyIdentityActivity.class);
 
@@ -307,7 +307,7 @@ public class VerifyIdentityActivity extends PassphraseRequiredActionBarActivity 
       byte[] localId;
       byte[] remoteId;
 
-      if (FeatureFlags.uuids() && recipient.resolve().getUuid().isPresent()) {
+      if (FeatureFlags.cds() && recipient.resolve().getUuid().isPresent()) {
         Log.i(TAG, "Using UUID (version 2).");
         version  = 2;
         localId  = UuidUtil.toByteArray(TextSecurePreferences.getLocalUuid(requireContext()));

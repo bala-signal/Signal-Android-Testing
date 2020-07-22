@@ -42,6 +42,7 @@
   <string name="ApplicationPreferencesActivity_privacy_summary">ล็อกหน้าจอ%1$s กุญแจลงทะเบียน %2$s</string>
   <string name="ApplicationPreferencesActivity_privacy_summary_screen_lock">ล็อคหน้าจอ %1$s</string>
   <string name="ApplicationPreferencesActivity_appearance_summary">ธีม %1$s ภาษา %2$s</string>
+  <string name="ApplicationPreferencesActivity_pin_created">สร้างรหัส PIN แล้ว</string>
   <!--AppProtectionPreferenceFragment-->
   <plurals name="AppProtectionPreferenceFragment_minutes">
     <item quantity="other">%d นาที</item>
@@ -153,7 +154,7 @@
   <string name="ContactShareEditActivity_type_missing">ที่อื่น</string>
   <string name="ContactShareEditActivity_invalid_contact">ผู้ติดต่อที่เลือกไม่ถูกต้อง</string>
   <!--ConversationItem-->
-  <string name="ConversationItem_error_not_delivered">การส่งล้มเหลว แตะเพื่อดูรายละเอียด</string>
+  <string name="ConversationItem_error_network_not_delivered">การส่งล้มเหลว</string>
   <string name="ConversationItem_received_key_exchange_message_tap_to_process">ได้รับข้อความแลกเปลี่ยนคีย์ แตะเพื่อประมวลผล</string>
   <string name="ConversationItem_group_action_left">%1$s ได้ออกจากกลุ่ม</string>
   <string name="ConversationItem_click_to_approve_unencrypted">การส่งล้มเหลว แตะเพื่อกลับไปใช้วิธีที่ไม่ปลอดภัยแทน</string>
@@ -189,7 +190,7 @@
   <string name="ConversationActivity_transport_insecure_mms">MMS ที่ไม่ปลอดภัย</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">เปลี่ยนมาใช้ Signal กันเถอะ %1$s</string>
-  <string name="ConversationActivity_error_leaving_group">เกิดข้อผิดพลาดระหว่างออกจากกลุ่ม</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">เกิดข้อผิดพลาดระหว่างออกจากกลุ่ม</string> -->
   <string name="ConversationActivity_specify_recipient">โปรดเลือกผู้ติดต่อ</string>
   <string name="ConversationActivity_unblock_this_contact_question">เลิกปิดกั้นผู้ติดต่อรายนี้หรือไม่?</string>
   <string name="ConversationActivity_unblock_this_group_question">เลิกปิดกั้นกลุ่มนี้หรือไม่?</string>
@@ -283,8 +284,6 @@
   <plurals name="ConversationListFragment_moved_conversations_to_inbox">
     <item quantity="other">ย้าย %d การสนทนาไปยังกล่องขาเข้า</item>
   </plurals>
-  <string name="ConversationListFragment__your_profile_name_has_been_created">ชื่อโปรไฟล์ของคุณถูกสร้างแล้ว</string>
-  <string name="ConversationListFragment__your_profile_name_has_been_saved">ชื่อโปรไฟล์ของคุณถูกบันทึกแล้ว</string>
   <!--ConversationListItem-->
   <string name="ConversationListItem_key_exchange_message">ข้อความแลกเปลี่ยนคีย์</string>
   <!--ConversationListItemAction-->
@@ -396,8 +395,8 @@
   <!--ManageGroupActivity-->
   <string name="ManageGroupActivity_disappearing_messages">ข้อความที่ลบตัวเอง</string>
   <string name="ManageGroupActivity_pending_group_invites">คำเชิญเข้ากลุ่มที่รอตอบกลับ</string>
-  <string name="ManageGroupActivity_who_can_edit_group_membership">ใครสามารถแก้ไขสถานะสมาชิกของกลุ่ม</string>
-  <string name="ManageGroupActivity_who_can_edit_group_info">ใครสามารถแก้ไขข้อมูลของกลุ่ม</string>
+  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_membership">ใครสามารถแก้ไขสถานะสมาชิกของกลุ่ม</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_info">ใครสามารถแก้ไขข้อมูลของกลุ่ม</string> -->
   <string name="ManageGroupActivity_block_group">ปิดกั้นกลุ่ม</string>
   <string name="ManageGroupActivity_unblock_group">เลิกปิดกั้นกลุ่ม</string>
   <string name="ManageGroupActivity_leave_group">ออกจากกลุ่ม</string>
@@ -417,7 +416,7 @@
     <item quantity="other">%d สมาชิกถูกเพิ่ม</item>
   </plurals>
   <string name="ManageGroupActivity_edit_name_and_picture">แก้ไขชื่อและภาพ</string>
-  <string name="GroupManagement_choose_who_can_add_or_invite_new_members">เลือกว่าใครสามารถเพิ่มหรือเชิญสมาชิกใหม่</string>
+  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_add_or_invite_new_members">เลือกว่าใครสามารถเพิ่มหรือเชิญสมาชิกใหม่</string> -->
   <!--ManageRecipientActivity-->
   <string name="ManageRecipientActivity_disappearing_messages">ข้อความที่ลบตัวเอง</string>
   <string name="ManageRecipientActivity_block">ปิดกั้น</string>
@@ -585,6 +584,7 @@
   <string name="MessageRecord_s_disabled_disappearing_messages">%1$s ได้ปิดใช้งานข้อความที่ลบตัวเองแล้ว</string>
   <string name="MessageRecord_you_set_disappearing_message_time_to_s">คุณได้ตั้งเวลาให้ข้อความลบตัวเองไว้ที่ %1$s</string>
   <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s ตั้งเวลาให้ข้อความลบตัวเองไว้ที่ %2$s</string>
+  <!--Profile change updates-->
   <!--GV2 specific-->
   <string name="MessageRecord_you_created_the_group">คุณได้สร้างกลุ่มแล้ว</string>
   <string name="MessageRecord_group_updated">ปรับปรุงกลุ่ม</string>
@@ -607,12 +607,14 @@
   <string name="MessageRecord_you_revoked_admin_privileges_from_s">คุณได้เพิกถอนสิทธิ์ผู้ดูแลจาก %1$s</string>
   <string name="MessageRecord_s_revoked_your_admin_privileges">%1$s ได้เพิกถอนสิทธิ์ผู้ดูแลจากคุณ</string>
   <string name="MessageRecord_s_revoked_admin_privileges_from_s">%1$s ได้เพิกถอนสิทธิ์ผู้ดูแลจาก %2$s</string>
+  <string name="MessageRecord_you_are_now_an_admin">ตอนนี้คุณเป็นผู้ดูแลแล้ว</string>
   <!--GV2 invitations-->
   <string name="MessageRecord_you_invited_s_to_the_group">คุณได้เชิญ %1$s เข้ากลุ่ม</string>
   <string name="MessageRecord_s_invited_you_to_the_group">%1$s ได้เชิญคุณเข้ากลุ่ม</string>
   <plurals name="MessageRecord_s_invited_members">
     <item quantity="other">%1$s ได้เชิญ %2$d คนเข้ากลุ่ม</item>
   </plurals>
+  <string name="MessageRecord_you_were_invited_to_the_group">คุณถูกเชิญเข้ากลุ่ม</string>
   <!--GV2 invitation revokes-->
   <plurals name="MessageRecord_you_revoked_invites">
     <item quantity="other">คุณได้เพิกถอน %1$d คำเชิญเข้ากลุ่ม</item>
@@ -622,6 +624,7 @@
   </plurals>
   <string name="MessageRecord_someone_declined_an_invitation_to_the_group">ใครบางคนได้ปฏิเสธคำเชิญเข้าร่วมกลุ่ม</string>
   <string name="MessageRecord_you_declined_the_invitation_to_the_group">คุณได้ปฏิเสธคำเชิญเข้ากลุ่ม</string>
+  <string name="MessageRecord_your_invitation_to_the_group_was_revoked">คำเชิญคุณเข้ากลุ่มถูกเพิกถอน</string>
   <!--GV2 invitation acceptance-->
   <string name="MessageRecord_you_accepted_invite">คุณได้ตอบรับคำเชิญเข้ากลุ่ม</string>
   <string name="MessageRecord_s_accepted_invite">%1$s ตอบรับคำเชิญเข้ากลุ่ม</string>
@@ -662,7 +665,6 @@
   <string name="PassphraseChangeActivity_enter_new_passphrase_exclamation">ป้อนวลีรหัสผ่านใหม่!</string>
   <!--DeviceProvisioningActivity-->
   <string name="DeviceProvisioningActivity_link_this_device">เชื่อมโยงกับอุปกรณ์นี้หรือไม่?</string>
-  <string name="DeviceProvisioningActivity_cancel">ยกเลิก</string>
   <string name="DeviceProvisioningActivity_continue">ดำเนินการต่อ</string>
   <string name="DeviceProvisioningActivity_content_intro">มันจะสามารถ</string>
   <string name="DeviceProvisioningActivity_content_bullets">
@@ -712,6 +714,7 @@
   <!--PinRestoreLockedFragment-->
   <string name="PinRestoreLockedFragment_create_your_pin">สร้างรหัส PIN ของคุณ</string>
   <string name="PinRestoreLockedFragment_create_new_pin">สร้างรหัส PIN ใหม่</string>
+  <!--PinOptOutDialog-->
   <!--RatingManager-->
   <string name="RatingManager_rate_this_app">ให้คะแนนแอปนี้</string>
   <string name="RatingManager_if_you_enjoy_using_this_app_please_take_a_moment">ถ้าคุณชอบแอปนี้ โปรดสละเวลาให้คะแนนพวกเราสักนิด</string>
@@ -868,7 +871,6 @@
   <string name="SubmitDebugLogActivity_success">สำเร็จ!</string>
   <string name="SubmitDebugLogActivity_copy_this_url_and_add_it_to_your_issue">คัดลอก URL และเพิ่มมันในรายงานปัญหาหรืออีเมลปรึกษาปัญหา:\n\n<b>%1$s</b></string>
   <string name="SubmitDebugLogActivity_copied_to_clipboard">คัดลอกไปคลิปบอร์ดแล้ว</string>
-  <string name="SubmitDebugLogActivity_ok">ตกลง</string>
   <string name="SubmitDebugLogActivity_share">แบ่งปัน</string>
   <!--SupportEmailUtil-->
   <string name="SupportEmailUtil_subject">หัวข้อ:</string>
@@ -935,7 +937,6 @@
   <string name="UsernameEditFragment_encountered_a_network_error">พบความผิดพลาดของเครือข่าย</string>
   <string name="UsernameEditFragment_this_username_is_taken">มีผู้ใช้ชื่อนี้แล้ว</string>
   <string name="UsernameEditFragment_this_username_is_available">ใช้ชื่อผู้ใช้นี้ได้</string>
-  <string name="UsernameEditFragment_usernames_can_only_include">ชื่อผู้ใช้จะมีได้เฉพาะ a-Z, 0-9 และ _</string>
   <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">ชื่อผู้ใช้ไม่สามารถเริ่มต้นด้วยตัวเลข</string>
   <string name="UsernameEditFragment_username_is_invalid">ชื่อผู้ใช้ไม่ถูกต้อง</string>
   <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">ชื่อผู้ใช้จะต้องมี %1$dถึง %2$d ตัวอักษร</string>
@@ -1100,7 +1101,6 @@
   <string name="contact_selection_activity__enter_name_or_number">ใส่ชื่อหรือหมายเลข</string>
   <string name="contact_selection_activity__invite_to_signal">เชิญมาใช้ Signal</string>
   <string name="contact_selection_activity__new_group">กลุ่มใหม่</string>
-  <!--temporary for internal testing-->
   <!--contact_filter_toolbar-->
   <string name="contact_filter_toolbar__clear_entered_text_description">ล้างข้อความที่พิมพ์เข้าไป</string>
   <string name="contact_filter_toolbar__show_keyboard_description">แสดงคีย์บอร์ด</string>
@@ -1164,6 +1164,8 @@
   <string name="QuoteView_original_missing">ไม่พบข้อความเดิม</string>
   <!--conversation_fragment-->
   <string name="conversation_fragment__scroll_to_the_bottom_content_description">เลื่อนลงด้านล่างสุด</string>
+  <!--safety_number_change_dialog-->
+  <string name="safety_number_change_dialog__view">ดู</string>
   <!--country_selection_fragment-->
   <string name="country_selection_fragment__loading_countries">กำลังโหลดประเทศ…</string>
   <string name="country_selection_fragment__search">ค้นหา</string>
@@ -1510,6 +1512,7 @@
   <string name="preferences_communication__sealed_sender_allow_from_anyone">อนุญาตจากทุกคน</string>
   <string name="preferences_communication__sealed_sender_allow_from_anyone_description">เปิดใช้งานผู้ส่งที่ปิดบังตัวตนสำหรับข้อความขาเข้าจากคนที่ไม่ใช่ผู้ติดต่อและคนที่คุณไม่ได้แบ่งปันโปรไฟล์</string>
   <string name="preferences_communication__sealed_sender_learn_more">เรียนรู้เพิ่มเติม</string>
+  <!--Internal only preferences-->
   <!--****************************************-->
   <!--menus-->
   <!--****************************************-->
@@ -1664,7 +1667,6 @@
   <string name="CreateKbsPinFragment__create_a_new_pin">สร้างรหัส PIN ใหม่</string>
   <string name="CreateKbsPinFragment__you_can_choose_a_new_pin_as_long_as_this_device_is_registered">คุณสามารถเปลี่ยนรหัส PIN ได้ตราบเท่าที่คุณยังลงทะเบียนอุปกรณ์นี้</string>
   <string name="CreateKbsPinFragment__create_your_pin">สร้างรหัส PIN ของคุณ</string>
-  <string name="CreateKbsPinFragment__pins_keep_information_stored_with_signal_encrypted">รหัส PIN รักษาข้อมูลที่เก็บไว้ใน Signal ที่เข้ารหัส ดังนั้นจึงมีแต่คุณที่เข้าถึงข้อมูลนี้ได้ โปรไฟล์ของคุณ การตั้งค่า และรายชื่อผู้ติดต่อจะถูกกู้คืนเมื่อคุณติดตั้ง Signal อีกครั้ง</string>
   <string name="CreateKbsPinFragment__choose_a_stronger_pin">เลือกรหัส PIN ที่แข็งแรงกว่านี้</string>
   <!--ConfirmKbsPinFragment-->
   <string name="ConfirmKbsPinFragment__pins_dont_match">รหัส PIN ไม่ตรงกัน ลองอีกครั้ง</string>
@@ -1676,13 +1678,13 @@
   <string name="ConfirmKbsPinFragment__creating_pin">สร้างรหัส PIN…</string>
   <!--KbsSplashFragment-->
   <string name="KbsSplashFragment__introducing_pins">แนะนำรหัส PINs</string>
-  <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">รหัส PIN รักษาข้อมูลที่เก็บไว้ใน Signal ที่เข้ารหัส ดังนั้นจึงมีแต่คุณที่เข้าถึงข้อมูลนี้ได้ โปรไฟล์ของคุณ การตั้งค่า และรายชื่อผู้ติดต่อจะถูกกู้คืนเมื่อคุณติดตั้ง Signal อีกครั้ง</string>
   <string name="KbsSplashFragment__learn_more">เรียนรู้เพิ่มเติม</string>
   <string name="KbsSplashFragment__registration_lock_equals_pin">กุญแจลงทะเบียน = รหัส PIN</string>
   <string name="KbsSplashFragment__your_registration_lock_is_now_called_a_pin">จากนี้กุญแจลงทะเบียนของคุณจะถูกเรียกว่ารหัส PIN และมันมีที่ใช้มากขึ้น ปรับปรุงมันเดี๋ยวนี้</string>
   <string name="KbsSplashFragment__read_more_about_pins">อ่านเพิ่มเติมเกี่ยวกับรหัส PINs</string>
   <string name="KbsSplashFragment__update_pin">อัปเดตรหัส PIN</string>
   <string name="KbsSplashFragment__create_your_pin">สร้างรหัส PIN ของคุณ</string>
+  <string name="KbsSplashFragment__learn_more_about_pins">เรียนรู้เพิ่มเติมเกี่ยวกับรหัส PIN</string>
   <!--KBS Reminder Dialog-->
   <string name="KbsReminderDialog__enter_your_signal_pin">ใส่รหัส Signal PIN ของคุณ</string>
   <string name="KbsReminderDialog__to_help_you_memorize_your_pin">เพื่อช่วยให้คุณจดจำรหัส PIN ล็อกการลงทะเบียนได้ Signal จะขอให้คุณใส่รหัส PIN เป็นระยะๆ เราจะถามคุณน้อยลงเมื่อเวลาผ่านไป</string>
@@ -1730,13 +1732,6 @@
   <string name="KbsMegaphone__update_pin">ปรับปรุงรหัส PIN</string>
   <string name="KbsMegaphone__well_remind_you_later_creating_a_pin">เราจะเตือนคุณในภายหลัง การสร้างรหัส PIN จะถูกบังคับให้ทำภายใน %1$d วัน</string>
   <string name="KbsMegaphone__well_remind_you_later_confirming_your_pin">เราจะเตือนคุณในภายหลัง การยืนยันรหัส PIN ของคุณจะถูกบังคับให้ทำภายใน %1$d วัน</string>
-  <!--Profile Names Megaphone-->
-  <string name="ProfileNamesMegaphone__add_a_profile_name">เพิ่มชื่อโปรไฟล์</string>
-  <string name="ProfileNamesMegaphone__this_will_be_displayed_when_you_start">สิ่งนี้จะถูกแสดงเมื่อคุณเริ่มการสนทนาใหม่หรือแบ่งปันมัน</string>
-  <string name="ProfileNamesMegaphone__add_profile_name">เพิ่มชื่อโปรไฟล์</string>
-  <string name="ProfileNamesMegaphone__confirm_your_profile_name">ยืนยันชื่อโปรไฟล์ของคุณ</string>
-  <string name="ProfileNamesMegaphone__your_profile_can_now_include">โปรไฟล์ของคุณตอนนี้สามารถเพิ่มชื่อสกุลได้แล้วถ้าต้องการ</string>
-  <string name="ProfileNamesMegaphone__confirm_name">ยืนยันชื่อ</string>
   <!--transport_selection_list_item-->
   <string name="transport_selection_list_item__transport_icon">ไอคอนขนส่ง</string>
   <string name="ConversationListFragment_loading">กำลังโหลด…</string>

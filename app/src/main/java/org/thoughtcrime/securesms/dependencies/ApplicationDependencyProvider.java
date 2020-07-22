@@ -7,6 +7,15 @@ import androidx.annotation.NonNull;
 
 import org.greenrobot.eventbus.EventBus;
 import org.thoughtcrime.securesms.BuildConfig;
+import org.thoughtcrime.securesms.jobmanager.impl.FactoryJobPredicate;
+import org.thoughtcrime.securesms.jobs.MarkerJob;
+import org.thoughtcrime.securesms.jobs.PushDecryptMessageJob;
+import org.thoughtcrime.securesms.jobs.PushGroupSendJob;
+import org.thoughtcrime.securesms.jobs.PushMediaSendJob;
+import org.thoughtcrime.securesms.jobs.PushProcessMessageJob;
+import org.thoughtcrime.securesms.jobs.PushTextSendJob;
+import org.thoughtcrime.securesms.jobs.ReactionSendJob;
+import org.thoughtcrime.securesms.jobs.TypingSendJob;
 import org.thoughtcrime.securesms.messages.IncomingMessageProcessor;
 import org.thoughtcrime.securesms.crypto.storage.SignalProtocolStoreImpl;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
@@ -20,7 +29,6 @@ import org.thoughtcrime.securesms.jobs.JobManagerFactories;
 import org.thoughtcrime.securesms.keyvalue.KeyValueStore;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.megaphone.MegaphoneRepository;
-import org.thoughtcrime.securesms.messages.InitialMessageRetriever;
 import org.thoughtcrime.securesms.notifications.DefaultMessageNotifier;
 import org.thoughtcrime.securesms.notifications.MessageNotifier;
 import org.thoughtcrime.securesms.notifications.OptimizedMessageNotifier;
@@ -46,7 +54,6 @@ import org.whispersystems.signalservice.api.util.UptimeSleepTimer;
 import org.whispersystems.signalservice.api.websocket.ConnectivityListener;
 
 import java.util.UUID;
-import java.util.concurrent.Executors;
 
 /**
  * Implementation of {@link ApplicationDependencies.Provider} that provides real app dependencies.
@@ -134,8 +141,10 @@ public class ApplicationDependencyProvider implements ApplicationDependencies.Pr
                                                                .setJobFactories(JobManagerFactories.getJobFactories(context))
                                                                .setConstraintFactories(JobManagerFactories.getConstraintFactories(context))
                                                                .setConstraintObservers(JobManagerFactories.getConstraintObservers(context))
-                                                               .setJobStorage(new FastJobStorage(DatabaseFactory.getJobDatabase(context)))
+                                                               .setJobStorage(new FastJobStorage(DatabaseFactory.getJobDatabase(context), SignalExecutors.newCachedSingleThreadExecutor("signal-fast-job-storage")))
                                                                .setJobMigrator(new JobMigrator(TextSecurePreferences.getJobManagerVersion(context), JobManager.CURRENT_VERSION, JobManagerFactories.getJobMigrations(context)))
+                                                               .addReservedJobRunner(new FactoryJobPredicate(PushDecryptMessageJob.KEY, PushProcessMessageJob.KEY, MarkerJob.KEY))
+                                                               .addReservedJobRunner(new FactoryJobPredicate(PushTextSendJob.KEY, PushMediaSendJob.KEY, PushGroupSendJob.KEY, ReactionSendJob.KEY, TypingSendJob.KEY))
                                                                .build());
   }
 
@@ -160,13 +169,13 @@ public class ApplicationDependencyProvider implements ApplicationDependencies.Pr
   }
 
   @Override
-  public @NonNull InitialMessageRetriever provideInitialMessageRetriever() {
-    return new InitialMessageRetriever();
+  public @NonNull MessageNotifier provideMessageNotifier() {
+    return new OptimizedMessageNotifier(new DefaultMessageNotifier());
   }
 
   @Override
-  public @NonNull MessageNotifier provideMessageNotifier() {
-    return new OptimizedMessageNotifier(new DefaultMessageNotifier());
+  public @NonNull IncomingMessageObserver provideIncomingMessageObserver() {
+    return new IncomingMessageObserver(context);
   }
 
   private static class DynamicCredentialsProvider implements CredentialsProvider {

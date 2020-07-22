@@ -115,7 +115,7 @@
   <string name="ContactShareEditActivity_type_missing">Digər</string>
   <string name="ContactShareEditActivity_invalid_contact">Seçilmiş əlaqədə səhv var</string>
   <!--ConversationItem-->
-  <string name="ConversationItem_error_not_delivered">Göndərə bilmədik, detallar üçün kliklə</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationItem_error_not_delivered">Göndərə bilmədik, detallar üçün kliklə</string> -->
   <string name="ConversationItem_received_key_exchange_message_tap_to_process">Açar mübadiləsi mesajı almısan, yerinə yetirmək üçün kliklə.</string>
   <string name="ConversationItem_group_action_left">%1$s qrupdan çıxdı.</string>
   <string name="ConversationItem_click_to_approve_unencrypted">Göndərə bilmədik, zəmanətsiz alternativ variant üçün kliklə</string>
@@ -150,7 +150,7 @@
   <string name="ConversationActivity_transport_insecure_mms">Zəmanətsiz MMS</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">Gəl %1$s Signal-a keçək</string>
-  <string name="ConversationActivity_error_leaving_group">Qrupdan çıxarkən xəta</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">Qrupdan çıxarkən xəta</string> -->
   <string name="ConversationActivity_specify_recipient">Zəgmət olmasa əlaqəni seç</string>
   <string name="ConversationActivity_unblock_this_contact_question">Bi əlaqənin kilidini açırsan?</string>
   <string name="ConversationActivity_unblock_this_group_question">Bu qrupun kilidini açırsan?</string>
@@ -447,7 +447,7 @@
   <string name="PassphraseChangeActivity_enter_new_passphrase_exclamation">Yeni şifrə ifadəni daxil et!</string>
   <!--DeviceProvisioningActivity-->
   <string name="DeviceProvisioningActivity_link_this_device">Bu cihazla bağlantı qurulsun?</string>
-  <string name="DeviceProvisioningActivity_cancel">LƏĞV ET</string>
+  <!-- Removed by excludeNonTranslatables <string name="DeviceProvisioningActivity_cancel">LƏĞV ET</string> -->
   <string name="DeviceProvisioningActivity_continue">DAVAM ET</string>
   <string name="DeviceProvisioningActivity_content_intro">Onun icazəsi olacaq ki,</string>
   <string name="DeviceProvisioningActivity_content_bullets">

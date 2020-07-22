@@ -159,7 +159,6 @@
   <string name="ContactShareEditActivity_type_missing">Ostalo</string>
   <string name="ContactShareEditActivity_invalid_contact">Odabrani kontakt nije valjan</string>
   <!--ConversationItem-->
-  <string name="ConversationItem_error_not_delivered">Slanje nije uspjelo, dodirnite za detalje</string>
   <string name="ConversationItem_received_key_exchange_message_tap_to_process">Poruka za razmjenu ključeva je primljena, pritisnite da biste nastavili.</string>
   <string name="ConversationItem_group_action_left">%1$s je napustio grupu.</string>
   <string name="ConversationItem_click_to_approve_unencrypted">Slanje neuspješno, pritisnite za nesigurnu rezervu</string>
@@ -195,7 +194,7 @@
   <string name="ConversationActivity_transport_insecure_mms">Nesigurni MMS</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">Prebaci se na Signal %1$s</string>
-  <string name="ConversationActivity_error_leaving_group">Greška pri napuštanju grupe</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">Greška pri napuštanju grupe</string> -->
   <string name="ConversationActivity_specify_recipient">Odaberite kontakt</string>
   <string name="ConversationActivity_unblock_this_contact_question">Ukloni blokadu ovog kontakta?</string>
   <string name="ConversationActivity_unblock_this_group_question">Odblokiraj ovu grupu?</string>
@@ -313,8 +312,6 @@
     <item quantity="few">%d razgovora premještena u primljene poruke</item>
     <item quantity="other">%d razgovora premješteno u primljene poruke</item>
   </plurals>
-  <string name="ConversationListFragment__your_profile_name_has_been_created">Ime vašeg profila je spremljeno.</string>
-  <string name="ConversationListFragment__your_profile_name_has_been_saved">Ime Vašeg profila je spremljeno.</string>
   <!--ConversationListItem-->
   <string name="ConversationListItem_key_exchange_message">Poruka za razmjenu ključa</string>
   <!--ConversationListItemAction-->
@@ -428,8 +425,8 @@
   <!--ManageGroupActivity-->
   <string name="ManageGroupActivity_disappearing_messages">Nestajuće poruke</string>
   <string name="ManageGroupActivity_pending_group_invites">Pozivnice na čekanju</string>
-  <string name="ManageGroupActivity_who_can_edit_group_membership">Tko može uređivati članstvo u grupi</string>
-  <string name="ManageGroupActivity_who_can_edit_group_info">Tko može uređivati informacije o grupi</string>
+  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_membership">Tko može uređivati članstvo u grupi</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_info">Tko može uređivati informacije o grupi</string> -->
   <string name="ManageGroupActivity_block_group">Blokiraj grupu</string>
   <string name="ManageGroupActivity_leave_group">Napusti grupu</string>
   <string name="ManageGroupActivity_mute_notifications">Utišaj obavijesti</string>
@@ -445,8 +442,8 @@
   <string name="ManageGroupActivity_failed_to_update_the_group">Napuštanje grupe nije uspjelo</string>
   <string name="ManageGroupActivity_youre_not_a_member_of_the_group">Niste član grupe</string>
   <string name="ManageGroupActivity_edit_name_and_picture">Uredite ime i sliku</string>
-  <string name="GroupManagement_choose_who_can_add_or_invite_new_members">Odaberite tko može dodati ili pozvati nove članove</string>
-  <string name="GroupManagement_choose_who_can_change_the_group_name_and_photo">Odaberite tko može promijeniti naziv grupe i fotografiju</string>
+  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_add_or_invite_new_members">Odaberite tko može dodati ili pozvati nove članove</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_change_the_group_name_and_photo">Odaberite tko može promijeniti naziv grupe i fotografiju</string> -->
   <!--ManageRecipientActivity-->
   <string name="ManageRecipientActivity_disappearing_messages">Nestajuće poruke</string>
   <string name="ManageRecipientActivity_block">Blokiraj</string>
@@ -636,7 +633,6 @@
   <string name="PassphraseChangeActivity_enter_new_passphrase_exclamation">Unesite novu lozinku!</string>
   <!--DeviceProvisioningActivity-->
   <string name="DeviceProvisioningActivity_link_this_device">Poveži ovaj uređaj?</string>
-  <string name="DeviceProvisioningActivity_cancel">ODUSTANI</string>
   <string name="DeviceProvisioningActivity_continue">NASTAVI</string>
   <string name="DeviceProvisioningActivity_content_intro">Moći će</string>
   <string name="DeviceProvisioningActivity_content_bullets">
@@ -1065,6 +1061,8 @@ Primljena poruka razmjene ključeva za pogrešnu inačicu protokola.</string>
   <string name="QuoteView_original_missing">Izvorna poruka nije pronađena</string>
   <!--conversation_fragment-->
   <string name="conversation_fragment__scroll_to_the_bottom_content_description">Kliži do dna</string>
+  <!--safety_number_change_dialog-->
+  <string name="safety_number_change_dialog__view">Pregled</string>
   <!--country_selection_fragment-->
   <string name="country_selection_fragment__loading_countries">Učitavanje zemalja…</string>
   <string name="country_selection_fragment__search">Traži</string>
@@ -1540,10 +1538,6 @@ Uvezi nekriptiranu kopiju. Kompatibilno s \'SMSBackup And Restore\'.</string>
   <string name="KbsMegaphone__create_a_pin">Stvori PIN</string>
   <string name="KbsMegaphone__create_pin">Stvori PIN</string>
   <string name="KbsMegaphone__introducing_pins">Uvodimo PIN-ove</string>
-  <!--Profile Names Megaphone-->
-  <string name="ProfileNamesMegaphone__this_will_be_displayed_when_you_start">Ovo se prikazuje kad započnete razgovor ili ga podjelite.</string>
-  <string name="ProfileNamesMegaphone__add_profile_name">Dodaj ime profila</string>
-  <string name="ProfileNamesMegaphone__your_profile_can_now_include">Vaš profil sad može imati opcionalno prezime.</string>
   <!--transport_selection_list_item-->
   <string name="transport_selection_list_item__transport_icon">Ikona transporta</string>
   <string name="ConversationListFragment_loading">Učitavanje…</string>

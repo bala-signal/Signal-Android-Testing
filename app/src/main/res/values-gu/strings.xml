@@ -43,6 +43,7 @@
   <string name="ApplicationPreferencesActivity_sms_mms_summary">SMS %1$s, MMS %2$s</string>
   <string name="ApplicationPreferencesActivity_privacy_summary">સ્ક્રીન લૉક %1$s, રજીસ્ટ્રેશન લૉક%2$s</string>
   <string name="ApplicationPreferencesActivity_appearance_summary">થીમ %1$s,  ભાષા %2$s</string>
+  <string name="ApplicationPreferencesActivity_pin_created">PIN બનાવ્યો.</string>
   <!--AppProtectionPreferenceFragment-->
   <plurals name="AppProtectionPreferenceFragment_minutes">
     <item quantity="one">%d મિનિટ</item>
@@ -142,7 +143,6 @@
   <string name="ContactShareEditActivity_type_missing">અન્ય</string>
   <string name="ContactShareEditActivity_invalid_contact">પસંદ કરેલો સંપર્ક અમાન્ય હતો</string>
   <!--ConversationItem-->
-  <string name="ConversationItem_error_not_delivered">મોકલવામાં નિષ્ફળ, વિગતો માટે ટેપ કરો</string>
   <string name="ConversationItem_received_key_exchange_message_tap_to_process">કી વિનિમય મેસેજ મળ્યો, પ્રક્રિયા કરવા માટે ટેપ કરો.</string>
   <string name="ConversationItem_group_action_left">%1$s એ ગ્રુપ છોડયુ.</string>
   <string name="ConversationItem_click_to_approve_unencrypted">મોકલવામાં નિષ્ફળ, અસુરક્ષિત ફૉલબેક માટે ટેપ કરો</string>
@@ -178,7 +178,7 @@
   <string name="ConversationActivity_transport_insecure_mms">અસુરક્ષિત MMS</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">ચાલો સિગ્નલ પર સ્વિચ કરીએ %1$s</string>
-  <string name="ConversationActivity_error_leaving_group">ગ્રુપ માંથી નિકળવામાં ભૂલ</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">ગ્રુપ માંથી નિકળવામાં ભૂલ</string> -->
   <string name="ConversationActivity_specify_recipient">કૃપા કરીને સંપર્ક પસંદ કરો</string>
   <string name="ConversationActivity_unblock_this_contact_question">આ સંપર્કને અનાવરોધિત કરો?</string>
   <string name="ConversationActivity_unblock_this_group_question">આ ગ્રુપ ને અનાવરોધિત કરો?</string>
@@ -278,7 +278,6 @@
     <item quantity="one">સંવાદને ઇનબોક્સમાં ખસેડયો</item>
     <item quantity="other">સંવાદને %d ઇનબોક્સમાં ખસેડયા</item>
   </plurals>
-  <string name="ConversationListFragment__your_profile_name_has_been_saved">તમારું પ્રોફાઇલ નામ સેવ કરવામાં આવ્યું છે.</string>
   <!--ConversationListItem-->
   <string name="ConversationListItem_key_exchange_message">કી વિનિમય મેસેજ</string>
   <!--ConversationListItemAction-->
@@ -526,6 +525,7 @@
   <string name="MessageRecord_s_disabled_disappearing_messages">%1$s અદૃશ્ય થઈ રહેલા મેસેજ અક્ષમ કરો.</string>
   <string name="MessageRecord_you_set_disappearing_message_time_to_s">તમે અદૃશ્ય થઈ રહેલા મેસેજ ટાઈમરને %1$s પર સેટ કર્યો છે.</string>
   <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s અદૃશ્ય થઈ રહેલા મેસેજ ટાઈમરને સેટ કરો %2$s. </string>
+  <!--Profile change updates-->
   <!--GV2 specific-->
   <string name="MessageRecord_you_created_the_group">તમે ગ્રુપ બનાવ્યું છે.</string>
   <string name="MessageRecord_group_updated">ગ્રુપ અપડેટ કર્યું.</string>
@@ -534,8 +534,11 @@
   <string name="MessageRecord_s_joined_the_group">%1$sગ્રુપ માં જોડાયા.</string>
   <!--GV2 member removals-->
   <!--GV2 role change-->
+  <string name="MessageRecord_you_are_now_an_admin">હવે તમે એડમિન છો.</string>
   <!--GV2 invitations-->
+  <string name="MessageRecord_you_were_invited_to_the_group">તમને ગ્રુપમાં આમંત્રણ અપાયું હતું.</string>
   <!--GV2 invitation revokes-->
+  <string name="MessageRecord_your_invitation_to_the_group_was_revoked">ગ્રુપ માટે તમારું આમંત્રણ રદ કરવામાં આવ્યું હતું.</string>
   <!--GV2 invitation acceptance-->
   <!--GV2 title change-->
   <!--GV2 avatar change-->
@@ -565,7 +568,6 @@
   <string name="PassphraseChangeActivity_enter_new_passphrase_exclamation">નવો પાસફ્રેઝ દાખલ કરો!</string>
   <!--DeviceProvisioningActivity-->
   <string name="DeviceProvisioningActivity_link_this_device">આ ઉપકરણને લિંક કરીએ?</string>
-  <string name="DeviceProvisioningActivity_cancel">રદ કરો</string>
   <string name="DeviceProvisioningActivity_continue">ચાલુ રાખો</string>
   <string name="DeviceProvisioningActivity_content_intro">તે સમર્થ હશે</string>
   <string name="DeviceProvisioningActivity_content_bullets">
@@ -611,6 +613,7 @@
   <string name="PinRestoreEntryFragment_enter_numeric_pin">સંખ્યાત્મક PIN દાખલ કરો</string>
   <!--PinRestoreLockedFragment-->
   <string name="PinRestoreLockedFragment_create_your_pin">તમારો PIN બનાવો</string>
+  <!--PinOptOutDialog-->
   <!--RatingManager-->
   <string name="RatingManager_rate_this_app">આ એપ્લિકેશનને રેટ કરો</string>
   <string name="RatingManager_if_you_enjoy_using_this_app_please_take_a_moment">જો તમને આ એપ્લિકેશનનો ઉપયોગ કરવામાં આનંદ આવે છે, તો કૃપા કરીને તેને રેટિંગ આપીને મદદ કરવામાં થોડો સમય કાઢો.</string>
@@ -802,7 +805,6 @@
   <string name="UsernameEditFragment_encountered_a_network_error">નેટવર્ક ભૂલ મળી.</string>
   <string name="UsernameEditFragment_this_username_is_taken">આ વપરાશકર્તા નામ લેવામાં આવ્યું છે.</string>
   <string name="UsernameEditFragment_this_username_is_available">આ વપરાશકર્તા નામ ઉપલબ્ધ છે.</string>
-  <string name="UsernameEditFragment_usernames_can_only_include">વપરાશકર્તાનામોમાં ફક્ત a-Z, 0-9 અને _ શામેલ હોઈ શકે છે.</string>
   <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">વપરાશકર્તાનામ સંખ્યા સાથે શરૂ થઈ શકતા નથી.</string>
   <string name="UsernameEditFragment_username_is_invalid">વપરાશકર્તા નામ અમાન્ય છે.</string>
   <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">વપરાશકર્તાનામો %1$d અને %2$d અક્ષરોની વચ્ચે હોવા જોઈએ.</string>
@@ -967,7 +969,6 @@
   <string name="contact_selection_activity__enter_name_or_number">નામ અથવા નંબર દાખલ કરો</string>
   <string name="contact_selection_activity__invite_to_signal">Signal માટે આમંત્રણ આપો</string>
   <string name="contact_selection_activity__new_group">નવું ગ્રુપ</string>
-  <!--temporary for internal testing-->
   <!--contact_filter_toolbar-->
   <string name="contact_filter_toolbar__clear_entered_text_description">દાખલ કરેલો ટેક્સ્ટ સાફ કરો</string>
   <string name="contact_filter_toolbar__show_keyboard_description">કીબોર્ડ બતાવો</string>
@@ -1030,6 +1031,7 @@
   <string name="QuoteView_original_missing">અસલ મેસેજ મળ્યો નથી</string>
   <!--conversation_fragment-->
   <string name="conversation_fragment__scroll_to_the_bottom_content_description">નીચે સ્ક્રોલ કરો</string>
+  <!--safety_number_change_dialog-->
   <!--country_selection_fragment-->
   <string name="country_selection_fragment__loading_countries">દેશો લોડ થઈ રહ્યા છે…</string>
   <string name="country_selection_fragment__search">શોધો</string>
@@ -1351,6 +1353,7 @@
   <string name="preferences_communication__sealed_sender_allow_from_anyone">કોઈની પાસેથી મંજૂરી આપો</string>
   <string name="preferences_communication__sealed_sender_allow_from_anyone_description">બિન-સંપર્કો અને જેની સાથે તમે તમારી પ્રોફાઇલ શેર કરી નથી તેવા લોકો તરફથી આવતા મેસેજ માટે સીલ કરેલા મોકલનાર સક્ષમ કરો.</string>
   <string name="preferences_communication__sealed_sender_learn_more">વધુ શીખો</string>
+  <!--Internal only preferences-->
   <!--****************************************-->
   <!--menus-->
   <!--****************************************-->
@@ -1495,7 +1498,6 @@
   <string name="CreateKbsPinFragment__create_a_new_pin">નવો PIN બનાવો</string>
   <string name="CreateKbsPinFragment__you_can_choose_a_new_pin_as_long_as_this_device_is_registered">આ ડિવાઇસ રજીસ્ટર થાય ત્યાં સુધી તમે તમારો PIN બદલી શકો છો.</string>
   <string name="CreateKbsPinFragment__create_your_pin">તમારો PIN બનાવો</string>
-  <string name="CreateKbsPinFragment__pins_keep_information_stored_with_signal_encrypted">PIN Signal સાથેની માહિતી સ્ટોર કરેલી માહિતીને એન્ક્રિપ્ટ કરે છે જેથી ફક્ત તમે જ તેને એક્સેસ કરી શકો. જ્યારે તમે Signal ને ફરીથી ઇન્સ્ટોલ કરો છો ત્યારે તમારી પ્રોફાઇલ, સેટિંગ્સ અને સંપર્કો રિસ્ટોર થશે.</string>
   <string name="CreateKbsPinFragment__choose_a_stronger_pin">એક મજબૂત PIN પસંદ કરો</string>
   <!--ConfirmKbsPinFragment-->
   <string name="ConfirmKbsPinFragment__pins_dont_match">PIN મેળ ખાતા નથી. ફરીથી પ્રયત્ન કરો.</string>
@@ -1506,12 +1508,12 @@
   <string name="ConfirmKbsPinFragment__creating_pin">PIN બનાવી રહ્યાં છે…</string>
   <!--KbsSplashFragment-->
   <string name="KbsSplashFragment__introducing_pins">PIN રજૂ કરી રહ્યા છીએ</string>
-  <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">PIN Signal સાથેની માહિતી સ્ટોર કરેલી માહિતીને એન્ક્રિપ્ટ કરે છે જેથી ફક્ત તમે જ તેને એક્સેસ કરી શકો. જ્યારે તમે Signal ને ફરીથી ઇન્સ્ટોલ કરો છો ત્યારે તમારી પ્રોફાઇલ, સેટિંગ્સ અને સંપર્કો રિસ્ટોર થશે.</string>
   <string name="KbsSplashFragment__learn_more">વધુ શીખો</string>
   <string name="KbsSplashFragment__registration_lock_equals_pin">રજીસ્ટ્રેશન લૉક = PIN</string>
   <string name="KbsSplashFragment__read_more_about_pins">PIN વિશે વધુ વાંચો.</string>
   <string name="KbsSplashFragment__update_pin">PIN અપડેટ કરો</string>
   <string name="KbsSplashFragment__create_your_pin">તમારો PIN બનાવો</string>
+  <string name="KbsSplashFragment__learn_more_about_pins">PIN વિશે વધુ જાણો</string>
   <!--KBS Reminder Dialog-->
   <string name="KbsReminderDialog__enter_your_signal_pin">તમારો Signal પિન દાખલ કરો</string>
   <string name="KbsReminderDialog__to_help_you_memorize_your_pin">તમને તમારો PIN યાદ રાખવામાં મદદ કરવા માટે, અમે તમને તે સમયાંતરે દાખલ કરવા માટે કહીશું. અમે તમને સમય સાથે ઓછા પૂછીએ છીએ.</string>
@@ -1540,10 +1542,6 @@
   <string name="KbsMegaphone__create_pin">PIN બનાવો</string>
   <string name="KbsMegaphone__introducing_pins">PIN રજૂ કરી રહ્યા છીએ</string>
   <string name="KbsMegaphone__update_pin">PIN અપડેટ કરો</string>
-  <!--Profile Names Megaphone-->
-  <string name="ProfileNamesMegaphone__this_will_be_displayed_when_you_start">જ્યારે તમે નવી વાતચીત શરૂ કરો અથવા શેર કરો ત્યારે આ પ્રદર્શિત થશે.</string>
-  <string name="ProfileNamesMegaphone__add_profile_name">પ્રોફાઇલ નામ ઉમેરો</string>
-  <string name="ProfileNamesMegaphone__your_profile_can_now_include">તમારી પ્રોફાઇલમાં હવે વૈકલ્પિક અટક શામેલ હોઈ શકે છે.</string>
   <!--transport_selection_list_item-->
   <string name="transport_selection_list_item__transport_icon">પરિવહન ચિહ્ન</string>
   <string name="ConversationListFragment_loading">લોડ કરી રહ્યું છે </string>

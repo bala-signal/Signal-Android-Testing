@@ -21,9 +21,8 @@ import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteDatabaseHook;
 import net.sqlcipher.database.SQLiteOpenHelper;
 
-import org.thoughtcrime.securesms.color.MaterialColor;
-import org.thoughtcrime.securesms.contacts.avatars.ContactColors;
 import org.thoughtcrime.securesms.contacts.avatars.ContactColorsLegacy;
+import org.thoughtcrime.securesms.database.RemappedRecordsDatabase;
 import org.thoughtcrime.securesms.profiles.AvatarHelper;
 import org.thoughtcrime.securesms.profiles.ProfileName;
 import org.thoughtcrime.securesms.recipients.RecipientId;
@@ -137,8 +136,11 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
   private static final int LAST_SCROLLED                    = 62;
   private static final int LAST_PROFILE_FETCH               = 63;
   private static final int SERVER_DELIVERED_TIMESTAMP       = 64;
+  private static final int QUOTE_CLEANUP                    = 65;
+  private static final int BORDERLESS                       = 66;
+  private static final int REMAPPED_RECORDS                 = 67;
 
-  private static final int    DATABASE_VERSION = 64;
+  private static final int    DATABASE_VERSION = 67;
   private static final String DATABASE_NAME    = "signal.db";
 
   private final Context        context;
@@ -184,6 +186,7 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
     db.execSQL(MegaphoneDatabase.CREATE_TABLE);
     executeStatements(db, SearchDatabase.CREATE_TABLE);
     executeStatements(db, JobDatabase.CREATE_TABLE);
+    executeStatements(db, RemappedRecordsDatabase.CREATE_TABLE);
 
     executeStatements(db, RecipientDatabase.CREATE_INDEXS);
     executeStatements(db, SmsDatabase.CREATE_INDEXS);
@@ -919,6 +922,52 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
 
       if (oldVersion < SERVER_DELIVERED_TIMESTAMP) {
         db.execSQL("ALTER TABLE push ADD COLUMN server_delivered_timestamp INTEGER DEFAULT 0");
+      }
+
+      if (oldVersion < QUOTE_CLEANUP) {
+        String query = "SELECT _data " +
+                       "FROM (SELECT _data, MIN(quote) AS all_quotes " +
+                             "FROM part " +
+                             "WHERE _data NOT NULL AND data_hash NOT NULL " +
+                             "GROUP BY _data) " +
+                       "WHERE all_quotes = 1";
+
+        int count = 0;
+
+        try (Cursor cursor = db.rawQuery(query, null)) {
+          while (cursor != null && cursor.moveToNext()) {
+            String data = cursor.getString(cursor.getColumnIndexOrThrow("_data"));
+
+            if (new File(data).delete()) {
+              ContentValues values = new ContentValues();
+              values.putNull("_data");
+              values.putNull("data_random");
+              values.putNull("thumbnail");
+              values.putNull("thumbnail_random");
+              values.putNull("data_hash");
+              db.update("part", values, "_data = ?", new String[] { data });
+
+              count++;
+            } else {
+              Log.w(TAG, "[QuoteCleanup] Failed to delete " + data);
+            }
+          }
+        }
+
+        Log.i(TAG, "[QuoteCleanup] Cleaned up " + count + " quotes.");
+      }
+
+      if (oldVersion < BORDERLESS) {
+        db.execSQL("ALTER TABLE part ADD COLUMN borderless INTEGER DEFAULT 0");
+      }
+
+      if (oldVersion < REMAPPED_RECORDS) {
+        db.execSQL("CREATE TABLE remapped_recipients (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                     "old_id INTEGER UNIQUE, " +
+                                                     "new_id INTEGER)");
+        db.execSQL("CREATE TABLE remapped_threads (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                  "old_id INTEGER UNIQUE, " +
+                                                  "new_id INTEGER)");
       }
 
       db.setTransactionSuccessful();

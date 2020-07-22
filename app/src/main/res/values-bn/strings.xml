@@ -44,6 +44,7 @@
   <string name="ApplicationPreferencesActivity_privacy_summary">স্ক্রিন লক%1$s, নিবন্ধন লক%2$s</string>
   <string name="ApplicationPreferencesActivity_privacy_summary_screen_lock">স্ক্রিন লক %1$s</string>
   <string name="ApplicationPreferencesActivity_appearance_summary">%1$sথীম, %2$s ভাষা</string>
+  <string name="ApplicationPreferencesActivity_pin_created">পিন তৈরি করা হয়েছে।</string>
   <!--AppProtectionPreferenceFragment-->
   <plurals name="AppProtectionPreferenceFragment_minutes">
     <item quantity="one">%d মিনিট</item>
@@ -155,7 +156,7 @@
   <string name="ContactShareEditActivity_type_missing">অন্যান্য</string>
   <string name="ContactShareEditActivity_invalid_contact">নির্বাচিত পরিচিতিটি সঠিক নয়</string>
   <!--ConversationItem-->
-  <string name="ConversationItem_error_not_delivered">পাঠাতে ব্যার্থ, খুঁটিনাটি জানতে আলতো চাপুন</string>
+  <string name="ConversationItem_error_network_not_delivered">পাঠাতে ব্যর্থ</string>
   <string name="ConversationItem_received_key_exchange_message_tap_to_process">কী বিনিময়ের বার্তা পাওয়া গেছে, প্রক্রিয়া করতে আলতো চাপুন।</string>
   <string name="ConversationItem_group_action_left">%1$s গ্রুপ ত্যাগ করেছে।</string>
   <string name="ConversationItem_click_to_approve_unencrypted">পাঠাতে ব্যর্থ, অসুরক্ষিত পন্থা অবলম্বনের জন্য চাপুন</string>
@@ -191,7 +192,7 @@
   <string name="ConversationActivity_transport_insecure_mms">অনিরাপদ এমএমএস</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">চলুন Signal এ যোগ দেই %1$s</string>
-  <string name="ConversationActivity_error_leaving_group">গ্রুপ ত্যাগ করতে সমস্যা হয়েছে</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">গ্রুপ ত্যাগ করতে সমস্যা হয়েছে</string> -->
   <string name="ConversationActivity_specify_recipient">দয়া করে একটি পরিচিতি চয়ন করুন</string>
   <string name="ConversationActivity_unblock_this_contact_question">এই পরিচিতিকে আনব্লক করতে চাচ্ছেন?</string>
   <string name="ConversationActivity_unblock_this_group_question">এই গ্রুপটিকে আনব্লক করতে চাচ্ছেন?</string>
@@ -299,8 +300,6 @@
     <item quantity="one"> টি আলাপন ইনবক্সে স্থানান্তরিত করা হয়েছে</item>
     <item quantity="other">%d টি কথোপকথন ইনবক্সে স্থানান্তরিত করা হয়েছে</item>
   </plurals>
-  <string name="ConversationListFragment__your_profile_name_has_been_created">আপনার প্রোফাইলের নাম তৈরী করা হয়েছে।</string>
-  <string name="ConversationListFragment__your_profile_name_has_been_saved">আপনার প্রোফাইলের নামটি সংরক্ষণ করা হয়েছে।</string>
   <!--ConversationListItem-->
   <string name="ConversationListItem_key_exchange_message">Key বিনিময় বার্তা</string>
   <!--ConversationListItemAction-->
@@ -366,6 +365,7 @@
   <string name="GiphyFragmentPagerAdapter_gifs">জিআইএফ সমূহ</string>
   <string name="GiphyFragmentPagerAdapter_stickers">স্টিকার সমূহ</string>
   <!--AddToGroupActivity-->
+  <string name="AddToGroupActivity_add_member">সদস্য যোগ করবে?</string>
   <string name="AddToGroupActivity_add_to_group">গ্রুপে যুক্ত করুন</string>
   <!--GroupShareProfileView-->
   <string name="GroupShareProfileView_share_your_profile_name_and_photo_with_this_group">আপনার প্রোফাইলের নাম ও ছবি গ্রুপের সাথে শেয়ার করবেন?</string>
@@ -417,8 +417,8 @@
   <!--ManageGroupActivity-->
   <string name="ManageGroupActivity_disappearing_messages">অদৃশ্য বার্তা</string>
   <string name="ManageGroupActivity_pending_group_invites">অনিষ্পাদিত গ্রুপ নিমন্ত্রণসমূহ</string>
-  <string name="ManageGroupActivity_who_can_edit_group_membership">গ্রুপের সদস্যপদ কে সম্পাদনা করতে পারবে</string>
-  <string name="ManageGroupActivity_who_can_edit_group_info">কে গ্রুপের তথ্য সম্পাদনা করতে পারবে</string>
+  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_membership">গ্রুপের সদস্যপদ কে সম্পাদনা করতে পারবে</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_info">কে গ্রুপের তথ্য সম্পাদনা করতে পারবে</string> -->
   <string name="ManageGroupActivity_block_group">গ্রুপ ব্লক করুন</string>
   <string name="ManageGroupActivity_unblock_group">গ্রুপ আনব্লক করুন</string>
   <string name="ManageGroupActivity_leave_group">গ্রুপ ত্যাগ করুন</string>
@@ -444,8 +444,8 @@
   <string name="ManageGroupActivity_failed_to_update_the_group">গ্রুপ আপডেটকরণ ব্যার্থ হয়েছে</string>
   <string name="ManageGroupActivity_youre_not_a_member_of_the_group">আপনি গ্রুপটির সদস্য নন</string>
   <string name="ManageGroupActivity_edit_name_and_picture">নাম এবং ছবি সম্পাদনা করেন</string>
-  <string name="GroupManagement_choose_who_can_add_or_invite_new_members">কে কে নতুন সদস্য সংযুক্ত করতে অথবা আমন্ত্রণ জানাতে পারবে তা নির্বাচন করুন</string>
-  <string name="GroupManagement_choose_who_can_change_the_group_name_and_photo">কে কে গ্রুপের নাম এবং ছবি পরিবর্তন করতে পারবে তা নির্বাচন করুন</string>
+  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_add_or_invite_new_members">কে কে নতুন সদস্য সংযুক্ত করতে অথবা আমন্ত্রণ জানাতে পারবে তা নির্বাচন করুন</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_change_the_group_name_and_photo">কে কে গ্রুপের নাম এবং ছবি পরিবর্তন করতে পারবে তা নির্বাচন করুন</string> -->
   <!--ManageRecipientActivity-->
   <string name="ManageRecipientActivity_disappearing_messages">অদৃশ্য বার্তা</string>
   <string name="ManageRecipientActivity_block">অবরূদ্ধ</string>
@@ -456,6 +456,7 @@
   <string name="ManageRecipientActivity_until_s">%1$s পর্যন্ত</string>
   <string name="ManageRecipientActivity_off">বন্ধ</string>
   <string name="ManageRecipientActivity_on">চালু</string>
+  <string name="ManageRecipientActivity_add_to_a_group">গ্রুপে যুক্ত করো</string>
   <string name="ManageRecipientActivity_see_all">সব দেখুন</string>
   <string name="ManageRecipientActivity_edit_name_and_picture">নাম এবং ছবি সম্পাদনা করেন</string>
   <string name="ManageRecipientActivity_message_description">বার্তা</string>
@@ -623,6 +624,7 @@
   <string name="MessageRecord_s_disabled_disappearing_messages">%1$s অদৃশ্য হয়ে যাওয়া বার্তা অক্ষম করেছেন।</string>
   <string name="MessageRecord_you_set_disappearing_message_time_to_s">আপনি অদৃশ্য হয়ে যাওয়া বার্তার সময়কাল %1$s নির্ধারন করেছেন।</string>
   <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s অদৃশ্য হয়ে যাওয়া বার্তার সময়কাল %2$s নির্ধারন করেছেন।</string>
+  <!--Profile change updates-->
   <!--GV2 specific-->
   <string name="MessageRecord_you_created_the_group">আপনি গ্রুপ তৈরি করেছেন।</string>
   <string name="MessageRecord_group_updated">গ্রুপ আপডেট হয়েছে।</string>
@@ -645,6 +647,7 @@
   <string name="MessageRecord_you_revoked_admin_privileges_from_s">আপনি %1$s এর প্রশাসকীয় ক্ষমতাগুলি বাতিল করেছেন।</string>
   <string name="MessageRecord_s_revoked_your_admin_privileges">%1$s আপনার এর প্রশাসকীয় ক্ষমতাগুলি বাতিল করেছে।</string>
   <string name="MessageRecord_s_revoked_admin_privileges_from_s">%1$s %2$s এর প্রশাসকীয় ক্ষমতাগুলি বাতিল করেছে।</string>
+  <string name="MessageRecord_you_are_now_an_admin">আপনি এখন প্রশাসক</string>
   <!--GV2 invitations-->
   <string name="MessageRecord_you_invited_s_to_the_group">আপনি %1$s কে এই গ্রুপে আমন্ত্রণ জানিয়েছেন।</string>
   <string name="MessageRecord_s_invited_you_to_the_group">%1$s আপনাকে গ্রুপটিতে আমন্ত্রণ জানিয়েছেন।</string>
@@ -652,6 +655,7 @@
     <item quantity="one">%1$s ১ জনকে গ্রুপে আমন্ত্রণ জানিয়েছে।</item>
     <item quantity="other">%1$s %2$d জনকে গ্রুপে আমন্ত্রণ জানিয়েছে।</item>
   </plurals>
+  <string name="MessageRecord_you_were_invited_to_the_group">আপনাকে এই গ্রুপে আমন্ত্রিত করা হয়েছিল।</string>
   <!--GV2 invitation revokes-->
   <plurals name="MessageRecord_you_revoked_invites">
     <item quantity="one">আপনি গ্রুপেটির জন্য কৃত একটি আমন্ত্রণ বাতিল করেছেন।</item>
@@ -663,6 +667,7 @@
   </plurals>
   <string name="MessageRecord_someone_declined_an_invitation_to_the_group">কেউ একজন এই গ্রুপের আমন্ত্রণ প্রত্যাখ্যান করেছে।</string>
   <string name="MessageRecord_you_declined_the_invitation_to_the_group">আপনি গ্রুপটির নিমন্ত্রণ প্রত্যাখ্যান করেছেন।</string>
+  <string name="MessageRecord_your_invitation_to_the_group_was_revoked">গ্রুপে আপনার আমন্ত্রণ বাতিল করা হয়েছিল।</string>
   <!--GV2 invitation acceptance-->
   <string name="MessageRecord_you_accepted_invite">আপনি গ্রুপটির নিমন্ত্রণ গ্রহণ করেছেন।</string>
   <string name="MessageRecord_s_accepted_invite">%1$s গ্রুপটির নিমন্ত্রণ গ্রহণ করেছেন।</string>
@@ -713,7 +718,6 @@
   <string name="PassphraseChangeActivity_enter_new_passphrase_exclamation">নতুন পাসফ্রেজ লিখুন!</string>
   <!--DeviceProvisioningActivity-->
   <string name="DeviceProvisioningActivity_link_this_device">এই ডিভাইস যুক্ত করবেন?</string>
-  <string name="DeviceProvisioningActivity_cancel">বাতিল করুন</string>
   <string name="DeviceProvisioningActivity_continue">সামনে আগান</string>
   <string name="DeviceProvisioningActivity_content_intro">এটা সক্ষম হবে</string>
   <string name="DeviceProvisioningActivity_content_bullets">
@@ -763,6 +767,7 @@
   <!--PinRestoreLockedFragment-->
   <string name="PinRestoreLockedFragment_create_your_pin">আপনার পিন তৈরি করুন</string>
   <string name="PinRestoreLockedFragment_create_new_pin">PIN তৈরি করুন</string>
+  <!--PinOptOutDialog-->
   <!--RatingManager-->
   <string name="RatingManager_rate_this_app">এই এপটিকে রেটিং দিন</string>
   <string name="RatingManager_if_you_enjoy_using_this_app_please_take_a_moment">আপনি যদি এই অ্যাপ ব্যবহার করে উপভোগ করেন, তবে দয়া করে এটি রেটিং দিতে কিছুক্ষণ সময় দিয়ে আমাদের সহায়তা করুন।</string>
@@ -918,7 +923,6 @@
   <string name="SubmitDebugLogActivity_success">সফল!</string>
   <string name="SubmitDebugLogActivity_copy_this_url_and_add_it_to_your_issue">এই ইউআরএল টি কপি করুন এবং এটি আপনার সমস্যা প্রতিবেদন বা সাপোর্ট ইমে‌ইলে যোগ করুন:\n\n<b>%1$s</b></string>
   <string name="SubmitDebugLogActivity_copied_to_clipboard">ক্লিপবোর্ডে অনুলিপি করা হয়েছে</string>
-  <string name="SubmitDebugLogActivity_ok">ঠিক আছে</string>
   <string name="SubmitDebugLogActivity_share">শেয়ার করুন</string>
   <!--SupportEmailUtil-->
   <string name="SupportEmailUtil_subject">বিষয়ঃ</string>
@@ -984,7 +988,6 @@
   <string name="UsernameEditFragment_encountered_a_network_error">একটি নেটওয়ার্ক ত্রুটি সম্মুখীন।</string>
   <string name="UsernameEditFragment_this_username_is_taken">এই ব্যবহারকারীর নাম নেওয়া হয়েছে|</string>
   <string name="UsernameEditFragment_this_username_is_available">নামটি ব্যবহার করা যাবে|</string>
-  <string name="UsernameEditFragment_usernames_can_only_include">ব্যবহারকারীর নামগুলিতে কেবল a-Z, 0-9 এবং আন্ডারস্কোর অন্তর্ভুক্ত থাকতে পারে।</string>
   <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">ব্যবহারকারীর নাম সংখ্যা দিয়ে শুরু করতে পারে না।</string>
   <string name="UsernameEditFragment_username_is_invalid">ব্যবহারকারীর নাম অবৈধ|</string>
   <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">ব্যবহারকারীর নামগুলি অবশ্যই %1$d এবং %2$d অক্ষরের মধ্যে থাকতে হবে।</string>
@@ -1155,7 +1158,6 @@
   <string name="contact_selection_activity__enter_name_or_number">নাম বা নাম্বার লিখুন</string>
   <string name="contact_selection_activity__invite_to_signal">Signal এ নিমন্ত্রণ করুন</string>
   <string name="contact_selection_activity__new_group">নতুন গ্রুপ</string>
-  <!--temporary for internal testing-->
   <!--contact_filter_toolbar-->
   <string name="contact_filter_toolbar__clear_entered_text_description">প্রবেশ করা লেখা মুছুন</string>
   <string name="contact_filter_toolbar__show_keyboard_description">কীবোর্ড প্রদর্শন করুন</string>
@@ -1219,6 +1221,8 @@
   <string name="QuoteView_original_missing">মূল বার্তাটি পাওয়া যায়নি</string>
   <!--conversation_fragment-->
   <string name="conversation_fragment__scroll_to_the_bottom_content_description">স্ক্রোল করে নীচে যান</string>
+  <!--safety_number_change_dialog-->
+  <string name="safety_number_change_dialog__view">দেখান</string>
   <!--country_selection_fragment-->
   <string name="country_selection_fragment__loading_countries">দেশগুলি লোড হচ্ছে …</string>
   <string name="country_selection_fragment__search">খোঁজা</string>
@@ -1568,6 +1572,7 @@
   <string name="preferences_communication__sealed_sender_allow_from_anyone">যে কারও কাছ থেকে অনুমতি দিন</string>
   <string name="preferences_communication__sealed_sender_allow_from_anyone_description">পরিচিতিতে নেই এবং যাদের সাথে আপনি নিজের প্রোফাইল শেয়ার করেন নি তাদের কাছ থেকে আগত বার্তাগুলির জন্য সিলযুক্ত প্রেরককে সক্ষম করুন।</string>
   <string name="preferences_communication__sealed_sender_learn_more">আরও জানুন</string>
+  <!--Internal only preferences-->
   <!--****************************************-->
   <!--menus-->
   <!--****************************************-->
@@ -1725,7 +1730,6 @@
   <string name="CreateKbsPinFragment__create_a_new_pin">একটি নতুন পিন তৈরি করুন</string>
   <string name="CreateKbsPinFragment__you_can_choose_a_new_pin_as_long_as_this_device_is_registered">এই ডিভাইসটি নিবন্ধিত থাকা অবধি আপনি আপনার পিন পরিবর্তন করতে পারবেন।</string>
   <string name="CreateKbsPinFragment__create_your_pin">আপনার পিন তৈরি করুন</string>
-  <string name="CreateKbsPinFragment__pins_keep_information_stored_with_signal_encrypted">পিনগুলি Signal-এ সঞ্চিত তথ্য এনক্রিপ্ট করে রাখে যাতে কেবল আপনি এটি অ্যাক্সেস করতে পারবেন। আপনি যখন Signal পুনরায় ইনস্টল করবেন তখন আপনার প্রোফাইল, সেটিংস এবং পরিচিতিগুলি পুনরুদ্ধার করবে।</string>
   <string name="CreateKbsPinFragment__choose_a_stronger_pin">একটি শক্তিশালী পিন চয়ন করুন</string>
   <!--ConfirmKbsPinFragment-->
   <string name="ConfirmKbsPinFragment__pins_dont_match">পিনগুলি মেলে না। আবার চেষ্টা করুন|</string>
@@ -1737,12 +1741,12 @@
   <string name="ConfirmKbsPinFragment__creating_pin">পিন তৈরি করা হচ্ছে …</string>
   <!--KbsSplashFragment-->
   <string name="KbsSplashFragment__introducing_pins">পিনের সাথে পরিচিত হন</string>
-  <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">পিনগুলি Signal-এ সঞ্চিত তথ্য এনক্রিপ্ট করে রাখে যাতে কেবল আপনি এটি অ্যাক্সেস করতে পারবেন। আপনি যখন Signal পুনরায় ইনস্টল করবেন তখন আপনার প্রোফাইল, সেটিংস এবং পরিচিতিগুলি পুনরুদ্ধার করবে।</string>
   <string name="KbsSplashFragment__learn_more">আরও জানুন</string>
   <string name="KbsSplashFragment__registration_lock_equals_pin">রেজিস্ট্রেশন লক = পিন</string>
   <string name="KbsSplashFragment__read_more_about_pins">পিন সম্পর্কে আরও পড়ুন।</string>
   <string name="KbsSplashFragment__update_pin">পিন আপডেট করুন</string>
   <string name="KbsSplashFragment__create_your_pin">আপনার পিন তৈরি করুন</string>
+  <string name="KbsSplashFragment__learn_more_about_pins">পিনগুলি সম্পর্কে আরও জানুন</string>
   <!--KBS Reminder Dialog-->
   <string name="KbsReminderDialog__enter_your_signal_pin">আপনার Signal পিন প্রবেশ করান</string>
   <string name="KbsReminderDialog__to_help_you_memorize_your_pin">আপনাকে আপনার পিন মুখস্ত করতে সহায়তা করতে আমরা আপনাকে মাঝে মাঝে এটি প্রবেশ করাতে বলব। আমরা সময়ের সাথে সাথে  জিজ্ঞাসা করা কমিয়ে দেব।</string>
@@ -1785,13 +1789,6 @@
   <string name="KbsMegaphone__create_pin">পিন তৈরি করুন</string>
   <string name="KbsMegaphone__introducing_pins">পিনের সাথে পরিচিত হন</string>
   <string name="KbsMegaphone__update_pin">পিন আপডেট করুন</string>
-  <!--Profile Names Megaphone-->
-  <string name="ProfileNamesMegaphone__add_a_profile_name">প্রোফাইলের একটি নাম দিন</string>
-  <string name="ProfileNamesMegaphone__this_will_be_displayed_when_you_start">আপনি যখন কোনও নতুন কথোপকথন শুরু করবেন বা শেয়ার করবেন তখন এটি প্রদর্শিত হবে।</string>
-  <string name="ProfileNamesMegaphone__add_profile_name">প্রোফাইল নাম যোগ করুন</string>
-  <string name="ProfileNamesMegaphone__confirm_your_profile_name">আপনার প্রোফাইল নামটি নিশ্চিত করুন</string>
-  <string name="ProfileNamesMegaphone__your_profile_can_now_include">আপনার প্রোফাইল এখন একটি ঐচ্ছিক শেষ নাম অন্তর্ভুক্ত করতে পারেন।</string>
-  <string name="ProfileNamesMegaphone__confirm_name">নাম নিশ্চিত করুন</string>
   <!--transport_selection_list_item-->
   <string name="transport_selection_list_item__transport_icon">পরিবহন আইকন</string>
   <string name="ConversationListFragment_loading">লোড হচ্ছে…</string>
@@ -1908,6 +1905,7 @@
   <string name="RecipientBottomSheet_block">অবরূদ্ধ</string>
   <string name="RecipientBottomSheet_unblock">মূক্ত করুন</string>
   <string name="RecipientBottomSheet_add_to_contacts">পরিচিতি তালিকায় যোগ করুন</string>
+  <string name="RecipientBottomSheet_add_to_a_group">গ্রুপে যোগ করো</string>
   <string name="RecipientBottomSheet_view_safety_number">নিরাপত্তা নাম্বার দেখুন</string>
   <string name="RecipientBottomSheet_make_group_admin">গ্রুপ এডমিন বানান</string>
   <string name="RecipientBottomSheet_remove_as_admin">গ্রুপ এডমিন থেকে সরান</string>

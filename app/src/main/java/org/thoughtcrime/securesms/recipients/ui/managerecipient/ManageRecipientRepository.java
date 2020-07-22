@@ -10,10 +10,14 @@ import com.annimon.stream.Stream;
 
 import org.thoughtcrime.securesms.color.MaterialColor;
 import org.thoughtcrime.securesms.color.MaterialColors;
+import org.thoughtcrime.securesms.contacts.sync.DirectoryHelper;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.GroupDatabase;
 import org.thoughtcrime.securesms.database.IdentityDatabase;
 import org.thoughtcrime.securesms.database.ThreadDatabase;
+import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
+import org.thoughtcrime.securesms.jobs.MultiDeviceContactUpdateJob;
+import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mms.OutgoingExpirationUpdateMessage;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
@@ -21,10 +25,13 @@ import org.thoughtcrime.securesms.sms.MessageSender;
 import org.thoughtcrime.securesms.util.concurrent.SignalExecutors;
 import org.thoughtcrime.securesms.util.concurrent.SimpleTask;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 final class ManageRecipientRepository {
+
+  private static final String TAG = Log.tag(ManageRecipientRepository.class);
 
   private final Context     context;
   private final RecipientId recipientId;
@@ -91,6 +98,17 @@ final class ManageRecipientRepository {
       MaterialColor selectedColor = MaterialColors.CONVERSATION_PALETTE.getByColor(context, color);
       if (selectedColor != null) {
         DatabaseFactory.getRecipientDatabase(context).setColor(recipientId, selectedColor);
+        ApplicationDependencies.getJobManager().add(new MultiDeviceContactUpdateJob(recipientId));
+      }
+    });
+  }
+
+  void refreshRecipient() {
+    SignalExecutors.UNBOUNDED.execute(() -> {
+      try {
+        DirectoryHelper.refreshDirectoryFor(context, Recipient.resolved(recipientId), false);
+      } catch (IOException e) {
+        Log.w(TAG, "Failed to refresh user after adding to contacts.");
       }
     });
   }
@@ -104,5 +122,9 @@ final class ManageRecipientRepository {
                  .map(Recipient::resolved)
                  .sortBy(gr -> gr.getDisplayName(context))
                  .toList();
+  }
+
+  void getActiveGroupCount(@NonNull Consumer<Integer> onComplete) {
+    SignalExecutors.BOUNDED.execute(() -> onComplete.accept(DatabaseFactory.getGroupDatabase(context).getActiveGroupCount()));
   }
 }

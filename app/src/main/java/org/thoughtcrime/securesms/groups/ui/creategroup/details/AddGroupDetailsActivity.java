@@ -1,5 +1,6 @@
 package org.thoughtcrime.securesms.groups.ui.creategroup.details;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,15 +11,19 @@ import androidx.annotation.Nullable;
 import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 
-import org.thoughtcrime.securesms.PassphraseRequiredActionBarActivity;
+import org.thoughtcrime.securesms.PassphraseRequiredActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.conversation.ConversationActivity;
 import org.thoughtcrime.securesms.database.ThreadDatabase;
+import org.thoughtcrime.securesms.groups.ui.managegroup.dialogs.GroupInviteSentDialog;
+import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 
-public class AddGroupDetailsActivity extends PassphraseRequiredActionBarActivity implements AddGroupDetailsFragment.Callback {
+import java.util.List;
+
+public class AddGroupDetailsActivity extends PassphraseRequiredActivity implements AddGroupDetailsFragment.Callback {
 
   private static final String EXTRA_RECIPIENTS = "recipient_ids";
 
@@ -58,7 +63,19 @@ public class AddGroupDetailsActivity extends PassphraseRequiredActionBarActivity
   }
 
   @Override
-  public void onGroupCreated(@NonNull RecipientId recipientId, long threadId) {
+  public void onGroupCreated(@NonNull RecipientId recipientId,
+                             long threadId,
+                             @NonNull List<Recipient> invitedMembers)
+  {
+    Dialog dialog = GroupInviteSentDialog.showInvitesSent(this, invitedMembers);
+    if (dialog != null) {
+      dialog.setOnDismissListener((d) -> goToConversation(recipientId, threadId));
+    } else {
+      goToConversation(recipientId, threadId);
+    }
+  }
+
+  void goToConversation(@NonNull RecipientId recipientId, long threadId) {
     Intent intent = ConversationActivity.buildIntent(this,
                                                      recipientId,
                                                      threadId,

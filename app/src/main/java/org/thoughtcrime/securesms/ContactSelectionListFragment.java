@@ -40,7 +40,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
@@ -93,7 +92,7 @@ import java.util.Set;
  * @author Moxie Marlinspike
  *
  */
-public final class ContactSelectionListFragment extends    Fragment
+public final class ContactSelectionListFragment extends LoggingFragment
                                                 implements LoaderManager.LoaderCallbacks<Cursor>
 {
   @SuppressWarnings("unused")
@@ -272,11 +271,7 @@ public final class ContactSelectionListFragment extends    Fragment
     RecyclerViewConcatenateAdapterStickyHeader concatenateAdapter = new RecyclerViewConcatenateAdapterStickyHeader();
 
     if (listCallback != null) {
-      if (FeatureFlags.groupsV2create() && FeatureFlags.groupsV2internalTest()) {
-        headerAdapter = new FixedViewsAdapter(createNewGroupItem(listCallback), createNewGroupsV1GroupItem(listCallback));
-      } else {
-        headerAdapter = new FixedViewsAdapter(createNewGroupItem(listCallback));
-      }
+      headerAdapter = new FixedViewsAdapter(createNewGroupItem(listCallback));
       headerAdapter.hide();
       concatenateAdapter.addAdapter(headerAdapter);
     }
@@ -314,13 +309,6 @@ public final class ContactSelectionListFragment extends    Fragment
     View view = LayoutInflater.from(requireContext())
                               .inflate(R.layout.contact_selection_new_group_item, (ViewGroup) requireView(), false);
     view.setOnClickListener(v -> listCallback.onNewGroup(false));
-    return view;
-  }
-
-  private View createNewGroupsV1GroupItem(@NonNull ListCallback listCallback) {
-    View view = LayoutInflater.from(requireContext())
-                              .inflate(R.layout.contact_selection_new_group_v1_item, (ViewGroup) requireView(), false);
-    view.setOnClickListener(v -> listCallback.onNewGroup(true));
     return view;
   }
 
@@ -462,6 +450,11 @@ public final class ContactSelectionListFragment extends    Fragment
     public void onItemClick(ContactSelectionListItem contact) {
       SelectedContact selectedContact = contact.isUsernameType() ? SelectedContact.forUsername(contact.getRecipientId().orNull(), contact.getNumber())
                                                                  : SelectedContact.forPhone(contact.getRecipientId().orNull(), contact.getNumber());
+
+      if (isMulti() && Recipient.self().getId().equals(selectedContact.getOrCreateRecipientId(requireContext()))) {
+        Toast.makeText(requireContext(), R.string.ContactSelectionListFragment_you_do_not_need_to_add_yourself_to_the_group, Toast.LENGTH_SHORT).show();
+        return;
+      }
 
       if (!isMulti() || !cursorRecyclerViewAdapter.isSelectedContact(selectedContact)) {
         if (selectionLimitReached()) {

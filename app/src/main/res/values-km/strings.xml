@@ -42,6 +42,7 @@
   <string name="ApplicationPreferencesActivity_privacy_summary">ចាក់សោរអេក្រង់ %1$s, ចាក់សោេរចុះឈ្មោះ %2$s</string>
   <string name="ApplicationPreferencesActivity_privacy_summary_screen_lock">ចាក់សោអេក្រង់ %1$s</string>
   <string name="ApplicationPreferencesActivity_appearance_summary">ប្រធានបទ %1$s, ភាសា %2$s</string>
+  <string name="ApplicationPreferencesActivity_pin_created">PIN ត្រូវបានបង្កើត។</string>
   <!--AppProtectionPreferenceFragment-->
   <plurals name="AppProtectionPreferenceFragment_minutes">
     <item quantity="other">%d នាទី</item>
@@ -79,6 +80,7 @@
   <string name="BlockUnblockDialog_you_will_no_longer_receive_messages_or_updates">អ្នកនឹងលែងទទួលសារឬការព័ត៌មានពីក្រុមនេះ ហើយសមាជិកនឹងមិនអាចដាក់អ្នកចូលក្នុងក្រុមនេះបានទៀតទេ។</string>
   <string name="BlockUnblockDialog_group_members_wont_be_able_to_add_you">សមាជិកនឹងមិនអាចដាក់អ្នកចូលក្នុងក្រុមនេះបានទៀតទេ។</string>
   <string name="BlockUnblockDialog_group_members_will_be_able_to_add_you">សមាជិកនឹងអាចដាក់អ្នកចូលក្នុងក្រុមនេះបានម្តងទៀត។</string>
+  <string name="BlockUnblockDialog_you_will_be_able_to_call_and_message_each_other">អ្នកនឹងអាចផ្ញើសារនិងហៅចេញទៅវិញទៅមក ហើយឈ្មោះនិងរូបភាពរបស់អ្នក នឹងត្រូវចែករំលែកជាមួយពួកគេ។</string>
   <string name="BlockUnblockDialog_blocked_people_wont_be_able_to_call_you_or_send_you_messages">មនុស្សដែលបានហាមឃាត់ នឹងមិនអាចហៅមកអ្នក ឬផ្ញើសារបានទេ។</string>
   <string name="BlockUnblockDialog_unblock_s">លែងហាមឃាត់ %1$s?</string>
   <string name="BlockUnblockDialog_unblock">បើកវិញ</string>
@@ -153,7 +155,7 @@
   <string name="ContactShareEditActivity_type_missing">ផ្សេងៗ</string>
   <string name="ContactShareEditActivity_invalid_contact">លេខទំនាក់ទំនងដែលបានជ្រើសរើសមិនត្រឹមត្រូវ</string>
   <!--ConversationItem-->
-  <string name="ConversationItem_error_not_delivered">ផ្ញើបរាជ័យ ចុច សម្រាប់ព័ត៌មានលម្អិត</string>
+  <string name="ConversationItem_error_network_not_delivered">ផ្ញើបរាជ័យ</string>
   <string name="ConversationItem_received_key_exchange_message_tap_to_process">ទទួលបានសារ ផ្លាស់ប្តូរសោរ សូមចុច ដើម្បីដំណើរការ។</string>
   <string name="ConversationItem_group_action_left">%1$s នាក់បានចាកចេញពីក្រុម។</string>
   <string name="ConversationItem_click_to_approve_unencrypted">ផ្ញើបរាជ័យ ចុច សម្រាប់ជំនួសគ្មានសុវត្ថិភាព</string>
@@ -168,6 +170,7 @@
   <string name="ConversationItem_download_more">  ទាញយកបន្ថែម</string>
   <string name="ConversationItem_pending">  កំពុងរង់ចាំ</string>
   <string name="ConversationItem_this_message_was_deleted">សារនេះត្រូវបានលុប។</string>
+  <string name="ConversationItem_you_deleted_this_message">អ្នកបានលុបសារនេះ។</string>
   <!--ConversationActivity-->
   <string name="ConversationActivity_reset_secure_session_question">កំណត់ការប្រើប្រាស់សុវត្ថិភាពឡើងវិញ?</string>
   <string name="ConversationActivity_this_may_help_if_youre_having_encryption_problems">នេះប្រហែលអាចជួយបាន បើអ្នកមានបញ្ហាកាណាល់កូដក្នុងការសន្ទនានេះ។ សាររបស់អ្នកនឹងត្រូវរក្សាទុក។</string>
@@ -189,7 +192,7 @@
   <string name="ConversationActivity_transport_insecure_mms">MMS មិនមានសុវត្ថិភាព</string>
   <string name="ConversationActivity_transport_signal"> Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">តោះដូរទៅកាន់ Signal %1$s</string>
-  <string name="ConversationActivity_error_leaving_group">បញ្ហាសម្រាប់ការចាកចេញពីក្រុម</string>
+  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">បញ្ហាសម្រាប់ការចាកចេញពីក្រុម</string> -->
   <string name="ConversationActivity_specify_recipient">សូមជ្រើសរើសលេខទំនាក់ទំនង១</string>
   <string name="ConversationActivity_unblock_this_contact_question">បើកលេខទំនាក់ទំនងនេះ?</string>
   <string name="ConversationActivity_unblock_this_group_question">បើកសោរក្រុមនេះ?</string>
@@ -260,6 +263,7 @@
   <string name="ConversationFragment_deleting_messages">កំពុងលុបសារ…</string>
   <string name="ConversationFragment_delete_for_me">លុបសម្រាប់ខ្ញុំ</string>
   <string name="ConversationFragment_delete_for_everyone">លុបសម្រាប់ទាំងអស់គ្នា</string>
+  <string name="ConversationFragment_this_message_will_be_permanently_deleted_for_everyone">សារនេះ នឹងត្រូវលុបចោលរហូតសម្រាប់អ្នកទាំងអស់គ្នាក្នុងការសន្ទនានេះ។ សមាជិក នឹងអាចមើលឃើញ អ្នកបានលុបសារនេះ។</string>
   <string name="ConversationFragment_quoted_message_not_found">រកមិនឃើញសារដើម</string>
   <string name="ConversationFragment_quoted_message_no_longer_available">សារដើមលែងមានទៀតហើយ</string>
   <string name="ConversationFragment_failed_to_open_message">បរាជ័យក្នុងការបើកសារ</string>
@@ -267,6 +271,7 @@
   <string name="ConversationFragment_you_can_swipe_to_the_left_reply">អ្នកអាចអូសទៅឆ្វេងលើសារណាមួយ ដើម្បីឆ្លើយតបរហ័ស</string>
   <string name="ConversationFragment_outgoing_view_once_media_files_are_automatically_removed">ឯកសារមេឌាមើល-ម្តង ដែលផ្ញើចេញ ត្រូវលុបចោលដោយស្វ័យប្រវត្តិបន្ទាប់ពីបានផ្ញើចេញ</string>
   <string name="ConversationFragment_you_already_viewed_this_message">អ្នកបានបើកមើលសារនេះ</string>
+  <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">អ្នកនៅតែអាចបន្ថែមកំណត់ត្រាសម្រាប់ខ្លួនអ្នកក្នុងការសន្ទនានេះ.\nបើគណនីរបស់អ្នក មានឧបករណ៍ច្រើនបានតភ្ជាប់ កំណត់ត្រាថ្មីនឹងត្រូវធ្វើសមកាលកម្មផងដែរ។</string>
   <!--ConversationListActivity-->
   <string name="ConversationListActivity_there_is_no_browser_installed_on_your_device">ពំុមានកម្មវិធីរុករកបានដំឡើងនៅលើឧបករណ៍របស់អ្នកទេ។</string>
   <!--ConversationListFragment-->
@@ -286,8 +291,6 @@
   <plurals name="ConversationListFragment_moved_conversations_to_inbox">
     <item quantity="other">ផ្លាស់ប្តូរការសន្ទនា %d ទៅកាន់ប្រអប់ទទួល</item>
   </plurals>
-  <string name="ConversationListFragment__your_profile_name_has_been_created">ពត៌មានផ្ទាល់ខ្លួនរបស់អ្នក ត្រូវបានបង្កើត។</string>
-  <string name="ConversationListFragment__your_profile_name_has_been_saved">ពត៌មានផ្ទាល់ខ្លួនរបស់អ្នក ត្រូវបានរក្សាទុក។</string>
   <!--ConversationListItem-->
   <string name="ConversationListItem_key_exchange_message">សារផ្លាស់ប្តូរសោរ</string>
   <!--ConversationListItemAction-->
@@ -353,7 +356,11 @@
   <string name="GiphyFragmentPagerAdapter_gifs">GIFs</string>
   <string name="GiphyFragmentPagerAdapter_stickers">ស្ទីកគ័រ</string>
   <!--AddToGroupActivity-->
+  <string name="AddToGroupActivity_add_member">បន្ថែមសមាជិក?</string>
+  <string name="AddToGroupActivity_add_s_to_s">បន្ថែម \"%1$s\" ទៅ \"%2$s\"?</string>
+  <string name="AddToGroupActivity_s_added_to_s">\"%1$s\" បានបន្ថែមទៅ \"%2$s\"។</string>
   <string name="AddToGroupActivity_add_to_group">បន្ថែមចូលក្រុម</string>
+  <string name="AddToGroupActivity_add_to_groups">បន្ថែមទៅក្រុម</string>
   <!--GroupShareProfileView-->
   <string name="GroupShareProfileView_share_your_profile_name_and_photo_with_this_group">ចែករំលែកឈ្មោះប្រវត្តិរូប និងរូបថតរបស់អ្នកជាមួយនឹងក្រុមនេះ?</string>
   <string name="GroupShareProfileView_do_you_want_to_make_your_profile_name_and_photo_visible_to_all_current_and_future_members_of_this_group">តើអ្នកចង់ដាក់បង្ហាញប្រវត្តរូប និងរូបភាពអ្នកទៅកាន់សមាជិកបច្ចុប្បន្ន និងអនាគតក្នុងក្រុមនេះទេ?</string>
@@ -401,8 +408,8 @@
   <!--ManageGroupActivity-->
   <string name="ManageGroupActivity_disappearing_messages">សារបាត់ទៅវិញ</string>
   <string name="ManageGroupActivity_pending_group_invites">ការអញ្ជើញក្រុមមិនទាន់សម្រេច</string>
-  <string name="ManageGroupActivity_who_can_edit_group_membership">នរណាអាចកែប្រែសមាជិកភាពក្រុម</string>
-  <string name="ManageGroupActivity_who_can_edit_group_info">នរណាអាចកែប្រែព័ត៌មានក្រុម</string>
+  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_membership">នរណាអាចកែប្រែសមាជិកភាពក្រុម</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_info">នរណាអាចកែប្រែព័ត៌មានក្រុម</string> -->
   <string name="ManageGroupActivity_block_group">ហាមឃាត់ក្រុម</string>
   <string name="ManageGroupActivity_unblock_group">លែងហាមឃាត់ក្រុម</string>
   <string name="ManageGroupActivity_leave_group">ចាកចេញពីក្រុម</string>
@@ -426,10 +433,11 @@
   <string name="ManageGroupActivity_failed_to_update_the_group">បរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាពក្រុម</string>
   <string name="ManageGroupActivity_youre_not_a_member_of_the_group">អ្នកមិនមែនជាសមាជិកនៃក្រុម</string>
   <string name="ManageGroupActivity_edit_name_and_picture">កែប្រែឈ្មោះ និងរូបភាព</string>
-  <string name="GroupManagement_choose_who_can_add_or_invite_new_members">ជ្រើសរើសអ្នកដែលអាចបន្ថែម ឬអញ្ជើញសមាជិកថ្មី</string>
-  <string name="GroupManagement_choose_who_can_change_the_group_name_and_photo">ជ្រើសរើសអ្នកដែលអាចផ្លាស់ប្តូរឈ្មោះក្រុម និងរូបភាព</string>
+  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_add_or_invite_new_members">ជ្រើសរើសអ្នកដែលអាចបន្ថែម ឬអញ្ជើញសមាជិកថ្មី</string> -->
+  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_change_the_group_name_and_photo">ជ្រើសរើសអ្នកដែលអាចផ្លាស់ប្តូរឈ្មោះក្រុម និងរូបភាព</string> -->
   <!--ManageRecipientActivity-->
   <string name="ManageRecipientActivity_disappearing_messages">សារបាត់ទៅវិញ</string>
+  <string name="ManageRecipientActivity_chat_color">ពណ៌ការជជែក</string>
   <string name="ManageRecipientActivity_block">រារាំង</string>
   <string name="ManageRecipientActivity_unblock">បើកវិញ</string>
   <string name="ManageRecipientActivity_view_safety_number">មើលលេខសុវត្ថិភាព</string>
@@ -438,9 +446,18 @@
   <string name="ManageRecipientActivity_until_s">រហូតដល់ %1$s</string>
   <string name="ManageRecipientActivity_off">បិទ</string>
   <string name="ManageRecipientActivity_on">បើក</string>
+  <string name="ManageRecipientActivity_add_to_a_group">បន្ថែមទៅក្រុមមួយ</string>
+  <string name="ManageRecipientActivity_view_all_groups">មើលក្រុមទាំងអស់</string>
   <string name="ManageRecipientActivity_see_all">មើលទាំងអស់</string>
+  <string name="ManageRecipientActivity_no_groups_in_common">គ្មានក្រុមរួម</string>
+  <plurals name="ManageRecipientActivity_d_groups_in_common">
+    <item quantity="other">%d ក្រុមរួម</item>
+  </plurals>
   <string name="ManageRecipientActivity_edit_name_and_picture">កែប្រែឈ្មោះ និងរូបភាព</string>
   <string name="ManageRecipientActivity_message_description">សារ</string>
+  <string name="ManageRecipientActivity_voice_call_description">ហៅជាសំឡេង</string>
+  <string name="ManageRecipientActivity_insecure_voice_call_description">ហៅជាសំឡេងគ្មានសុវត្ថិភាព</string>
+  <string name="ManageRecipientActivity_video_call_description">ហៅជាវីដេអូ</string>
   <plurals name="GroupMemberList_invited">
     <item quantity="other">%1$s បានអញ្ជើញមនុស្ស%2$d នាក់</item>
   </plurals>
@@ -596,6 +613,7 @@
   <string name="MessageRecord_s_disabled_disappearing_messages">%1$s បានបិទសារបាត់ទៅវិញ។</string>
   <string name="MessageRecord_you_set_disappearing_message_time_to_s">អ្នកបានកំណត់រយៈពេលសារបាត់ទៅវិញជា %1$s។</string>
   <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s បានកំណត់រយៈពេលលុបសារ %2$s។</string>
+  <!--Profile change updates-->
   <!--GV2 specific-->
   <string name="MessageRecord_you_created_the_group">អ្នកបានបង្កើតក្រុមនេះ។</string>
   <string name="MessageRecord_group_updated">បានធ្វើបច្ចុប្បន្នភាពក្រុម។</string>
@@ -618,12 +636,14 @@
   <string name="MessageRecord_you_revoked_admin_privileges_from_s">អ្នកបានដកសិទ្ធិអ្នកគ្រប់គ្រងពី %1$s។</string>
   <string name="MessageRecord_s_revoked_your_admin_privileges">%1$s បានដកសិទ្ធិអ្នកគ្រប់គ្រងរបស់អ្នក។\"</string>
   <string name="MessageRecord_s_revoked_admin_privileges_from_s">%1$s បានដកសិទ្ធិអ្នកគ្រប់គ្រងពី %2$s។</string>
+  <string name="MessageRecord_you_are_now_an_admin">ឥឡូវអ្នកជាអ្នកគ្រប់គ្រង។</string>
   <!--GV2 invitations-->
   <string name="MessageRecord_you_invited_s_to_the_group">អ្នកបានអញ្ជើញ %1$s ទៅក្រុមនេះ។</string>
   <string name="MessageRecord_s_invited_you_to_the_group">%1$s បានអញ្ជើញអ្នកទៅក្រុមនេះ។</string>
   <plurals name="MessageRecord_s_invited_members">
     <item quantity="other">%1$s បានអញ្ជើញមនុស្ស%2$d នាក់ទៅក្រុមនេះ។</item>
   </plurals>
+  <string name="MessageRecord_you_were_invited_to_the_group">អ្នកត្រូវបានអញ្ជើញទៅក្រុម។</string>
   <!--GV2 invitation revokes-->
   <plurals name="MessageRecord_you_revoked_invites">
     <item quantity="other">អ្នកបានដកការអញ្ជើញ %1$d ពីក្រុមនេះ។</item>
@@ -633,6 +653,7 @@
   </plurals>
   <string name="MessageRecord_someone_declined_an_invitation_to_the_group">មានគេបានបដិសេធការអញ្ជើញទៅក្រុម។</string>
   <string name="MessageRecord_you_declined_the_invitation_to_the_group">អ្នកបានបដិសេធការអញ្ជើញទៅក្រុមនេះ។</string>
+  <string name="MessageRecord_your_invitation_to_the_group_was_revoked">ការអញ្ជើញចូលក្រុមរបស់អ្នកត្រូវបានដកហូត។</string>
   <!--GV2 invitation acceptance-->
   <string name="MessageRecord_you_accepted_invite">អ្នកបានយល់ព្រមការអញ្ជើញទៅក្រុមនេះ។</string>
   <string name="MessageRecord_s_accepted_invite">%1$s បានយល់ព្រមការអញ្ជើញទៅក្រុមនេះ។</string>
@@ -661,7 +682,11 @@
   <string name="MessageRequestBottomView_delete">លុប</string>
   <string name="MessageRequestBottomView_block">រារាំង</string>
   <string name="MessageRequestBottomView_unblock">បើកវិញ</string>
+  <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_they_wont_know_youve_seen_their_messages_until_you_accept">អនុញ្ញាត %1$s ផ្ញើសារមកអ្នក និងចែករំលែកឈ្មោះ និងរូបភាពរបស់អ្នកជាមួយពួកគេ? ពួកគេនឹងមិនដឹងថា អ្នកបានមើលឃើញសាររបស់គេ រហូតដល់អ្នកយល់ព្រម។ </string>
+  <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_wont_receive_any_messages_until_you_unblock_them">អនុញ្ញាត %1$s ផ្ញើសារមកអ្នក និងចែកឈ្មោះ និងរូបភាពរបស់អ្នកជាមួយសមាជិកក្រុម? អ្នកនឹងមិនទទួលសារណាមួយឡើយ រហូតអ្នកលែងហាមឃាត់ពួកគេ។</string>
+  <string name="MessageRequestBottomView_do_you_want_to_join_this_group_they_wont_know_youve_seen_their_messages_until_you_accept">ចូលក្រុមនេះ និងចែករំលែកឈ្មោះ និងរូបថតអ្នក ជាមួយសមាជិកក្រុម? ពួកគេនឹងមិនដឹងថាអ្នកបានឃើញសាររបស់ពួកគេ រហូតអ្នកយល់ព្រមទទួល។</string>
   <string name="MessageRequestBottomView_you_were_invited_to_join_the_group_s">អ្នកត្រូវបានអញ្ជើញចូលក្រុមនេះ %1$s។ តើអ្នកចង់ឲ្យសមាជិកក្រុមនេះ ផ្ញើសារមកអ្នកទេ?</string>
+  <string name="MessageRequestBottomView_unblock_this_group_and_share_your_name_and_photo_with_its_members">លែងហាមឃាត់ក្រុមនេះ និងចែករំលែកឈ្មោះ និងរូបភាពរបស់អ្នកជាមួយសមាជិកក្រុម? អ្នកនឹងមិនទទួលសារណាមួយឡើយ រហូតអ្នកលែងហាមឃាត់ពួកគេ។</string>
   <string name="MessageRequestProfileView_member_of_one_group">សមាជិកនៃ %1$s</string>
   <string name="MessageRequestProfileView_member_of_two_groups">សមាជិកនៃ %1$s និង%2$s</string>
   <string name="MessageRequestProfileView_member_of_many_groups">សមាជិកនៃ %1$s, %2$s, និង%3$s</string>
@@ -680,7 +705,6 @@
   <string name="PassphraseChangeActivity_enter_new_passphrase_exclamation">បញ្ចូលឃ្លាសម្ងាត់ថ្មី!</string>
   <!--DeviceProvisioningActivity-->
   <string name="DeviceProvisioningActivity_link_this_device">ភ្ជាប់ឧបករណ៍នេះឬទេ?</string>
-  <string name="DeviceProvisioningActivity_cancel">បោះបង់</string>
   <string name="DeviceProvisioningActivity_continue">បន្ត</string>
   <string name="DeviceProvisioningActivity_content_intro">វានឹងអាច</string>
   <string name="DeviceProvisioningActivity_content_bullets">
@@ -735,6 +759,7 @@
   <string name="PinRestoreLockedFragment_create_your_pin">បង្កើតលេខ PIN របស់អ្នក</string>
   <string name="PinRestoreLockedFragment_youve_run_out_of_pin_guesses">អ្នកបានប្រើការទាយលេខ PIN អស់ហើយ តែអ្នកនៅតែអាចចូលប្រើប្រាស់គណនី Signal ដោយបង្កើតលេខកូដ PIN ថ្មី។ សម្រាប់ឯកជនភាព និងសុវត្ថិភាពគណនីរបស់អ្នក នឹងត្រូវស្តារឡើងវិញ ដោយមិនមានការរក្សាទុកព័ត៌មានប្រវត្តិរូប និងការកំណត់ឡើយ។</string>
   <string name="PinRestoreLockedFragment_create_new_pin">បង្កើតលេខ PIN ថ្មី</string>
+  <!--PinOptOutDialog-->
   <!--RatingManager-->
   <string name="RatingManager_rate_this_app">ដាក់ពិន្ទុកម្មវិធីនេះ</string>
   <string name="RatingManager_if_you_enjoy_using_this_app_please_take_a_moment">បើអ្នកចូលចិត្តប្រើប្រាស់កម្មវិធីនេះ សូមចំណាយពេលបន្តិច ដើម្បីជួយដាក់ពិន្ទុផង។</string>
@@ -796,6 +821,7 @@
   <string name="RegistrationActivity_more_information">ព័ត៌មានបន្ថែម</string>
   <string name="RegistrationActivity_less_information">ខ្វះព័ត៌មាន</string>
   <string name="RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">Signal ត្រូវការចូលប្រើប្រាស់បញ្ជីទំនាក់ទំនង និងព័ត៌មានរបស់អ្នក ដើម្បីភ្ជាប់ទៅកាន់មិត្តភក្តិ ឆ្លើយឆ្លងសារ និងហៅទូរសព្ទដោយសុវត្ថិភាព</string>
+  <string name="RegistrationActivity_rate_limited_to_service">អ្នកបានសាកល្បងច្រើនដងពេក ដើម្បីចុះឈ្មោះជាមួយលេខទូរស័ព្ទនេះ។ សូមសាកល្បងម្តងទៀតនៅពេលក្រោយ។</string>
   <string name="RegistrationActivity_unable_to_connect_to_service">មិនអាចតភ្ជាប់សេវាបាន។ សូមពិនិត្យការតភ្ជាប់បណ្តាញ ហើយព្យាយាមម្តងទៀត។</string>
   <string name="RegistrationActivity_to_easily_verify_your_phone_number_signal_can_automatically_detect_your_verification_code">ដើម្បីងាយស្រួលការផ្ទៀងផ្ទាត់លេខទូរស័ព្ទរបស់អ្នក Signalអាចកំណត់លេខកូដផ្ទៀងផ្ទាត់ដោយស្វ័យប្រវត្តិប្រសិនបើអ្នកអនុញ្ញាតឲ្យSignalចូលមើលសារ SMS។</string>
   <plurals name="RegistrationActivity_debug_log_hint">
@@ -889,7 +915,6 @@
   <string name="SubmitDebugLogActivity_success">ជោគជ័យ!</string>
   <string name="SubmitDebugLogActivity_copy_this_url_and_add_it_to_your_issue">ចម្លងអាសយដ្ឋាន URL នេះ និងបន្ថែមវាទៅរបាយការណ៍បញ្ហា ឬអ៊ីម៉ែលគាំទ្រ:\n\n<b>%1$s</b></string>
   <string name="SubmitDebugLogActivity_copied_to_clipboard">បានចម្លងទៅ clipboard</string>
-  <string name="SubmitDebugLogActivity_ok">យល់ព្រម</string>
   <string name="SubmitDebugLogActivity_share">ចែករំលែក</string>
   <!--SupportEmailUtil-->
   <string name="SupportEmailUtil_subject">ចំណងជើង៖</string>
@@ -914,6 +939,7 @@
   <string name="ThreadRecord_view_once_video">បង្ហាញ-ម្តង វីដេអូ</string>
   <string name="ThreadRecord_view_once_media">បង្ហាញ-ម្តង មេឌា</string>
   <string name="ThreadRecord_this_message_was_deleted">សារនេះត្រូវបានលុប។</string>
+  <string name="ThreadRecord_you_deleted_this_message">អ្នកបានលុបសារនេះ។</string>
   <string name="ThreadRecord_s_is_on_signal">%s ប្រើ Signal!​</string>
   <string name="ThreadRecord_disappearing_messages_disabled">សារបាត់ទៅវិញបានបិទ</string>
   <string name="ThreadRecord_disappearing_message_time_updated_to_s">កំណត់រយៈពេលលុបសារ %s</string>
@@ -956,7 +982,6 @@
   <string name="UsernameEditFragment_encountered_a_network_error">បានជួបប្រទះកំហុសបណ្តាញ។</string>
   <string name="UsernameEditFragment_this_username_is_taken">ឈ្មោះអ្នកប្រើនេះត្រូវបានយក។</string>
   <string name="UsernameEditFragment_this_username_is_available">ឈ្មោះអ្នកប្រើនេះនៅទំនេរ។</string>
-  <string name="UsernameEditFragment_usernames_can_only_include">ឈ្មោះអ្នកប្រើប្រាស់អាចរាប់បញ្ចូល a-Z, 0-9, និង គំនូសពីក្រោម។</string>
   <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">ឈ្មោះអ្នកប្រើប្រាស់មិនអាចចាប់ផ្តើមពីលេខ។</string>
   <string name="UsernameEditFragment_username_is_invalid">ឈ្មោះអ្នកប្រើប្រាស់មិនត្រឹមត្រូវ។</string>
   <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">ឈ្មោះអ្នកប្រើប្រាស់ត្រូវនៅចន្លោះតួអក្សរ%1$d និង%2$d ។</string>
@@ -1127,7 +1152,6 @@
   <string name="contact_selection_activity__enter_name_or_number">បញ្ចូលឈ្មោះ និងលេខទូរស័ព្ទ</string>
   <string name="contact_selection_activity__invite_to_signal">អញ្ជើញចូលប្រើSignal</string>
   <string name="contact_selection_activity__new_group">ក្រុមថ្មី</string>
-  <!--temporary for internal testing-->
   <!--contact_filter_toolbar-->
   <string name="contact_filter_toolbar__clear_entered_text_description">លុបអក្សរដែលបានបញ្ចូល</string>
   <string name="contact_filter_toolbar__show_keyboard_description">បង្ហាញក្តារចុច</string>
@@ -1150,6 +1174,9 @@
   <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them"> Signal ត្រូវការចូលប្រើប្រាស់បញ្ជីទំនាក់ទំនងរបស់អ្នក ដើម្បីបង្ហាញវា។ </string>
   <string name="contact_selection_list_fragment__show_contacts">បង្ហាញបញ្ជីលេខទំនាក់ទំនង</string>
   <!--contact_selection_list_item-->
+  <plurals name="contact_selection_list_item__number_of_members">
+    <item quantity="other">%1$d សមាជិក</item>
+  </plurals>
   <!--conversation_activity-->
   <string name="conversation_activity__type_message_push">សារ Signal</string>
   <string name="conversation_activity__type_message_sms_insecure">SMS គ្មានសុវត្ថិភាព</string>
@@ -1191,6 +1218,8 @@
   <string name="QuoteView_original_missing">រកមិនឃើញសារដើម</string>
   <!--conversation_fragment-->
   <string name="conversation_fragment__scroll_to_the_bottom_content_description">អូសចុះក្រោម</string>
+  <!--safety_number_change_dialog-->
+  <string name="safety_number_change_dialog__view">បង្ហាញ</string>
   <!--country_selection_fragment-->
   <string name="country_selection_fragment__loading_countries">កំពុងផ្ទុកប្រទេស…</string>
   <string name="country_selection_fragment__search">ស្វែងរក</string>
@@ -1336,6 +1365,12 @@
   <string name="message_details_header__disappears">បាត់</string>
   <string name="message_details_header__via">តាមរយៈ</string>
   <!--message_details_recipient_header-->
+  <string name="message_details_recipient_header__pending_send">មិនទាន់សម្រេច</string>
+  <string name="message_details_recipient_header__sent_to">បានផ្ញើទៅ</string>
+  <string name="message_details_recipient_header__sent_from">បានផ្ញើពី</string>
+  <string name="message_details_recipient_header__delivered_to">បានបញ្ចូនទៅ</string>
+  <string name="message_details_recipient_header__read_by">បានអានពី</string>
+  <string name="message_details_recipient_header__not_sent">មិនបានផ្ញើ</string>
   <!--message_Details_recipient-->
   <string name="message_details_recipient__failed_to_send">ផ្ញើបរាជ័យ</string>
   <string name="message_details_recipient__new_safety_number">លេខសុវត្ថិភាពថ្មី</string>
@@ -1537,6 +1572,7 @@
   <string name="preferences_communication__sealed_sender_allow_from_anyone">អនុញ្ញាតពីនរណាម្នាក់</string>
   <string name="preferences_communication__sealed_sender_allow_from_anyone_description">បើក ត្រាអ្នកផ្ញើសម្រាប់សារទទួលបានពីអ្នកក្រៅបញ្ជីទំនាក់ទំនង និងមនុស្សដែលអ្នកមិនបានចែករំលែកទម្រង់របស់អ្នក។</string>
   <string name="preferences_communication__sealed_sender_learn_more">សិក្សាបន្ថែម</string>
+  <!--Internal only preferences-->
   <!--****************************************-->
   <!--menus-->
   <!--****************************************-->
@@ -1691,7 +1727,6 @@
   <string name="CreateKbsPinFragment__create_a_new_pin">បង្កើតលេខ PIN ថ្មី</string>
   <string name="CreateKbsPinFragment__you_can_choose_a_new_pin_as_long_as_this_device_is_registered">អ្នកអាចប្តូរលេខ PIN របស់អ្នក លុះត្រាឧបករណ៍នេះត្រូវបានចុះឈ្មោះ។</string>
   <string name="CreateKbsPinFragment__create_your_pin">បង្កើតលេខ PIN របស់អ្នក</string>
-  <string name="CreateKbsPinFragment__pins_keep_information_stored_with_signal_encrypted">លេខ PIN រក្សាទុកព័ត៌មានដែលផ្ទុកជាមួយ Signalដែលបានអ៊ិនគ្រីប​ដូច្នេះមានតែអ្នកប៉ុណ្ណោះដែលអាចចូលប្រើវាបាន។ ប្រវត្តិរូប ការកំណត់ និងទំនាក់ទំនងរបស់អ្នក នឹងស្តារឡើងវិញនៅពេលដែលអ្នកតំឡើង Signal ឡើងវិញ។</string>
   <string name="CreateKbsPinFragment__choose_a_stronger_pin">ជ្រើសរើសលេខ PIN ខ្លាំងជាងនេះ</string>
   <!--ConfirmKbsPinFragment-->
   <string name="ConfirmKbsPinFragment__pins_dont_match">PINs មិនត្រូវគ្នា។ សាកល្បងម្តងទៀត។</string>
@@ -1703,13 +1738,13 @@
   <string name="ConfirmKbsPinFragment__creating_pin">កំពុងបង្កើត PIN…</string>
   <!--KbsSplashFragment-->
   <string name="KbsSplashFragment__introducing_pins">ការណែនាំ លេខPINs</string>
-  <string name="KbsSplashFragment__pins_keep_information_stored_with_signal_encrypted">លេខ PIN រក្សាទុកព័ត៌មានដែលផ្ទុកជាមួយ Signalដែលបានអ៊ិនគ្រីប​ដូច្នេះមានតែអ្នកប៉ុណ្ណោះដែលអាចចូលប្រើវាបាន។ ប្រវត្តិរូប ការកំណត់ និងទំនាក់ទំនងរបស់អ្នក នឹងស្តារឡើងវិញនៅពេលដែលអ្នកតំឡើង Signal ឡើងវិញ។</string>
   <string name="KbsSplashFragment__learn_more">ស្វែងយល់បន្ថែម</string>
   <string name="KbsSplashFragment__registration_lock_equals_pin">ចាក់សោរការចុះឈ្មោះ = លេខ PIN</string>
   <string name="KbsSplashFragment__your_registration_lock_is_now_called_a_pin">ការចាក់សោរការចុះឈ្មោះរបស់អ្នក ឥឡូវត្រូវបានហៅថា លេខកូដ PIN និងវាមានមុខងារច្រើន។ ធ្វើបច្ចុប្បន្នភាពវាឥឡូវនេះ។</string>
   <string name="KbsSplashFragment__read_more_about_pins">អានបន្ថែមអំពីលេខកូដ PINs។</string>
   <string name="KbsSplashFragment__update_pin">បច្ចុប្បន្នភាពកូដ PIN</string>
   <string name="KbsSplashFragment__create_your_pin">បង្កើតលេខ PIN របស់អ្នក</string>
+  <string name="KbsSplashFragment__learn_more_about_pins">ស្វែងយល់បន្ថែមពី លេខ PINs</string>
   <!--KBS Reminder Dialog-->
   <string name="KbsReminderDialog__enter_your_signal_pin">បញ្ចូលលេខ Signal PIN របស់អ្នក</string>
   <string name="KbsReminderDialog__to_help_you_memorize_your_pin">ដើម្បីជួយអ្នកចងចាំលេខកូដ PIN របស់អ្នក យើងនឹងសាកសួរអ្នកអោយបញ្ចូលវាម្តងម្កាល។ យើងនឹងសួរតិចជាងមុន។ </string>
@@ -1759,13 +1794,6 @@
   <string name="KbsMegaphone__update_pin">បច្ចុប្បន្នភាពកូដ PIN</string>
   <string name="KbsMegaphone__well_remind_you_later_creating_a_pin">យើងនឹងរំលឹកអ្នកពេលក្រោយ។ ការបង្កើតលេខកូដ PIN នឹងចាំបាច់ក្នុង %1$d ថ្ងៃ។</string>
   <string name="KbsMegaphone__well_remind_you_later_confirming_your_pin">យើងនឹងរំលឹកអ្នកពេលក្រោយ។ ការបញ្ជាក់លេខកូដ PIN នឹងចាំបាច់ក្នុង %1$d ថ្ងៃ។</string>
-  <!--Profile Names Megaphone-->
-  <string name="ProfileNamesMegaphone__add_a_profile_name">បន្ថែមឈ្មោះប្រវត្តិរូបមួយ</string>
-  <string name="ProfileNamesMegaphone__this_will_be_displayed_when_you_start">នេះនឹងបង្ហាញនៅពេលអ្នកចាប់ផ្តើមកិច្ចសន្ទនាថ្មី ឬចែករំលែកវា។</string>
-  <string name="ProfileNamesMegaphone__add_profile_name">បន្ថែមឈ្មោះប្រវត្តិរូប</string>
-  <string name="ProfileNamesMegaphone__confirm_your_profile_name">បញ្ជាក់ឈ្មោះប្រវត្តិរូប</string>
-  <string name="ProfileNamesMegaphone__your_profile_can_now_include">ពត៌មានផ្ទាល់ខ្លួនរបស់អ្នកឥឡូវអាចរួមបញ្ចូលត្រកូលស្រេចចិត្ត។</string>
-  <string name="ProfileNamesMegaphone__confirm_name">បញ្ជាក់ឈ្មោះ</string>
   <!--transport_selection_list_item-->
   <string name="transport_selection_list_item__transport_icon">រូបសញ្ញាជញ្ជូន</string>
   <string name="ConversationListFragment_loading">កំពុងផ្ទុក…</string>
@@ -1886,11 +1914,16 @@
   <string name="RecipientBottomSheet_block">រារាំង</string>
   <string name="RecipientBottomSheet_unblock">បើកវិញ</string>
   <string name="RecipientBottomSheet_add_to_contacts">បន្ថែមទៅបញ្ជីទំនាក់ទំនង</string>
+  <string name="RecipientBottomSheet_add_to_a_group">បន្ថែមទៅក្រុមមួយ</string>
+  <string name="RecipientBottomSheet_add_to_another_group">បន្ថែមទៅក្រុមផ្សេង</string>
   <string name="RecipientBottomSheet_view_safety_number">មើលលេខសុវត្ថិភាព</string>
   <string name="RecipientBottomSheet_make_group_admin">កំណត់អ្នកគ្រប់គ្រងក្រុម</string>
   <string name="RecipientBottomSheet_remove_as_admin">លុបអ្នកគ្រប់គ្រង</string>
   <string name="RecipientBottomSheet_remove_from_group">លុបចេញពីក្រុម</string>
   <string name="RecipientBottomSheet_message_description">សារ</string>
+  <string name="RecipientBottomSheet_voice_call_description">ហៅជាសំឡេង</string>
+  <string name="RecipientBottomSheet_insecure_voice_call_description">ហៅជាសំឡេងគ្មានសុវត្ថិភាព</string>
+  <string name="RecipientBottomSheet_video_call_description">ហៅជាវីដេអូ</string>
   <string name="RecipientBottomSheet_remove_s_as_group_admin">លុប %1$s ពីអ្នកគ្រប់គ្រងក្រុម?</string>
   <string name="RecipientBottomSheet_s_will_be_able_to_edit_group">%1$s នឹងមិនអាចកែប្រែក្រុមនេះ និងសមាជិកទេ</string>
   <string name="RecipientBottomSheet_remove_s_from_s">លុប %1$s ពី \"%2$s\"?</string>
