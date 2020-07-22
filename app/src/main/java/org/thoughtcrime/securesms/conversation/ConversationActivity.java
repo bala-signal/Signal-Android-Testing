@@ -905,7 +905,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       if (settingsMenuItem != null && settingsMenuItem.isVisible()) {
         Toast toast = Toast.makeText(this, R.string.ConversationActivity__more_options_now_in_group_settings, Toast.LENGTH_SHORT);
 
-        toast.setGravity(Gravity.CENTER, 0, 0);
+        //toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
 
         SignalStore.uiHints().markHasSeenGroupSettingsMenuToast();
