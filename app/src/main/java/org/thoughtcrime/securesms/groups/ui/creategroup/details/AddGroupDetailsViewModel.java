@@ -14,11 +14,15 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 
 import org.thoughtcrime.securesms.groups.ui.GroupMemberEntry;
+import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.util.DefaultValueLiveData;
+import org.thoughtcrime.securesms.util.FeatureFlags;
 import org.thoughtcrime.securesms.util.SingleLiveEvent;
 import org.thoughtcrime.securesms.util.livedata.LiveDataUtil;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -34,8 +38,9 @@ public final class AddGroupDetailsViewModel extends ViewModel {
   private final LiveData<Boolean>                                  isMms;
   private final LiveData<Boolean>                                  canSubmitForm;
   private final AddGroupDetailsRepository                          repository;
+  private final LiveData<List<Recipient>>                          nonGv2CapableMembers;
 
-  private AddGroupDetailsViewModel(@NonNull RecipientId[] recipientIds,
+  private AddGroupDetailsViewModel(@NonNull Collection<RecipientId> recipientIds,
                                    @NonNull AddGroupDetailsRepository repository)
   {
     this.repository = repository;
@@ -43,9 +48,21 @@ public final class AddGroupDetailsViewModel extends ViewModel {
     MutableLiveData<List<GroupMemberEntry.NewGroupCandidate>> initialMembers = new MutableLiveData<>();
 
     LiveData<Boolean> isValidName = Transformations.map(name, name -> !TextUtils.isEmpty(name));
-    members       = LiveDataUtil.combineLatest(initialMembers, deleted, AddGroupDetailsViewModel::filterDeletedMembers);
-    isMms         = Transformations.map(members, this::isAnyForcedSms);
-    canSubmitForm = LiveDataUtil.combineLatest(isMms, isValidName, (mms, validName) -> mms || validName);
+
+    members              = LiveDataUtil.combineLatest(initialMembers, deleted, AddGroupDetailsViewModel::filterDeletedMembers);
+
+    isMms                = Transformations.map(members, AddGroupDetailsViewModel::isAnyForcedSms);
+
+    LiveData<List<GroupMemberEntry.NewGroupCandidate>> membersToCheckGv2CapabilityOf = LiveDataUtil.combineLatest(isMms, members, (forcedMms, memberList) -> {
+      if (FeatureFlags.groupsV2create() && !forcedMms) {
+        return memberList;
+      } else {
+        return Collections.emptyList();
+      }
+    });
+
+    nonGv2CapableMembers = LiveDataUtil.mapAsync(membersToCheckGv2CapabilityOf, memberList -> repository.checkCapabilities(Stream.of(memberList).map(newGroupCandidate -> newGroupCandidate.getMember().getId()).toList()));
+    canSubmitForm        = LiveDataUtil.combineLatest(isMms, isValidName, (mms, validName) -> mms || validName);
 
     repository.resolveMembers(recipientIds, initialMembers::postValue);
   }
@@ -68,6 +85,10 @@ public final class AddGroupDetailsViewModel extends ViewModel {
 
   @NonNull LiveData<Boolean> getIsMms() {
     return isMms;
+  }
+
+  @NonNull LiveData<List<Recipient>> getNonGv2CapableMembers() {
+    return nonGv2CapableMembers;
   }
 
   void setAvatar(@Nullable byte[] avatar) {
@@ -119,17 +140,17 @@ public final class AddGroupDetailsViewModel extends ViewModel {
                  .toList();
   }
 
-  private boolean isAnyForcedSms(@NonNull List<GroupMemberEntry.NewGroupCandidate> members) {
+  private static boolean isAnyForcedSms(@NonNull List<GroupMemberEntry.NewGroupCandidate> members) {
     return Stream.of(members)
                  .anyMatch(member -> !member.getMember().isRegistered());
   }
 
   static final class Factory implements ViewModelProvider.Factory {
 
-    private final RecipientId[]             recipientIds;
+    private final Collection<RecipientId>   recipientIds;
     private final AddGroupDetailsRepository repository;
 
-    Factory(@NonNull RecipientId[] recipientIds, @NonNull AddGroupDetailsRepository repository) {
+    Factory(@NonNull Collection<RecipientId> recipientIds, @NonNull AddGroupDetailsRepository repository) {
       this.recipientIds = recipientIds;
       this.repository   = repository;
     }

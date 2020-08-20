@@ -1,9 +1,13 @@
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="wrap_content" android:layout_width="wrap_content">
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-
-
-    <LinearLayout android:background="?attr/emoji_variation_selector_background" android:id="@+id/emoji_variation_container" android:layout_height="wrap_content" android:layout_width="wrap_content" android:orientation="horizontal" />
-
-
+    <LinearLayout
+        android:id="@+id/emoji_variation_container"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </HorizontalScrollView>

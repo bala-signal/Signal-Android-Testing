@@ -201,11 +201,13 @@
   <string name="ConversationActivity_this_device_does_not_appear_to_support_dial_actions">Izgleda, da naprava ne podpira klicanja.</string>
   <string name="ConversationActivity_leave_group">Želite zapustiti skupino?</string>
   <string name="ConversationActivity_are_you_sure_you_want_to_leave_this_group">Ste prepričani, da res želite zapustiti to skupino?</string>
+  <string name="ConversationActivity_choose_new_admin">Določi novega skrbnika/co</string>
+  <string name="ConversationActivity_before_you_leave_you_must_choose_at_least_one_new_admin_for_this_group">Pred odhodom iz skupine morate določiti vsaj enega skrbnika skupine.</string>
+  <string name="ConversationActivity_choose_admin">Določi skrbnika</string>
   <string name="ConversationActivity_transport_insecure_sms">Nezavarovan SMS</string>
   <string name="ConversationActivity_transport_insecure_mms">Nezavarovan MMS</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">Začni uporabljati aplikacijo Signal %1$s</string>
-  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">Napaka ob zapuščanju skupine</string> -->
   <string name="ConversationActivity_specify_recipient">Prosimo, izberite uporabnika/co</string>
   <string name="ConversationActivity_unblock_this_contact_question">Odblokiram uporabnika/co?</string>
   <string name="ConversationActivity_unblock_this_group_question">Odblokiram skupino?</string>
@@ -215,6 +217,7 @@
   <string name="ConversationActivity_attachment_exceeds_size_limits">Velikost priponke presega omejitev velikosti za ta tip sporočil.</string>
   <string name="ConversationActivity_quick_camera_unavailable">Kamera ni na voljo</string>
   <string name="ConversationActivity_unable_to_record_audio">Snemanje zvoka ni mogoče!</string>
+  <string name="ConversationActivity_you_cant_send_messages_to_this_group">Niste več član/ica te skupine, zato ji tudi ne morete več pošiljati sporočil.</string>
   <string name="ConversationActivity_there_is_no_app_available_to_handle_this_link_on_your_device">Na svoji napravi nimate nameščene aplikacije, ki bi odpirala to povezavo.</string>
   <string name="ConversationActivity_to_send_audio_messages_allow_signal_access_to_your_microphone">Za pošiljanje zvočnih sporočil dovolite aplikaciji Signal dostop do mikrofona naprave.</string>
   <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Dostop do mikrofona je bil trajno onemogočen. Aplikacija Signal potrebuje dovoljenje za dostop do mikrofona naprave za pošiljanje zvokovnih sporočil. Prosimo, pojdite v meni Nastavitve aplikacij, izberite \"Dovoljenja\" in omogočite dovoljenje pod postavko \"Mikrofon\".</string>
@@ -344,6 +347,8 @@
   <!--ConversationTitleView-->
   <string name="ConversationTitleView_verified">Potrjeno</string>
   <string name="ConversationTitleView_you">Vi</string>
+  <!--CreateGroupActivity-->
+  <string name="CreateGroupActivity_some_contacts_cannot_be_in_legacy_groups">Nekateri uporabniki/ce ne morejo biti v starih skupinah.</string>
   <!--CreateProfileActivity-->
   <string name="CreateProfileActivity__profile">Profil</string>
   <string name="CreateProfileActivity_error_setting_profile_photo">Napaka pri pošiljanju predstavitvene fotografije</string>
@@ -408,6 +413,11 @@
   <string name="AddToGroupActivity_s_added_to_s">Uporabnik/ca \"%1$s\" dodan/a v skupino \"%2$s\".</string>
   <string name="AddToGroupActivity_add_to_group">Dodaj v skupino</string>
   <string name="AddToGroupActivity_add_to_groups">Dodaj v skupine</string>
+  <string name="AddToGroupActivity_this_person_cant_be_added_to_legacy_groups">Uporabnik/ca ne more biti dodan/a v staro skupino.</string>
+  <!--ChooseNewAdminActivity-->
+  <string name="ChooseNewAdminActivity_choose_new_admin">Določi novega skrbnika/co</string>
+  <string name="ChooseNewAdminActivity_done">OK</string>
+  <string name="ChooseNewAdminActivity_you_left">Zapustili ste skupino \"%1$s.\"</string>
   <!--GroupShareProfileView-->
   <string name="GroupShareProfileView_share_your_profile_name_and_photo_with_this_group">Želite deliti ime svojega profila in predstavitveno fotografijo s to skupino?</string>
   <string name="GroupShareProfileView_do_you_want_to_make_your_profile_name_and_photo_visible_to_all_current_and_future_members_of_this_group">Želite, da sta ime vašega profila in predstavitvena fotografija vidna sedanjim in bodočim članom/icam te skupine?</string>
@@ -415,9 +425,24 @@
   <!--GroupMembersDialog-->
   <string name="GroupMembersDialog_you">Vi</string>
   <!--GV2 access levels-->
-  <string name="GroupManagement_access_level_anyone">Kdorkoli</string>
   <string name="GroupManagement_access_level_all_members">Vsi člani</string>
   <string name="GroupManagement_access_level_only_admins">Samo skrbniki</string>
+  <!--GV2 invites sent-->
+  <plurals name="GroupManagement_invitation_sent">
+    <item quantity="one">Vabilo poslano</item>
+    <item quantity="two">%d vabili poslani</item>
+    <item quantity="few">%d vabila poslana</item>
+    <item quantity="other">%d vabil poslanih</item>
+  </plurals>
+  <string name="GroupManagement_invite_single_user">Uporabnika/ce “%1$s” ne morete avtomatično dodati k skupini.\n\nPoslano mu/ji je bilo vabilo in dokler ga ne potrdi, ne bo videl/a sporočil skupine.</string>
+  <string name="GroupManagement_learn_more">Več o funkciji zakriti pošiljatelj</string>
+  <string name="GroupManagement_invite_multiple_users">Teh uporabnikov/ic ne morete avtomatično dodati v skupino.\n\nPoslano jim je bilo vabilo in dokler ga ne potrdijo, ne bodo videli/e sporočil skupine.</string>
+  <!--LinkPreviewsMegaphone-->
+  <string name="LinkPreviewsMegaphone_disable">Izklopi</string>
+  <string name="LinkPreviewsMegaphone_preview_any_link">Predogled za vse spletne strani</string>
+  <string name="LinkPreviewsMegaphone_you_can_now_retrieve_link_previews_directly_from_any_website">Odslej lahko neposredno v sporočilu ustvarite predogled za vsako spletno stran, ki jo delite.</string>
+  <!--LinkPreviewView-->
+  <string name="LinkPreviewView_no_link_preview_available">Predogled ni na voljo</string>
   <!--PendingMembersActivity-->
   <string name="PendingMemberInvitesActivity_pending_group_invites">Čakajoča povabila v skupine</string>
   <string name="PendingMembersActivity_people_you_invited">Ljudje, ki ste jih povabili</string>
@@ -425,22 +450,23 @@
   <string name="PendingMembersActivity_invites_by_other_group_members">Povabila drugih članov skupine</string>
   <string name="PendingMembersActivity_no_pending_invites_by_other_group_members">Ni čakajočih povabil drugih članov skupine.</string>
   <string name="PendingMembersActivity_missing_detail_explanation">Podrobosti o uporabnikih/cah povabljenih s strani drugih članov/ic skupine so zakrite. Če bodo povabljeni/e sprejeli povabilo v skupino, bodo njihove informacije postale vidne tudi drugim članom/icam skupine. Dokler se ne pridružijo, ne bodo mogli spremljati sporočil v skupini.</string>
-  <string name="PendingMembersActivity_cancel_invite">Prekliči povabilo</string>
-  <string name="PendingMembersActivity_cancel_invites">Prekliči povabila</string>
-  <plurals name="PendingMembersActivity_cancel_d_invites">
-    <item quantity="one">Prekliči povabilo</item>
-    <item quantity="two">Prekliči %1$d povabili</item>
-    <item quantity="few">Prekliči %1$d povabila</item>
-    <item quantity="other">Prekliči %1$d povabil</item>
+  <string name="PendingMembersActivity_revoke_invite">Prekliči vabilo</string>
+  <string name="PendingMembersActivity_revoke_invites">Prekliči vabila</string>
+  <plurals name="PendingMembersActivity_revoke_d_invites">
+    <item quantity="one">Prekliči vabilo</item>
+    <item quantity="two">Prekliči %1$d vabili</item>
+    <item quantity="few">Prekliči %1$d vabila</item>
+    <item quantity="other">Prekliči %1$d vabil</item>
   </plurals>
-  <plurals name="PendingMembersActivity_error_canceling_invite">
-    <item quantity="one">Napaka pri preklicu povabila</item>
-    <item quantity="two">Napaka pri preklicu povabil</item>
-    <item quantity="few">Napaka pri preklicu povabil</item>
-    <item quantity="other">Napaka pri preklicu povabil</item>
+  <plurals name="PendingMembersActivity_error_revoking_invite">
+    <item quantity="one">Napaka pri preklicu vabila</item>
+    <item quantity="two">Napaka pri preklicu vabil</item>
+    <item quantity="few">Napaka pri preklicu vabil</item>
+    <item quantity="other">Napaka pri preklicu vabil</item>
   </plurals>
   <!--AddMembersActivity-->
   <string name="AddMembersActivity__done">OK</string>
+  <string name="AddMembersActivity__this_person_cant_be_added_to_legacy_groups">Uporabnik/ca ne more biti dodan/a v staro skupino.</string>
   <plurals name="AddMembersActivity__add_d_members_to_s">
     <item quantity="one">Želite dodati uporabnika \"%1$s\" v skupino \"%2$s\"?</item>
     <item quantity="two">Želite dodati %3$d člana v skupino \"%2$s\"?</item>
@@ -461,20 +487,36 @@
   <string name="AddGroupDetailsFragment__remove">Odstrani</string>
   <string name="AddGroupDetailsFragment__sms_contact">Stik SMS</string>
   <string name="AddGroupDetailsFragment__remove_s_from_this_group">Želite odstraniti uporabnika/co %1$s iz skupine?</string>
+  <plurals name="AddGroupDetailsFragment__d_members_do_not_support_new_groups">
+    <item quantity="one">%d član/ica skupine na podpira Novih skupin, zato bo to Stara skupina.</item>
+    <item quantity="two">%d člana/ici skupine na podpirata Novih skupin, zato bo to Stara skupina.</item>
+    <item quantity="few">%d člani/ce skupine na podpirajo Novih skupin, zato bo to Stara skupina.</item>
+    <item quantity="other">%d članov/ic skupine na podpira Novih skupin, zato bo to Stara skupina.</item>
+  </plurals>
+  <!--NonGv2MemberDialog-->
+  <string name="NonGv2MemberDialog_single_users_are_non_gv2_capable">Uporabnik/ca “%1$s” ima nameščeno zastarelo verzijo aplikacije Signal, zato bo ustvarjena Stara skupina. Novo obliko skupine lahko ustvarite šele po njegovi/njeni posodobitvi Signala, ali pa če ga/jo odstranite iz skupine.</string>
+  <plurals name="NonGv2MemberDialog_d_users_are_non_gv2_capable">
+    <item quantity="one">%1$d član skupine ima nameščeno zastarelo verzijo aplikacije Signal, zato bo ustvarjena Stara skupina. Novo obliko skupine lahko ustvarite šele po njegovi/njeni posodobitvi Signala, ali pa če ga/jo odstranite iz skupine.</item>
+    <item quantity="two">%1$d člana/ici skupine imata nameščeno zastarelo verzijo aplikacije Signal, zato bo ustvarjena Stara skupina. Novo obliko skupine lahko ustvarite šele po njuni posodobitvi Signala, ali pa če ju odstranite iz skupine.</item>
+    <item quantity="few">%1$d člani/ce skupine imajo nameščeno zastarelo verzijo aplikacije Signal, zato bo ustvarjena Stara skupina. Novo obliko skupine lahko ustvarite šele po njihovi posodobitvi Signala, ali pa če jih odstranite iz skupine.</item>
+    <item quantity="other">%1$d članov/ic skupine ima nameščeno zastarelo verzijo aplikacije Signal, zato bo ustvarjena Stara skupina. Novo obliko skupine lahko ustvarite šele po njihovi posodobitvi Signala, ali pa če jih odstranite iz skupine.</item>
+  </plurals>
   <!--ManageGroupActivity-->
   <string name="ManageGroupActivity_disappearing_messages">Izginjajoča sporočila</string>
   <string name="ManageGroupActivity_pending_group_invites">Čakajoča povabila v skupine</string>
-  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_membership">Kdo lahko ureja članstvo v skupini</string> -->
-  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_info">Kdo lahko ureja informacije o skupini</string> -->
+  <string name="ManageGroupActivity_add_members">Dodaj člane/ice</string>
+  <string name="ManageGroupActivity_edit_group_info">Uredi podatke o skupini</string>
+  <string name="ManageGroupActivity_choose_who_can_edit_the_group_name_avatar_and_disappearing_messages">Izberite, kdo lahko ureja ime skupine, njen avatar in čas poteka sporočil.</string>
+  <string name="ManageGroupActivity_choose_who_can_add_or_invite_new_members">Izberite, kdo lahko dodaja ali povabi nove člane</string>
   <string name="ManageGroupActivity_block_group">Blokiraj skupino</string>
   <string name="ManageGroupActivity_unblock_group">Odblokiraj skupino</string>
   <string name="ManageGroupActivity_leave_group">Zapusti skupino</string>
   <string name="ManageGroupActivity_mute_notifications">Izklop obvestil</string>
   <string name="ManageGroupActivity_custom_notifications">Obvestila po meri</string>
+  <string name="ManageGroupActivity_mentions">Omembe</string>
   <string name="ManageGroupActivity_until_s">Do %1$s</string>
   <string name="ManageGroupActivity_off">Izklopljena</string>
   <string name="ManageGroupActivity_on">Vklopljena</string>
-  <string name="ManageGroupActivity_add_members">Dodaj člane/ice</string>
   <string name="ManageGroupActivity_view_all_members">Poglej vse člane</string>
   <string name="ManageGroupActivity_see_all">Prikaz vseh</string>
   <string name="ManageGroupActivity_none">Brez</string>
@@ -494,12 +536,21 @@
   <string name="ManageGroupActivity_not_capable">Nekdo, ki ste ga dodali, uporablja zastarelo različico aplikacije Signal, ki ne podpira novih skupin, in jo mora nadgraditi</string>
   <string name="ManageGroupActivity_failed_to_update_the_group">Posodobitev skupine ni uspela</string>
   <string name="ManageGroupActivity_youre_not_a_member_of_the_group">Niste član/ica skupine</string>
+  <string name="ManageGroupActivity_failed_to_update_the_group_please_retry_later">Posodobitev skupine ni uspela, poskusite znova kasneje</string>
+  <string name="ManageGroupActivity_failed_to_update_the_group_due_to_a_network_error_please_retry_later">Posodobitev skupine ni uspela zaradi omrežne napake, poskusite znova kasneje</string>
   <string name="ManageGroupActivity_edit_name_and_picture">Uredi ime in sliko</string>
-  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_add_or_invite_new_members">Izberite, kdo lahko dodaja ali povabi nove člane</string> -->
-  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_change_the_group_name_and_photo">Izberite, kdo lahko spreminja ime in fotografijo skupine</string> -->
+  <string name="ManageGroupActivity_legacy_group">Stara oblika skupine</string>
+  <string name="ManageGroupActivity_legacy_group_learn_more">To je zastarela oblika skupine. Za dostop do naprednih funkcij kot so skrbniki skupin, ustvarite Novo skupino.</string>
+  <!--GroupMentionSettingDialog-->
+  <string name="GroupMentionSettingDialog_notify_me_for_mentions">Obveščajte me o omembah</string>
+  <string name="GroupMentionSettingDialog_receive_notifications_when_youre_mentioned_in_muted_chats">Želite prejemati obvestila kadar bo vaše ime omenjeno v pogovorih, ki ste jih utišali?</string>
+  <string name="GroupMentionSettingDialog_default_notify_me">Privzeto (obveščaj me)</string>
+  <string name="GroupMentionSettingDialog_default_dont_notify_me">Privzeto (ne obveščaj me)</string>
+  <string name="GroupMentionSettingDialog_always_notify_me">Vedno me obveščaj</string>
+  <string name="GroupMentionSettingDialog_dont_notify_me">Ne obveščaj me</string>
   <!--ManageRecipientActivity-->
   <string name="ManageRecipientActivity_add_to_system_contacts">Dodaj k sistemskim stikom</string>
-  <string name="ManageRecipientActivity_this_person_is_in_your_contacts">Ta oseba je med vašimi stiki</string>
+  <string name="ManageRecipientActivity_this_person_is_in_your_contacts">Uporabnik/ca je med vašimi stiki</string>
   <string name="ManageRecipientActivity_disappearing_messages">Izginjajoča sporočila</string>
   <string name="ManageRecipientActivity_chat_color">Barva pogovora</string>
   <string name="ManageRecipientActivity_block">Blokiraj</string>
@@ -542,14 +593,20 @@
   <string name="CustomNotificationsDialogFragment__enabled">Izklopljena</string>
   <string name="CustomNotificationsDialogFragment__disabled">Vklopljena</string>
   <string name="CustomNotificationsDialogFragment__default">Privzeto</string>
-  <!--GV2 Invite cancellation confirmation-->
-  <string name="GroupManagement_cancel_own_single_invite">Želite preklicati povabilo, ki ste ga poslali uporabniku/ci %1$s?</string>
-  <plurals name="GroupManagement_cancel_others_invites">
-    <item quantity="one">Želite preklicati povabilo uporabnika/ce %1$s?</item>
-    <item quantity="two">Želite preklicati %2$d povabili uporabnika/ce %1$s?</item>
-    <item quantity="few">Želite preklicati %2$d povabila uporabnika/ce %1$s?</item>
-    <item quantity="other">Želite preklicati %2$d povabil uporabnika/ce %1$s?</item>
+  <!--GV2 Invite Revoke confirmation dialog-->
+  <string name="InviteRevokeConfirmationDialog_revoke_own_single_invite">Želite preklicati vabilo, ki ste ga poslali uporabniku/ci %1$s?</string>
+  <plurals name="InviteRevokeConfirmationDialog_revoke_others_invites">
+    <item quantity="one">Želite preklicati vabilo uporabnika/ce %1$s?</item>
+    <item quantity="two">Želite preklicati %2$d vabili uporabnika/ce %1$s?</item>
+    <item quantity="few">Želite preklicati %2$d vabila uporabnika/ce %1$s?</item>
+    <item quantity="other">Želite preklicati %2$d vabil uporabnika/ce %1$s?</item>
   </plurals>
+  <!--GroupJoinBottomSheetDialogFragment-->
+  <string name="GroupJoinBottomSheetDialogFragment_you_are_already_a_member">Ste že član/ica</string>
+  <!--GroupJoinUpdateRequiredBottomSheetDialogFragment-->
+  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal_to_use_group_links">Za povezave do skupine nadgradite Signal</string>
+  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_message">Različica aplikacije Signal, ki jo uporabljate, ne podpira deljenja povezav do skupine. Za priključitev k skupini preko povezav jo morate nadgraditi.</string>
+  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">Posodobite aplikacijo Signal</string>
   <!--CropImageActivity-->
   <string name="CropImageActivity_group_avatar">Avatar skupine</string>
   <string name="CropImageActivity_profile_avatar">Avatar</string>
@@ -772,7 +829,8 @@
   </plurals>
   <string name="MessageRecord_someone_declined_an_invitation_to_the_group">Nekdo je zavrnil vabilo v skupino.</string>
   <string name="MessageRecord_you_declined_the_invitation_to_the_group">Zavrnili ste vabilo v skupino.</string>
-  <string name="MessageRecord_your_invitation_to_the_group_was_revoked">Vaše vabilo v skupino je bilo preklicano.</string>
+  <string name="MessageRecord_s_revoked_your_invitation_to_the_group">Uporabnik/ca %1$s je preklical/a vaše vabilo v skupino.</string>
+  <string name="MessageRecord_an_admin_revoked_your_invitation_to_the_group">Skrbnik/ca je preklical/a vaše vabilo v skupino.</string>
   <plurals name="MessageRecord_d_invitations_were_revoked">
     <item quantity="one">Vabilo v skupino je bilo preklicano.</item>
     <item quantity="two">%1$d vabili v skupino sta bili preklicani.</item>
@@ -790,7 +848,7 @@
   <string name="MessageRecord_the_group_name_has_changed_to_s">Ime skupine je bilo spremenjeno v \"%1$s\".</string>
   <!--GV2 avatar change-->
   <string name="MessageRecord_you_changed_the_group_avatar">Spremenili ste skupinin avatar.</string>
-  <string name="MessageRecord_s_changed_the_group_avatar">Oseba %1$s je spremenila skupinin avatar.</string>
+  <string name="MessageRecord_s_changed_the_group_avatar">Uporabnik/ca %1$s je spremenil/a skupinin avatar.</string>
   <string name="MessageRecord_the_group_group_avatar_has_been_changed">Avatar skupine je bil spremenjen.</string>
   <!--GV2 attribute access level change-->
   <string name="MessageRecord_you_changed_who_can_edit_group_info_to_s">Spremenili ste, kdo lahko ureja informacije o skupini: \"%1$s\".</string>
@@ -802,8 +860,8 @@
   <string name="MessageRecord_who_can_edit_group_membership_has_been_changed_to_s">Sprememba: članstvo v skupini lahko odslej ureja uporabnik/ca \"%1$s\".</string>
   <!--End of GV2 specific update messages-->
   <string name="MessageRecord_your_safety_number_with_s_has_changed">Varnostno število z uporabnikom/co %s je bilo spremenjeno.</string>
-  <string name="MessageRecord_you_marked_your_safety_number_with_s_verified">Varnostno število z uporabnikom/co %s ste označili kot potrjeno</string>
-  <string name="MessageRecord_you_marked_your_safety_number_with_s_verified_from_another_device">Varnostno število z uporabnikom/co %s ste na drugi napravi označili kot potrjeno</string>
+  <string name="MessageRecord_you_marked_your_safety_number_with_s_verified">Potrdili ste varnostno število z uporabnikom/co %s</string>
+  <string name="MessageRecord_you_marked_your_safety_number_with_s_verified_from_another_device">Varnostno število z uporabnikom/co %s ste potrdili na drugi napravi</string>
   <string name="MessageRecord_you_marked_your_safety_number_with_s_unverified">Varnostno število z uporabnikom/co %s ste označili kot nepotrjeno</string>
   <string name="MessageRecord_you_marked_your_safety_number_with_s_unverified_from_another_device">Varnostno število z uporabnikom/co %s ste na drugi napravi označili kot nepotrjeno</string>
   <!--MessageRequestBottomView-->
@@ -814,7 +872,6 @@
   <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_they_wont_know_youve_seen_their_messages_until_you_accept">Želite omogočiti uporabniku/ci %1$s,  da vam pošilja sporočila in z njim/njo deliti svoje ime in fotografijo? Dokler ne sprejmete vabila, pošiljatelj/ica ne bo vedel/a, da ste prejeli njegovo/njeno sporočilo.</string>
   <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_wont_receive_any_messages_until_you_unblock_them">Želite omogočiti uporabniku/ci %1$s da vam pošilja sporočila in z njim/njo deliti svoje ime in fotografijo? Dokler ga/je ne odblokirate, od njega/nje ne boste prejemali sporočil.</string>
   <string name="MessageRequestBottomView_do_you_want_to_join_this_group_they_wont_know_youve_seen_their_messages_until_you_accept">Se želite pridružiti skupini in z njenimi člani/cami deliti svoje ime in fotografijo? Dokler se ne pridružite, ne bodo vedeli/e, da ste videli njihova sporočila.</string>
-  <string name="MessageRequestBottomView_you_were_invited_to_join_the_group_s">Povabljeni ste bili, da se pridružite skupini %1$s. Ali dovolite članom/icam te skupine, da vam pošiljajo sporočila?</string>
   <string name="MessageRequestBottomView_unblock_this_group_and_share_your_name_and_photo_with_its_members">Želite omogočiti članom/icam skupine, da vam pošiljajo sporočila in z njimi deliti svoje ime in fotografijo? Dokler jih ne odblokirate, od njih ne boste prejemali sporočil.</string>
   <string name="MessageRequestProfileView_member_of_one_group">Član/ica skupine %1$s</string>
   <string name="MessageRequestProfileView_member_of_two_groups">Član/ica skupin %1$s in %2$s</string>
@@ -831,11 +888,11 @@
     <item quantity="few">%1$d člani/ce (+ povabljenih: %2$d)</item>
     <item quantity="other">%1$d članov/ic (+ povabljenih: %2$d)</item>
   </plurals>
-  <plurals name="MessageRequestProfileView_member_of_others">
-    <item quantity="one">%d ostali</item>
-    <item quantity="two">%d ostala</item>
-    <item quantity="few">%d ostali</item>
-    <item quantity="other">%d ostalih</item>
+  <plurals name="MessageRequestProfileView_member_of_d_additional_groups">
+    <item quantity="one">%d dodatna skupina</item>
+    <item quantity="two">%d dodatni skupini</item>
+    <item quantity="few">%d dodatne skupine</item>
+    <item quantity="other">%d dodatnih skupin</item>
   </plurals>
   <!--PassphraseChangeActivity-->
   <string name="PassphraseChangeActivity_passphrases_dont_match_exclamation">Gesli se ne ujemata</string>
@@ -1030,7 +1087,7 @@ sporočilo za izmenjavo ključev!</string>
 Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</string>
   <string name="SmsMessageRecord_received_message_with_new_safety_number_tap_to_process">Prejeto je bilo sporočilo z novim varnostnim številom. Tapnite za vpogled in potrditev.</string>
   <string name="SmsMessageRecord_secure_session_reset">Ponastavili ste varno sejo.</string>
-  <string name="SmsMessageRecord_secure_session_reset_s">Oseba %s je ponastavila varno sejo.</string>
+  <string name="SmsMessageRecord_secure_session_reset_s">Uporabnik/ca %s je ponastavil/a varno sejo.</string>
   <string name="SmsMessageRecord_duplicate_message">Podvojeno sporočilo.</string>
   <string name="SmsMessageRecord_this_message_could_not_be_processed_because_it_was_sent_from_a_newer_version">Sporočilo ni moglo biti obdelano, ker je bilo poslano iz novejše različice aplikacije Signal. Po posodobitvi aplikacije lahko prosite osebo na drugi strani naj vam ga ponovno pošlje.</string>
   <string name="SmsMessageRecord_error_handling_incoming_message">Napaka pri obdelavi dohodnega sporočila.</string>
@@ -1090,7 +1147,7 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <string name="ThreadRecord_disappearing_message_time_updated_to_s">Čas poteka sporočila je nastavljen na %s</string>
   <string name="ThreadRecord_safety_number_changed">Varnsotno število je bilo spremenjeno</string>
   <string name="ThreadRecord_your_safety_number_with_s_has_changed">Varnostno število z uporabnikom/co %s je bilo spremenjeno.</string>
-  <string name="ThreadRecord_you_marked_verified">Označili ste kot potrjeno</string>
+  <string name="ThreadRecord_you_marked_verified">Potrdili ste</string>
   <string name="ThreadRecord_you_marked_unverified">Označili ste kot nepotrjeno</string>
   <string name="ThreadRecord_message_could_not_be_processed">Sporočilo ni moglo biti obdelano</string>
   <string name="ThreadRecord_message_request">Prošnja za pogovor</string>
@@ -1152,8 +1209,6 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <string name="MmsMessageRecord_mms_message_encrypted_for_non_existing_session">Sporočilo MMS je bilo šifrirano za neobstoječo sejo</string>
   <!--MuteDialog-->
   <string name="MuteDialog_mute_notifications">Izklop obvestil</string>
-  <!--OutdatedBuildReminder-->
-  <string name="OutdatedBuildReminder_no_web_browser_installed">Spletni brskalnik ni nameščen!</string>
   <!--ApplicationMigrationService-->
   <string name="ApplicationMigrationService_import_in_progress">Uvoz v teku</string>
   <string name="ApplicationMigrationService_importing_text_messages">Uvažam kratka sporočila</string>
@@ -1184,6 +1239,7 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <string name="MessageNotifier_error_delivering_message">Napaka pri dostavi sporočila.</string>
   <string name="MessageNotifier_mark_all_as_read">Označi vse kot prebrano</string>
   <string name="MessageNotifier_mark_read">Označi kot prebrano</string>
+  <string name="MessageNotifier_turn_off_these_notifications">Izklopi ta obvestila</string>
   <string name="MessageNotifier_media_message">Večpredstavno sporočilo</string>
   <string name="MessageNotifier_sticker">Nalepka</string>
   <string name="MessageNotifier_view_once_photo">Slika za enkraten ogled</string>
@@ -1204,6 +1260,7 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <string name="MessageNotifier_reacted_s_to_your_view_once_video">%1$s spremenjeno v vaš video za enkraten ogled.</string>
   <string name="MessageNotifier_reacted_s_to_your_sticker">%1$s spremenjeno v vašo nalepko.</string>
   <string name="MessageNotifier_this_message_was_deleted">Sporočilo je bilo izbrisano</string>
+  <string name="TurnOffContactJoinedNotificationsActivity__turn_off_contact_joined_signal">Želite izklopiti obvestila o novih članih Signalove skupine? Kasneje jih lahko spet vklopite v Signal &gt; Nastavitve &gt; Obvestila.</string>
   <!--Notification Channels-->
   <string name="NotificationChannel_messages">Privzeto</string>
   <string name="NotificationChannel_calls">Klici</string>
@@ -1432,6 +1489,7 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
     <item quantity="other">%d tednov</item>
   </plurals>
   <string name="expiration_weeks_abbreviated">%d t</string>
+  <string name="expiration_combined">%1$s %2$s</string>
   <!--unverified safety numbers-->
   <string name="IdentityUtil_unverified_banner_one">Varnostno število z uporabnikom/co %s je bilo spremenjeno in ni več potrjeno.</string>
   <string name="IdentityUtil_unverified_banner_two">Varnostni števili z uporabnikoma %1$s in %2$s nista več potrjeni.</string>
@@ -1547,7 +1605,7 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <!--message_details_recipient_header-->
   <string name="message_details_recipient_header__pending_send">V teku</string>
   <string name="message_details_recipient_header__sent_to">Poslano uporabniku/ci</string>
-  <string name="message_details_recipient_header__sent_from">Poslal/a uporabnika/ca</string>
+  <string name="message_details_recipient_header__sent_from">Poslal/a uporabnik/ca</string>
   <string name="message_details_recipient_header__delivered_to">Dostavljeno uporabniku/ci</string>
   <string name="message_details_recipient_header__read_by">Prebral uporabnik/ca</string>
   <string name="message_details_recipient_header__not_sent">Neposlano</string>
@@ -1591,6 +1649,7 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <string name="HelpFragment__please_be_as_descriptive_as_possible">Pri opisu napake bodite čim bolj natančni, da bomo lažje razumeli za kaj gre.</string>
   <string name="HelpFragment__no_email_app_found">Nismo našli nobene aplikacije za e-pošto.</string>
   <!--ReactWithAnyEmojiBottomSheetDialogFragment-->
+  <string name="ReactWithAnyEmojiBottomSheetDialogFragment__this_message">To sporočilo</string>
   <string name="ReactWithAnyEmojiBottomSheetDialogFragment__recently_used">Nedavno uporabljeno</string>
   <string name="ReactWithAnyEmojiBottomSheetDialogFragment__smileys_and_people">Smeški &amp; Ljudje</string>
   <string name="ReactWithAnyEmojiBottomSheetDialogFragment__nature">Narava</string>
@@ -1642,8 +1701,8 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <string name="preferences__use_signal_for_viewing_and_storing_all_incoming_multimedia_messages">Uporabljaj Signal za vsa dohodna večpredstavnostna sporočila</string>
   <string name="preferences__pref_enter_sends_title">Tipka \'Naprej\' pošlje</string>
   <string name="preferences__pressing_the_enter_key_will_send_text_messages">Pritisk na tipko \'Naprej\' pošlje sporočilo</string>
-  <string name="preferences__send_link_previews">Pošiljanje povezav s predogledom</string>
-  <string name="preferences__previews_are_supported_for">Predogled je na voljo za povezave na Imgur, Instagram, Pinterest, Reddit in YouTube</string>
+  <string name="preferences__generate_link_previews">Ustvari predoglede</string>
+  <string name="preferences__retrieve_link_previews_from_websites_for_messages">Za vse spletne strani, ki jih delite, bodo v sporočilu ustvarjene predogledne sličice.</string>
   <string name="preferences__choose_identity">Izberi identiteto</string>
   <string name="preferences__choose_your_contact_entry_from_the_contacts_list">Na sezmanu stikov izberite svojo lastno vizitko.</string>
   <string name="preferences__change_passphrase">Zamenjaj geslo</string>
@@ -1760,6 +1819,9 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <string name="preferences_communication__sealed_sender_allow_from_anyone">Dovoli za vse pošiljatelje</string>
   <string name="preferences_communication__sealed_sender_allow_from_anyone_description">Vklop zakritega pošiljatelja za dohodna sporočila uporabnikov/ic, ki niso v imeniku in tistih, s katerimi ne delite svojega profila.</string>
   <string name="preferences_communication__sealed_sender_learn_more">Več o funkciji zakriti pošiljatelj</string>
+  <string name="preferences_notifications__mentions">Omembe</string>
+  <string name="preferences_notifications__notify_me">Obveščaj me</string>
+  <string name="preferences_notifications__receive_notifications_when_youre_mentioned_in_muted_chats">Prejemajte obvestila kadar bo vaše ime omenjeno v pogovorih, ki ste jih utišali</string>
   <!--Internal only preferences-->
   <!--****************************************-->
   <!--menus-->
@@ -1791,6 +1853,8 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <string name="conversation_insecure__invite">Povabi</string>
   <!--conversation_list_batch-->
   <string name="conversation_list_batch__menu_delete_selected">Izbriši označeno</string>
+  <string name="conversation_list_batch__menu_pin_selected">Pripni izbrane</string>
+  <string name="conversation_list_batch__menu_unpin_selected">Odpni izbrane</string>
   <string name="conversation_list_batch__menu_select_all">Označi vse</string>
   <string name="conversation_list_batch_archive__menu_archive_selected">Premakni izbrano v arhiv</string>
   <string name="conversation_list_batch_unarchive__menu_unarchive_selected">Premakni izbrano v nabiralnik</string>
@@ -1800,6 +1864,9 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <!--conversation_list-->
   <string name="conversation_list_settings_shortcut">Bližnjica k nastavitvam</string>
   <string name="conversation_list_search_description">Iskanje</string>
+  <string name="conversation_list__pinned">Pripeto</string>
+  <string name="conversation_list__chats">Pogovori</string>
+  <string name="conversation_list__you_can_only_pin_up_to_d_chats">Pripnete lahko do %1$d pogovore</string>
   <!--conversation_list_item_view-->
   <string name="conversation_list_item_view__contact_photo_image">Slika stika</string>
   <string name="conversation_list_item_view__archived">Arhivirano</string>
@@ -2009,6 +2076,9 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <string name="KbsMegaphone__update_pin">Posodobite PIN</string>
   <string name="KbsMegaphone__well_remind_you_later_creating_a_pin">Spomnili vas bomo kasneje. Uporaba PINa postala obvezna čez %1$d dni.</string>
   <string name="KbsMegaphone__well_remind_you_later_confirming_your_pin">Spomnili vas bomo kasneje. Potrditev PINa bo obvezna čez %1$d dni.</string>
+  <!--Mention Megaphone-->
+  <string name="MentionsMegaphone__introducing_mentions">Predstavljamo @Omembe</string>
+  <string name="MentionsMegaphone__get_someones_attention_in_a_group_by_typing">Pridobite si pozornost posameznikov/ic v \"Novih skupinah\" s predpono @</string>
   <!--transport_selection_list_item-->
   <string name="transport_selection_list_item__transport_icon">Ikona transporta</string>
   <string name="ConversationListFragment_loading">Nalaganje …</string>
@@ -2145,5 +2215,12 @@ Prejeto sporočilo za izmenjavo ključev za napačno različico protokola.</stri
   <string name="RecipientBottomSheet_remove">Odstrani</string>
   <string name="RecipientBottomSheet_copied_to_clipboard">Kopirano v odložišče</string>
   <string name="GroupRecipientListItem_admin">Skrbnik</string>
+  <!--GroupsLearnMoreBottomSheetDialogFragment-->
+  <string name="GroupsLearnMore_legacy_vs_new_groups">Stare in Nove skupine</string>
+  <string name="GroupsLearnMore_what_are_legacy_groups">Kaj so stare skupine?</string>
+  <string name="GroupsLearnMore_paragraph_1">Stare skupine so skupine, ki niso združljive z naprednimi funkcijami Novih skupin, kot so skrbniki in bolj natančno upravljanje.</string>
+  <string name="GroupsLearnMore_how_do_i_use_new_groups">Kako uporabljam Nove skupine?</string>
+  <string name="GroupsLearnMore_paragraph_2">Stare skupine ne morejo biti pretvorjene v Nove, lahko pa ustvarite Novo skupino z identičnim članstvom.</string>
+  <string name="GroupsLearnMore_paragraph_3">Če želite ustvariti Novo skupino, morajo vsi člani nadgraditi Signal na zadnjo različico.</string>
   <!--EOF-->
 </resources>

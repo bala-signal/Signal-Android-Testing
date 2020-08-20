@@ -82,6 +82,7 @@ public class MmsSmsDatabase extends Database {
                                               MmsDatabase.QUOTE_BODY,
                                               MmsDatabase.QUOTE_MISSING,
                                               MmsDatabase.QUOTE_ATTACHMENT,
+                                              MmsDatabase.QUOTE_MENTIONS,
                                               MmsDatabase.SHARED_CONTACTS,
                                               MmsDatabase.LINK_PREVIEWS,
                                               MmsDatabase.VIEW_ONCE,
@@ -89,7 +90,8 @@ public class MmsSmsDatabase extends Database {
                                               MmsSmsColumns.REACTIONS,
                                               MmsSmsColumns.REACTIONS_UNREAD,
                                               MmsSmsColumns.REACTIONS_LAST_SEEN,
-                                              MmsSmsColumns.REMOTE_DELETED};
+                                              MmsSmsColumns.REMOTE_DELETED,
+                                              MmsDatabase.MENTIONS_SELF};
 
   public MmsSmsDatabase(Context context, SQLCipherOpenHelper databaseHelper) {
     super(context, databaseHelper);
@@ -183,7 +185,7 @@ public class MmsSmsDatabase extends Database {
 
   public Cursor getConversationSnippet(long threadId) {
     String order     = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
-    String selection = MmsSmsColumns.THREAD_ID + " = " + threadId;
+    String selection = MmsSmsColumns.THREAD_ID + " = " + threadId + " AND (" + SmsDatabase.TYPE + " IS NULL OR " + SmsDatabase.TYPE + " != " + SmsDatabase.Types.PROFILE_CHANGE_TYPE + ")";
 
     return  queryTables(PROJECTION, selection, order, "1");
   }
@@ -252,6 +254,13 @@ public class MmsSmsDatabase extends Database {
            DatabaseFactory.getMmsDatabase(context).getMessageCountForThread(threadId, beforeTime);
   }
 
+  public int getConversationCountForThreadSummary(long threadId) {
+    int count = DatabaseFactory.getSmsDatabase(context).getMessageCountForThreadSummary(threadId);
+    count    += DatabaseFactory.getMmsDatabase(context).getMessageCountForThread(threadId);
+
+    return count;
+  }
+
   public int getInsecureSentCount(long threadId) {
     int count  = DatabaseFactory.getSmsDatabase(context).getInsecureMessagesSentForThread(threadId);
     count     += DatabaseFactory.getMmsDatabase(context).getInsecureMessagesSentForThread(threadId);
@@ -278,18 +287,6 @@ public class MmsSmsDatabase extends Database {
 
     if (id == -1) return DatabaseFactory.getMmsDatabase(context).getThreadIdForMessage(messageId);
     else          return id;
-  }
-
-  public @Nullable MessageRecord getMessageRecord(long messageId) {
-    try {
-      return DatabaseFactory.getSmsDatabase(context).getMessage(messageId);
-    } catch (NoSuchMessageException e1) {
-      try {
-        return DatabaseFactory.getMmsDatabase(context).getMessageRecord(messageId);
-      } catch (NoSuchMessageException e2) {
-        return null;
-      }
-    }
   }
 
   public void incrementDeliveryReceiptCount(SyncMessageId syncMessageId, long timestamp) {
@@ -420,6 +417,7 @@ public class MmsSmsDatabase extends Database {
                               MmsDatabase.QUOTE_BODY,
                               MmsDatabase.QUOTE_MISSING,
                               MmsDatabase.QUOTE_ATTACHMENT,
+                              MmsDatabase.QUOTE_MENTIONS,
                               MmsDatabase.SHARED_CONTACTS,
                               MmsDatabase.LINK_PREVIEWS,
                               MmsDatabase.VIEW_ONCE,
@@ -427,7 +425,8 @@ public class MmsSmsDatabase extends Database {
                               MmsSmsColumns.REACTIONS_UNREAD,
                               MmsSmsColumns.REACTIONS_LAST_SEEN,
                               MmsSmsColumns.DATE_SERVER,
-                              MmsSmsColumns.REMOTE_DELETED };
+                              MmsSmsColumns.REMOTE_DELETED,
+                              MmsDatabase.MENTIONS_SELF };
 
     String[] smsProjection = {SmsDatabase.DATE_SENT + " AS " + MmsSmsColumns.NORMALIZED_DATE_SENT,
                               SmsDatabase.DATE_RECEIVED + " AS " + MmsSmsColumns.NORMALIZED_DATE_RECEIVED,
@@ -452,6 +451,7 @@ public class MmsSmsDatabase extends Database {
                               MmsDatabase.QUOTE_BODY,
                               MmsDatabase.QUOTE_MISSING,
                               MmsDatabase.QUOTE_ATTACHMENT,
+                              MmsDatabase.QUOTE_MENTIONS,
                               MmsDatabase.SHARED_CONTACTS,
                               MmsDatabase.LINK_PREVIEWS,
                               MmsDatabase.VIEW_ONCE,
@@ -459,7 +459,8 @@ public class MmsSmsDatabase extends Database {
                               MmsSmsColumns.REACTIONS_UNREAD,
                               MmsSmsColumns.REACTIONS_LAST_SEEN,
                               MmsSmsColumns.DATE_SERVER,
-                              MmsSmsColumns.REMOTE_DELETED };
+                              MmsSmsColumns.REMOTE_DELETED,
+                              MmsDatabase.MENTIONS_SELF };
 
     SQLiteQueryBuilder mmsQueryBuilder = new SQLiteQueryBuilder();
     SQLiteQueryBuilder smsQueryBuilder = new SQLiteQueryBuilder();
@@ -505,6 +506,7 @@ public class MmsSmsDatabase extends Database {
     mmsColumnsPresent.add(MmsDatabase.QUOTE_BODY);
     mmsColumnsPresent.add(MmsDatabase.QUOTE_MISSING);
     mmsColumnsPresent.add(MmsDatabase.QUOTE_ATTACHMENT);
+    mmsColumnsPresent.add(MmsDatabase.QUOTE_MENTIONS);
     mmsColumnsPresent.add(MmsDatabase.SHARED_CONTACTS);
     mmsColumnsPresent.add(MmsDatabase.LINK_PREVIEWS);
     mmsColumnsPresent.add(MmsDatabase.VIEW_ONCE);
@@ -512,6 +514,7 @@ public class MmsSmsDatabase extends Database {
     mmsColumnsPresent.add(MmsDatabase.REACTIONS_UNREAD);
     mmsColumnsPresent.add(MmsDatabase.REACTIONS_LAST_SEEN);
     mmsColumnsPresent.add(MmsDatabase.REMOTE_DELETED);
+    mmsColumnsPresent.add(MmsDatabase.MENTIONS_SELF);
 
     Set<String> smsColumnsPresent = new HashSet<>();
     smsColumnsPresent.add(MmsSmsColumns.ID);

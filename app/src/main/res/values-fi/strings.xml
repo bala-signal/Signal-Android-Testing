@@ -87,7 +87,7 @@
   <string name="BlockUnblockDialog_group_members_will_be_able_to_add_you">Ryhmän jäsenet voivat lisätä sinut takaisin tähän ryhmään.</string>
   <string name="BlockUnblockDialog_you_will_be_able_to_call_and_message_each_other">Voitte jatkossa lähettää viestejä ja soittaa toisillenne, ja nimesi ja kuvasi jaetaan heidän kanssaan.</string>
   <string name="BlockUnblockDialog_blocked_people_wont_be_able_to_call_you_or_send_you_messages">Estetyt henkilöt eivät voi soittaa sinulle tai lähettää sinulle viestejä.</string>
-  <string name="BlockUnblockDialog_unblock_s">Poista %1$s:n esto?</string>
+  <string name="BlockUnblockDialog_unblock_s">Poista käyttäjän %1$s esto?</string>
   <string name="BlockUnblockDialog_unblock">Poista esto</string>
   <string name="BlockUnblockDialog_block">Estä</string>
   <string name="BlockUnblockDialog_block_and_leave">Estä ja poistu</string>
@@ -195,11 +195,13 @@
   <string name="ConversationActivity_this_device_does_not_appear_to_support_dial_actions">Tämä laite ei näytä tukevan valintanäppäintoimintoja.</string>
   <string name="ConversationActivity_leave_group">Poistu ryhmästä?</string>
   <string name="ConversationActivity_are_you_sure_you_want_to_leave_this_group">Haluatko varmasti poistua tästä ryhmästä?</string>
+  <string name="ConversationActivity_choose_new_admin">Valitse uusi ylläpitäjä</string>
+  <string name="ConversationActivity_before_you_leave_you_must_choose_at_least_one_new_admin_for_this_group">Ennen kuin lähdet, sinun on valittava vähintään yksi uusi ylläpitäjä tälle ryhmälle.</string>
+  <string name="ConversationActivity_choose_admin">Valitse ylläpitäjä</string>
   <string name="ConversationActivity_transport_insecure_sms">Salaamaton tekstiviesti</string>
   <string name="ConversationActivity_transport_insecure_mms">Salaamaton MMS-viesti</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">Hei, vaihdetaan Signaliin %1$s</string>
-  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">Virhe ryhmästä lähtiessä</string> -->
   <string name="ConversationActivity_specify_recipient">Valitse yhteystieto</string>
   <string name="ConversationActivity_unblock_this_contact_question">Poista esto tältä yhteystiedolta?</string>
   <string name="ConversationActivity_unblock_this_group_question">Poista tämän ryhmän esto?</string>
@@ -209,6 +211,7 @@
   <string name="ConversationActivity_attachment_exceeds_size_limits">Liitetiedosto ylittää kyseisen viestityypin kokorajoituikset.</string>
   <string name="ConversationActivity_quick_camera_unavailable">Kamera ei käytettävissä</string>
   <string name="ConversationActivity_unable_to_record_audio">Äänen nauhoitus ei onnistunut!</string>
+  <string name="ConversationActivity_you_cant_send_messages_to_this_group">Et voi lähettää viestejä tälle ryhmälle, koska et enää ole sen jäsen.</string>
   <string name="ConversationActivity_there_is_no_app_available_to_handle_this_link_on_your_device">Laitteessasi ei ole sovellusta, joka osaa avata tämän linkin.</string>
   <string name="ConversationActivity_to_send_audio_messages_allow_signal_access_to_your_microphone">Jotta voit lähettää ääniviestejä, Signal tarvitsee lupaa käyttää mikrofonia.</string>
   <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Signal tarvitsee lupaa käyttää mikrofonia äänitiedostojen lähettämistä varten, mutta tämä käyttöoikeus on pysyvästi evätty Signalilta. Voit muuttaa tätä menemällä sovellusten asetuksiin, valitsemalla \"Sovelluksen käyttöoikeudet\" ja laittamalla päälle \"Mikrofoni\".</string>
@@ -316,12 +319,15 @@
   <!--ConversationTitleView-->
   <string name="ConversationTitleView_verified">Varmennettu</string>
   <string name="ConversationTitleView_you">Sinä</string>
+  <!--CreateGroupActivity-->
+  <string name="CreateGroupActivity_some_contacts_cannot_be_in_legacy_groups">Jotkut yhteystiedot eivät voi olla vanhan tyylisissä ryhmissä.</string>
   <!--CreateProfileActivity-->
   <string name="CreateProfileActivity__profile">Profiili</string>
   <string name="CreateProfileActivity_error_setting_profile_photo">Virhe asetettaessa profiilikuvaa</string>
   <string name="CreateProfileActivity_problem_setting_profile">Virhe asetettaessa profiilia</string>
   <string name="CreateProfileActivity_profile_photo">Profiilikuva</string>
   <string name="CreateProfileActivity_set_up_your_profile">Aseta profiilisi</string>
+  <string name="CreateProfileActivity_signal_profiles_are_end_to_end_encrypted">Profiilisi on päästä päähän salattu. Profiilisi ja tekemäsi muutokset näkyvät yhteystiedoillesi, kun aloitat tai hyväksyt uusia keskusteluja ja kun liityt uusiin ryhmiin.</string>
   <string name="CreateProfileActivity_set_avatar_description">Aseta kuvake</string>
   <!--CustomDefaultPreference-->
   <string name="CustomDefaultPreference_using_custom">Käytä mukautettua: %s</string>
@@ -379,6 +385,11 @@
   <string name="AddToGroupActivity_s_added_to_s">\"%1$s\" lisätty ryhmään \"%2$s\".</string>
   <string name="AddToGroupActivity_add_to_group">Lisää ryhmään</string>
   <string name="AddToGroupActivity_add_to_groups">Lisää ryhmiin</string>
+  <string name="AddToGroupActivity_this_person_cant_be_added_to_legacy_groups">Tätä henkilöä ei voida lisätä vanhan tyylin ryhmiin.</string>
+  <!--ChooseNewAdminActivity-->
+  <string name="ChooseNewAdminActivity_choose_new_admin">Valitse uusi ylläpitäjä</string>
+  <string name="ChooseNewAdminActivity_done">Valmis</string>
+  <string name="ChooseNewAdminActivity_you_left">Lähdit ryhmästä \"%1$s\".</string>
   <!--GroupShareProfileView-->
   <string name="GroupShareProfileView_share_your_profile_name_and_photo_with_this_group">Jaa profiilikuvasi ja -nimesi tämän ryhmän kanssa?</string>
   <string name="GroupShareProfileView_do_you_want_to_make_your_profile_name_and_photo_visible_to_all_current_and_future_members_of_this_group">Haluatko tehdä profiilikuvasi ja -nimesi näkyväksi kaikille tämän ryhmän nykyisille ja tuleville jäsenille?</string>
@@ -386,9 +397,17 @@
   <!--GroupMembersDialog-->
   <string name="GroupMembersDialog_you">Sinä</string>
   <!--GV2 access levels-->
-  <string name="GroupManagement_access_level_anyone">Kuka vain</string>
   <string name="GroupManagement_access_level_all_members">Kaikki jäsenet</string>
   <string name="GroupManagement_access_level_only_admins">Vain ylläpitäjät</string>
+  <!--GV2 invites sent-->
+  <plurals name="GroupManagement_invitation_sent">
+    <item quantity="one">Kutsu lähetetty</item>
+    <item quantity="other">%d kutsua lähetetty</item>
+  </plurals>
+  <string name="GroupManagement_learn_more">Lue lisää</string>
+  <!--LinkPreviewsMegaphone-->
+  <string name="LinkPreviewsMegaphone_disable">Ota pois käytöstä</string>
+  <!--LinkPreviewView-->
   <!--PendingMembersActivity-->
   <string name="PendingMemberInvitesActivity_pending_group_invites">Odottavat ryhmäkutsut</string>
   <string name="PendingMembersActivity_people_you_invited">Kutsumasi henkilöt</string>
@@ -396,18 +415,19 @@
   <string name="PendingMembersActivity_invites_by_other_group_members">Muiden ryhmän jäsenten kutsumat</string>
   <string name="PendingMembersActivity_no_pending_invites_by_other_group_members">Muilla jäsenillä ei ole odottavia ryhmäkutsuja.</string>
   <string name="PendingMembersActivity_missing_detail_explanation">Tietoja muiden ryhmän jäsenten kutsumista henkilöistä ei näytetä. Heidän tiedot jaetaan ryhmälle vasta sitten kun he päättävät liittyä ryhmään. He eivät näe ryhmän viestejä ennen liittymistä.</string>
-  <string name="PendingMembersActivity_cancel_invite">Peruuta kutsu</string>
-  <string name="PendingMembersActivity_cancel_invites">Peruuta kutsut</string>
-  <plurals name="PendingMembersActivity_cancel_d_invites">
+  <string name="PendingMembersActivity_revoke_invite">Peruuta kutsu</string>
+  <string name="PendingMembersActivity_revoke_invites">Peruuta kutsut</string>
+  <plurals name="PendingMembersActivity_revoke_d_invites">
     <item quantity="one">Peruuta kutsu</item>
     <item quantity="other">Peruuta %1$d kutsua</item>
   </plurals>
-  <plurals name="PendingMembersActivity_error_canceling_invite">
-    <item quantity="one">Kutsun peruminen epäonnistui</item>
-    <item quantity="other">Kutsujen peruminen epäonnistui</item>
+  <plurals name="PendingMembersActivity_error_revoking_invite">
+    <item quantity="one">Virhe kutsun peruuttamisessa</item>
+    <item quantity="other">Virhe kutsujen peruuttamisessa</item>
   </plurals>
   <!--AddMembersActivity-->
   <string name="AddMembersActivity__done">Valmis</string>
+  <string name="AddMembersActivity__this_person_cant_be_added_to_legacy_groups">Tätä henkilöä ei voida lisätä vanhan tyylin ryhmiin.</string>
   <plurals name="AddMembersActivity__add_d_members_to_s">
     <item quantity="one">Lisää \"%1$s\" ryhmään \"%2$s\"?</item>
     <item quantity="other">Lisää %3$d jäsentä ryhmään \"%2$s\"?</item>
@@ -426,20 +446,32 @@
   <string name="AddGroupDetailsFragment__remove">Poista</string>
   <string name="AddGroupDetailsFragment__sms_contact">SMS-yhteyshenkilö</string>
   <string name="AddGroupDetailsFragment__remove_s_from_this_group">Poista %1$s tästä ryhmästä?</string>
+  <plurals name="AddGroupDetailsFragment__d_members_do_not_support_new_groups">
+    <item quantity="one">%d jäsen ei tue uusia ryhmiä, joten tästä tulee vanhan tyylin ryhmä.</item>
+    <item quantity="other">%d jäsentä ei tue uusia ryhmiä, joten tästä tulee vanhan tyylin ryhmä.</item>
+  </plurals>
+  <!--NonGv2MemberDialog-->
+  <string name="NonGv2MemberDialog_single_users_are_non_gv2_capable">Vanhan tyylin ryhmä luodaan koska \"%1$s\" käyttää Signalin vanhaa versiota. Voit luoda uuden tyylin ryhmä sen jälkeen kun hän on päivittänyt Signalin, tai voit poistaa hänet ennen kuin luot ryhmän.</string>
+  <plurals name="NonGv2MemberDialog_d_users_are_non_gv2_capable">
+    <item quantity="one">Vanhan tyylin ryhmä luodaan koska %1$d jäsen käyttää Signalin vanhaa versiota. Voit luoda uuden tyylin ryhmä sen jälkeen kun hän on päivittänyt Signalin, tai voit poistaa hänet ennen kuin luot ryhmän.</item>
+    <item quantity="other">Vanhan tyylin ryhmä luodaan koska %1$d jäsentä käyttävät Signalin vanhaa versiota. Voit luoda uuden tyylin ryhmä sen jälkeen kun he ovat päivittäneet Signalin, tai voit poistaa heidät ennen kuin luot ryhmän.</item>
+  </plurals>
   <!--ManageGroupActivity-->
   <string name="ManageGroupActivity_disappearing_messages">Katoavat viestit</string>
   <string name="ManageGroupActivity_pending_group_invites">Odottavat ryhmäkutsut</string>
-  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_membership">Ketkä voivat muokata ryhmän jäsenyyttä</string> -->
-  <!-- Removed by excludeNonTranslatables <string name="ManageGroupActivity_who_can_edit_group_info">Ketkä voivat muokata ryhmän tietoja</string> -->
+  <string name="ManageGroupActivity_add_members">Lisää jäseniä</string>
+  <string name="ManageGroupActivity_edit_group_info">Muokkaa ryhmän tietoja</string>
+  <string name="ManageGroupActivity_choose_who_can_edit_the_group_name_avatar_and_disappearing_messages">Valitse ketkä voivat muokata ryhmän nimeä, kuvaketta ja katoavien viestien ajastinta.</string>
+  <string name="ManageGroupActivity_choose_who_can_add_or_invite_new_members">Valitse ketkä voivat lisätä tai kutsua uusia jäseniä.</string>
   <string name="ManageGroupActivity_block_group">Estä ryhmä</string>
   <string name="ManageGroupActivity_unblock_group">Poista ryhmän esto</string>
   <string name="ManageGroupActivity_leave_group">Poistu ryhmästä</string>
   <string name="ManageGroupActivity_mute_notifications">Mykistä ilmoitukset</string>
   <string name="ManageGroupActivity_custom_notifications">Mukautetut ilmoitukset</string>
+  <string name="ManageGroupActivity_mentions">Maininnat</string>
   <string name="ManageGroupActivity_until_s">%1$s asti</string>
   <string name="ManageGroupActivity_off">pois päältä</string>
   <string name="ManageGroupActivity_on">Päällä</string>
-  <string name="ManageGroupActivity_add_members">Lisää jäseniä</string>
   <string name="ManageGroupActivity_view_all_members">Näytä kaikki jäsenet</string>
   <string name="ManageGroupActivity_see_all">Näytä kaikki</string>
   <string name="ManageGroupActivity_none">Ei mitään</string>
@@ -455,10 +487,15 @@
   <string name="ManageGroupActivity_not_capable">Joku lisäämistäsi käyttäjistä ei tue uusia ryhmiä ja hänen on siis päivitettävä Signal</string>
   <string name="ManageGroupActivity_failed_to_update_the_group">Ryhmän päivitys epäonnistui</string>
   <string name="ManageGroupActivity_youre_not_a_member_of_the_group">Et ole ryhmän jäsen</string>
+  <string name="ManageGroupActivity_failed_to_update_the_group_please_retry_later">Ryhmän päivitys epäonnistui, yritä myöhemmin uudelleen</string>
+  <string name="ManageGroupActivity_failed_to_update_the_group_due_to_a_network_error_please_retry_later">Ryhmän päivitys epäonnistui verkkovirheen vuoksi, yritä myöhemmin uudelleen</string>
   <string name="ManageGroupActivity_edit_name_and_picture">Muokkaa nimeä ja kuvaa</string>
-  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_add_or_invite_new_members">Valitse ketkä voivat lisätä tai kutsua uusia jäseniä</string> -->
-  <!-- Removed by excludeNonTranslatables <string name="GroupManagement_choose_who_can_change_the_group_name_and_photo">Valitse ketkä voivat muuttaa ryhmän nimeä ja kuvaa</string> -->
+  <string name="ManageGroupActivity_legacy_group">Vanhan tyylin ryhmä</string>
+  <string name="ManageGroupActivity_legacy_group_learn_more">Tämä on vanhan tyylin ryhmä. Luo uusi ryhmä käyttääksesi uusia ominaisuuksia, kuten ylläpitäjyyttä.</string>
+  <!--GroupMentionSettingDialog-->
+  <string name="GroupMentionSettingDialog_receive_notifications_when_youre_mentioned_in_muted_chats">Vastaanota ilmoituksia, kun sinut mainitaan mykistetyissä keskusteluissa?</string>
   <!--ManageRecipientActivity-->
+  <string name="ManageRecipientActivity_add_to_system_contacts">Lisää yhteystietoihin</string>
   <string name="ManageRecipientActivity_this_person_is_in_your_contacts">Tämä henkilö on yhteystiedoissasi</string>
   <string name="ManageRecipientActivity_disappearing_messages">Katoavat viestit</string>
   <string name="ManageRecipientActivity_chat_color">Keskustelun väri</string>
@@ -498,12 +535,10 @@
   <string name="CustomNotificationsDialogFragment__enabled">Päällä</string>
   <string name="CustomNotificationsDialogFragment__disabled">Pois päältä</string>
   <string name="CustomNotificationsDialogFragment__default">Oletus</string>
-  <!--GV2 Invite cancellation confirmation-->
-  <string name="GroupManagement_cancel_own_single_invite">Haluatko peruuttaa henkilölle %1$s lähettämäsi ryhmäkutsun?</string>
-  <plurals name="GroupManagement_cancel_others_invites">
-    <item quantity="one">Haluatko peruuttaa henkilön %1$s lähettämän kutsun?</item>
-    <item quantity="other">Haluatko peruuttaa henkilön %1$s lähettämät %2$d kutsua?</item>
-  </plurals>
+  <!--GV2 Invite Revoke confirmation dialog-->
+  <!--GroupJoinBottomSheetDialogFragment-->
+  <!--GroupJoinUpdateRequiredBottomSheetDialogFragment-->
+  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">Päivitä Signal</string>
   <!--CropImageActivity-->
   <string name="CropImageActivity_group_avatar">Ryhmän kuvake</string>
   <string name="CropImageActivity_profile_avatar">Kuvake</string>
@@ -648,7 +683,10 @@
   <string name="MessageRecord_s_disabled_disappearing_messages">%1$s asetti katoavat viestit pois päältä.</string>
   <string name="MessageRecord_you_set_disappearing_message_time_to_s">Sinä asetit viestien katoamisajan: %1$s</string>
   <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$s asetti viestien katoamisajan: %2$s</string>
+  <string name="MessageRecord_disappearing_message_time_set_to_s">Katoavien viestien ajaksi asetettiin %1$s.</string>
   <!--Profile change updates-->
+  <string name="MessageRecord_changed_their_profile_name_to">%1$s muutti profiilinimekseen %2$s.</string>
+  <string name="MessageRecord_changed_their_profile">%1$s muutti profiiliaan.</string>
   <!--GV2 specific-->
   <string name="MessageRecord_you_created_the_group">Sinä loit ryhmän.</string>
   <string name="MessageRecord_group_updated">Ryhmä päivitetty.</string>
@@ -685,6 +723,10 @@
     <item quantity="other">%1$s kutsui %2$d henkilöä ryhmään.</item>
   </plurals>
   <string name="MessageRecord_you_were_invited_to_the_group">Sinut kutsuttiin ryhmään.</string>
+  <plurals name="MessageRecord_d_people_were_invited_to_the_group">
+    <item quantity="one">1 henkilö kutsuttiin ryhmään.</item>
+    <item quantity="other">%1$d henkilöä kutsuttiin ryhmään.</item>
+  </plurals>
   <!--GV2 invitation revokes-->
   <plurals name="MessageRecord_you_revoked_invites">
     <item quantity="one">Peruutit yhden kutsun ryhmään.</item>
@@ -696,7 +738,10 @@
   </plurals>
   <string name="MessageRecord_someone_declined_an_invitation_to_the_group">Joku hylkäsi kutsun ryhmään.</string>
   <string name="MessageRecord_you_declined_the_invitation_to_the_group">Hylkäsit kutsun ryhmään.</string>
-  <string name="MessageRecord_your_invitation_to_the_group_was_revoked">Kutsusi ryhmään peruttiin.</string>
+  <plurals name="MessageRecord_d_invitations_were_revoked">
+    <item quantity="one">Kutsu ryhmään peruttiin.</item>
+    <item quantity="other">%1$d kutsua ryhmään peruttiin.</item>
+  </plurals>
   <!--GV2 invitation acceptance-->
   <string name="MessageRecord_you_accepted_invite">Hyväksyit kutsun ryhmään.</string>
   <string name="MessageRecord_s_accepted_invite">%1$s hyväksyi kutsun ryhmään.</string>
@@ -705,6 +750,7 @@
   <!--GV2 title change-->
   <string name="MessageRecord_you_changed_the_group_name_to_s">Muutit ryhmän nimeksi \"%1$s\".</string>
   <string name="MessageRecord_s_changed_the_group_name_to_s">%1$s muutti ryhmän nimeksi \"%2$s\".</string>
+  <string name="MessageRecord_the_group_name_has_changed_to_s">Ryhmän nimeksi asetettiin \"%1$s\".</string>
   <!--GV2 avatar change-->
   <string name="MessageRecord_you_changed_the_group_avatar">Muutit ryhmän kuvakkeen.</string>
   <string name="MessageRecord_s_changed_the_group_avatar">%1$s muutti ryhmän kuvakkeen.</string>
@@ -729,7 +775,6 @@
   <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_they_wont_know_youve_seen_their_messages_until_you_accept">Salli henkilön %1$s lähettää sinulle viestejä ja jaa nimesi ja profiilikuvasi hänelle? Hän ei tiedä että olet nähnyt hänen viestinsä ennen kuin hyväksyt.</string>
   <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_wont_receive_any_messages_until_you_unblock_them">Salli henkilön %1$s lähettää sinulle viestejä ja jaa nimesi ja profiilikuvasi hänelle? Et saa viestejä ennen kuin poistat niiden eston.</string>
   <string name="MessageRequestBottomView_do_you_want_to_join_this_group_they_wont_know_youve_seen_their_messages_until_you_accept">Liity tähän ryhmään ja jaa nimesi ja profiilikuvasi sen jäsenille? He eivät tiedä että olet nähnyt heidän viestinsä ennen kuin hyväksyt.</string>
-  <string name="MessageRequestBottomView_you_were_invited_to_join_the_group_s">Sinut kutsuttiin liittymään ryhmään %1$s. Haluatko antaa tämän ryhmän jäsenten lähettää sinulle viestejä?</string>
   <string name="MessageRequestBottomView_unblock_this_group_and_share_your_name_and_photo_with_its_members">Poista tämän ryhmän esto ja jaa nimesi ja profiilikuvasi sen jäsenille? Et saa viestejä ennen kuin poistat niiden eston.</string>
   <string name="MessageRequestProfileView_member_of_one_group">Jäsen ryhmässä %1$s</string>
   <string name="MessageRequestProfileView_member_of_two_groups">Jäsen ryhmissä %1$s ja %2$s</string>
@@ -741,10 +786,6 @@
   <plurals name="MessageRequestProfileView_members_and_invited">
     <item quantity="one">%1$d jäsen (+%2$d kutsuttu)</item>
     <item quantity="other">%1$d jäsentä (+%2$d kutsuttu)</item>
-  </plurals>
-  <plurals name="MessageRequestProfileView_member_of_others">
-    <item quantity="one">%d muuta</item>
-    <item quantity="other">%d muuta</item>
   </plurals>
   <!--PassphraseChangeActivity-->
   <string name="PassphraseChangeActivity_passphrases_dont_match_exclamation">Salalauseet eivät täsmää!</string>
@@ -1059,8 +1100,6 @@ Vastaanotetiin avaintenvaihtoviesti, joka kuuluu väärälle protokollaversiolle
   <string name="MmsMessageRecord_mms_message_encrypted_for_non_existing_session">MMS-viesti salattu olemattomalle istunnolle</string>
   <!--MuteDialog-->
   <string name="MuteDialog_mute_notifications">Mykistä ilmoitukset</string>
-  <!--OutdatedBuildReminder-->
-  <string name="OutdatedBuildReminder_no_web_browser_installed">Selainta ei ole asennettu!</string>
   <!--ApplicationMigrationService-->
   <string name="ApplicationMigrationService_import_in_progress">Tuonti käynnissä</string>
   <string name="ApplicationMigrationService_importing_text_messages">Tuo tekstiviestejä</string>
@@ -1080,6 +1119,7 @@ Vastaanotetiin avaintenvaihtoviesti, joka kuuluu väärälle protokollaversiolle
   <string name="MediaPreviewActivity_media_delete_confirmation_title">Poistetaanko viesti?</string>
   <string name="MediaPreviewActivity_media_delete_confirmation_message">Tämä poistaa pysyvästi tämän viestin.</string>
   <string name="MediaPreviewActivity_s_to_s">%1$s henkilölle %2$s</string>
+  <string name="MediaPreviewActivity_media_no_longer_available">Media ei ole enää saatavilla.</string>
   <!--MessageNotifier-->
   <string name="MessageNotifier_d_new_messages_in_d_conversations">%1$d uutta viestiä %2$d keskustelussa</string>
   <string name="MessageNotifier_most_recent_from_s">Uusin lähettäjältä: %1$s</string>
@@ -1324,6 +1364,7 @@ Vastaanotetiin avaintenvaihtoviesti, joka kuuluu väärälle protokollaversiolle
     <item quantity="other">%d viikkoa</item>
   </plurals>
   <string name="expiration_weeks_abbreviated">%dvk</string>
+  <string name="expiration_combined">%1$s %2$s</string>
   <!--unverified safety numbers-->
   <string name="IdentityUtil_unverified_banner_one">Sinun turvanumerosi yhteystiedon %s kanssa on vaihtunut eikä se ole enää varmennettu.</string>
   <string name="IdentityUtil_unverified_banner_two">Sinun turvanumerot yhteystietojen %1$s ja %2$s kanssa eivät ole enää varmennettuja.</string>
@@ -1528,8 +1569,6 @@ Vastaanotetiin avaintenvaihtoviesti, joka kuuluu väärälle protokollaversiolle
   <string name="preferences__use_signal_for_viewing_and_storing_all_incoming_multimedia_messages">Käytä Signalia kaikkiin saapuviin multimediaviesteihin</string>
   <string name="preferences__pref_enter_sends_title">Rivinvaihto lähettää</string>
   <string name="preferences__pressing_the_enter_key_will_send_text_messages">Rivinvaihdon painallus lähettää viestin</string>
-  <string name="preferences__send_link_previews">Lähetä esikatselukuva linkeistä</string>
-  <string name="preferences__previews_are_supported_for">Esikatselu tukee sivustoja Imgur, Instagram, Pinterest, Reddit ja YouTube.</string>
   <string name="preferences__choose_identity">Valitse identiteetti</string>
   <string name="preferences__choose_your_contact_entry_from_the_contacts_list">Valitse yhteystieto osoitekirjasta.</string>
   <string name="preferences__change_passphrase">Salalauseen vaihto</string>
@@ -1597,6 +1636,7 @@ Vastaanotetiin avaintenvaihtoviesti, joka kuuluu väärälle protokollaversiolle
   <string name="preferences__default">Oletus</string>
   <string name="preferences__language">Kieli</string>
   <string name="preferences__signal_messages_and_calls">Signal-viestit ja -puhelut</string>
+  <string name="preferences__advanced_pin_settings">PIN-lisäasetukset</string>
   <string name="preferences__free_private_messages_and_calls">Ilmaiset ja yksityiset viestit sekä puhelut Signalin käyttäjille</string>
   <string name="preferences__submit_debug_log">Lähetä virheenkorjausloki</string>
   <string name="preferences__support_wifi_calling">\"WiFi Calling\" -yhteensopiva tila</string>
@@ -1643,6 +1683,7 @@ Vastaanotetiin avaintenvaihtoviesti, joka kuuluu väärälle protokollaversiolle
   <string name="preferences_communication__sealed_sender_allow_from_anyone">Hyväksy kaikilta</string>
   <string name="preferences_communication__sealed_sender_allow_from_anyone_description">Ota käyttöön sinetöity lähettäjä saapuville viesteille henkilöiltä, jotka eivät ole yhteystitojasi ja joiden kanssa et ole jakanut profiiliasi.</string>
   <string name="preferences_communication__sealed_sender_learn_more">Lue lisää</string>
+  <string name="preferences_notifications__mentions">Maininnat</string>
   <!--Internal only preferences-->
   <!--****************************************-->
   <!--menus-->
@@ -1683,6 +1724,7 @@ Vastaanotetiin avaintenvaihtoviesti, joka kuuluu väärälle protokollaversiolle
   <!--conversation_list-->
   <string name="conversation_list_settings_shortcut">Asetukset-pikakuvake</string>
   <string name="conversation_list_search_description">Hae</string>
+  <string name="conversation_list__chats">Keskustelut</string>
   <!--conversation_list_item_view-->
   <string name="conversation_list_item_view__contact_photo_image">Yhteystiedon kuva</string>
   <string name="conversation_list_item_view__archived">Arkistoitu</string>
@@ -1874,6 +1916,8 @@ Vastaanotetiin avaintenvaihtoviesti, joka kuuluu väärälle protokollaversiolle
   <string name="KbsMegaphone__update_pin">Päivitä PIN</string>
   <string name="KbsMegaphone__well_remind_you_later_creating_a_pin">Muistutamme sinua myöhemmin. PIN-koodin luomisesta tulee pakollinen %1$d päivän kuluttua.</string>
   <string name="KbsMegaphone__well_remind_you_later_confirming_your_pin">Muistutamme sinua myöhemmin. PIN-koodin vahvistamisesta tulee pakollinen %1$d päivän kuluttua.</string>
+  <!--Mention Megaphone-->
+  <string name="MentionsMegaphone__introducing_mentions">Esittelemme @maininnat</string>
   <!--transport_selection_list_item-->
   <string name="transport_selection_list_item__transport_icon">Tyypin kuvake</string>
   <string name="ConversationListFragment_loading">Ladataan…</string>
@@ -2010,5 +2054,12 @@ Vastaanotetiin avaintenvaihtoviesti, joka kuuluu väärälle protokollaversiolle
   <string name="RecipientBottomSheet_remove">Poista</string>
   <string name="RecipientBottomSheet_copied_to_clipboard">Kopioitu leikepöydälle</string>
   <string name="GroupRecipientListItem_admin">Ylläpitäjä</string>
+  <!--GroupsLearnMoreBottomSheetDialogFragment-->
+  <string name="GroupsLearnMore_legacy_vs_new_groups">Vanhan tyyliset vs. uudet ryhmät</string>
+  <string name="GroupsLearnMore_what_are_legacy_groups">Mitä ovat vanhan tyylin ryhmät?</string>
+  <string name="GroupsLearnMore_paragraph_1">Vanhan tyylin ryhmät ovat ryhmiä, jotka eivät ole yhteensopivia uusien ryhmien ominaisuuksien kanssa, kuten ylläpitäjyyden ja kuvaavien ryhmäpäivityksien.</string>
+  <string name="GroupsLearnMore_how_do_i_use_new_groups">Kuinka voin käyttää uusia ryhmiä?</string>
+  <string name="GroupsLearnMore_paragraph_2">Vanhan tyylin ryhmiä ei voida muuttaa uusiksi ryhmiksi, mutta voit luoda uuden ryhmän samoilla jäsenillä.</string>
+  <string name="GroupsLearnMore_paragraph_3">Uuden ryhmän luomiseksi kaikkien jäsenten tulee päivittää Signalin uusimpaan versioon.</string>
   <!--EOF-->
 </resources>

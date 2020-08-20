@@ -188,11 +188,11 @@
   <string name="ConversationActivity_this_device_does_not_appear_to_support_dial_actions">ఈ పరికరం డయల్ చర్యలుకు మద్దతు కనిపించడం లేదు.</string>
   <string name="ConversationActivity_leave_group">సమూహం నుండి వైదొలగాలా?</string>
   <string name="ConversationActivity_are_you_sure_you_want_to_leave_this_group">మీరు ఈ సమూహాన్ని వదిలిపెట్టాలనుకుంటున్నారా?</string>
+  <string name="ConversationActivity_choose_new_admin">క్రొత్త నిర్వాహకుడిని ఎంచుకోండి</string>
   <string name="ConversationActivity_transport_insecure_sms">అసురక్షిత సందేశం</string>
   <string name="ConversationActivity_transport_insecure_mms">అసురక్షిత ఎమ్మెమ్మెస్</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
   <string name="ConversationActivity_lets_switch_to_signal">మనం Signal %1$sకు మారుదాం</string>
-  <!-- Removed by excludeNonTranslatables <string name="ConversationActivity_error_leaving_group">సమూహం నుండి వైదొలగటంలో లోపం</string> -->
   <string name="ConversationActivity_specify_recipient">దయచేసి ఒక పరిచయం ఎంచుకోండి</string>
   <string name="ConversationActivity_unblock_this_contact_question">ఈ పరిచయం నిరోధించాలా?</string>
   <string name="ConversationActivity_unblock_this_group_question">ఈ సమూహాన్ని అన్బ్లాక్ చేయాలా?</string>
@@ -308,6 +308,7 @@
   <!--ConversationTitleView-->
   <string name="ConversationTitleView_verified">ధృవీకరించబడింది</string>
   <string name="ConversationTitleView_you">మీరు</string>
+  <!--CreateGroupActivity-->
   <!--CreateProfileActivity-->
   <string name="CreateProfileActivity__profile">రూపం</string>
   <string name="CreateProfileActivity_error_setting_profile_photo">రూపచిత్రం సెట్ చేయడంలో లోపం</string>
@@ -367,6 +368,9 @@
   <string name="GiphyFragmentPagerAdapter_gifs">గిఫ్ లు</string>
   <string name="GiphyFragmentPagerAdapter_stickers">స్టిక్కర్లు</string>
   <!--AddToGroupActivity-->
+  <!--ChooseNewAdminActivity-->
+  <string name="ChooseNewAdminActivity_choose_new_admin">క్రొత్త నిర్వాహకుడిని ఎంచుకోండి</string>
+  <string name="ChooseNewAdminActivity_done">పూర్తి</string>
   <!--GroupShareProfileView-->
   <string name="GroupShareProfileView_share_your_profile_name_and_photo_with_this_group">మీ రూపం పేరు మరియు చిత్రం  ఈ గ్రూపుతో షేర్ చేయాలా?</string>
   <string name="GroupShareProfileView_do_you_want_to_make_your_profile_name_and_photo_visible_to_all_current_and_future_members_of_this_group">మీరు మీ రూపం పేరు మరియు చిత్రం  ఈ సమూహం యొక్క అన్ని ప్రస్తుత మరియు భవిష్యత్తు సభ్యులకు కనిపించాలనుకుంటున్నారా?</string>
@@ -374,9 +378,13 @@
   <!--GroupMembersDialog-->
   <string name="GroupMembersDialog_you">మీరు</string>
   <!--GV2 access levels-->
-  <string name="GroupManagement_access_level_anyone">ఎవరైనా</string>
   <string name="GroupManagement_access_level_all_members">సభ్యులందరు</string>
   <string name="GroupManagement_access_level_only_admins">పరిపాలకులు మాత్రమే</string>
+  <!--GV2 invites sent-->
+  <string name="GroupManagement_learn_more">ఇంకా నేర్చుకో</string>
+  <!--LinkPreviewsMegaphone-->
+  <string name="LinkPreviewsMegaphone_disable">అచేతనించు</string>
+  <!--LinkPreviewView-->
   <!--PendingMembersActivity-->
   <string name="PendingMemberInvitesActivity_pending_group_invites">ఆమోదించవలసిన సమూహ ఆహ్వానములు</string>
   <string name="PendingMembersActivity_people_you_invited">మీరు ఆహ్వానించినవారు</string>
@@ -384,16 +392,6 @@
   <string name="PendingMembersActivity_invites_by_other_group_members">మిగతా సమూహ సభ్యుల ఆహ్వానములు</string>
   <string name="PendingMembersActivity_no_pending_invites_by_other_group_members">మిగతా సమూహ సభ్యుల ఆహ్వానములలో ఆమోదించవలసినవి లేవు</string>
   <string name="PendingMembersActivity_missing_detail_explanation">మిగతా సమూహ సభ్యులచే ఆహ్వానింపబడిన వ్యక్తుల వివరాలు చూపబడవు. ఆ వ్యక్తులు సమూహములో చేరినపుడు వారి వివరాలు పంచబడతాయి. వారు సమూహములో చేరనంత వరకు సమూహములోని సందేశములు చూడలేరు.</string>
-  <string name="PendingMembersActivity_cancel_invite">ఆహ్వానం రద్దుచేయి</string>
-  <string name="PendingMembersActivity_cancel_invites">ఆహ్వానములు రద్దుచేయి</string>
-  <plurals name="PendingMembersActivity_cancel_d_invites">
-    <item quantity="one">ఆహ్వానం రద్దుచేయి</item>
-    <item quantity="other">%1$d ఆహ్వానములు రద్దుచేయి</item>
-  </plurals>
-  <plurals name="PendingMembersActivity_error_canceling_invite">
-    <item quantity="one">ఆహ్వానము రద్దుచేయడం కుదరలేదు</item>
-    <item quantity="other">ఆహ్వానములు రద్దుచేయడం కుదరలేదు</item>
-  </plurals>
   <!--AddMembersActivity-->
   <string name="AddMembersActivity__done">పూర్తి</string>
   <!--AddGroupDetailsFragment-->
@@ -402,17 +400,19 @@
   <string name="AddGroupDetailsFragment__members"> సభ్యులు</string>
   <string name="AddGroupDetailsFragment__group_name_required">సమూహం పేరు (అవసరం)</string>
   <string name="AddGroupDetailsFragment__remove">తొలగించు</string>
+  <!--NonGv2MemberDialog-->
   <!--ManageGroupActivity-->
   <string name="ManageGroupActivity_disappearing_messages">అదృశ్యమవుతున్న  సందేశాలు</string>
   <string name="ManageGroupActivity_pending_group_invites">ఆమోదించవలసిన సమూహ ఆహ్వానములు</string>
+  <string name="ManageGroupActivity_add_members">సభ్యులు జోడించు</string>
   <string name="ManageGroupActivity_leave_group">సమూహాన్ని వదులు</string>
   <string name="ManageGroupActivity_mute_notifications">  ప్రకటనలను మ్యూట్లో ఉంచు</string>
   <string name="ManageGroupActivity_custom_notifications">అనుకూల ప్రకటనలను</string>
   <string name="ManageGroupActivity_off">ఆఫ్</string>
   <string name="ManageGroupActivity_on">ఆన్</string>
-  <string name="ManageGroupActivity_add_members">సభ్యులు జోడించు</string>
   <string name="ManageGroupActivity_view_all_members">సభ్యులందరినీ చూడండి</string>
   <string name="ManageGroupActivity_none">ఏదీ కాదు</string>
+  <!--GroupMentionSettingDialog-->
   <!--ManageRecipientActivity-->
   <string name="ManageRecipientActivity_disappearing_messages">అదృశ్యమవుతున్న  సందేశాలు</string>
   <string name="ManageRecipientActivity_block">నిరోధించు</string>
@@ -437,12 +437,10 @@
   <string name="CustomNotificationsDialogFragment__enabled">చేతనం అయింది</string>
   <string name="CustomNotificationsDialogFragment__disabled">అచేతనం అయింది</string>
   <string name="CustomNotificationsDialogFragment__default">అప్రమేయం</string>
-  <!--GV2 Invite cancellation confirmation-->
-  <string name="GroupManagement_cancel_own_single_invite">మీరు %1$s కి పంపిన ఆహ్వానము రద్దు చేయదలుచుకున్నారా?</string>
-  <plurals name="GroupManagement_cancel_others_invites">
-    <item quantity="one">మీరు %1$s పంపిన ఆహ్వానము రద్దు చేయదలుచుకున్నారా?</item>
-    <item quantity="other">మీరు %1$s పంపిన %2$d ఆహ్వానములు రద్దు చేయదలుచుకున్నారా?</item>
-  </plurals>
+  <!--GV2 Invite Revoke confirmation dialog-->
+  <!--GroupJoinBottomSheetDialogFragment-->
+  <!--GroupJoinUpdateRequiredBottomSheetDialogFragment-->
+  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">Signal ను నవీకరించండి</string>
   <!--CropImageActivity-->
   <string name="CropImageActivity_group_avatar">గ్రూప్ అవతార్</string>
   <string name="CropImageActivity_profile_avatar">అవతారము</string>
@@ -625,7 +623,6 @@
   </plurals>
   <string name="MessageRecord_someone_declined_an_invitation_to_the_group">ఎవరో సమూహ ఆహ్వానాన్ని తిరస్కరించారు.</string>
   <string name="MessageRecord_you_declined_the_invitation_to_the_group">మీరు సమూహ ఆహ్వానాన్ని తిరస్కరించారు.</string>
-  <string name="MessageRecord_your_invitation_to_the_group_was_revoked">సమూహానికి మీ ఆహ్వానం ఉపసంహరించబడింది.</string>
   <!--GV2 invitation acceptance-->
   <string name="MessageRecord_you_accepted_invite">మీరు సమూహ ఆహ్వానాన్ని ఆమోదించారు.</string>
   <string name="MessageRecord_s_accepted_invite">%1$s సమూహ ఆహ్వానాన్ని ఆమోదించారు.</string>
@@ -664,10 +661,6 @@
   <plurals name="MessageRequestProfileView_members_and_invited">
     <item quantity="one"> %1$d సభ్యుడు (%2$d ఆహ్వానింపబడినవారు)</item>
     <item quantity="other">%1$d సభ్యులు (+%2$d ఆహ్వానింపబడినవారు)</item>
-  </plurals>
-  <plurals name="MessageRequestProfileView_member_of_others">
-    <item quantity="one">%dఇతర</item>
-    <item quantity="other">%dఇతరులు </item>
   </plurals>
   <!--PassphraseChangeActivity-->
   <string name="PassphraseChangeActivity_passphrases_dont_match_exclamation">సంకేతపదములను సరిపోలడం లేదు!</string>
@@ -947,8 +940,6 @@
   <string name="MmsMessageRecord_mms_message_encrypted_for_non_existing_session">ఎంఎంఎస్ సందేశాన్ని మనుగడలో కాని సెషన్ కోసం గుప్తీకరించబడింది</string>
   <!--MuteDialog-->
   <string name="MuteDialog_mute_notifications">  ప్రకటనలను మ్యూట్లో ఉంచు</string>
-  <!--OutdatedBuildReminder-->
-  <string name="OutdatedBuildReminder_no_web_browser_installed">వెబ్ బ్రౌజర్ ఇన్స్టాల్ చేయబడలేదు</string>
   <!--ApplicationMigrationService-->
   <string name="ApplicationMigrationService_import_in_progress">దిగుమతి పురోగతిలో ఉంది</string>
   <string name="ApplicationMigrationService_importing_text_messages">సాధా సందేశాలు దిగుమతి అవుతున్నాయి </string>
@@ -1193,6 +1184,7 @@
     <item quantity="other">%d వారాలు</item>
   </plurals>
   <string name="expiration_weeks_abbreviated">%dw</string>
+  <string name="expiration_combined">%1$s %2$s</string>
   <!--unverified safety numbers-->
   <string name="IdentityUtil_unverified_banner_one">%s తో మీ భద్రతా నంబరు మారింది మరియు ధృవీకరించబడలేదు</string>
   <string name="IdentityUtil_unverified_banner_two">మీ భద్రతా నంబర్లు %1$s మరియు %2$s ఇకపై ధృవీకరించబడవు</string>
@@ -1362,8 +1354,6 @@
   <string name="preferences__use_signal_for_viewing_and_storing_all_incoming_multimedia_messages">వచ్చే మల్టీమీడియా సందేశాల కోసం Signal ఉపయోగించండి</string>
   <string name="preferences__pref_enter_sends_title">ఎంటర్ కీ పంపుతుంది </string>
   <string name="preferences__pressing_the_enter_key_will_send_text_messages"> ప్రారంబించే కీ ని నొక్కడం ద్వారా సందేశాలను పంపుతోంది</string>
-  <string name="preferences__send_link_previews">లింక్ పూర్వప్రదర్శనను పంపండి</string>
-  <string name="preferences__previews_are_supported_for">Imgur, Instagram, Pinterest, Reddit మరియు YouTube లింక్‌లకు పూర్వప్రదర్శనలు మద్దతు ఇస్తున్నాయి</string>
   <string name="preferences__choose_identity">గుర్తింపును ఎంచుకోండి</string>
   <string name="preferences__choose_your_contact_entry_from_the_contacts_list">కాంటాక్ట్స్ జాబితా నుండి మీ పరిచయం ఎంట్రీ ఎంచుకోండి.</string>
   <string name="preferences__change_passphrase">సంకేతపదమును మార్చు</string>
@@ -1511,6 +1501,7 @@
   <!--conversation_list-->
   <string name="conversation_list_settings_shortcut">సెట్టింగుల సత్వరమార్గం</string>
   <string name="conversation_list_search_description">వెతకండి</string>
+  <string name="conversation_list__chats">మాటామంతి</string>
   <!--conversation_list_item_view-->
   <string name="conversation_list_item_view__contact_photo_image">పరిచయ ఫొటొ చిత్రం</string>
   <string name="conversation_list_item_view__archived">భద్రపరచబడినది</string>
@@ -1663,6 +1654,7 @@
   <string name="KbsMegaphone__create_pin">పిన్ సృష్టించండి</string>
   <string name="KbsMegaphone__introducing_pins">పిన్‌లను పరిచయం చేస్తోంది</string>
   <string name="KbsMegaphone__update_pin">పిన్‌ను నవీకరించండి</string>
+  <!--Mention Megaphone-->
   <!--transport_selection_list_item-->
   <string name="transport_selection_list_item__transport_icon">రవాణా చిహ్నం</string>
   <string name="ConversationListFragment_loading">లోడ్…</string>
@@ -1773,5 +1765,6 @@
   <string name="RecipientBottomSheet_remove">తొలగించు</string>
   <string name="RecipientBottomSheet_copied_to_clipboard">క్లిప్బోర్డ్కు కాపీ చేయబడింది</string>
   <string name="GroupRecipientListItem_admin">అడ్మిన్</string>
+  <!--GroupsLearnMoreBottomSheetDialogFragment-->
   <!--EOF-->
 </resources>

@@ -2,6 +2,7 @@ package org.thoughtcrime.securesms.conversation;
 
 import android.app.Application;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -12,7 +13,6 @@ import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
-import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mediasend.Media;
@@ -28,14 +28,16 @@ class ConversationViewModel extends ViewModel {
 
   private static final String TAG = Log.tag(ConversationViewModel.class);
 
-  private final Application                        context;
-  private final MediaRepository                    mediaRepository;
-  private final ConversationRepository             conversationRepository;
-  private final MutableLiveData<List<Media>>       recentMedia;
-  private final MutableLiveData<Long>              threadId;
-  private final LiveData<PagedList<MessageRecord>> messages;
-  private final LiveData<ConversationData>         conversationMetadata;
-  private final Invalidator                        invalidator;
+  private final Application                              context;
+  private final MediaRepository                          mediaRepository;
+  private final ConversationRepository                   conversationRepository;
+  private final MutableLiveData<List<Media>>             recentMedia;
+  private final MutableLiveData<Long>                    threadId;
+  private final LiveData<PagedList<ConversationMessage>> messages;
+  private final LiveData<ConversationData>               conversationMetadata;
+  private final Invalidator                              invalidator;
+  private final MutableLiveData<Boolean>                 showScrollButtons;
+  private final MutableLiveData<Boolean>                 hasUnreadMentions;
 
   private int jumpToPosition;
 
@@ -46,6 +48,8 @@ class ConversationViewModel extends ViewModel {
     this.recentMedia            = new MutableLiveData<>();
     this.threadId               = new MutableLiveData<>();
     this.invalidator            = new Invalidator();
+    this.showScrollButtons      = new MutableLiveData<>(false);
+    this.hasUnreadMentions      = new MutableLiveData<>(false);
 
     LiveData<ConversationData> metadata = Transformations.switchMap(threadId, thread -> {
       LiveData<ConversationData> conversationData = conversationRepository.getConversationData(thread, jumpToPosition);
@@ -55,12 +59,12 @@ class ConversationViewModel extends ViewModel {
       return conversationData;
     });
 
-    LiveData<Pair<Long, PagedList<MessageRecord>>> messagesForThreadId = Transformations.switchMap(metadata, data -> {
-      DataSource.Factory<Integer, MessageRecord> factory = new ConversationDataSource.Factory(context, data.getThreadId(), invalidator);
-      PagedList.Config                           config  = new PagedList.Config.Builder()
-                                                                               .setPageSize(25)
-                                                                               .setInitialLoadSizeHint(25)
-                                                                               .build();
+    LiveData<Pair<Long, PagedList<ConversationMessage>>> messagesForThreadId = Transformations.switchMap(metadata, data -> {
+      DataSource.Factory<Integer, ConversationMessage> factory = new ConversationDataSource.Factory(context, data.getThreadId(), invalidator);
+      PagedList.Config                                 config  = new PagedList.Config.Builder()
+                                                                                     .setPageSize(25)
+                                                                                     .setInitialLoadSizeHint(25)
+                                                                                     .build();
 
       final int startPosition;
       if (data.shouldJumpToMessage()) {
@@ -94,11 +98,33 @@ class ConversationViewModel extends ViewModel {
     mediaRepository.getMediaInBucket(context, Media.ALL_MEDIA_BUCKET_ID, recentMedia::postValue);
   }
 
+  @MainThread
   void onConversationDataAvailable(long threadId, int startingPosition) {
     Log.d(TAG, "[onConversationDataAvailable] threadId: " + threadId + ", startingPosition: " + startingPosition);
     this.jumpToPosition = startingPosition;
 
     this.threadId.setValue(threadId);
+  }
+
+  void clearThreadId() {
+    this.jumpToPosition = -1;
+    this.threadId.postValue(-1L);
+  }
+
+  @NonNull LiveData<Boolean> getShowScrollToBottom() {
+    return Transformations.distinctUntilChanged(showScrollButtons);
+  }
+
+  @NonNull LiveData<Boolean> getShowMentionsButton() {
+    return Transformations.distinctUntilChanged(LiveDataUtil.combineLatest(showScrollButtons, hasUnreadMentions, (a, b) -> a && b));
+  }
+
+  void setHasUnreadMentions(boolean hasUnreadMentions) {
+    this.hasUnreadMentions.setValue(hasUnreadMentions);
+  }
+
+  void setShowScrollButtons(boolean showScrollButtons) {
+    this.showScrollButtons.setValue(showScrollButtons);
   }
 
   @NonNull LiveData<List<Media>> getRecentMedia() {
@@ -109,7 +135,7 @@ class ConversationViewModel extends ViewModel {
     return conversationMetadata;
   }
 
-  @NonNull LiveData<PagedList<MessageRecord>> getMessages() {
+  @NonNull LiveData<PagedList<ConversationMessage>> getMessages() {
     return messages;
   }
 

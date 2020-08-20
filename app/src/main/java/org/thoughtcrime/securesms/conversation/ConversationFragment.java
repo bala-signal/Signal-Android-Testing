@@ -18,6 +18,8 @@ package org.thoughtcrime.securesms.conversation;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +27,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.ClipboardManager;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -55,6 +57,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.google.android.collect.Sets;
 
@@ -63,6 +66,7 @@ import org.thoughtcrime.securesms.LoggingFragment;
 import org.thoughtcrime.securesms.PassphraseRequiredActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.attachments.Attachment;
+import org.thoughtcrime.securesms.components.ConversationScrollToView;
 import org.thoughtcrime.securesms.components.ConversationTypingView;
 import org.thoughtcrime.securesms.components.TooltipPopup;
 import org.thoughtcrime.securesms.components.recyclerview.SmoothScrollingLinearLayoutManager;
@@ -71,8 +75,10 @@ import org.thoughtcrime.securesms.contactshare.ContactUtil;
 import org.thoughtcrime.securesms.contactshare.SharedContactDetailsActivity;
 import org.thoughtcrime.securesms.conversation.ConversationAdapter.ItemClickListener;
 import org.thoughtcrime.securesms.conversation.ConversationAdapter.StickyHeaderViewHolder;
+import org.thoughtcrime.securesms.conversation.ConversationMessage.ConversationMessageFactory;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.MessagingDatabase;
+import org.thoughtcrime.securesms.database.MmsDatabase;
 import org.thoughtcrime.securesms.database.RecipientDatabase;
 import org.thoughtcrime.securesms.database.model.MediaMmsMessageRecord;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
@@ -127,8 +133,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -152,18 +156,28 @@ public class ConversationFragment extends LoggingFragment {
   private Locale                      locale;
   private RecyclerView                list;
   private RecyclerView.ItemDecoration lastSeenDecoration;
+  private RecyclerView.ItemDecoration stickyHeaderDecoration;
   private ViewSwitcher                topLoadMoreView;
   private ViewSwitcher                bottomLoadMoreView;
   private ConversationTypingView      typingView;
   private UnknownSenderView           unknownSenderView;
   private View                        composeDivider;
-  private View                        scrollToBottomButton;
+  private ConversationScrollToView    scrollToBottomButton;
+  private ConversationScrollToView    scrollToMentionButton;
   private TextView                    scrollDateHeader;
   private ConversationBannerView      conversationBanner;
   private ConversationBannerView      emptyConversationBanner;
   private MessageRequestViewModel     messageRequestViewModel;
+  private MessageCountsViewModel      messageCountsViewModel;
   private ConversationViewModel       conversationViewModel;
   private SnapToTopDataObserver       snapToTopDataObserver;
+  private MarkReadHelper              markReadHelper;
+  private Animation                   scrollButtonInAnimation;
+  private Animation                   mentionButtonInAnimation;
+  private Animation                   scrollButtonOutAnimation;
+  private Animation                   mentionButtonOutAnimation;
+  private OnScrollListener            conversationScrollListener;
+  private int                         pulsePosition = -1;
 
   public static void prepare(@NonNull Context context) {
     FrameLayout parent = new FrameLayout(context);
@@ -186,13 +200,13 @@ public class ConversationFragment extends LoggingFragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle) {
     final View view = inflater.inflate(R.layout.conversation_fragment, container, false);
-    list                    = ViewUtil.findById(view, android.R.id.list);
-    composeDivider          = ViewUtil.findById(view, R.id.compose_divider);
-    scrollToBottomButton    = ViewUtil.findById(view, R.id.scroll_to_bottom_button);
-    scrollDateHeader        = ViewUtil.findById(view, R.id.scroll_date_header);
-    emptyConversationBanner = ViewUtil.findById(view, R.id.empty_conversation_banner);
+    list                    = view.findViewById(android.R.id.list);
+    composeDivider          = view.findViewById(R.id.compose_divider);
 
-    scrollToBottomButton.setOnClickListener(v -> scrollToBottom());
+    scrollToBottomButton    = view.findViewById(R.id.scroll_to_bottom);
+    scrollToMentionButton   = view.findViewById(R.id.scroll_to_mention);
+    scrollDateHeader        = view.findViewById(R.id.scroll_date_header);
+    emptyConversationBanner = view.findViewById(R.id.empty_conversation_banner);
 
     final LinearLayoutManager layoutManager = new SmoothScrollingLinearLayoutManager(getActivity(), true);
     list.setHasFixedSize(false);
@@ -210,14 +224,16 @@ public class ConversationFragment extends LoggingFragment {
     typingView = (ConversationTypingView) inflater.inflate(R.layout.conversation_typing_view, container, false);
 
     new ConversationItemSwipeCallback(
-            messageRecord -> actionMode == null &&
-                             MenuState.canReplyToMessage(MenuState.isActionMessage(messageRecord), messageRecord, messageRequestViewModel.shouldShowMessageRequest()),
+            conversationMessage -> actionMode == null &&
+                                   MenuState.canReplyToMessage(MenuState.isActionMessage(conversationMessage.getMessageRecord()), conversationMessage.getMessageRecord(), messageRequestViewModel.shouldShowMessageRequest()),
             this::handleReplyMessage
     ).attachToRecyclerView(list);
 
     setupListLayoutListeners();
 
-    this.conversationViewModel = ViewModelProviders.of(requireActivity(), new ConversationViewModel.Factory()).get(ConversationViewModel.class);
+    this.messageCountsViewModel = ViewModelProviders.of(requireActivity()).get(MessageCountsViewModel.class);
+    this.conversationViewModel  = ViewModelProviders.of(requireActivity(), new ConversationViewModel.Factory()).get(ConversationViewModel.class);
+
     conversationViewModel.getMessages().observe(this, list -> {
       if (getListAdapter() != null && !list.getDataSource().isInvalid()) {
         Log.i(TAG, "submitList");
@@ -227,6 +243,25 @@ public class ConversationFragment extends LoggingFragment {
       }
     });
     conversationViewModel.getConversationMetadata().observe(this, this::presentConversationMetadata);
+
+    conversationViewModel.getShowMentionsButton().observe(this, shouldShow -> {
+      if (shouldShow) {
+        ViewUtil.animateIn(scrollToMentionButton, mentionButtonInAnimation);
+      } else {
+        ViewUtil.animateOut(scrollToMentionButton, mentionButtonOutAnimation, View.INVISIBLE);
+      }
+    });
+
+    conversationViewModel.getShowScrollToBottom().observe(this, shouldShow -> {
+      if (shouldShow) {
+        ViewUtil.animateIn(scrollToBottomButton, scrollButtonInAnimation);
+      } else {
+        ViewUtil.animateOut(scrollToBottomButton, scrollButtonOutAnimation, View.INVISIBLE);
+      }
+    });
+
+    scrollToBottomButton.setOnClickListener(v -> scrollToBottom());
+    scrollToMentionButton.setOnClickListener(v -> scrollToNextMention());
 
     return view;
   }
@@ -263,6 +298,7 @@ public class ConversationFragment extends LoggingFragment {
   public void onActivityCreated(Bundle bundle) {
     super.onActivityCreated(bundle);
 
+    initializeScrollButtonAnimations();
     initializeResources();
     initializeMessageRequestViewModel();
     initializeListAdapter();
@@ -288,9 +324,9 @@ public class ConversationFragment extends LoggingFragment {
 
     final long lastVisibleMessageTimestamp;
     if (firstVisiblePosition > 0 && lastVisiblePosition != RecyclerView.NO_POSITION) {
-      MessageRecord message = getListAdapter().getLastVisibleMessageRecord(lastVisiblePosition);
+      ConversationMessage message = getListAdapter().getLastVisibleConversationMessage(lastVisiblePosition);
 
-      lastVisibleMessageTimestamp = message != null ? message.getDateReceived() : 0;
+      lastVisibleMessageTimestamp = message != null ? message.getMessageRecord().getDateReceived() : 0;
     } else {
       lastVisibleMessageTimestamp = 0;
     }
@@ -402,7 +438,7 @@ public class ConversationFragment extends LoggingFragment {
           description = context.getString(R.string.MessageRequestProfileView_member_of_many_groups,
                                           HtmlUtil.bold(groups.get(0)),
                                           HtmlUtil.bold(groups.get(1)),
-                                          context.getResources().getQuantityString(R.plurals.MessageRequestProfileView_member_of_others, others, others));
+                                          context.getResources().getQuantityString(R.plurals.MessageRequestProfileView_member_of_d_additional_groups, others, others));
       }
 
       conversationBanner.setDescription(HtmlCompat.fromHtml(description, 0));
@@ -418,11 +454,19 @@ public class ConversationFragment extends LoggingFragment {
     this.recipient         = Recipient.live(getActivity().getIntent().getParcelableExtra(ConversationActivity.RECIPIENT_EXTRA));
     this.threadId          = this.getActivity().getIntent().getLongExtra(ConversationActivity.THREAD_ID_EXTRA, -1);
     this.unknownSenderView = new UnknownSenderView(getActivity(), recipient.get(), threadId, () -> clearHeaderIfNotTyping(getListAdapter()));
+    this.markReadHelper    = new MarkReadHelper(threadId, requireContext());
 
     conversationViewModel.onConversationDataAvailable(threadId, startingPosition);
+    messageCountsViewModel.setThreadId(threadId);
 
-    OnScrollListener scrollListener = new ConversationScrollListener(getActivity());
-    list.addOnScrollListener(scrollListener);
+    messageCountsViewModel.getUnreadMessagesCount().observe(getViewLifecycleOwner(), scrollToBottomButton::setUnreadCount);
+    messageCountsViewModel.getUnreadMentionsCount().observe(getViewLifecycleOwner(), count -> {
+      scrollToMentionButton.setUnreadCount(count);
+      conversationViewModel.setHasUnreadMentions(count > 0);
+    });
+
+    conversationScrollListener = new ConversationScrollListener(requireContext());
+    list.addOnScrollListener(conversationScrollListener);
 
     if (oldThreadId != threadId) {
       ApplicationContext.getInstance(requireContext()).getTypingStatusRepository().getTypists(oldThreadId).removeObservers(this);
@@ -434,7 +478,7 @@ public class ConversationFragment extends LoggingFragment {
       Log.d(TAG, "Initializing adapter for " + recipient.getId());
       ConversationAdapter adapter = new ConversationAdapter(GlideApp.with(this), locale, selectionClickListener, this.recipient.get());
       list.setAdapter(adapter);
-      list.addItemDecoration(new StickyHeaderDecoration(adapter, false, false));
+      setStickyHeaderDecoration(adapter);
       ConversationAdapter.initializePool(list.getRecycledViewPool());
 
       adapter.registerAdapterDataObserver(snapToTopDataObserver);
@@ -519,14 +563,14 @@ public class ConversationFragment extends LoggingFragment {
   }
 
   private void setCorrectMenuVisibility(@NonNull Menu menu) {
-    Set<MessageRecord> messageRecords = getListAdapter().getSelectedItems();
+    Set<ConversationMessage> messages = getListAdapter().getSelectedItems();
 
-    if (actionMode != null && messageRecords.size() == 0) {
+    if (actionMode != null && messages.size() == 0) {
       actionMode.finish();
       return;
     }
 
-    MenuState menuState = MenuState.getMenuState(messageRecords, messageRequestViewModel.shouldShowMessageRequest());
+    MenuState menuState = MenuState.getMenuState(Stream.of(messages).map(ConversationMessage::getMessageRecord).collect(Collectors.toSet()), messageRequestViewModel.shouldShowMessageRequest());
 
     menu.findItem(R.id.menu_context_forward).setVisible(menuState.shouldShowForwardAction());
     menu.findItem(R.id.menu_context_reply).setVisible(menuState.shouldShowReplyAction());
@@ -544,8 +588,8 @@ public class ConversationFragment extends LoggingFragment {
     return (SmoothScrollingLinearLayoutManager) list.getLayoutManager();
   }
 
-  private MessageRecord getSelectedMessageRecord() {
-    Set<MessageRecord> messageRecords = getListAdapter().getSelectedItems();
+  private ConversationMessage getSelectedConversationMessage() {
+    Set<ConversationMessage> messageRecords = getListAdapter().getSelectedItems();
 
     if (messageRecords.size() == 1) return messageRecords.iterator().next();
     else                            throw new AssertionError();
@@ -560,6 +604,7 @@ public class ConversationFragment extends LoggingFragment {
 
       snapToTopDataObserver.requestScrollPosition(0);
       conversationViewModel.onConversationDataAvailable(threadId, -1);
+      messageCountsViewModel.setThreadId(threadId);
       initializeListAdapter();
     }
   }
@@ -572,6 +617,15 @@ public class ConversationFragment extends LoggingFragment {
     }
   }
 
+  public void setStickyHeaderDecoration(@NonNull ConversationAdapter adapter) {
+    if (stickyHeaderDecoration != null) {
+      list.removeItemDecoration(stickyHeaderDecoration);
+    }
+
+    stickyHeaderDecoration = new StickyHeaderDecoration(adapter, false, false);
+    list.addItemDecoration(stickyHeaderDecoration);
+  }
+
   public void setLastSeen(long lastSeen) {
     if (lastSeenDecoration != null) {
       list.removeItemDecoration(lastSeenDecoration);
@@ -581,37 +635,30 @@ public class ConversationFragment extends LoggingFragment {
     list.addItemDecoration(lastSeenDecoration);
   }
 
-  private void handleCopyMessage(final Set<MessageRecord> messageRecords) {
-    List<MessageRecord> messageList = new LinkedList<>(messageRecords);
-    Collections.sort(messageList, new Comparator<MessageRecord>() {
-      @Override
-      public int compare(MessageRecord lhs, MessageRecord rhs) {
-        if      (lhs.getDateReceived() < rhs.getDateReceived())  return -1;
-        else if (lhs.getDateReceived() == rhs.getDateReceived()) return 0;
-        else                                                     return 1;
-      }
-    });
+  private void handleCopyMessage(final Set<ConversationMessage> conversationMessages) {
+    List<ConversationMessage> messageList = new ArrayList<>(conversationMessages);
+    Collections.sort(messageList, (lhs, rhs) -> Long.compare(lhs.getMessageRecord().getDateReceived(), rhs.getMessageRecord().getDateReceived()));
 
-    StringBuilder    bodyBuilder = new StringBuilder();
-    ClipboardManager clipboard   = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+    SpannableStringBuilder bodyBuilder = new SpannableStringBuilder();
+    ClipboardManager       clipboard   = (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
 
-    for (MessageRecord messageRecord : messageList) {
-      String body = messageRecord.getDisplayBody(requireContext()).toString();
+    for (ConversationMessage message : messageList) {
+      CharSequence body = message.getDisplayBody(requireContext());
       if (!TextUtils.isEmpty(body)) {
-        bodyBuilder.append(body).append('\n');
+        if (bodyBuilder.length() > 0) {
+          bodyBuilder.append('\n');
+        }
+        bodyBuilder.append(body);
       }
     }
-    if (bodyBuilder.length() > 0 && bodyBuilder.charAt(bodyBuilder.length() - 1) == '\n') {
-      bodyBuilder.deleteCharAt(bodyBuilder.length() - 1);
+
+    if (!TextUtils.isEmpty(bodyBuilder)) {
+      clipboard.setPrimaryClip(ClipData.newPlainText(null, bodyBuilder));
     }
-
-    String result = bodyBuilder.toString();
-
-    if (!TextUtils.isEmpty(result))
-        clipboard.setText(result);
   }
 
-  private void handleDeleteMessages(final Set<MessageRecord> messageRecords) {
+  private void handleDeleteMessages(final Set<ConversationMessage> conversationMessages) {
+    Set<MessageRecord> messageRecords = Stream.of(conversationMessages).map(ConversationMessage::getMessageRecord).collect(Collectors.toSet());
     if (FeatureFlags.remoteDelete()) {
       buildRemoteDeleteConfirmationDialog(messageRecords).show();
     } else {
@@ -646,6 +693,8 @@ public class ConversationFragment extends LoggingFragment {
 
             if (threadDeleted) {
               threadId = -1;
+              conversationViewModel.clearThreadId();
+              messageCountsViewModel.clearThreadId();
               listener.setThreadId(threadId);
             }
           }
@@ -685,6 +734,8 @@ public class ConversationFragment extends LoggingFragment {
 
             if (threadDeleted) {
               threadId = -1;
+              conversationViewModel.clearThreadId();
+              messageCountsViewModel.clearThreadId();
               listener.setThreadId(threadId);
             }
           }
@@ -725,12 +776,12 @@ public class ConversationFragment extends LoggingFragment {
     }
   }
 
-  private void handleDisplayDetails(MessageRecord message) {
-    startActivity(MessageDetailsActivity.getIntentForMessageDetails(requireContext(), message, recipient.getId(), threadId));
+  private void handleDisplayDetails(ConversationMessage message) {
+    startActivity(MessageDetailsActivity.getIntentForMessageDetails(requireContext(), message.getMessageRecord(), recipient.getId(), threadId));
   }
 
-  private void handleForwardMessage(MessageRecord message) {
-    if (message.isViewOnce()) {
+  private void handleForwardMessage(ConversationMessage conversationMessage) {
+    if (conversationMessage.getMessageRecord().isViewOnce()) {
       throw new AssertionError("Cannot forward a view-once message.");
     }
 
@@ -738,10 +789,10 @@ public class ConversationFragment extends LoggingFragment {
 
     SimpleTask.run(getLifecycle(), () -> {
       Intent composeIntent = new Intent(getActivity(), ShareActivity.class);
-      composeIntent.putExtra(Intent.EXTRA_TEXT, message.getDisplayBody(requireContext()).toString());
+      composeIntent.putExtra(Intent.EXTRA_TEXT, conversationMessage.getDisplayBody(requireContext()));
 
-      if (message.isMms()) {
-        MmsMessageRecord mediaMessage = (MmsMessageRecord) message;
+      if (conversationMessage.getMessageRecord().isMms()) {
+        MmsMessageRecord mediaMessage = (MmsMessageRecord) conversationMessage.getMessageRecord();
         boolean          isAlbum      = mediaMessage.containsMediaSlide()                      &&
                                         mediaMessage.getSlideDeck().getSlides().size() > 1     &&
                                         mediaMessage.getSlideDeck().getAudioSlide() == null    &&
@@ -771,7 +822,7 @@ public class ConversationFragment extends LoggingFragment {
                                       Optional.fromNullable(attachment.getCaption()),
                                       Optional.absent()));
             }
-          };
+          }
 
           if (!mediaList.isEmpty()) {
             composeIntent.putExtra(ConversationActivity.MEDIA_EXTRA, mediaList);
@@ -812,7 +863,7 @@ public class ConversationFragment extends LoggingFragment {
     }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, message);
   }
 
-  private void handleReplyMessage(final MessageRecord message) {
+  private void handleReplyMessage(final ConversationMessage message) {
     if (getActivity() != null) {
       //noinspection ConstantConditions
       ((AppCompatActivity) getActivity()).getSupportActionBar().collapseActionView();
@@ -858,7 +909,7 @@ public class ConversationFragment extends LoggingFragment {
     if (getListAdapter() != null) {
       clearHeaderIfNotTyping(getListAdapter());
       setLastSeen(0);
-      getListAdapter().addFastRecord(messageRecord);
+      getListAdapter().addFastRecord(ConversationMessageFactory.createWithResolvedData(messageRecord, messageRecord.getDisplayBody(requireContext()), message.getMentions()));
       list.post(() -> list.scrollToPosition(0));
     }
 
@@ -871,7 +922,7 @@ public class ConversationFragment extends LoggingFragment {
     if (getListAdapter() != null) {
       clearHeaderIfNotTyping(getListAdapter());
       setLastSeen(0);
-      getListAdapter().addFastRecord(messageRecord);
+      getListAdapter().addFastRecord(ConversationMessageFactory.createWithResolvedData(messageRecord));
       list.post(() -> list.scrollToPosition(0));
     }
 
@@ -910,6 +961,8 @@ public class ConversationFragment extends LoggingFragment {
       }
 
       listener.onCursorChanged();
+
+      conversationScrollListener.onScrolled(list, 0, 0);
     };
 
     int lastSeenPosition     = adapter.getAdapterPositionForMessagePosition(conversation.getLastSeenPosition());
@@ -921,7 +974,7 @@ public class ConversationFragment extends LoggingFragment {
       snapToTopDataObserver.buildScrollPosition(conversation.getJumpToPosition())
                            .withOnScrollRequestComplete(() -> {
                              afterScroll.run();
-                             getListAdapter().pulseHighlightItem(conversation.getJumpToPosition());
+                             getListAdapter().pulseAtPosition(conversation.getJumpToPosition());
                            })
                            .submit();
     } else if (conversation.isMessageRequestAccepted()) {
@@ -959,27 +1012,40 @@ public class ConversationFragment extends LoggingFragment {
     }
   }
 
+  @SuppressWarnings("CodeBlock2Expr")
   public void jumpToMessage(@NonNull RecipientId author, long timestamp, @Nullable Runnable onMessageNotFound) {
     SimpleTask.run(getLifecycle(), () -> {
       return DatabaseFactory.getMmsSmsDatabase(getContext())
                             .getMessagePositionInConversation(threadId, timestamp, author);
-    }, p -> moveToMessagePosition(p + (isTypingIndicatorShowing() ? 1 : 0), onMessageNotFound));
+    }, p -> moveToPosition(p + (isTypingIndicatorShowing() ? 1 : 0), onMessageNotFound));
   }
 
-  private void moveToMessagePosition(int position, @Nullable Runnable onMessageNotFound) {
+  private void moveToPosition(int position, @Nullable Runnable onMessageNotFound) {
     conversationViewModel.onConversationDataAvailable(threadId, position);
     snapToTopDataObserver.buildScrollPosition(position)
                          .withOnPerformScroll(((layoutManager, p) ->
-                           list.post(() -> {
-                             layoutManager.scrollToPosition(p);
-                             getListAdapter().pulseHighlightItem(position);
-                           })
+                             list.post(() -> {
+                               if (Math.abs(layoutManager.findFirstVisibleItemPosition() - p) < SCROLL_ANIMATION_THRESHOLD) {
+                                 View child = layoutManager.findViewByPosition(position);
+
+                                 if (child != null && layoutManager.isViewPartiallyVisible(child, true, false)) {
+                                   getListAdapter().pulseAtPosition(position);
+                                 } else {
+                                   pulsePosition = position;
+                                 }
+
+                                 list.smoothScrollToPosition(p);
+                               } else {
+                                 layoutManager.scrollToPosition(p);
+                                 getListAdapter().pulseAtPosition(position);
+                               }
+                             })
                          ))
                          .withOnInvalidPosition(() -> {
                            if (onMessageNotFound != null) {
                              onMessageNotFound.run();
                            }
-                           Log.w(TAG, "[moveToMessagePosition] Tried to navigate to message, but it wasn't found.");
+                           Log.w(TAG, "[moveToMentionPosition] Tried to navigate to mention, but it wasn't found.");
                          })
                          .submit();
   }
@@ -998,9 +1064,51 @@ public class ConversationFragment extends LoggingFragment {
     }
   }
 
+  private void initializeScrollButtonAnimations() {
+    scrollButtonInAnimation  = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_scale_in);
+    scrollButtonOutAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_scale_out);
+
+    mentionButtonInAnimation  = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_scale_in);
+    mentionButtonOutAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_scale_out);
+
+    scrollButtonInAnimation.setDuration(100);
+    scrollButtonOutAnimation.setDuration(50);
+
+    mentionButtonInAnimation.setDuration(100);
+    mentionButtonOutAnimation.setDuration(50);
+  }
+
+  private void scrollToNextMention() {
+    SimpleTask.run(getViewLifecycleOwner().getLifecycle(), () -> {
+      MmsDatabase mmsDatabase = DatabaseFactory.getMmsDatabase(ApplicationDependencies.getApplication());
+      return mmsDatabase.getOldestUnreadMentionDetails(threadId);
+    }, (pair) -> {
+      if (pair != null) {
+        jumpToMessage(pair.first, pair.second, () -> {});
+      }
+    });
+  }
+
+  private void postMarkAsReadRequest() {
+    if (getListAdapter().hasNoConversationMessages()) {
+      return;
+    }
+
+    int position = getListLayoutManager().findFirstVisibleItemPosition();
+    if (position >= (isTypingIndicatorShowing() ? 1 : 0)) {
+      ConversationMessage item = getListAdapter().getItem(position);
+      if (item != null) {
+        long timestamp = item.getMessageRecord()
+                             .getDateReceived();
+
+        markReadHelper.onViewsRevealed(timestamp);
+      }
+    }
+  }
+
   public interface ConversationFragmentListener {
     void setThreadId(long threadId);
-    void handleReplyMessage(MessageRecord messageRecord);
+    void handleReplyMessage(ConversationMessage conversationMessage);
     void onMessageActionToolbarOpened();
     void onForwardClicked();
     void onMessageRequest(@NonNull MessageRequestViewModel viewModel);
@@ -1011,51 +1119,47 @@ public class ConversationFragment extends LoggingFragment {
     void onCursorChanged();
     void onListVerticalTranslationChanged(float translationY);
     void onMessageWithErrorClicked(@NonNull MessageRecord messageRecord);
+    void handleReactionDetails(@NonNull View maskTarget);
   }
 
   private class ConversationScrollListener extends OnScrollListener {
 
-    private final Animation              scrollButtonInAnimation;
-    private final Animation              scrollButtonOutAnimation;
     private final ConversationDateHeader conversationDateHeader;
 
     private boolean wasAtBottom           = true;
-    private boolean wasAtZoomScrollHeight = false;
     private long    lastPositionId        = -1;
 
     ConversationScrollListener(@NonNull Context context) {
-      this.scrollButtonInAnimation  = AnimationUtils.loadAnimation(context, R.anim.fade_scale_in);
-      this.scrollButtonOutAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_scale_out);
       this.conversationDateHeader   = new ConversationDateHeader(context, scrollDateHeader);
 
-      this.scrollButtonInAnimation.setDuration(100);
-      this.scrollButtonOutAnimation.setDuration(50);
     }
 
     @Override
     public void onScrolled(@NonNull final RecyclerView rv, final int dx, final int dy) {
-      boolean currentlyAtBottom           = isAtBottom();
+      boolean currentlyAtBottom           = !rv.canScrollVertically(1);
       boolean currentlyAtZoomScrollHeight = isAtZoomScrollHeight();
       int     positionId                  = getHeaderPositionId();
 
       if (currentlyAtBottom && !wasAtBottom) {
         ViewUtil.fadeOut(composeDivider, 50, View.INVISIBLE);
-        ViewUtil.animateOut(scrollToBottomButton, scrollButtonOutAnimation, View.INVISIBLE);
       } else if (!currentlyAtBottom && wasAtBottom) {
         ViewUtil.fadeIn(composeDivider, 500);
       }
 
-      if (currentlyAtZoomScrollHeight && !wasAtZoomScrollHeight) {
-        ViewUtil.animateIn(scrollToBottomButton, scrollButtonInAnimation);
+      if (currentlyAtBottom) {
+        conversationViewModel.setShowScrollButtons(false);
+      } else if (currentlyAtZoomScrollHeight) {
+        conversationViewModel.setShowScrollButtons(true);
       }
 
       if (positionId != lastPositionId) {
         bindScrollHeader(conversationDateHeader, positionId);
       }
 
-      wasAtBottom           = currentlyAtBottom;
-      wasAtZoomScrollHeight = currentlyAtZoomScrollHeight;
-      lastPositionId        = positionId;
+      wasAtBottom    = currentlyAtBottom;
+      lastPositionId = positionId;
+
+      postMarkAsReadRequest();
     }
 
     @Override
@@ -1064,6 +1168,11 @@ public class ConversationFragment extends LoggingFragment {
         conversationDateHeader.show();
       } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
         conversationDateHeader.hide();
+
+        if (pulsePosition != -1) {
+          getListAdapter().pulseAtPosition(pulsePosition);
+          pulsePosition = -1;
+        }
       }
     }
 
@@ -1085,9 +1194,9 @@ public class ConversationFragment extends LoggingFragment {
   private class ConversationFragmentItemClickListener implements ItemClickListener {
 
     @Override
-    public void onItemClick(MessageRecord messageRecord) {
+    public void onItemClick(ConversationMessage conversationMessage) {
       if (actionMode != null) {
-        ((ConversationAdapter) list.getAdapter()).toggleSelection(messageRecord);
+        ((ConversationAdapter) list.getAdapter()).toggleSelection(conversationMessage);
         list.getAdapter().notifyDataSetChanged();
 
         if (getListAdapter().getSelectedItems().size() == 0) {
@@ -1100,9 +1209,11 @@ public class ConversationFragment extends LoggingFragment {
     }
 
     @Override
-    public void onItemLongClick(View maskTarget, MessageRecord messageRecord) {
+    public void onItemLongClick(View maskTarget, ConversationMessage conversationMessage) {
 
       if (actionMode != null) return;
+
+      MessageRecord messageRecord = conversationMessage.getMessageRecord();
 
       if (messageRecord.isSecure()                            &&
           !messageRecord.isRemoteDelete()                     &&
@@ -1113,12 +1224,12 @@ public class ConversationFragment extends LoggingFragment {
       {
         isReacting = true;
         list.setLayoutFrozen(true);
-        listener.handleReaction(maskTarget, messageRecord, new ReactionsToolbarListener(messageRecord), () -> {
+        listener.handleReaction(maskTarget, messageRecord, new ReactionsToolbarListener(conversationMessage), () -> {
           isReacting = false;
           list.setLayoutFrozen(false);
         });
       } else {
-        ((ConversationAdapter) list.getAdapter()).toggleSelection(messageRecord);
+        ((ConversationAdapter) list.getAdapter()).toggleSelection(conversationMessage);
         list.getAdapter().notifyDataSetChanged();
 
         actionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(actionModeCallback);
@@ -1143,7 +1254,7 @@ public class ConversationFragment extends LoggingFragment {
                               .getQuotedMessagePosition(threadId,
                                                         messageRecord.getQuote().getId(),
                                                         messageRecord.getQuote().getAuthor());
-      }, p -> moveToMessagePosition(p + (isTypingIndicatorShowing() ? 1 : 0), () -> {
+      }, p -> moveToPosition(p + (isTypingIndicatorShowing() ? 1 : 0), () -> {
         Toast.makeText(getContext(), R.string.ConversationFragment_quoted_message_no_longer_available, Toast.LENGTH_SHORT).show();
       }));
     }
@@ -1259,14 +1370,15 @@ public class ConversationFragment extends LoggingFragment {
     }
 
     @Override
-    public void onReactionClicked(long messageId, boolean isMms) {
+    public void onReactionClicked(@NonNull View reactionTarget, long messageId, boolean isMms) {
       if (getContext() == null) return;
 
+      listener.handleReactionDetails(reactionTarget);
       ReactionsBottomSheetDialogFragment.create(messageId, isMms).show(requireFragmentManager(), null);
     }
 
     @Override
-    public void onGroupMemberAvatarClicked(@NonNull RecipientId recipientId, @NonNull GroupId groupId) {
+    public void onGroupMemberClicked(@NonNull RecipientId recipientId, @NonNull GroupId groupId) {
       if (getContext() == null) return;
 
       RecipientBottomSheetDialogFragment.create(recipientId, groupId).show(requireFragmentManager(), "BOTTOM");
@@ -1275,6 +1387,11 @@ public class ConversationFragment extends LoggingFragment {
     @Override
     public void onMessageWithErrorClicked(@NonNull MessageRecord messageRecord) {
       listener.onMessageWithErrorClicked(messageRecord);
+    }
+
+    @Override
+    public boolean onUrlClicked(@NonNull String url) {
+      return CommunicationActions.handlePotentialGroupLinkUrl(requireActivity(), url);
     }
   }
 
@@ -1287,8 +1404,8 @@ public class ConversationFragment extends LoggingFragment {
     }
   }
 
-  private void handleEnterMultiSelect(@NonNull MessageRecord messageRecord) {
-    ((ConversationAdapter) list.getAdapter()).toggleSelection(messageRecord);
+  private void handleEnterMultiSelect(@NonNull ConversationMessage conversationMessage) {
+    ((ConversationAdapter) list.getAdapter()).toggleSelection(conversationMessage);
     list.getAdapter().notifyDataSetChanged();
 
     actionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(actionModeCallback);
@@ -1342,23 +1459,23 @@ public class ConversationFragment extends LoggingFragment {
 
   private class ReactionsToolbarListener implements Toolbar.OnMenuItemClickListener {
 
-    private final MessageRecord messageRecord;
+    private final ConversationMessage conversationMessage;
 
-    private ReactionsToolbarListener(@NonNull MessageRecord messageRecord) {
-      this.messageRecord = messageRecord;
+    private ReactionsToolbarListener(@NonNull ConversationMessage conversationMessage) {
+      this.conversationMessage = conversationMessage;
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
       switch (item.getItemId()) {
-        case R.id.action_info:        handleDisplayDetails(messageRecord);                         return true;
-        case R.id.action_delete:      handleDeleteMessages(Sets.newHashSet(messageRecord));        return true;
-        case R.id.action_copy:        handleCopyMessage(Sets.newHashSet(messageRecord));           return true;
-        case R.id.action_reply:       handleReplyMessage(messageRecord);                           return true;
-        case R.id.action_multiselect: handleEnterMultiSelect(messageRecord);                       return true;
-        case R.id.action_forward:     handleForwardMessage(messageRecord);                         return true;
-        case R.id.action_download:    handleSaveAttachment((MediaMmsMessageRecord) messageRecord); return true;
-        default:                                                                                   return false;
+        case R.id.action_info:        handleDisplayDetails(conversationMessage);                                            return true;
+        case R.id.action_delete:      handleDeleteMessages(Sets.newHashSet(conversationMessage));                           return true;
+        case R.id.action_copy:        handleCopyMessage(Sets.newHashSet(conversationMessage));                              return true;
+        case R.id.action_reply:       handleReplyMessage(conversationMessage);                                              return true;
+        case R.id.action_multiselect: handleEnterMultiSelect(conversationMessage);                                          return true;
+        case R.id.action_forward:     handleForwardMessage(conversationMessage);                                            return true;
+        case R.id.action_download:    handleSaveAttachment((MediaMmsMessageRecord) conversationMessage.getMessageRecord()); return true;
+        default:                                                                                                            return false;
       }
     }
   }
@@ -1417,24 +1534,24 @@ public class ConversationFragment extends LoggingFragment {
           actionMode.finish();
           return true;
         case R.id.menu_context_details:
-          handleDisplayDetails(getSelectedMessageRecord());
+          handleDisplayDetails(getSelectedConversationMessage());
           actionMode.finish();
           return true;
         case R.id.menu_context_forward:
-          handleForwardMessage(getSelectedMessageRecord());
+          handleForwardMessage(getSelectedConversationMessage());
           actionMode.finish();
           return true;
         case R.id.menu_context_resend:
-          handleResendMessage(getSelectedMessageRecord());
+          handleResendMessage(getSelectedConversationMessage().getMessageRecord());
           actionMode.finish();
           return true;
         case R.id.menu_context_save_attachment:
-          handleSaveAttachment((MediaMmsMessageRecord)getSelectedMessageRecord());
+          handleSaveAttachment((MediaMmsMessageRecord) getSelectedConversationMessage().getMessageRecord());
           actionMode.finish();
           return true;
         case R.id.menu_context_reply:
           maybeShowSwipeToReplyTooltip();
-          handleReplyMessage(getSelectedMessageRecord());
+          handleReplyMessage(getSelectedConversationMessage());
           actionMode.finish();
           return true;
       }

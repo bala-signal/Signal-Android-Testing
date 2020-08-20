@@ -65,7 +65,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class PushGroupSendJob extends PushSendJob {
+public final class PushGroupSendJob extends PushSendJob {
 
   public static final String KEY = "PushGroupSendJob";
 
@@ -74,8 +74,8 @@ public class PushGroupSendJob extends PushSendJob {
   private static final String KEY_MESSAGE_ID       = "message_id";
   private static final String KEY_FILTER_RECIPIENT = "filter_recipient";
 
-  private long        messageId;
-  private RecipientId filterRecipient;
+  private final long        messageId;
+  private final RecipientId filterRecipient;
 
   public PushGroupSendJob(long messageId, @NonNull RecipientId destination, @Nullable RecipientId filterRecipient, boolean hasMedia) {
     this(new Job.Parameters.Builder()
@@ -237,7 +237,10 @@ public class PushGroupSendJob extends PushSendJob {
         database.markAsSentFailed(messageId);
         notifyMediaMessageDeliveryFailed(context, messageId);
 
-        List<RecipientId>  mismatchRecipientIds = Stream.of(identityMismatches).map(mismatch -> mismatch.getRecipientId(context)).toList();
+        Set<RecipientId> mismatchRecipientIds = Stream.of(identityMismatches)
+                                                      .map(mismatch -> mismatch.getRecipientId(context))
+                                                      .collect(Collectors.toSet());
+
         RetrieveProfileJob.enqueue(mismatchRecipientIds);
       }
     } catch (UntrustedIdentityException | UndeliverableMessageException e) {
@@ -283,7 +286,8 @@ public class PushGroupSendJob extends PushSendJob {
     Optional<SignalServiceDataMessage.Sticker> sticker            = getStickerFor(message);
     List<SharedContact>                        sharedContacts     = getSharedContactsFor(message);
     List<Preview>                              previews           = getPreviewsFor(message);
-    List<SignalServiceAddress>                 addresses          = Stream.of(destinations).map(this::getPushAddress).toList();
+    List<SignalServiceDataMessage.Mention>     mentions           = getMentionsFor(message.getMentions());
+    List<SignalServiceAddress>                 addresses          = RecipientUtil.toSignalServiceAddressesFromResolved(context, destinations);
     List<Attachment>                           attachments        = Stream.of(message.getAttachments()).filterNot(Attachment::isSticker).toList();
     List<SignalServiceAttachment>              attachmentPointers = getAttachmentPointersFor(attachments);
     boolean                                    isRecipientUpdate  = destinations.size() != DatabaseFactory.getGroupReceiptDatabase(context).getGroupReceiptInfo(messageId).size();
@@ -320,8 +324,8 @@ public class PushGroupSendJob extends PushSendJob {
         GroupContext               groupContext     = properties.getGroupContext();
         SignalServiceAttachment    avatar           = attachmentPointers.isEmpty() ? null : attachmentPointers.get(0);
         SignalServiceGroup.Type    type             = properties.isQuit() ? SignalServiceGroup.Type.QUIT : SignalServiceGroup.Type.UPDATE;
-        List<SignalServiceAddress> members          = Stream.of(groupContext.getMembersList())
-                                                            .map(m -> new SignalServiceAddress(UuidUtil.parseOrNull(m.getUuid()), m.getE164()))
+        List<SignalServiceAddress> members          = Stream.of(groupContext.getMembersE164List())
+                                                            .map(e164 -> new SignalServiceAddress(null, e164))
                                                             .toList();
         SignalServiceGroup         group            = new SignalServiceGroup(type, groupId.getDecodedId(), groupContext.getName(), members, avatar);
         SignalServiceDataMessage   groupDataMessage = SignalServiceDataMessage.newBuilder()
@@ -349,6 +353,7 @@ public class PushGroupSendJob extends PushSendJob {
                                                      .withSticker(sticker.orNull())
                                                      .withSharedContacts(sharedContacts)
                                                      .withPreviews(previews)
+                                                     .withMentions(mentions)
                                                      .build();
 
       Log.i(TAG, JobLogger.format(this, "Beginning message send."));
