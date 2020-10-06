@@ -20,7 +20,7 @@ public class Megaphone {
 
   private final Event                  event;
   private final Style                  style;
-  private final boolean                mandatory;
+  private final Priority               priority;
   private final boolean                canSnooze;
   private final int                    titleRes;
   private final int                    bodyRes;
@@ -28,28 +28,32 @@ public class Megaphone {
   private final int                    buttonTextRes;
   private final EventListener          buttonListener;
   private final EventListener          snoozeListener;
+  private final int                    secondaryButtonTextRes;
+  private final EventListener          secondaryButtonListener;
   private final EventListener          onVisibleListener;
 
   private Megaphone(@NonNull Builder builder) {
-    this.event             = builder.event;
-    this.style             = builder.style;
-    this.mandatory         = builder.mandatory;
-    this.canSnooze         = builder.canSnooze;
-    this.titleRes          = builder.titleRes;
-    this.bodyRes           = builder.bodyRes;
-    this.imageRequest      = builder.imageRequest;
-    this.buttonTextRes     = builder.buttonTextRes;
-    this.buttonListener    = builder.buttonListener;
-    this.snoozeListener    = builder.snoozeListener;
-    this.onVisibleListener = builder.onVisibleListener;
+    this.event                   = builder.event;
+    this.style                   = builder.style;
+    this.priority                = builder.priority;
+    this.canSnooze               = builder.canSnooze;
+    this.titleRes                = builder.titleRes;
+    this.bodyRes                 = builder.bodyRes;
+    this.imageRequest            = builder.imageRequest;
+    this.buttonTextRes           = builder.buttonTextRes;
+    this.buttonListener          = builder.buttonListener;
+    this.snoozeListener          = builder.snoozeListener;
+    this.secondaryButtonTextRes  = builder.secondaryButtonTextRes;
+    this.secondaryButtonListener = builder.secondaryButtonListener;
+    this.onVisibleListener       = builder.onVisibleListener;
   }
 
   public @NonNull Event getEvent() {
     return event;
   }
 
-  public boolean isMandatory() {
-    return mandatory;
+  public @NonNull Priority getPriority() {
+    return priority;
   }
 
   public boolean canSnooze() {
@@ -88,6 +92,18 @@ public class Megaphone {
     return snoozeListener;
   }
 
+  public @StringRes int getSecondaryButtonText() {
+    return secondaryButtonTextRes;
+  }
+
+  public boolean hasSecondaryButton() {
+    return secondaryButtonTextRes != 0;
+  }
+
+  public @Nullable EventListener getSecondaryButtonClickListener() {
+    return secondaryButtonListener;
+  }
+
   public @Nullable EventListener getOnVisibleListener() {
     return onVisibleListener;
   }
@@ -97,7 +113,7 @@ public class Megaphone {
     private final Event  event;
     private final Style  style;
 
-    private boolean                mandatory;
+    private Priority               priority;
     private boolean                canSnooze;
     private int                    titleRes;
     private int                    bodyRes;
@@ -105,19 +121,22 @@ public class Megaphone {
     private int                    buttonTextRes;
     private EventListener          buttonListener;
     private EventListener          snoozeListener;
+    private int                    secondaryButtonTextRes;
+    private EventListener          secondaryButtonListener;
     private EventListener          onVisibleListener;
 
 
     public Builder(@NonNull Event event, @NonNull Style style) {
       this.event          = event;
       this.style          = style;
+      this.priority       = Priority.DEFAULT;
     }
 
     /**
      * Prioritizes this megaphone over others that do not set this flag.
      */
-    public @NonNull Builder setMandatory(boolean mandatory) {
-      this.mandatory = mandatory;
+    public @NonNull Builder setPriority(@NonNull Priority priority) {
+      this.priority = priority;
       return this;
     }
 
@@ -158,6 +177,12 @@ public class Megaphone {
       return this;
     }
 
+    public @NonNull Builder setSecondaryButton(@StringRes int secondaryButtonTextRes, @NonNull EventListener listener) {
+      this.secondaryButtonTextRes  = secondaryButtonTextRes;
+      this.secondaryButtonListener = listener;
+      return this;
+    }
+
     public @NonNull Builder setOnVisibleListener(@Nullable EventListener listener) {
       this.onVisibleListener = listener;
       return this;
@@ -190,6 +215,20 @@ public class Megaphone {
      * otherwise, the event will be marked finished (it will not be shown again).
      */
     POPUP
+  }
+
+  enum Priority {
+    DEFAULT(0), HIGH(1), CLIENT_EXPIRATION(1000);
+
+    int priorityValue;
+
+    Priority(int priorityValue) {
+      this.priorityValue = priorityValue;
+    }
+
+    public int getPriorityValue() {
+      return priorityValue;
+    }
   }
 
   public interface EventListener {

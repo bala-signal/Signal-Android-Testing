@@ -36,6 +36,7 @@ import org.thoughtcrime.securesms.push.SecurityEventListener;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.LiveRecipientCache;
 import org.thoughtcrime.securesms.messages.IncomingMessageObserver;
+import org.thoughtcrime.securesms.service.TrimThreadsByDateManager;
 import org.thoughtcrime.securesms.util.AlarmSleepTimer;
 import org.thoughtcrime.securesms.util.EarlyMessageCache;
 import org.thoughtcrime.securesms.util.FeatureFlags;
@@ -94,7 +95,6 @@ public class ApplicationDependencyProvider implements ApplicationDependencies.Pr
                                             new SignalProtocolStoreImpl(context),
                                             BuildConfig.SIGNAL_AGENT,
                                             TextSecurePreferences.isMultiDevice(context),
-                                            FeatureFlags.attachmentsV3(),
                                             Optional.fromNullable(IncomingMessageObserver.getPipe()),
                                             Optional.fromNullable(IncomingMessageObserver.getUnidentifiedPipe()),
                                             Optional.of(new SecurityEventListener(context)),
@@ -176,6 +176,11 @@ public class ApplicationDependencyProvider implements ApplicationDependencies.Pr
   @Override
   public @NonNull IncomingMessageObserver provideIncomingMessageObserver() {
     return new IncomingMessageObserver(context);
+  }
+
+  @Override
+  public @NonNull TrimThreadsByDateManager provideTrimThreadsByDateManager() {
+    return new TrimThreadsByDateManager(context);
   }
 
   private static class DynamicCredentialsProvider implements CredentialsProvider {

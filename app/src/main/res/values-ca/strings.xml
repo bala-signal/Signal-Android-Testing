@@ -47,6 +47,8 @@
   <string name="ApplicationPreferencesActivity_pins_are_required_for_registration_lock">Els PIN són necessaris per al bloqueig de registre. Per desactivar-los, primer desactiveu el bloqueig de registre.</string>
   <string name="ApplicationPreferencesActivity_pin_created">PIN creat.</string>
   <string name="ApplicationPreferencesActivity_pin_disabled">PIN desactivat.</string>
+  <string name="ApplicationPreferencesActivity_hide">Amaga</string>
+  <string name="ApplicationPreferencesActivity_hide_reminder">Amago el recordatori?</string>
   <!--AppProtectionPreferenceFragment-->
   <plurals name="AppProtectionPreferenceFragment_minutes">
     <item quantity="one">%d minute</item>
@@ -124,6 +126,10 @@
   <string name="ClearProfileActivity_remove">Suprimeix</string>
   <string name="ClearProfileActivity_remove_profile_photo">Voleu suprimir la foto de perfil?</string>
   <string name="ClearProfileActivity_remove_group_photo">Voleu suprimir la foto del grup?</string>
+  <!--ClientDeprecatedActivity-->
+  <string name="ClientDeprecatedActivity_update_signal">Actualitza el Signal</string>
+  <string name="ClientDeprecatedActivity_update">Actualització</string>
+  <string name="ClientDeprecatedActivity_warning">Advertiment</string>
   <!--CommunicationActions-->
   <string name="CommunicationActions_no_browser_found">No s\'ha trobat cap navegador web.</string>
   <string name="CommunicationActions_no_email_app_found">No s\'ha trobat cap aplicació de correu.</string>
@@ -139,7 +145,7 @@
   <string name="ConfirmIdentityDialog_you_may_wish_to_verify_your_safety_number_with_this_contact">Potser voleu verificar el número de seguretat amb aquest contacte.</string>
   <string name="ConfirmIdentityDialog_accept">Accepta</string>
   <!--ContactsCursorLoader-->
-  <string name="ContactsCursorLoader_recent_chats">Xats recents</string>
+  <string name="ContactsCursorLoader_recent_chats">Converses recents</string>
   <string name="ContactsCursorLoader_contacts">Contactes</string>
   <string name="ContactsCursorLoader_groups">Grups</string>
   <string name="ContactsCursorLoader_phone_number_search">Cerca de número de telèfon</string>
@@ -193,11 +199,6 @@
   <string name="ConversationActivity_added_to_home_screen">S\'ha afegit a la pantalla d\'inici.</string>
   <string name="ConversationActivity_calls_not_supported">Trucades no compatibles</string>
   <string name="ConversationActivity_this_device_does_not_appear_to_support_dial_actions">Aquest dispositiu sembla no suportar accions de trucada.</string>
-  <string name="ConversationActivity_leave_group">Voleu abandonar el grup?</string>
-  <string name="ConversationActivity_are_you_sure_you_want_to_leave_this_group">Segur que voleu abandonar aquest grup?</string>
-  <string name="ConversationActivity_choose_new_admin">Trieu un administrador nou</string>
-  <string name="ConversationActivity_before_you_leave_you_must_choose_at_least_one_new_admin_for_this_group">Abans d\'abandonar-lo, heu de triar almenys un administrador nou per a aquest grup.</string>
-  <string name="ConversationActivity_choose_admin">Trieu un administrador/a</string>
   <string name="ConversationActivity_transport_insecure_sms">SMS no segur</string>
   <string name="ConversationActivity_transport_insecure_mms">MMS no segur</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
@@ -213,6 +214,8 @@
   <string name="ConversationActivity_unable_to_record_audio">No s\'ha pogut enregistrar l\'àudio.</string>
   <string name="ConversationActivity_you_cant_send_messages_to_this_group">No podeu enviar missatges a aquest grup perquè ja no en sou membre.</string>
   <string name="ConversationActivity_there_is_no_app_available_to_handle_this_link_on_your_device">No hi ha cap aplicació que pugui obrir aquest enllaç.</string>
+  <string name="ConversationActivity_your_request_to_join_has_been_sent_to_the_group_admin">La sol·licitud per afegir-vos-hi s\'ha enviat a l\'administrador/a del grup. Rebreu una notificació quan la resolguin.</string>
+  <string name="ConversationActivity_cancel_request">Cancel·la la sol·licitud</string>
   <string name="ConversationActivity_to_send_audio_messages_allow_signal_access_to_your_microphone">Per enviar missatges d\'àudio, permeteu que el Signal tingui accés al micròfon.</string>
   <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">El Signal necessita el permís del micròfon per tal d\'enviar missatges d\'àudio, però s\'ha denegat permanentment. Si us plau, continueu cap al menú de configuració de l\'aplicació, seleccioneu Permisos i activeu-hi el micròfon.</string>
   <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">El Signal necessita el permís del micròfon i de la càmera per tal de trucar a %s, però s\'han denegat permanentment. Si us plau, continueu cap al menú de configuració de l\'aplicació, seleccioneu Permisos i activeu-hi el micròfon i la càmera.</string>
@@ -338,6 +341,7 @@
   <string name="AvatarSelectionBottomSheetDialogFragment__take_photo">Feu una fotografia</string>
   <string name="AvatarSelectionBottomSheetDialogFragment__choose_from_gallery">Trieu-ne una de la galeria</string>
   <string name="AvatarSelectionBottomSheetDialogFragment__remove_photo">Suprimeix la foto</string>
+  <string name="AvatarSelectionBottomSheetDialogFragment__taking_a_photo_requires_the_camera_permission">Fer una fotografia necessita permís de la càmera.</string>
   <!--DateUtils-->
   <string name="DateUtils_just_now">Ara</string>
   <string name="DateUtils_minutes_ago">%d min</string>
@@ -366,6 +370,7 @@
   <!--DozeReminder-->
   <string name="DozeReminder_optimize_for_missing_play_services">Optimitza per a la no presència dels Play Services</string>
   <string name="DozeReminder_this_device_does_not_support_play_services_tap_to_disable_system_battery">El dispositiu no és compatible amb Play Services. Toqueu per desactivar les optimitzacions de la bateria que impedeixen que el Signal rebi missatges quan estigui inactiu.</string>
+  <!--ExpiredBuildReminder-->
   <!--ShareActivity-->
   <string name="ShareActivity_share_with">Comparteix amb</string>
   <string name="ShareActivity_multiple_attachments_are_only_supported">Els adjunts múltiples només s\'admeten per a imatges i vídeos.</string>
@@ -386,6 +391,7 @@
   <string name="AddToGroupActivity_add_to_group">Afegeix-lo al grup</string>
   <string name="AddToGroupActivity_add_to_groups">Afegeix-lo als grups</string>
   <string name="AddToGroupActivity_this_person_cant_be_added_to_legacy_groups">Aquesta persona no es pot afegir a grups de llegat.</string>
+  <string name="AddToGroupActivity_add">Afegeix</string>
   <!--ChooseNewAdminActivity-->
   <string name="ChooseNewAdminActivity_choose_new_admin">Trieu un administrador nou</string>
   <string name="ChooseNewAdminActivity_done">Fet</string>
@@ -397,8 +403,10 @@
   <!--GroupMembersDialog-->
   <string name="GroupMembersDialog_you">Vós</string>
   <!--GV2 access levels-->
+  <string name="GroupManagement_access_level_anyone">Qualsevol</string>
   <string name="GroupManagement_access_level_all_members">Tots els membres</string>
   <string name="GroupManagement_access_level_only_admins">Només els administradors</string>
+  <string name="GroupManagement_access_level_no_one">Cap</string>
   <!--GV2 invites sent-->
   <plurals name="GroupManagement_invitation_sent">
     <item quantity="one">Invitació enviada</item>
@@ -407,14 +415,30 @@
   <string name="GroupManagement_invite_single_user">No podeu afegir automàticament %1$s a aquest grup. \n\nHan estat convidats a afegir-s\'hi i no veuran cap missatge del grup fins que no ho acceptin.</string>
   <string name="GroupManagement_learn_more">Més informació</string>
   <string name="GroupManagement_invite_multiple_users">No podeu afegir aquests usuaris automàticament a aquest grup.\n\nHan estat convidats a afegir-s\'hi i no veuran cap missatge del grup fins que ho acceptin.</string>
+  <!--LeaveGroupDialog-->
+  <string name="LeaveGroupDialog_leave_group">Voleu abandonar el grup?</string>
+  <string name="LeaveGroupDialog_you_will_no_longer_be_able_to_send_or_receive_messages_in_this_group">Ja no podreu enviar o rebre missatges d\'aquest grup.</string>
+  <string name="LeaveGroupDialog_leave">Surt</string>
+  <string name="LeaveGroupDialog_choose_new_admin">Trieu un administrador nou</string>
+  <string name="LeaveGroupDialog_before_you_leave_you_must_choose_at_least_one_new_admin_for_this_group">Abans d\'abandonar-lo, heu de triar almenys un administrador nou per a aquest grup.</string>
+  <string name="LeaveGroupDialog_choose_admin">Trieu un administrador</string>
   <!--LinkPreviewsMegaphone-->
   <string name="LinkPreviewsMegaphone_disable">Desactiva</string>
   <string name="LinkPreviewsMegaphone_preview_any_link">Previsualitza qualsevol enllaç</string>
   <string name="LinkPreviewsMegaphone_you_can_now_retrieve_link_previews_directly_from_any_website">Ara podeu recuperar les previsualitzacions d’enllaços directament des de qualsevol lloc web per als missatges que envieu.</string>
   <!--LinkPreviewView-->
   <string name="LinkPreviewView_no_link_preview_available">No hi ha previsualització d\'enllaç disponible.</string>
+  <string name="LinkPreviewView_this_group_link_is_not_active">Aquest enllaç de grup no està actiu.</string>
+  <string name="LinkPreviewView_domain_date">%1$s · %2$s</string>
+  <!--LinkPreviewRepository-->
+  <plurals name="LinkPreviewRepository_d_members">
+    <item quantity="one">%1$d membre</item>
+    <item quantity="other">%1$d membres</item>
+  </plurals>
   <!--PendingMembersActivity-->
   <string name="PendingMemberInvitesActivity_pending_group_invites">Invitacions de grup pendents</string>
+  <string name="PendingMembersActivity_requests">Sol·licituds</string>
+  <string name="PendingMembersActivity_invites">Invitacions</string>
   <string name="PendingMembersActivity_people_you_invited">Persones que heu convidat</string>
   <string name="PendingMembersActivity_you_have_no_pending_invites">No teniu invitacions pendents.</string>
   <string name="PendingMembersActivity_invites_by_other_group_members">Invitacions d\'altres membres del grup</string>
@@ -430,6 +454,12 @@
     <item quantity="one">Error en rebutjar la invitació</item>
     <item quantity="other">Error en rebutjar invitacions</item>
   </plurals>
+  <!--RequestingMembersFragment-->
+  <string name="RequestingMembersFragment_pending_member_requests">Sol·licituds d\'adhesió pendents</string>
+  <string name="RequestingMembersFragment_no_member_requests_to_show">No hi ha cap sol·licitud d\'adhesió per mostrar.</string>
+  <string name="RequestingMembersFragment_explanation">La gent d\'aquesta llista intenta afegir-se a aquest grup per l\'enllaç del grup.</string>
+  <string name="RequestingMembersFragment_added_s">S\'hi ha afegit %1$s</string>
+  <string name="RequestingMembersFragment_denied_s">S\'ha rebutjat %1$s</string>
   <!--AddMembersActivity-->
   <string name="AddMembersActivity__done">Fet</string>
   <string name="AddMembersActivity__this_person_cant_be_added_to_legacy_groups">Aquesta persona no es pot afegir a grups de llegat.</string>
@@ -437,6 +467,7 @@
     <item quantity="one">Voleu afegir %1$s a \"%2$s\"?</item>
     <item quantity="other">Voleu afegir %3$d membres a \"%2$s\"?</item>
   </plurals>
+  <string name="AddMembersActivity__add">Afegeix</string>
   <!--AddGroupDetailsFragment-->
   <string name="AddGroupDetailsFragment__name_this_group">Poseu un nom al grup</string>
   <string name="AddGroupDetailsFragment__create_group">Crear un grup</string>
@@ -464,10 +495,10 @@
   <!--ManageGroupActivity-->
   <string name="ManageGroupActivity_disappearing_messages">Missatges efímers</string>
   <string name="ManageGroupActivity_pending_group_invites">Invitacions de grup pendents</string>
+  <string name="ManageGroupActivity_member_requests_and_invites">Sol·licituds d\'adhesió i invitacions</string>
   <string name="ManageGroupActivity_add_members">Afegiu-hi membres</string>
   <string name="ManageGroupActivity_edit_group_info">Edita la informació del grup</string>
-  <string name="ManageGroupActivity_choose_who_can_edit_the_group_name_avatar_and_disappearing_messages">Trieu qui pot editar el nom del grup, l\'avatar i els missatges efímers.</string>
-  <string name="ManageGroupActivity_choose_who_can_add_or_invite_new_members">Trieu qui pot afegir-hi o convidar-hi membres nous.</string>
+  <string name="ManageGroupActivity_group_link">Enllaç del grup</string>
   <string name="ManageGroupActivity_block_group">Bloca el grup</string>
   <string name="ManageGroupActivity_unblock_group">Desbloca el grup</string>
   <string name="ManageGroupActivity_leave_group">Abandona el grup</string>
@@ -496,10 +527,9 @@
   <string name="ManageGroupActivity_failed_to_update_the_group_due_to_a_network_error_please_retry_later">Ha fallat actualitzar el grup a causa d\'un error de xarxa. Torneu-ho a provar més tard.</string>
   <string name="ManageGroupActivity_edit_name_and_picture">Editeu el nom i la imatge</string>
   <string name="ManageGroupActivity_legacy_group">Grup de llegat</string>
-  <string name="ManageGroupActivity_legacy_group_learn_more">Aquest és un grup de llegat. Per accedir a característiques com ara els administradors del grup, creeu un grup nou.</string>
   <!--GroupMentionSettingDialog-->
   <string name="GroupMentionSettingDialog_notify_me_for_mentions">Notifica\'m les mencions</string>
-  <string name="GroupMentionSettingDialog_receive_notifications_when_youre_mentioned_in_muted_chats">Voleu rebre notificacions quan us mencionin en xats silenciats?</string>
+  <string name="GroupMentionSettingDialog_receive_notifications_when_youre_mentioned_in_muted_chats">Voleu rebre notificacions quan us mencionin en converses silenciades?</string>
   <string name="GroupMentionSettingDialog_default_notify_me">Per defecte (notifica-m\'ho)</string>
   <string name="GroupMentionSettingDialog_default_dont_notify_me">Per defecte (no m\'ho notifiquis)</string>
   <string name="GroupMentionSettingDialog_always_notify_me">Notifica-m\'ho sempre</string>
@@ -508,7 +538,7 @@
   <string name="ManageRecipientActivity_add_to_system_contacts">Afegeix als contactes del sistema</string>
   <string name="ManageRecipientActivity_this_person_is_in_your_contacts">Aquesta persona és als vostres contactes.</string>
   <string name="ManageRecipientActivity_disappearing_messages">Missatges efímers</string>
-  <string name="ManageRecipientActivity_chat_color">Color del xat</string>
+  <string name="ManageRecipientActivity_chat_color">Color de la conversa</string>
   <string name="ManageRecipientActivity_block">Bloca</string>
   <string name="ManageRecipientActivity_unblock">Desbloca</string>
   <string name="ManageRecipientActivity_view_safety_number">Mostra el número de seguretat</string>
@@ -545,6 +575,24 @@
   <string name="CustomNotificationsDialogFragment__enabled">Activat</string>
   <string name="CustomNotificationsDialogFragment__disabled">Desactivat</string>
   <string name="CustomNotificationsDialogFragment__default">Per defecte</string>
+  <!--ShareableGroupLinkDialogFragment-->
+  <string name="ShareableGroupLinkDialogFragment__shareable_group_link">Enllaç de grup que es pot compartir</string>
+  <string name="ShareableGroupLinkDialogFragment__manage_and_share">Gestió i compartició</string>
+  <string name="ShareableGroupLinkDialogFragment__group_link">Enllaç del grup</string>
+  <string name="ShareableGroupLinkDialogFragment__share">Compartir-lo</string>
+  <string name="ShareableGroupLinkDialogFragment__reset_link">Restableix l\'enllaç</string>
+  <string name="ShareableGroupLinkDialogFragment__member_requests">Sol·licituds d\'adhesió</string>
+  <string name="ShareableGroupLinkDialogFragment__approve_new_members">Aproveu membres nous</string>
+  <string name="ShareableGroupLinkDialogFragment__enabled">Activat</string>
+  <string name="ShareableGroupLinkDialogFragment__disabled">Desactivat</string>
+  <string name="ShareableGroupLinkDialogFragment__default">Per defecte</string>
+  <string name="ShareableGroupLinkDialogFragment__group_link_reset">Restableix l\'enllaç del grup</string>
+  <string name="ShareableGroupLinkDialogFragment__require_an_admin_to_approve_new_members_joining_via_the_group_link">Requereix que un administrador aprovi els membres nous que s’afegeixin per l’enllaç del grup.</string>
+  <string name="ShareableGroupLinkDialogFragment__are_you_sure_you_want_to_reset_the_group_link">Segur que voleu restablir l\'enllaç del grup? La gent ja no podrà afegir-se al grup amb l’enllaç actual.</string>
+  <!--GroupLinkShareQrDialogFragment-->
+  <string name="GroupLinkShareQrDialogFragment__qr_code">Codi QR</string>
+  <string name="GroupLinkShareQrDialogFragment__people_who_scan_this_code_will">Les persones que escanegin aquest codi podran afegir-se al grup. Els administradors encara hauran d\'aprovar els membres nous si teniu activada aquesta opció.</string>
+  <string name="GroupLinkShareQrDialogFragment__share_code">Comparteix el codi</string>
   <!--GV2 Invite Revoke confirmation dialog-->
   <string name="InviteRevokeConfirmationDialog_revoke_own_single_invite">Voleu rebutjar la invitació que heu enviat a %1$s?</string>
   <plurals name="InviteRevokeConfirmationDialog_revoke_others_invites">
@@ -553,10 +601,30 @@
   </plurals>
   <!--GroupJoinBottomSheetDialogFragment-->
   <string name="GroupJoinBottomSheetDialogFragment_you_are_already_a_member">Ja en sou membre.</string>
+  <string name="GroupJoinBottomSheetDialogFragment_join">Afegeix-m\'hi</string>
+  <string name="GroupJoinBottomSheetDialogFragment_request_to_join">Demaneu afegir-vos-hi</string>
+  <string name="GroupJoinBottomSheetDialogFragment_unable_to_join_group_please_try_again_later">No es pot afegir al grup. Torneu-ho a provar és tard.</string>
+  <string name="GroupJoinBottomSheetDialogFragment_encountered_a_network_error">Hi ha hagut un error de xarxa.</string>
+  <string name="GroupJoinBottomSheetDialogFragment_this_group_link_is_not_active">Aquest enllaç de grup no està actiu.</string>
+  <string name="GroupJoinBottomSheetDialogFragment_unable_to_get_group_information_please_try_again_later">No es pot obtenir la informació del grup. Torneu-ho a provar més tard.</string>
+  <string name="GroupJoinBottomSheetDialogFragment_direct_join">Voleu afegir-vos a aquest grup i compartir-hi el nom i la fotografia?</string>
+  <string name="GroupJoinBottomSheetDialogFragment_admin_approval_needed">Un administrador d\'aquest grup ha d\'aprovar la sol·licitud abans de poder-vos afegir-hi. Quan demaneu afegir-vos-hi, el vostre nom i la fotografia es compartiran amb els seus membres.</string>
+  <plurals name="GroupJoinBottomSheetDialogFragment_group_dot_d_members">
+    <item quantity="one">Grup · %1$d membre</item>
+    <item quantity="other">Grup · %1$d membres</item>
+  </plurals>
   <!--GroupJoinUpdateRequiredBottomSheetDialogFragment-->
+  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_group_links_coming_soon">Aviat hi haurà enllaços de grup</string>
   <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal_to_use_group_links">Actualitzeu el Signal per usar els enllaços de grup</string>
-  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_message">La versió del Signal que useu no admet enllaços de grup compartibles. Actualitzeu a la versió més recent per afegir-vos a aquest grup per l\'enllaç.</string>
+  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_coming_soon">Afegir-se a un grup per un enllaç encara no és possible amb el Signal. Aquesta funció s\'activarà en una actualització propera.</string>
+  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_message">La versió del Signal que useu no admet enllaços de grup. Actualitzeu-lo a la versió més recent per afegir-vos a aquest grup per l\'enllaç.</string>
   <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">Actualitza el Signal</string>
+  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_group_link_is_not_valid">L\'enllaç de grup no és vàlid.</string>
+  <!--GV2 Request confirmation dialog-->
+  <string name="RequestConfirmationDialog_add_s_to_the_group">Voleu afegir %1$s al grup?</string>
+  <string name="RequestConfirmationDialog_deny_request_from_s">Voleu rebutjar la sol·licitud de %1$s?</string>
+  <string name="RequestConfirmationDialog_add">Afegeix</string>
+  <string name="RequestConfirmationDialog_deny">Rebutja-la</string>
   <!--CropImageActivity-->
   <string name="CropImageActivity_group_avatar">Avatar del grup</string>
   <string name="CropImageActivity_profile_avatar">Avatar</string>
@@ -724,16 +792,16 @@
   <string name="MessageRecord_you_are_no_longer_in_the_group">Ja no sou al grup.</string>
   <string name="MessageRecord_s_is_no_longer_in_the_group">%1$s ja no és al grup.</string>
   <!--GV2 role change-->
-  <string name="MessageRecord_you_made_s_an_admin">Heu fet que %1$s sigui administrador/a.</string>
-  <string name="MessageRecord_s_made_s_an_admin">%1$s ha fet que %2$s sigui administrador/a.</string>
-  <string name="MessageRecord_s_made_you_an_admin">%1$s us ha fet administrador/a.</string>
-  <string name="MessageRecord_you_revoked_admin_privileges_from_s">Heu rebutjat els privilegis d\'administrador/a de %1$s.</string>
-  <string name="MessageRecord_s_revoked_your_admin_privileges">%1$s us ha revocat els privilegis d\'administrador/a.</string>
-  <string name="MessageRecord_s_revoked_admin_privileges_from_s">%1$s ha rebutjat els privilegis d\'administrador/a de %2$s.</string>
-  <string name="MessageRecord_s_is_now_an_admin">%1$s ara és un administrador/a.</string>
+  <string name="MessageRecord_you_made_s_an_admin">Heu fet que %1$s sigui administrador.</string>
+  <string name="MessageRecord_s_made_s_an_admin">%1$s ha fet que %2$s sigui administrador.</string>
+  <string name="MessageRecord_s_made_you_an_admin">%1$s us ha fet administrador.</string>
+  <string name="MessageRecord_you_revoked_admin_privileges_from_s">Heu rebutjat els privilegis d\'administrador de %1$s.</string>
+  <string name="MessageRecord_s_revoked_your_admin_privileges">%1$s us ha revocat els privilegis d\'administrador.</string>
+  <string name="MessageRecord_s_revoked_admin_privileges_from_s">%1$s ha rebutjat els privilegis d\'administrador de %2$s.</string>
+  <string name="MessageRecord_s_is_now_an_admin">%1$s ara és un administrador.</string>
   <string name="MessageRecord_you_are_now_an_admin">Ara sou un administrador.</string>
-  <string name="MessageRecord_s_is_no_longer_an_admin">%1$s ja no és un administrador/a.</string>
-  <string name="MessageRecord_you_are_no_longer_an_admin">Ja no sou un administrador/a.</string>
+  <string name="MessageRecord_s_is_no_longer_an_admin">%1$s ja no és un administrador.</string>
+  <string name="MessageRecord_you_are_no_longer_an_admin">Ja no sou un administrador.</string>
   <!--GV2 invitations-->
   <string name="MessageRecord_you_invited_s_to_the_group">Heu convidat %1$s al grup.</string>
   <string name="MessageRecord_s_invited_you_to_the_group">%1$s us ha convidat al grup.</string>
@@ -758,7 +826,7 @@
   <string name="MessageRecord_someone_declined_an_invitation_to_the_group">Algú ha rebutjat una invitació al grup.</string>
   <string name="MessageRecord_you_declined_the_invitation_to_the_group">Heu rebutjat la invitació al grup.</string>
   <string name="MessageRecord_s_revoked_your_invitation_to_the_group">%1$s ha rebutjat la vostra invitació al grup.</string>
-  <string name="MessageRecord_an_admin_revoked_your_invitation_to_the_group">Un administrador/a ha rebutjat la vostra invitació al grup.</string>
+  <string name="MessageRecord_an_admin_revoked_your_invitation_to_the_group">Un administrador ha rebutjat la vostra invitació al grup.</string>
   <plurals name="MessageRecord_d_invitations_were_revoked">
     <item quantity="one"> Una invitació al grup s\'ha rebutjat.</item>
     <item quantity="other">%1$d invitacions al grup s\'han rebutjat.</item>
@@ -784,6 +852,38 @@
   <string name="MessageRecord_you_changed_who_can_edit_group_membership_to_s">Heu canviat qui pot editar els membres del grup a \"%1$s\".</string>
   <string name="MessageRecord_s_changed_who_can_edit_group_membership_to_s">%1$s ha canviat qui pot editar els membres del grup a \"%2$s\".</string>
   <string name="MessageRecord_who_can_edit_group_membership_has_been_changed_to_s">S\'ha canviat qui pot editar els membres del grup a \"%1$s\".</string>
+  <!--GV2 group link invite access level change-->
+  <string name="MessageRecord_you_turned_on_the_group_link_with_admin_approval_off">Heu activat l\'enllaç de grup amb l\'aprovació de l\'administrador desactivada.</string>
+  <string name="MessageRecord_you_turned_on_the_group_link_with_admin_approval_on">Heu activat l\'enllaç de grup amb l\'aprovació de l\'administrador activada.</string>
+  <string name="MessageRecord_you_turned_off_the_group_link">Heu desactivat l\'enllaç de grup.</string>
+  <string name="MessageRecord_s_turned_on_the_group_link_with_admin_approval_off">%1$s ha activat l\'enllaç de grup amb l\'aprovació de l\'administrador desactivada.</string>
+  <string name="MessageRecord_s_turned_on_the_group_link_with_admin_approval_on">%1$s ha activat l\'enllaç de grup amb l\'aprovació de l\'administrador activada.</string>
+  <string name="MessageRecord_s_turned_off_the_group_link">%1$s ha desactivat l\'enllaç de grup.</string>
+  <string name="MessageRecord_the_group_link_has_been_turned_on_with_admin_approval_off">S\'ha activat l\'enllaç de grup amb l\'aprovació de l\'administrador desactivada.</string>
+  <string name="MessageRecord_the_group_link_has_been_turned_on_with_admin_approval_on">S\'ha activat l\'enllaç de grup amb l\'aprovació de l\'administrador activada.</string>
+  <string name="MessageRecord_the_group_link_has_been_turned_off">S\'ha desactivat l\'enllaç de grup.</string>
+  <!--GV2 group link reset-->
+  <string name="MessageRecord_you_reset_the_group_link">Heu restablert l\'enllaç de grup.</string>
+  <string name="MessageRecord_s_reset_the_group_link">%1$s ha restablert l\'enllaç de grup.</string>
+  <string name="MessageRecord_the_group_link_has_been_reset">S\'ha restablert l\'enllaç de grup.</string>
+  <!--GV2 group link joins-->
+  <string name="MessageRecord_you_joined_the_group_via_the_group_link">Us heu afegit al grup per l\'enllaç de grup.</string>
+  <string name="MessageRecord_s_joined_the_group_via_the_group_link">%1$s s\'ha afegit al grup per l\'enllaç de grup.</string>
+  <!--GV2 group link requests-->
+  <string name="MessageRecord_you_sent_a_request_to_join_the_group">Heu enviat la sol·licitud per afegir-vos al grup.</string>
+  <string name="MessageRecord_s_requested_to_join_via_the_group_link">%1$s ha demanat afegir-s\'hi per l\'enllaç de grup.</string>
+  <!--GV2 group link approvals-->
+  <string name="MessageRecord_s_approved_your_request_to_join_the_group">%1$s ha aprovat la sol·licitud per afegir-vos al grup.</string>
+  <string name="MessageRecord_s_approved_a_request_to_join_the_group_from_s">%1$s ha aprovat una sol·licitud de %2$sper afegir-se al grup.</string>
+  <string name="MessageRecord_you_approved_a_request_to_join_the_group_from_s">Heu aprovat una sol·licitud d\'adhesió al grup de %1$s.</string>
+  <string name="MessageRecord_your_request_to_join_the_group_has_been_approved">S\'ha aprovat la sol·licitud per afegir-vos al grup.</string>
+  <string name="MessageRecord_a_request_to_join_the_group_from_s_has_been_approved">S\'ha aprovat la sol·licitud de %1$sper afegir-se al grup.</string>
+  <!--GV2 group link deny-->
+  <string name="MessageRecord_your_request_to_join_the_group_has_been_denied_by_an_admin">Un administrador ha rebutjat la sol·licitud per afegir-vos al grup.</string>
+  <string name="MessageRecord_s_denied_a_request_to_join_the_group_from_s">%1$s ha rebutjat una sol·licitud de %2$sper afegir-se al grup.</string>
+  <string name="MessageRecord_a_request_to_join_the_group_from_s_has_been_denied">S\'ha rebutjat la sol·licitud de %1$sper afegir-se al grup.</string>
+  <string name="MessageRecord_you_canceled_your_request_to_join_the_group">Heu cancel·lat la sol·licitud per afegir-vos al grup.</string>
+  <string name="MessageRecord_s_canceled_their_request_to_join_the_group">%1$s ha cancel·lat la sol·licitud per afegir-se al grup.</string>
   <!--End of GV2 specific update messages-->
   <string name="MessageRecord_your_safety_number_with_s_has_changed">El número de seguretat amb %s ha canviat.</string>
   <string name="MessageRecord_you_marked_your_safety_number_with_s_verified">Heu verificat el número de seguretat amb %s</string>
@@ -841,6 +941,7 @@
   <string name="ExpirationDialog_disappearing_messages">Missatges efímers</string>
   <string name="ExpirationDialog_your_messages_will_not_expire">El missatges no expiraran.</string>
   <string name="ExpirationDialog_your_messages_will_disappear_s_after_they_have_been_seen">Els missatges enviats i rebuts a aquesta conversa desapareixeran %s després que s\'hagin llegit.</string>
+  <!--OutdatedBuildReminder-->
   <!--PassphrasePromptActivity-->
   <string name="PassphrasePromptActivity_enter_passphrase">Escriviu la contrasenya</string>
   <string name="PassphrasePromptActivity_watermark_content_description">Icona del Signal</string>
@@ -902,10 +1003,10 @@
   <!--RecipientProvider-->
   <string name="RecipientProvider_unnamed_group">Grup sense nom</string>
   <!--RedPhone-->
-  <string name="RedPhone_answering">Resposta</string>
-  <string name="RedPhone_ending_call">S\'acaba la trucada</string>
-  <string name="RedPhone_dialing">Es marca el número</string>
-  <string name="RedPhone_ringing">Sona</string>
+  <string name="RedPhone_answering">Resposta…</string>
+  <string name="RedPhone_ending_call">S\'acaba la trucada…</string>
+  <string name="RedPhone_dialing">Es marca…</string>
+  <string name="RedPhone_ringing">Sona…</string>
   <string name="RedPhone_busy">Ocupat</string>
   <string name="RedPhone_connected">Connectat</string>
   <string name="RedPhone_recipient_unavailable">Destinatari no disponible</string>
@@ -921,6 +1022,7 @@
   <!--WebRtcCallView-->
   <string name="WebRtcCallView__signal_voice_call">Trucada de veu del Signal…</string>
   <string name="WebRtcCallView__signal_video_call">Trucada de vídeo del Signal…</string>
+  <!--CallParticipantsListDialog-->
   <!--RegistrationActivity-->
   <string name="RegistrationActivity_select_your_country">Seleccioneu el país</string>
   <string name="RegistrationActivity_you_must_specify_your_country_code">Heu d\'especificar el
@@ -1096,7 +1198,6 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="UnverifiedSendDialog_send">Envia</string>
   <!--UsernameEditFragment-->
   <string name="UsernameEditFragment_username">Nom d\'usuari</string>
-  <string name="UsernameEditFragment_submit">Envia</string>
   <string name="UsernameEditFragment_delete">Suprimeix</string>
   <string name="UsernameEditFragment_successfully_set_username">El nom d\'usuari s\'ha establert correctament.</string>
   <string name="UsernameEditFragment_successfully_removed_username">El nom d\'usuari s\'ha suprimit correctament.</string>
@@ -1107,7 +1208,7 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">Els noms d\'usuari no poden començar amb un número.</string>
   <string name="UsernameEditFragment_username_is_invalid">El nom d\'usuari no és vàlid.</string>
   <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">Els noms d\'usuari han de tenir entre %1$d i %2$d caràcters.</string>
-  <string name="UsernameEditFragment_other_signal_users_can_send_message_requests_to_your_unique_username">Altres usuaris del Signal poden enviar peticions de missatge al vostre nom d\'usuari únic sense saber-ne el número de telèfon. Triar un nom d\'usuari és opcional.</string>
+  <string name="UsernameEditFragment_usernames_on_signal_are_optional">Els noms d’usuari a Signal són opcionals. Si trieu crear un nom d’usuari, altres usuaris del Signal us podran trobar per aquest nom i contactar-vos sense saber el vostre número de telèfon.</string>
   <!--VerifyIdentityActivity-->
   <string name="VerifyIdentityActivity_your_contact_is_running_an_old_version_of_signal">El vostre contacte està fent servir una versió antiga del Signal. Demaneu-li que l\'actualitzi abans de verificar el número de seguretat.</string>
   <string name="VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal">El vostre contacte està fent servir una versió nova del Signal amb un format del codi QR no compatible. Actualitzeu-la per comparar-lo.</string>
@@ -1331,6 +1432,8 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="conversation_item_sent__message_read">Missatge llegit</string>
   <!--conversation_item_received-->
   <string name="conversation_item_received__contact_photo_description">Foto del contacte</string>
+  <!--ConversationUpdateItem-->
+  <string name="ConversationUpdateItem_loading">Es carrega</string>
   <!--audio_view-->
   <string name="audio_view__play_pause_accessibility_description">Reprodueix… Pausa</string>
   <string name="audio_view__download_accessibility_description">Baixa</string>
@@ -1348,6 +1451,7 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <!--safety_number_change_dialog-->
   <string name="safety_number_change_dialog__safety_number_changes">Canvis en el número de seguretat</string>
   <string name="safety_number_change_dialog__send_anyway">Envia\'l tanmateix</string>
+  <string name="safety_number_change_dialog__call_anyway">Truca-li tanmateix</string>
   <string name="safety_number_change_dialog__the_following_people_may_have_reinstalled_or_changed_devices">Aquesta gent podria haver reinstallar o dispositius canviats. Comproveu vostre número de seguretat amb ells, per assegurar la privadesa.</string>
   <string name="safety_number_change_dialog__view">Mostra</string>
   <string name="safety_number_change_dialog__previous_verified">Verificat prèviament</string>
@@ -1641,6 +1745,7 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="preferences__slow">Lent</string>
   <string name="preferences__help">Ajuda</string>
   <string name="preferences__advanced">Avançat</string>
+  <string name="preferences__donate_to_signal">Feu una donació a Signal</string>
   <string name="preferences__privacy">Privadesa</string>
   <string name="preferences__mms_user_agent">Agent usuari dels MMS</string>
   <string name="preferences__advanced_mms_access_point_names">Configuració manual dels MMS</string>
@@ -1651,13 +1756,11 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="preferences__mmsc_password">Contrasenya de MMSC</string>
   <string name="preferences__sms_delivery_reports">Informes de lliurament d\'SMS</string>
   <string name="preferences__request_a_delivery_report_for_each_sms_message_you_send">Demana un informe de lliurament per cada missatge SMS que envieu.</string>
-  <string name="preferences__automatically_delete_older_messages_once_a_conversation_exceeds_a_specified_length">Suprimeix automàticament els missatges antics si la conversa excedeix d\'una mida concreta.</string>
-  <string name="preferences__delete_old_messages">Suprimeix els missatges antics</string>
-  <string name="preferences__chats">Xats i multimèdia</string>
+  <string name="preferences__chats">Converses i multimèdia</string>
   <string name="preferences__storage">Emmagatzematge</string>
   <string name="preferences__conversation_length_limit">Límit de la mida de la conversa</string>
-  <string name="preferences__trim_all_conversations_now">Escapça totes les converses</string>
-  <string name="preferences__scan_through_all_conversations_and_enforce_conversation_length_limits">Escaneja totes les converses i aplica-hi els límits de mida</string>
+  <string name="preferences__keep_messages">Mantén els missatges</string>
+  <string name="preferences__clear_message_history">Neteja l\'historial dels missatges</string>
   <string name="preferences__linked_devices">Dispositius enllaçats</string>
   <string name="preferences__light_theme">Clar</string>
   <string name="preferences__dark_theme">Fosc</string>
@@ -1687,23 +1790,39 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="preferences_chats__when_using_wifi">En usar Wi-Fi</string>
   <string name="preferences_chats__when_roaming">En itinerància</string>
   <string name="preferences_chats__media_auto_download">Baixada automàtica de contingut multimèdia</string>
-  <string name="preferences_chats__message_trimming">Escapçament de missatges</string>
+  <string name="preferences_chats__message_history">Historial dels missatges</string>
   <string name="preferences_storage__storage_usage">Ús de l\'emmagatzematge</string>
   <string name="preferences_storage__photos">Fotografies</string>
   <string name="preferences_storage__videos">Vídeos</string>
   <string name="preferences_storage__files">Fitxers</string>
   <string name="preferences_storage__audio">Àudio</string>
   <string name="preferences_storage__review_storage">Revisa l\'emmagatzematge</string>
+  <string name="preferences_storage__delete_older_messages">Voleu suprimir els missatges més antics?</string>
+  <string name="preferences_storage__clear_message_history">Voleu netejar l\'historial dels missatges?</string>
+  <string name="preferences_storage__this_will_permanently_delete_all_message_history_and_media">Això suprimirà permanentment l\'historial dels missatges i el contingut del dispositiu més antic de %1$s.</string>
+  <string name="preferences_storage__this_will_permanently_trim_all_conversations_to_the_d_most_recent_messages">Això reduirà permanentment totes les converses als %1$s missatges més recents.</string>
+  <string name="preferences_storage__this_will_delete_all_message_history_and_media_from_your_device">Això suprimirà permanentment tot l\'historial dels missatges i tot el contingut del dispositiu.</string>
+  <string name="preferences_storage__are_you_sure_you_want_to_delete_all_message_history">Segur que voleu suprimir tot l\'historial dels missatges?</string>
+  <string name="preferences_storage__all_message_history_will_be_permanently_removed_this_action_cannot_be_undone">Se suprimirà permanentment tot l\'historial dels missatges. Aquesta acció no es pot desfer.</string>
+  <string name="preferences_storage__delete_all_now">Suprimeix-ho tot ara</string>
+  <string name="preferences_storage__forever">Per sempre</string>
+  <string name="preferences_storage__one_year">1 any</string>
+  <string name="preferences_storage__six_months">6 mesos</string>
+  <string name="preferences_storage__thirty_days">30 dies</string>
+  <string name="preferences_storage__none">Cap</string>
+  <string name="preferences_storage__s_messages">%1$s missatges</string>
+  <string name="preferences_storage__custom">Personalitzat</string>
   <string name="preferences_advanced__use_system_emoji">Usa els emoji del sistema</string>
   <string name="preferences_advanced__disable_signal_built_in_emoji_support">Desactiva els emojis inclosos al Signal</string>
   <string name="preferences_advanced__relay_all_calls_through_the_signal_server_to_avoid_revealing_your_ip_address">Retransmet totes les trucades a través del servidor del Signal per evitar revelar l\'adreça IP al contacte. Activar-ho reduirà la qualitat de la trucada.</string>
   <string name="preferences_advanced__always_relay_calls">Retransmet sempre les trucades</string>
+  <string name="preferences_app_protection__who_can">Qui pot…</string>
   <string name="preferences_app_protection__app_access">Accés de l\'aplicació</string>
   <string name="preferences_app_protection__communication">Comunicació</string>
-  <string name="preferences_chats__chats">Xats</string>
+  <string name="preferences_chats__chats">Converses</string>
   <string name="preferences_notifications__messages">Missatges</string>
   <string name="preferences_notifications__events">Esdeveniments</string>
-  <string name="preferences_notifications__in_chat_sounds">Sons del xat</string>
+  <string name="preferences_notifications__in_chat_sounds">Sons de la conversa</string>
   <string name="preferences_notifications__show">Mostra</string>
   <string name="preferences_notifications__calls">Trucades</string>
   <string name="preferences_notifications__ringtone">To de trucada</string>
@@ -1720,7 +1839,9 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="preferences_communication__sealed_sender_learn_more">Més informació</string>
   <string name="preferences_notifications__mentions">Mencions</string>
   <string name="preferences_notifications__notify_me">Notifica-m\'ho</string>
-  <string name="preferences_notifications__receive_notifications_when_youre_mentioned_in_muted_chats">Rebeu notificacions quan us mencionin en xats silenciats.</string>
+  <string name="preferences_notifications__receive_notifications_when_youre_mentioned_in_muted_chats">Rebeu notificacions quan us mencionin en converses silenciades.</string>
+  <string name="preferences_setup_a_username">Estableix un nom d\'usuari</string>
+  <string name="configurable_single_select__customize_option">Opció de personalització</string>
   <!--Internal only preferences-->
   <!--****************************************-->
   <!--menus-->
@@ -1764,8 +1885,8 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="conversation_list_settings_shortcut">Drecera de configuració</string>
   <string name="conversation_list_search_description">Cerca</string>
   <string name="conversation_list__pinned">Fixat</string>
-  <string name="conversation_list__chats">Xats</string>
-  <string name="conversation_list__you_can_only_pin_up_to_d_chats">Només podeu fixar fins a %1$d xats.</string>
+  <string name="conversation_list__chats">Converses</string>
+  <string name="conversation_list__you_can_only_pin_up_to_d_chats">Només podeu fixar fins a %1$d converses.</string>
   <!--conversation_list_item_view-->
   <string name="conversation_list_item_view__contact_photo_image">Foto del contacte</string>
   <string name="conversation_list_item_view__archived">Arxivat</string>
@@ -1810,14 +1931,6 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="verify_display_fragment_context_menu__copy_to_clipboard">Copia al porta-retalls</string>
   <string name="verify_display_fragment_context_menu__compare_with_clipboard">Compara amb el porta-retalls</string>
   <!--reminder_header-->
-  <string name="reminder_header_outdated_build">La vostra versió del Signal és obsoleta</string>
-  <plurals name="reminder_header_outdated_build_details">
-    <item quantity="one">La vostra versió del Signal caducarà d\'aquí %d dia. Premeu per a actualitzar-la a la versió més recent.</item>
-    <item quantity="other">La vostra versió del Signal caducarà d\'aquí %d dies. Premeu per a actualitzar-la a la versió més recent.</item>
-  </plurals>
-  <string name="reminder_header_outdated_build_details_today">La vostra versió del Signal caducarà avui. Premeu per actualitzar-la a la versió més recent.</string>
-  <string name="reminder_header_expired_build">La vostra versió del Signal ha caducat!</string>
-  <string name="reminder_header_expired_build_details">El missatges no s\'enviaran correctament. Premeu per actualitzar-la a la versió més recent.</string>
   <string name="reminder_header_sms_default_title">Usa-la com a aplicació d\'SMS predeterminada</string>
   <string name="reminder_header_sms_default_text">Premeu per establir el Signal com a aplicació predeterminada per a SMS.</string>
   <string name="reminder_header_sms_import_title">Importació dels SMS del sistema</string>
@@ -1959,9 +2072,14 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="KbsMegaphone__update_pin">Actualitza el PIN</string>
   <string name="KbsMegaphone__well_remind_you_later_creating_a_pin">Us ho recordarem més tard. Crear un PIN serà obligatori d\'aquí a %1$d dies.</string>
   <string name="KbsMegaphone__well_remind_you_later_confirming_your_pin">Us ho recordarem més tard. Confirmar el PIN serà obligatori d\'aquí a %1$d dies.</string>
-  <!--Mention Megaphone-->
-  <string name="MentionsMegaphone__introducing_mentions">S\'introdueixen les @Mencions</string>
-  <string name="MentionsMegaphone__get_someones_attention_in_a_group_by_typing">Capteu l\'atenció d\'algú en un grup nou escrivint @.</string>
+  <!--Research Megaphone-->
+  <string name="ResearchMegaphone_tell_signal_what_you_think">Expliqueu a Signal què en penseu</string>
+  <string name="ResearchMegaphone_learn_more">Més informació</string>
+  <string name="ResearchMegaphone_dismiss">Descarta</string>
+  <string name="ResearchMegaphoneDialog_signal_research">Recerca del Signal</string>
+  <string name="ResearchMegaphoneDialog_take_the_survey">Feu l\'enquesta</string>
+  <string name="ResearchMegaphoneDialog_no_thanks">No, gràcies.</string>
+  <string name="ResearchMegaphoneDialog_the_survey_is_hosted_by_surveygizmo_at_the_secure_domain">Surveygizmo allotja l\'enquesta al domini segur surveys.signalusers.org.</string>
   <!--transport_selection_list_item-->
   <string name="transport_selection_list_item__transport_icon">Icona de trànsit</string>
   <string name="ConversationListFragment_loading">Es carrega…</string>
@@ -1981,8 +2099,8 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="registration_activity__restore_backup">Restaura la còpia de seguretat</string>
   <string name="registration_activity__skip">Omet</string>
   <string name="registration_activity__register">Registra</string>
-  <string name="preferences_chats__chat_backups">Còpies de seguretat de xats</string>
-  <string name="preferences_chats__backup_chats_to_external_storage">Fes una còpia de seguretat dels xats a l\'emmagatzematge extern</string>
+  <string name="preferences_chats__chat_backups">Còpies de seguretat de converses</string>
+  <string name="preferences_chats__backup_chats_to_external_storage">Fes una còpia de seguretat de les converses a l\'emmagatzematge extern</string>
   <string name="preferences_chats__create_backup">Crea una còpia de seguretat</string>
   <string name="preferences_chats__verify_backup_passphrase">Verifiqueu la contrasenya de còpia de seguretat</string>
   <string name="preferences_chats__test_your_backup_passphrase_and_verify_that_it_matches">Proveu la contrasenya de còpia de seguretat i verifiqueu que coincideix.</string>
@@ -2019,6 +2137,14 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="RegistrationActivity_code_support_subject">Registre del Signal - Codi de verificació per a Android</string>
   <string name="BackupUtil_never">Mai</string>
   <string name="BackupUtil_unknown">Desconegut</string>
+  <string name="preferences_app_protection__see_my_phone_number">Mostra el meu número de telèfon</string>
+  <string name="preferences_app_protection__find_me_by_phone_number">Troba\'m pel número de telèfon</string>
+  <string name="PhoneNumberPrivacy_everyone">Tothom</string>
+  <string name="PhoneNumberPrivacy_my_contacts">Els meus contactes</string>
+  <string name="PhoneNumberPrivacy_nobody">Ningú</string>
+  <string name="PhoneNumberPrivacy_everyone_see_description">El vostre número de telèfon serà visible per a totes les persones i grups a qui envieu un missatge.</string>
+  <string name="PhoneNumberPrivacy_everyone_find_description">Tothom que tingui el vostre número de telèfon als contactes us veurà com a contacte al Signal. La resta us podrà trobar a la cerca.</string>
+  <string name="PhoneNumberPrivacy_my_contacts_see_description">Només els vostres contactes podran veure el número de telèfon al Signal.</string>
   <string name="preferences_app_protection__screen_lock">Bloqueig de pantalla</string>
   <string name="preferences_app_protection__lock_signal_access_with_android_screen_lock_or_fingerprint">Bloca l\'accés al Signal amb el bloqueig de pantalla de l\'Android o amb l\'empremta.</string>
   <string name="preferences_app_protection__screen_lock_inactivity_timeout">Temps d\'inactivitat per al bloqueig de pantalla</string>
@@ -2086,24 +2212,29 @@ S\'ha rebut un missatge d\'intercanvi de claus per a una versió del protocol no
   <string name="RecipientBottomSheet_add_to_another_group">Afegeix-lo a un altre grup</string>
   <string name="RecipientBottomSheet_view_safety_number">Mostra el número de seguretat</string>
   <string name="RecipientBottomSheet_make_group_admin">Fes adminstrador/a del grup</string>
-  <string name="RecipientBottomSheet_remove_as_admin">Suprimeix com a administrador/a</string>
+  <string name="RecipientBottomSheet_remove_as_admin">Suprimeix com a administrador</string>
   <string name="RecipientBottomSheet_remove_from_group">Suprimeix del grup</string>
   <string name="RecipientBottomSheet_message_description">Missatge</string>
   <string name="RecipientBottomSheet_voice_call_description">Trucada de veu</string>
   <string name="RecipientBottomSheet_insecure_voice_call_description">Trucada de veu no segura</string>
   <string name="RecipientBottomSheet_video_call_description">Trucada de vídeo</string>
-  <string name="RecipientBottomSheet_remove_s_as_group_admin">Voleu suprimir %1$s com a administrador/a del grup?</string>
-  <string name="RecipientBottomSheet_s_will_be_able_to_edit_group">%1$s podrà editar aquest grup i els seus membres.</string>
-  <string name="RecipientBottomSheet_remove_s_from_s">Voleu suprimir %1$s de \"%2$s\"?</string>
+  <string name="RecipientBottomSheet_remove_s_as_group_admin">Voleu suprimir %1$s com a administrador del grup?</string>
   <string name="RecipientBottomSheet_remove">Suprimeix</string>
   <string name="RecipientBottomSheet_copied_to_clipboard">Copiat al porta-retalls</string>
-  <string name="GroupRecipientListItem_admin">Administrador/a</string>
+  <string name="GroupRecipientListItem_admin">Administrador</string>
+  <string name="GroupRecipientListItem_approve_description">Aprova-la</string>
+  <string name="GroupRecipientListItem_deny_description">Rebutja-la</string>
   <!--GroupsLearnMoreBottomSheetDialogFragment-->
   <string name="GroupsLearnMore_legacy_vs_new_groups">Grups de llegat vs. grups nous</string>
   <string name="GroupsLearnMore_what_are_legacy_groups">Què són els grups de llegat?</string>
   <string name="GroupsLearnMore_paragraph_1">Els grups de llegat són grups que no són compatibles amb les funcions dels grups nous com ara els administradors i les actualitzacions més descriptives.</string>
-  <string name="GroupsLearnMore_how_do_i_use_new_groups">Com uso els grups nous?</string>
-  <string name="GroupsLearnMore_paragraph_2">Els grups de llegat no es poden convertir a grups nous, però podeu crear un grup nou amb els mateixos membres.</string>
-  <string name="GroupsLearnMore_paragraph_3">Per crear un grup nou, tots els membres han d\'actualitzar el Signal a la darrera versió.</string>
+  <string name="GroupsLearnMore_can_i_upgrade_a_legacy_group">Puc actualitzar un grup de llegat?</string>
+  <!--GroupLinkBottomSheetDialogFragment-->
+  <string name="GroupLinkBottomSheet_share_via_signal">Comparteix per Signal</string>
+  <string name="GroupLinkBottomSheet_copy">Copia</string>
+  <string name="GroupLinkBottomSheet_qr_code">Codi QR</string>
+  <string name="GroupLinkBottomSheet_share">Compartir-lo</string>
+  <string name="GroupLinkBottomSheet_copied_to_clipboard">Copiat al porta-retalls</string>
+  <string name="GroupLinkBottomSheet_the_link_is_not_currently_active">Ara l\'enllaç no està actiu.</string>
   <!--EOF-->
 </resources>

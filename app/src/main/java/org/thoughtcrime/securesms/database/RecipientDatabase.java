@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.annimon.stream.Stream;
-import com.google.android.gms.common.util.ArrayUtils;
 
 import net.sqlcipher.database.SQLiteConstraintException;
 import net.sqlcipher.database.SQLiteDatabase;
 
+import org.signal.storageservice.protos.groups.local.DecryptedGroup;
 import org.signal.zkgroup.InvalidInputException;
 import org.signal.zkgroup.groups.GroupMasterKey;
 import org.signal.zkgroup.profiles.ProfileKey;
@@ -28,8 +28,9 @@ import org.thoughtcrime.securesms.database.model.ThreadRecord;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.groups.GroupId;
 import org.thoughtcrime.securesms.groups.v2.ProfileKeySet;
+import org.thoughtcrime.securesms.groups.v2.processing.GroupsV2StateProcessor;
 import org.thoughtcrime.securesms.jobs.RefreshAttributesJob;
-import org.thoughtcrime.securesms.jobs.WakeGroupV2Job;
+import org.thoughtcrime.securesms.jobs.RequestGroupV2InfoJob;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.profiles.AvatarHelper;
 import org.thoughtcrime.securesms.profiles.ProfileName;
@@ -40,7 +41,6 @@ import org.thoughtcrime.securesms.storage.StorageSyncHelper.RecordUpdate;
 import org.thoughtcrime.securesms.storage.StorageSyncModels;
 import org.thoughtcrime.securesms.util.Base64;
 import org.thoughtcrime.securesms.util.CursorUtil;
-import org.thoughtcrime.securesms.util.FeatureFlags;
 import org.thoughtcrime.securesms.util.IdentityUtil;
 import org.thoughtcrime.securesms.util.SqlUtil;
 import org.thoughtcrime.securesms.util.StringUtil;
@@ -120,6 +120,7 @@ public class RecipientDatabase extends Database {
   private static final String PROFILE_FAMILY_NAME      = "profile_family_name";
   private static final String PROFILE_JOINED_NAME      = "profile_joined_name";
   private static final String MENTION_SETTING          = "mention_setting";
+  private static final String STORAGE_PROTO            = "storage_proto";
 
   public  static final String SEARCH_PROFILE_NAME      = "search_signal_profile";
   private static final String SORT_NAME                = "sort_name";
@@ -149,13 +150,14 @@ public class RecipientDatabase extends Database {
 
   private static final String[] MENTION_SEARCH_PROJECTION  = new String[]{ID, removeWhitespace("COALESCE(" + nullIfEmpty(SYSTEM_DISPLAY_NAME) + ", " + nullIfEmpty(PROFILE_JOINED_NAME) + ", " + nullIfEmpty(PROFILE_GIVEN_NAME) + ", " + nullIfEmpty(USERNAME) + ", " + nullIfEmpty(PHONE) + ")") + " AS " + SORT_NAME};
 
-  private static final String[] RECIPIENT_FULL_PROJECTION = ArrayUtils.concat(
-      new String[] { TABLE_NAME + "." + ID },
+  private static final String[] RECIPIENT_FULL_PROJECTION = Stream.of(
+      new String[] { TABLE_NAME + "." + ID,
+                     TABLE_NAME + "." + STORAGE_PROTO },
       TYPED_RECIPIENT_PROJECTION,
       new String[] {
         IdentityDatabase.TABLE_NAME + "." + IdentityDatabase.VERIFIED + " AS " + IDENTITY_STATUS,
         IdentityDatabase.TABLE_NAME + "." + IdentityDatabase.IDENTITY_KEY + " AS " + IDENTITY_KEY
-      });
+      }).flatMap(Stream::of).toArray(String[]::new);
 
   public static final String[] CREATE_INDEXS = new String[] {
       "CREATE INDEX IF NOT EXISTS recipient_dirty_index ON " + TABLE_NAME + " (" + DIRTY + ");",
@@ -336,7 +338,8 @@ public class RecipientDatabase extends Database {
                                             GROUPS_V2_CAPABILITY     + " INTEGER DEFAULT " + Recipient.Capability.UNKNOWN.serialize() + ", " +
                                             STORAGE_SERVICE_ID       + " TEXT UNIQUE DEFAULT NULL, " +
                                             DIRTY                    + " INTEGER DEFAULT " + DirtyState.CLEAN.getId() + ", " +
-                                            MENTION_SETTING          + " INTEGER DEFAULT " + MentionSetting.ALWAYS_NOTIFY.getId() + ");";
+                                            MENTION_SETTING          + " INTEGER DEFAULT " + MentionSetting.ALWAYS_NOTIFY.getId() + ", " +
+                                            STORAGE_PROTO            + " TEXT DEFAULT NULL);";
 
   private static final String INSIGHTS_INVITEE_LIST = "SELECT " + TABLE_NAME + "." + ID +
       " FROM " + TABLE_NAME +
@@ -388,10 +391,6 @@ public class RecipientDatabase extends Database {
   public @NonNull RecipientId getAndPossiblyMerge(@Nullable UUID uuid, @Nullable String e164, boolean highTrust) {
     if (uuid == null && e164 == null) {
       throw new IllegalArgumentException("Must provide a UUID or E164!");
-    }
-
-    if (!FeatureFlags.cds()) {
-      highTrust = true;
     }
 
     RecipientId                    recipientNeedingRefresh = null;
@@ -852,12 +851,28 @@ public class RecipientDatabase extends Database {
       }
       
       for (SignalGroupV2Record insert : groupV2Inserts) {
-        db.insertOrThrow(TABLE_NAME, null, getValuesForStorageGroupV2(insert));
+        GroupMasterKey masterKey = insert.getMasterKeyOrThrow();
+        GroupId.V2     groupId   = GroupId.v2(masterKey);
+        ContentValues  values    = getValuesForStorageGroupV2(insert);
+        long           id        = db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+        Recipient      recipient = Recipient.externalGroup(context, groupId);
 
-        GroupId.V2 groupId   = GroupId.v2(insert.getMasterKey());
-        Recipient  recipient = Recipient.externalGroup(context, groupId);
+        if (id < 0) {
+          Log.w(TAG, String.format("Recipient %s is already linked to group %s", recipient.getId(), groupId));
+        } else {
+          Log.i(TAG, String.format("Inserted recipient %s for group %s", recipient.getId(), groupId));
+        }
 
-        ApplicationDependencies.getJobManager().add(new WakeGroupV2Job(insert.getMasterKey()));
+        Log.i(TAG, "Creating restore placeholder for " + groupId);
+        DatabaseFactory.getGroupDatabase(context)
+                       .create(masterKey,
+                               DecryptedGroup.newBuilder()
+                                             .setRevision(GroupsV2StateProcessor.RESTORE_PLACEHOLDER_REVISION)
+                                             .build());
+
+        Log.i(TAG, "Scheduling request for latest group info for " + groupId);
+
+        ApplicationDependencies.getJobManager().add(new RequestGroupV2InfoJob(groupId));
 
         threadDatabase.setArchived(recipient.getId(), insert.isArchived());
         needsRefresh.add(recipient.getId());
@@ -871,7 +886,8 @@ public class RecipientDatabase extends Database {
           throw new AssertionError("Had an update, but it didn't match any rows!");
         }
 
-        Recipient recipient = Recipient.externalGroup(context, GroupId.v2(update.getOld().getMasterKey()));
+        GroupMasterKey masterKey = update.getOld().getMasterKeyOrThrow();
+        Recipient      recipient = Recipient.externalGroup(context, GroupId.v2(masterKey));
 
         threadDatabase.setArchived(recipient.getId(), update.getNew().isArchived());
         needsRefresh.add(recipient.getId());
@@ -906,6 +922,12 @@ public class RecipientDatabase extends Database {
     values.put(PROFILE_KEY, profileKey);
     values.put(STORAGE_SERVICE_ID, Base64.encodeBytes(update.getId().getRaw()));
     values.put(DIRTY, DirtyState.CLEAN.getId());
+
+    if (update.hasUnknownFields()) {
+      values.put(STORAGE_PROTO, Base64.encodeBytes(update.serializeUnknownFields()));
+    } else {
+      values.putNull(STORAGE_PROTO);
+    }
 
     int updateCount = db.update(TABLE_NAME, values, STORAGE_SERVICE_ID + " = ?", new String[]{Base64.encodeBytes(storageId.getRaw())});
     if (updateCount < 1) {
@@ -977,8 +999,14 @@ public class RecipientDatabase extends Database {
     values.put(STORAGE_SERVICE_ID, Base64.encodeBytes(contact.getId().getRaw()));
     values.put(DIRTY, DirtyState.CLEAN.getId());
 
-    if (contact.isProfileSharingEnabled() && isInsert) {
+    if (contact.isProfileSharingEnabled() && isInsert && !profileName.isEmpty()) {
       values.put(COLOR, ContactColors.generateFor(profileName.toString()).serialize());
+    }
+
+    if (contact.hasUnknownFields()) {
+      values.put(STORAGE_PROTO, Base64.encodeBytes(contact.serializeUnknownFields()));
+    } else {
+      values.putNull(STORAGE_PROTO);
     }
 
     return values;
@@ -992,17 +1020,31 @@ public class RecipientDatabase extends Database {
     values.put(BLOCKED, groupV1.isBlocked() ? "1" : "0");
     values.put(STORAGE_SERVICE_ID, Base64.encodeBytes(groupV1.getId().getRaw()));
     values.put(DIRTY, DirtyState.CLEAN.getId());
+
+    if (groupV1.hasUnknownFields()) {
+      values.put(STORAGE_PROTO, Base64.encodeBytes(groupV1.serializeUnknownFields()));
+    } else {
+      values.putNull(STORAGE_PROTO);
+    }
+
     return values;
   }
   
   private static @NonNull ContentValues getValuesForStorageGroupV2(@NonNull SignalGroupV2Record groupV2) {
     ContentValues values = new ContentValues();
-    values.put(GROUP_ID, GroupId.v2(groupV2.getMasterKey()).toString());
+    values.put(GROUP_ID, GroupId.v2(groupV2.getMasterKeyOrThrow()).toString());
     values.put(GROUP_TYPE, GroupType.SIGNAL_V2.getId());
     values.put(PROFILE_SHARING, groupV2.isProfileSharingEnabled() ? "1" : "0");
     values.put(BLOCKED, groupV2.isBlocked() ? "1" : "0");
     values.put(STORAGE_SERVICE_ID, Base64.encodeBytes(groupV2.getId().getRaw()));
     values.put(DIRTY, DirtyState.CLEAN.getId());
+
+    if (groupV2.hasUnknownFields()) {
+      values.put(STORAGE_PROTO, Base64.encodeBytes(groupV2.serializeUnknownFields()));
+    } else {
+      values.putNull(STORAGE_PROTO);
+    }
+
     return values;
   }
 
@@ -1012,8 +1054,8 @@ public class RecipientDatabase extends Database {
                                                + " LEFT OUTER JOIN " + GroupDatabase.TABLE_NAME + " ON " + TABLE_NAME + "." + GROUP_ID + " = " + GroupDatabase.TABLE_NAME + "." + GroupDatabase.GROUP_ID;
     List<RecipientSettings> out   = new ArrayList<>();
 
-    String[] columns = ArrayUtils.concat(RECIPIENT_FULL_PROJECTION,
-      new String[]{GroupDatabase.TABLE_NAME + "." + GroupDatabase.V2_MASTER_KEY });
+    String[] columns = Stream.of(RECIPIENT_FULL_PROJECTION,
+      new String[]{GroupDatabase.TABLE_NAME + "." + GroupDatabase.V2_MASTER_KEY }).flatMap(Stream::of).toArray(String[]::new);
 
     try (Cursor cursor = db.query(table, columns, query, args, null, null, null)) {
       while (cursor != null && cursor.moveToNext()) {
@@ -1037,7 +1079,7 @@ public class RecipientDatabase extends Database {
   public @NonNull Map<RecipientId, StorageId> getContactStorageSyncIdsMap() {
     SQLiteDatabase              db    = databaseHelper.getReadableDatabase();
     String                      query = STORAGE_SERVICE_ID + " NOT NULL AND " + DIRTY + " != ? AND " + ID + " != ? AND " + GROUP_TYPE + " != ?";
-    String[]                    args  = { String.valueOf(DirtyState.DELETE), Recipient.self().getId().serialize(), String.valueOf(GroupType.SIGNAL_V2.getId()) };
+    String[]                    args  = { String.valueOf(DirtyState.DELETE.getId()), Recipient.self().getId().serialize(), String.valueOf(GroupType.SIGNAL_V2.getId()) };
     Map<RecipientId, StorageId> out   = new HashMap<>();
 
     try (Cursor cursor = db.query(TABLE_NAME, new String[] { ID, STORAGE_SERVICE_ID, GROUP_TYPE }, query, args, null, null, null)) {
@@ -1113,6 +1155,7 @@ public class RecipientDatabase extends Database {
     int     groupsV2CapabilityValue    = CursorUtil.requireInt(cursor, GROUPS_V2_CAPABILITY);
     String  storageKeyRaw              = CursorUtil.requireString(cursor, STORAGE_SERVICE_ID);
     int     mentionSettingId           = CursorUtil.requireInt(cursor, MENTION_SETTING);
+    String  storageProtoRaw            = CursorUtil.getString(cursor, STORAGE_PROTO).orNull();
 
     Optional<String>  identityKeyRaw    = CursorUtil.getString(cursor, IDENTITY_KEY);
     Optional<Integer> identityStatusRaw = CursorUtil.getInt(cursor, IDENTITY_STATUS);
@@ -1159,8 +1202,9 @@ public class RecipientDatabase extends Database {
       }
     }
 
-    byte[] storageKey  = storageKeyRaw != null ? Base64.decodeOrThrow(storageKeyRaw) : null;
-    byte[] identityKey = identityKeyRaw.transform(Base64::decodeOrThrow).orNull();
+    byte[] storageKey   = storageKeyRaw != null ? Base64.decodeOrThrow(storageKeyRaw) : null;
+    byte[] identityKey  = identityKeyRaw.transform(Base64::decodeOrThrow).orNull();
+    byte[] storageProto = storageProtoRaw != null ? Base64.decodeOrThrow(storageProtoRaw) : null;
 
     IdentityDatabase.VerifiedStatus identityStatus = identityStatusRaw.transform(IdentityDatabase.VerifiedStatus::forState).or(IdentityDatabase.VerifiedStatus.DEFAULT);
 
@@ -1180,7 +1224,8 @@ public class RecipientDatabase extends Database {
                                  Recipient.Capability.deserialize(uuidCapabilityValue),
                                  Recipient.Capability.deserialize(groupsV2CapabilityValue),
                                  InsightsBannerTier.fromId(insightsBannerTier),
-                                 storageKey, identityKey, identityStatus, MentionSetting.fromId(mentionSettingId));
+                                 storageKey, identityKey, identityStatus, MentionSetting.fromId(mentionSettingId),
+                                 storageProto);
   }
 
   public BulkOperationsHandle beginBulkSystemContactUpdate() {
@@ -1704,7 +1749,6 @@ public class RecipientDatabase extends Database {
       for (RecipientId id : unregistered) {
         ContentValues values = new ContentValues(2);
         values.put(REGISTERED, RegisteredState.NOT_REGISTERED.getId());
-        values.put(UUID, (String) null);
         if (update(id, values)) {
           markDirty(id, DirtyState.DELETE);
         }
@@ -1757,6 +1801,12 @@ public class RecipientDatabase extends Database {
     }
   }
 
+  /**
+   * Handles inserts the (e164, UUID) pairs, which could result in merges. Does not mark users as
+   * registered.
+   *
+   * @return A mapping of (RecipientId, UUID)
+   */
   public @NonNull Map<RecipientId, String> bulkProcessCdsResult(@NonNull Map<String, UUID> mapping) {
     SQLiteDatabase               db      = databaseHelper.getWritableDatabase();
     HashMap<RecipientId, String> uuidMap = new HashMap<>();
@@ -2512,6 +2562,7 @@ public class RecipientDatabase extends Database {
     private final byte[]                          identityKey;
     private final IdentityDatabase.VerifiedStatus identityStatus;
     private final MentionSetting                  mentionSetting;
+    private final byte[]                          storageProto;
 
     RecipientSettings(@NonNull RecipientId id,
                       @Nullable UUID uuid,
@@ -2551,7 +2602,8 @@ public class RecipientDatabase extends Database {
                       @Nullable byte[] storageId,
                       @Nullable byte[] identityKey,
                       @NonNull IdentityDatabase.VerifiedStatus identityStatus,
-                      @NonNull MentionSetting mentionSetting)
+                      @NonNull MentionSetting mentionSetting,
+                      @Nullable byte[] storageProto)
     {
       this.id                     = id;
       this.uuid                   = uuid;
@@ -2592,6 +2644,7 @@ public class RecipientDatabase extends Database {
       this.identityKey            = identityKey;
       this.identityStatus         = identityStatus;
       this.mentionSetting         = mentionSetting;
+      this.storageProto           = storageProto;
     }
 
     public RecipientId getId() {
@@ -2751,6 +2804,10 @@ public class RecipientDatabase extends Database {
 
     public @NonNull MentionSetting getMentionSetting() {
       return mentionSetting;
+    }
+
+    public @Nullable byte[] getStorageProto() {
+      return storageProto;
     }
   }
 

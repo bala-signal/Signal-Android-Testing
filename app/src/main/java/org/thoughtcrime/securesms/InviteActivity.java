@@ -41,7 +41,6 @@ import org.thoughtcrime.securesms.util.concurrent.ListenableFuture.Listener;
 import org.thoughtcrime.securesms.util.task.ProgressDialogAsyncTask;
 import org.whispersystems.libsignal.util.guava.Optional;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class InviteActivity extends PassphraseRequiredActivity implements ContactSelectionListFragment.OnContactSelectedListener {
@@ -104,7 +103,7 @@ public class InviteActivity extends PassphraseRequiredActivity implements Contac
     contactsFragment  = (ContactSelectionListFragment)getSupportFragmentManager().findFragmentById(R.id.contact_selection_list_fragment);
 
     inviteText.setText(getString(R.string.InviteActivity_lets_switch_to_signal, getString(R.string.install_url)));
-    updateSmsButtonText();
+    updateSmsButtonText(contactsFragment.getSelectedContacts().size());
 
     contactsFragment.setOnContactSelectedListener(this);
     shareButton.setOnClickListener(new ShareClickListener());
@@ -122,14 +121,14 @@ public class InviteActivity extends PassphraseRequiredActivity implements Contac
   }
 
   @Override
-  public boolean onContactSelected(Optional<RecipientId> recipientId, String number) {
-    updateSmsButtonText();
+  public boolean onBeforeContactSelected(Optional<RecipientId> recipientId, String number) {
+    updateSmsButtonText(contactsFragment.getSelectedContacts().size() + 1);
     return true;
   }
 
   @Override
   public void onContactDeselected(Optional<RecipientId> recipientId, String number) {
-    updateSmsButtonText();
+    updateSmsButtonText(contactsFragment.getSelectedContacts().size());
   }
 
   private void sendSmsInvites() {
@@ -139,12 +138,11 @@ public class InviteActivity extends PassphraseRequiredActivity implements Contac
                                            .toArray(new SelectedContact[0]));
   }
 
-  private void updateSmsButtonText() {
-    List<SelectedContact> selectedContacts = contactsFragment.getSelectedContacts();
+  private void updateSmsButtonText(int count) {
     smsSendButton.setText(getResources().getQuantityString(R.plurals.InviteActivity_send_sms_to_friends,
-                                                           selectedContacts.size(),
-                                                           selectedContacts.size()));
-    smsSendButton.setEnabled(!selectedContacts.isEmpty());
+                                                           count,
+                                                           count));
+    smsSendButton.setEnabled(count > 0);
   }
 
   @Override public void onBackPressed() {
@@ -158,7 +156,7 @@ public class InviteActivity extends PassphraseRequiredActivity implements Contac
   private void cancelSmsSelection() {
     setPrimaryColorsToolbarNormal();
     contactsFragment.reset();
-    updateSmsButtonText();
+    updateSmsButtonText(contactsFragment.getSelectedContacts().size());
     ViewUtil.animateOut(smsSendFrame, slideOutAnimation, View.GONE);
   }
 

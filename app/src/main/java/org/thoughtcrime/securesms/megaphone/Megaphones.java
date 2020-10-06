@@ -23,6 +23,7 @@ import org.thoughtcrime.securesms.messagerequests.MessageRequestMegaphoneActivit
 import org.thoughtcrime.securesms.profiles.ProfileName;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.FeatureFlags;
+import org.thoughtcrime.securesms.util.ResearchMegaphone;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 
 import java.util.LinkedHashMap;
@@ -34,12 +35,12 @@ import java.util.Objects;
  * Creating a new megaphone:
  * - Add an enum to {@link Event}
  * - Return a megaphone in {@link #forRecord(Context, MegaphoneRecord)}
- * - Include the event in {@link #buildDisplayOrder()}
+ * - Include the event in {@link #buildDisplayOrder(Context)}
  *
  * Common patterns:
  * - For events that have a snooze-able recurring display schedule, use a {@link RecurringSchedule}.
  * - For events guarded by feature flags, set a {@link ForeverSchedule} with false in
- *   {@link #buildDisplayOrder()}.
+ *   {@link #buildDisplayOrder(Context)}.
  * - For events that change, return different megaphones in {@link #forRecord(Context, MegaphoneRecord)}
  *   based on whatever properties you're interested in.
  */
@@ -65,14 +66,8 @@ public final class Megaphones {
                                        .map(Map.Entry::getKey)
                                        .map(records::get)
                                        .map(record -> Megaphones.forRecord(context, record))
+                                       .sortBy(m -> -m.getPriority().getPriorityValue())
                                        .toList();
-
-    boolean hasOptional  = Stream.of(megaphones).anyMatch(m -> !m.isMandatory());
-    boolean hasMandatory = Stream.of(megaphones).anyMatch(Megaphone::isMandatory);
-
-    if (hasOptional && hasMandatory) {
-      megaphones = Stream.of(megaphones).filter(Megaphone::isMandatory).toList();
-    }
 
     if (megaphones.size() > 0) {
       return megaphones.get(0);
@@ -91,8 +86,9 @@ public final class Megaphones {
       put(Event.PINS_FOR_ALL, new PinsForAllSchedule());
       put(Event.PIN_REMINDER, new SignalPinReminderSchedule());
       put(Event.MESSAGE_REQUESTS, shouldShowMessageRequestsMegaphone() ? ALWAYS : NEVER);
-      put(Event.MENTIONS, shouldShowMentionsMegaphone() ? ALWAYS : NEVER);
       put(Event.LINK_PREVIEWS, shouldShowLinkPreviewsMegaphone(context) ? ALWAYS : NEVER);
+      put(Event.CLIENT_DEPRECATED, SignalStore.misc().isClientDeprecated() ? ALWAYS : NEVER);
+      put(Event.RESEARCH, shouldShowResearchMegaphone() ? ShowForDurationSchedule.showForDays(7) : NEVER);
     }};
   }
 
@@ -106,10 +102,12 @@ public final class Megaphones {
         return buildPinReminderMegaphone(context);
       case MESSAGE_REQUESTS:
         return buildMessageRequestsMegaphone(context);
-      case MENTIONS:
-        return buildMentionsMegaphone();
       case LINK_PREVIEWS:
         return buildLinkPreviewsMegaphone();
+      case CLIENT_DEPRECATED:
+        return buildClientDeprecatedMegaphone(context);
+      case RESEARCH:
+        return buildResearchMegaphone(context);
       default:
         throw new IllegalArgumentException("Event not handled!");
     }
@@ -117,14 +115,14 @@ public final class Megaphones {
 
   private static @NonNull Megaphone buildReactionsMegaphone() {
     return new Megaphone.Builder(Event.REACTIONS, Megaphone.Style.REACTIONS)
-                        .setMandatory(false)
+                        .setPriority(Megaphone.Priority.DEFAULT)
                         .build();
   }
 
   private static @NonNull Megaphone buildPinsForAllMegaphone(@NonNull MegaphoneRecord record) {
     if (PinsForAllSchedule.shouldDisplayFullScreen(record.getFirstVisible(), System.currentTimeMillis())) {
       return new Megaphone.Builder(Event.PINS_FOR_ALL, Megaphone.Style.FULLSCREEN)
-                          .setMandatory(true)
+                          .setPriority(Megaphone.Priority.HIGH)
                           .enableSnooze(null)
                           .setOnVisibleListener((megaphone, listener) -> {
                             if (new NetworkConstraint.Factory(ApplicationDependencies.getApplication()).create().isMet()) {
@@ -134,7 +132,7 @@ public final class Megaphones {
                           .build();
     } else {
       return new Megaphone.Builder(Event.PINS_FOR_ALL, Megaphone.Style.BASIC)
-                          .setMandatory(true)
+                          .setPriority(Megaphone.Priority.HIGH)
                           .setImage(R.drawable.kbs_pin_megaphone)
                           .setTitle(R.string.KbsMegaphone__create_a_pin)
                           .setBody(R.string.KbsMegaphone__pins_keep_information_thats_stored_with_signal_encrytped)
@@ -184,7 +182,7 @@ public final class Megaphones {
   private static @NonNull Megaphone buildMessageRequestsMegaphone(@NonNull Context context) {
     return new Megaphone.Builder(Event.MESSAGE_REQUESTS, Megaphone.Style.FULLSCREEN)
                         .disableSnooze()
-                        .setMandatory(true)
+                        .setPriority(Megaphone.Priority.HIGH)
                         .setOnVisibleListener(((megaphone, listener) -> {
                           listener.onMegaphoneNavigationRequested(new Intent(context, MessageRequestMegaphoneActivity.class),
                                                                   ConversationListFragment.MESSAGE_REQUESTS_REQUEST_CODE_CREATE_NAME);
@@ -192,17 +190,32 @@ public final class Megaphones {
                         .build();
   }
 
-  private static Megaphone buildMentionsMegaphone() {
-    return new Megaphone.Builder(Event.MENTIONS, Megaphone.Style.POPUP)
-                        .setTitle(R.string.MentionsMegaphone__introducing_mentions)
-                        .setBody(R.string.MentionsMegaphone__get_someones_attention_in_a_group_by_typing)
-                        .setImage(R.drawable.mention_megaphone)
+  private static @NonNull Megaphone buildLinkPreviewsMegaphone() {
+    return new Megaphone.Builder(Event.LINK_PREVIEWS, Megaphone.Style.LINK_PREVIEWS)
+                        .setPriority(Megaphone.Priority.HIGH)
                         .build();
   }
 
-  private static @NonNull Megaphone buildLinkPreviewsMegaphone() {
-    return new Megaphone.Builder(Event.LINK_PREVIEWS, Megaphone.Style.LINK_PREVIEWS)
-                        .setMandatory(true)
+  private static @NonNull Megaphone buildClientDeprecatedMegaphone(@NonNull Context context) {
+    return new Megaphone.Builder(Event.CLIENT_DEPRECATED, Megaphone.Style.FULLSCREEN)
+                        .disableSnooze()
+                        .setPriority(Megaphone.Priority.HIGH)
+                        .setOnVisibleListener((megaphone, listener) -> listener.onMegaphoneNavigationRequested(new Intent(context, ClientDeprecatedActivity.class)))
+                        .build();
+  }
+
+  private static @NonNull Megaphone buildResearchMegaphone(@NonNull Context context) {
+    return new Megaphone.Builder(Event.RESEARCH, Megaphone.Style.BASIC)
+                        .disableSnooze()
+                        .setTitle(R.string.ResearchMegaphone_tell_signal_what_you_think)
+                        .setBody(R.string.ResearchMegaphone_to_make_signal_the_best_messaging_app_on_the_planet)
+                        .setImage(R.drawable.ic_research_megaphone)
+                        .setActionButton(R.string.ResearchMegaphone_learn_more, (megaphone, controller) -> {
+                          controller.onMegaphoneCompleted(megaphone.getEvent());
+                          controller.onMegaphoneDialogFragmentRequested(new ResearchMegaphoneDialog());
+                        })
+                        .setSecondaryButton(R.string.ResearchMegaphone_dismiss, (megaphone, controller) -> controller.onMegaphoneCompleted(megaphone.getEvent()))
+                        .setPriority(Megaphone.Priority.DEFAULT)
                         .build();
   }
 
@@ -210,8 +223,8 @@ public final class Megaphones {
     return Recipient.self().getProfileName() == ProfileName.EMPTY;
   }
 
-  private static boolean shouldShowMentionsMegaphone() {
-    return FeatureFlags.mentions();
+  private static boolean shouldShowResearchMegaphone() {
+    return ResearchMegaphone.isInResearchMegaphone();
   }
 
   private static boolean shouldShowLinkPreviewsMegaphone(@NonNull Context context) {
@@ -223,8 +236,9 @@ public final class Megaphones {
     PINS_FOR_ALL("pins_for_all"),
     PIN_REMINDER("pin_reminder"),
     MESSAGE_REQUESTS("message_requests"),
-    MENTIONS("mentions"),
-    LINK_PREVIEWS("link_previews");
+    LINK_PREVIEWS("link_previews"),
+    CLIENT_DEPRECATED("client_deprecated"),
+    RESEARCH("research");
 
     private final String key;
 

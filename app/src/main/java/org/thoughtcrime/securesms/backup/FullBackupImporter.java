@@ -138,13 +138,11 @@ public class FullBackupImporter extends FullBackupBase {
       inputStream.readAttachmentTo(output.second, attachment.getLength());
 
       contentValues.put(AttachmentDatabase.DATA, dataFile.getAbsolutePath());
-      contentValues.put(AttachmentDatabase.THUMBNAIL, (String)null);
       contentValues.put(AttachmentDatabase.DATA_RANDOM, output.first);
     } catch (BadMacException e) {
       Log.w(TAG, "Bad MAC for attachment " + attachment.getAttachmentId() + "! Can't restore it.", e);
       dataFile.delete();
       contentValues.put(AttachmentDatabase.DATA, (String) null);
-      contentValues.put(AttachmentDatabase.THUMBNAIL, (String) null);
       contentValues.put(AttachmentDatabase.DATA_RANDOM, (String) null);
     }
 
@@ -156,7 +154,7 @@ public class FullBackupImporter extends FullBackupBase {
   private static void processSticker(@NonNull Context context, @NonNull AttachmentSecret attachmentSecret, @NonNull SQLiteDatabase db, @NonNull Sticker sticker, BackupRecordInputStream inputStream)
       throws IOException
   {
-    File stickerDirectory = context.getDir(AttachmentDatabase.DIRECTORY, Context.MODE_PRIVATE);
+    File stickerDirectory = context.getDir(StickerDatabase.DIRECTORY, Context.MODE_PRIVATE);
     File dataFile         = File.createTempFile("sticker", ".mms", stickerDirectory);
 
     Pair<byte[], OutputStream> output = ModernEncryptingPartOutputStream.createFor(attachmentSecret, dataFile, false);

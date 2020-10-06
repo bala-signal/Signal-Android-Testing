@@ -20,6 +20,7 @@ import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.jobmanager.JobManager;
 import org.thoughtcrime.securesms.jobs.DirectoryRefreshJob;
 import org.thoughtcrime.securesms.jobs.RotateCertificateJob;
+import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.pin.PinState;
 import org.thoughtcrime.securesms.push.AccountManagerFactory;
@@ -174,7 +175,7 @@ public final class CodeVerificationRequest {
   private static void handleSuccessfulRegistration(@NonNull Context context) {
     JobManager jobManager = ApplicationDependencies.getJobManager();
     jobManager.add(new DirectoryRefreshJob(false));
-    jobManager.add(new RotateCertificateJob(context));
+    jobManager.add(new RotateCertificateJob());
 
     DirectoryRefreshListener.schedule(context);
     RotateSignedPreKeyListener.schedule(context);
@@ -220,7 +221,8 @@ public final class CodeVerificationRequest {
                                                                           registrationLockV2,
                                                                           unidentifiedAccessKey,
                                                                           universalUnidentifiedAccess,
-                                                                          AppCapabilities.getCapabilities(true));
+                                                                          AppCapabilities.getCapabilities(true),
+                                                                          SignalStore.phoneNumberPrivacy().getPhoneNumberListingMode().isDiscoverable());
 
     UUID    uuid   = UuidUtil.parseOrThrow(response.getUuid());
     boolean hasPin = response.isStorageCapable();
@@ -256,7 +258,6 @@ public final class CodeVerificationRequest {
                                  identityKey.getPublicKey(), IdentityDatabase.VerifiedStatus.VERIFIED,
                                  true, System.currentTimeMillis(), true);
 
-    TextSecurePreferences.setVerifying(context, false);
     TextSecurePreferences.setPushRegistered(context, true);
     TextSecurePreferences.setPushServerPassword(context, credentials.getPassword());
     TextSecurePreferences.setSignedPreKeyRegistered(context, true);

@@ -151,6 +151,7 @@ public final class PushDecryptMessageJob extends BaseJob {
   }
 
   private @NonNull List<Job> handleMessage(@NonNull SignalServiceEnvelope envelope) throws NoSenderException {
+    Log.i(TAG, "Processing message ID " + envelope.getTimestamp());
     try {
       SignalProtocolStore  axolotlStore = new SignalProtocolStoreImpl(context);
       SignalServiceAddress localAddress = new SignalServiceAddress(Optional.of(TextSecurePreferences.getLocalUuid(context)), Optional.of(TextSecurePreferences.getLocalNumber(context)));
@@ -171,7 +172,7 @@ public final class PushDecryptMessageJob extends BaseJob {
       return jobs;
 
     } catch (ProtocolInvalidVersionException e) {
-      Log.w(TAG, e);
+      Log.w(TAG, String.valueOf(envelope.getTimestamp()), e);
       return Collections.singletonList(new PushProcessMessageJob(PushProcessMessageJob.MessageState.INVALID_VERSION,
                                                                  toExceptionMetadata(e),
                                                                  messageId,
@@ -179,7 +180,7 @@ public final class PushDecryptMessageJob extends BaseJob {
                                                                  envelope.getTimestamp()));
 
     } catch (ProtocolInvalidMessageException | ProtocolInvalidKeyIdException | ProtocolInvalidKeyException | ProtocolUntrustedIdentityException e) {
-      Log.w(TAG, e);
+      Log.w(TAG, String.valueOf(envelope.getTimestamp()), e);
       return Collections.singletonList(new PushProcessMessageJob(PushProcessMessageJob.MessageState.CORRUPT_MESSAGE,
                                                                  toExceptionMetadata(e),
                                                                  messageId,
@@ -187,7 +188,7 @@ public final class PushDecryptMessageJob extends BaseJob {
                                                                  envelope.getTimestamp()));
 
     } catch (ProtocolNoSessionException e) {
-      Log.w(TAG, e);
+      Log.w(TAG, String.valueOf(envelope.getTimestamp()), e);
       return Collections.singletonList(new PushProcessMessageJob(PushProcessMessageJob.MessageState.NO_SESSION,
                                                                  toExceptionMetadata(e),
                                                                  messageId,
@@ -195,7 +196,7 @@ public final class PushDecryptMessageJob extends BaseJob {
                                                                  envelope.getTimestamp()));
 
     } catch (ProtocolLegacyMessageException e) {
-      Log.w(TAG, e);
+      Log.w(TAG, String.valueOf(envelope.getTimestamp()), e);
       return Collections.singletonList(new PushProcessMessageJob(PushProcessMessageJob.MessageState.LEGACY_MESSAGE,
                                                                  toExceptionMetadata(e),
                                                                  messageId,
@@ -203,7 +204,7 @@ public final class PushDecryptMessageJob extends BaseJob {
                                                                  envelope.getTimestamp()));
 
     } catch (ProtocolDuplicateMessageException e) {
-      Log.w(TAG, e);
+      Log.w(TAG, String.valueOf(envelope.getTimestamp()), e);
       return Collections.singletonList(new PushProcessMessageJob(PushProcessMessageJob.MessageState.DUPLICATE_MESSAGE,
                                                                  toExceptionMetadata(e),
                                                                  messageId,
@@ -211,7 +212,7 @@ public final class PushDecryptMessageJob extends BaseJob {
                                                                  envelope.getTimestamp()));
 
     } catch (InvalidMetadataVersionException | InvalidMetadataMessageException e) {
-      Log.w(TAG, e);
+      Log.w(TAG, String.valueOf(envelope.getTimestamp()), e);
       return Collections.emptyList();
 
     } catch (SelfSendException e) {
@@ -219,7 +220,7 @@ public final class PushDecryptMessageJob extends BaseJob {
       return Collections.emptyList();
 
     } catch (UnsupportedDataMessageException e) {
-      Log.w(TAG, e);
+      Log.w(TAG, String.valueOf(envelope.getTimestamp()), e);
       return Collections.singletonList(new PushProcessMessageJob(PushProcessMessageJob.MessageState.UNSUPPORTED_DATA_MESSAGE,
                                        toExceptionMetadata(e),
                                        messageId,

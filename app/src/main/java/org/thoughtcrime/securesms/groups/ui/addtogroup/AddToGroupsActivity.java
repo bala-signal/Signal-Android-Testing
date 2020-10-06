@@ -51,7 +51,7 @@ public final class AddToGroupsActivity extends ContactSelectionActivity {
     intent.putExtra(EXTRA_RECIPIENT_ID, recipientId);
 
     intent.putExtra(ContactSelectionListFragment.DISPLAY_MODE, ContactsCursorLoader.DisplayMode.FLAG_ACTIVE_GROUPS);
-    intent.putExtra(ContactSelectionListFragment.TOTAL_CAPACITY, ContactSelectionListFragment.NO_LIMIT);
+    intent.putExtra(ContactSelectionListFragment.SELECTION_LIMIT, ContactSelectionListFragment.NO_LIMIT);
 
     intent.putParcelableArrayListExtra(ContactSelectionListFragment.CURRENT_SELECTION, new ArrayList<>(currentGroupsMemberOf));
 
@@ -88,7 +88,7 @@ public final class AddToGroupsActivity extends ContactSelectionActivity {
         new AlertDialog.Builder(this)
                        .setTitle(addEvent.getTitle())
                        .setMessage(addEvent.getMessage())
-                       .setPositiveButton(android.R.string.ok, (dialog, which) -> viewModel.onAddToGroupsConfirmed(addEvent))
+                       .setPositiveButton(R.string.AddToGroupActivity_add, (dialog, which) -> viewModel.onAddToGroupsConfirmed(addEvent))
                        .setNegativeButton(android.R.string.cancel, null)
                        .show();
       } else if (event instanceof Event.LegacyGroupDenialEvent) {
@@ -114,7 +114,7 @@ public final class AddToGroupsActivity extends ContactSelectionActivity {
   }
 
   @Override
-  public boolean onContactSelected(Optional<RecipientId> recipientId, String number) {
+  public boolean onBeforeContactSelected(Optional<RecipientId> recipientId, String number) {
     if (contactsFragment.isMulti()) {
       throw new UnsupportedOperationException("Not yet built to handle multi-select.");
 //      if (contactsFragment.hasQueryFilter()) {

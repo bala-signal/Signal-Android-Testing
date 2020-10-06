@@ -1,6 +1,5 @@
 package org.thoughtcrime.securesms.profiles.edit;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +26,6 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dd.CircularProgressButton;
-import com.google.android.gms.common.util.IOUtils;
 
 import org.thoughtcrime.securesms.LoggingFragment;
 import org.thoughtcrime.securesms.R;
@@ -38,13 +36,13 @@ import org.thoughtcrime.securesms.mediasend.AvatarSelectionActivity;
 import org.thoughtcrime.securesms.mediasend.AvatarSelectionBottomSheetDialogFragment;
 import org.thoughtcrime.securesms.mediasend.Media;
 import org.thoughtcrime.securesms.mms.GlideApp;
-import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.profiles.ProfileName;
 import org.thoughtcrime.securesms.providers.BlobProvider;
 import org.thoughtcrime.securesms.registration.RegistrationUtil;
 import org.thoughtcrime.securesms.util.CommunicationActions;
 import org.thoughtcrime.securesms.util.FeatureFlags;
 import org.thoughtcrime.securesms.util.StringUtil;
+import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.concurrent.SimpleTask;
 import org.thoughtcrime.securesms.util.text.AfterTextChanged;
 import org.thoughtcrime.securesms.util.views.LearnMoreTextView;
@@ -64,7 +62,6 @@ import static org.thoughtcrime.securesms.profiles.edit.EditProfileActivity.SHOW_
 public class EditProfileFragment extends LoggingFragment {
 
   private static final String TAG                        = Log.tag(EditProfileFragment.class);
-  private static final String AVATAR_STATE               = "avatar";
   private static final short  REQUEST_CODE_SELECT_AVATAR = 31726;
   private static final int    MAX_GROUP_NAME_LENGTH      = 32;
 
@@ -133,22 +130,9 @@ public class EditProfileFragment extends LoggingFragment {
   }
 
   @Override
-  public void onSaveInstanceState(@NonNull Bundle outState) {
-    outState.putByteArray(AVATAR_STATE, viewModel.getAvatarSnapshot());
-  }
-
-  @Override
-  public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-    super.onViewStateRestored(savedInstanceState);
-
-    if (savedInstanceState != null && savedInstanceState.containsKey(AVATAR_STATE)) {
-      viewModel.setAvatar(savedInstanceState.getByteArray(AVATAR_STATE));
-    }
-  }
-
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    Permissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+  public void onResume() {
+    super.onResume();
+    viewModel.refreshUsername();
   }
 
   @Override
@@ -168,7 +152,7 @@ public class EditProfileFragment extends LoggingFragment {
           Media       result = data.getParcelableExtra(AvatarSelectionActivity.EXTRA_MEDIA);
           InputStream stream = BlobProvider.getInstance().getStream(requireContext(), result.getUri());
 
-          return IOUtils.readInputStreamFully(stream);
+          return Util.readFully(stream);
         } catch (IOException ioException) {
           Log.w(TAG, ioException);
           return null;
@@ -201,7 +185,8 @@ public class EditProfileFragment extends LoggingFragment {
 
     EditProfileViewModel.Factory factory = new EditProfileViewModel.Factory(repository, hasSavedInstanceState, groupId);
 
-    viewModel = ViewModelProviders.of(this, factory).get(EditProfileViewModel.class);
+    viewModel = ViewModelProviders.of(requireActivity(), factory)
+                                  .get(EditProfileViewModel.class);
   }
 
   private void initializeResources(@NonNull View view, boolean isEditingGroup) {
@@ -226,11 +211,7 @@ public class EditProfileFragment extends LoggingFragment {
       usernameLabel.setVisibility(View.VISIBLE);
     }
 
-    this.avatar.setOnClickListener(v -> Permissions.with(this)
-               .request(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-               .ifNecessary()
-               .onAnyResult(this::startAvatarSelection)
-               .execute());
+    this.avatar.setOnClickListener(v -> startAvatarSelection());
 
     this.givenName .addTextChangedListener(new AfterTextChanged(s -> {
                                                                        trimInPlace(s, isEditingGroup);

@@ -150,7 +150,7 @@ public class ShareActivity extends PassphraseRequiredActivity
 
 
   @Override
-  public boolean onContactSelected(Optional<RecipientId> recipientId, String number) {
+  public boolean onBeforeContactSelected(Optional<RecipientId> recipientId, String number) {
     SimpleTask.run(this.getLifecycle(), () -> {
       Recipient recipient;
       if (recipientId.isPresent()) {
@@ -160,7 +160,7 @@ public class ShareActivity extends PassphraseRequiredActivity
         recipient = Recipient.external(this, number);
       }
 
-      long existingThread = DatabaseFactory.getThreadDatabase(this).getThreadIdIfExistsFor(recipient);
+      long existingThread = DatabaseFactory.getThreadDatabase(this).getThreadIdIfExistsFor(recipient.getId());
       return new Pair<>(existingThread, recipient);
     }, result -> onDestinationChosen(result.first(), result.second().getId()));
 
@@ -314,6 +314,8 @@ public class ShareActivity extends PassphraseRequiredActivity
       intent.putExtra(ConversationActivity.MEDIA_EXTRA, shareData.getMedia());
     } else if (shareData != null && shareData.isForPrimitive()) {
       Log.i(TAG, "Shared data is a primitive type.");
+    } else if (shareData == null && stickerExtra != null) {
+      intent.setType(getIntent().getType());
     } else {
       Log.i(TAG, "Shared data was not external.");
     }

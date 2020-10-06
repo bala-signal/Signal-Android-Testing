@@ -55,6 +55,7 @@
   <string name="ApplicationPreferencesActivity_pins_are_required_for_registration_lock">يطلب الرقم التعريفي الشخصي من أجل قفل الانخراط. لإلغاء الرقم التعريفي الشخصي، الرجاء إلغاء قفل الانخراط.</string>
   <string name="ApplicationPreferencesActivity_pin_created">تم إنشاء الرقم التعريفي الشخصي.</string>
   <string name="ApplicationPreferencesActivity_pin_disabled">الرقم التعريفي الشخصي غير مفعل.</string>
+  <string name="ApplicationPreferencesActivity_hide">إخفاء</string>
   <!--AppProtectionPreferenceFragment-->
   <plurals name="AppProtectionPreferenceFragment_minutes">
     <item quantity="zero">%d دقيقة</item>
@@ -136,6 +137,10 @@
   <string name="ClearProfileActivity_remove">إزالة</string>
   <string name="ClearProfileActivity_remove_profile_photo">حذف صورة الملف الشخصي؟</string>
   <string name="ClearProfileActivity_remove_group_photo">حذف صورة المجموعة؟</string>
+  <!--ClientDeprecatedActivity-->
+  <string name="ClientDeprecatedActivity_update_signal">تحديث Signal</string>
+  <string name="ClientDeprecatedActivity_update">تحديث التطبيق</string>
+  <string name="ClientDeprecatedActivity_warning">تحذير</string>
   <!--CommunicationActions-->
   <string name="CommunicationActions_no_browser_found">لم يتم العثور على متصفح للإنترنت.</string>
   <string name="CommunicationActions_no_email_app_found">لم يعثر على أي تطبيق للبريد الإلكتروني.</string>
@@ -205,11 +210,6 @@
   <string name="ConversationActivity_added_to_home_screen">تمت الإضافة للشاشة الرئيسية</string>
   <string name="ConversationActivity_calls_not_supported">المكالمات غير مدعمة</string>
   <string name="ConversationActivity_this_device_does_not_appear_to_support_dial_actions">هذا الجهاز لا يدعم خاصية الاتصال.</string>
-  <string name="ConversationActivity_leave_group">ترك المجموعة؟</string>
-  <string name="ConversationActivity_are_you_sure_you_want_to_leave_this_group">هل أنت متأكد من ترك المجموعة؟</string>
-  <string name="ConversationActivity_choose_new_admin">اختر مشرفا جديدا</string>
-  <string name="ConversationActivity_before_you_leave_you_must_choose_at_least_one_new_admin_for_this_group">قبل أن تغادر، يجب عليك أن تختار على الأقل مشرف واحد لهذه المجموعة.  </string>
-  <string name="ConversationActivity_choose_admin">اختر المشرف</string>
   <string name="ConversationActivity_transport_insecure_sms">رسالة SMS غير آمنة</string>
   <string name="ConversationActivity_transport_insecure_mms">رسالة وسائط متعددة غير آمنة</string>
   <string name="ConversationActivity_transport_signal">Signal</string>
@@ -423,6 +423,7 @@
   <!--DozeReminder-->
   <string name="DozeReminder_optimize_for_missing_play_services">الإعداد الأمثل عند غياب خدمات Play Services</string>
   <string name="DozeReminder_this_device_does_not_support_play_services_tap_to_disable_system_battery">هذا الهاتف لا يدعم خدمات Play. أنقر لإلغاء تفعيل ميزة الأداء الأمثل للبطارية والتي تمنع Signal من استقبال الرسائل عند عدم النشاط.</string>
+  <!--ExpiredBuildReminder-->
   <!--ShareActivity-->
   <string name="ShareActivity_share_with">شارك مع</string>
   <string name="ShareActivity_multiple_attachments_are_only_supported">المرفقات المتعددة مدعومة فقط مع الصور والفيديو</string>
@@ -443,6 +444,7 @@
   <string name="AddToGroupActivity_add_to_group">أضف إلى مجموعة</string>
   <string name="AddToGroupActivity_add_to_groups">أضف إلى مجموعات</string>
   <string name="AddToGroupActivity_this_person_cant_be_added_to_legacy_groups">لا يمكن إضافة هذا الشخص إلى المجموعات من الطراز القديم.</string>
+  <string name="AddToGroupActivity_add">إضافة</string>
   <!--ChooseNewAdminActivity-->
   <string name="ChooseNewAdminActivity_choose_new_admin">اختر مشرفا جديدا</string>
   <string name="ChooseNewAdminActivity_done">تم</string>
@@ -454,6 +456,7 @@
   <!--GroupMembersDialog-->
   <string name="GroupMembersDialog_you">أنت</string>
   <!--GV2 access levels-->
+  <string name="GroupManagement_access_level_anyone">أي شخص</string>
   <string name="GroupManagement_access_level_all_members">جميع الأعضاء</string>
   <string name="GroupManagement_access_level_only_admins">للمشرفين فقط</string>
   <!--GV2 invites sent-->
@@ -468,12 +471,21 @@
   <string name="GroupManagement_invite_single_user">لا يمكن إضافة \"%1$s\" تلقائياً إلى هذه المجموعة من قبلك. \n\n لقد تمت دعوتهم للانضمام، ولن يروا أيّة رسالة من رسائل المجموعة حتى يقبلون.</string>
   <string name="GroupManagement_learn_more">لمعرفة المزيد</string>
   <string name="GroupManagement_invite_multiple_users">لا يمكن إضافة هؤلاء المستخدمين تلقائياً إلى هذه المجموعة من قبلك. \n\n لقد تمت دعوتهم للانضمام، ولن يروا أيّة رسالة من رسائل المجموعة حتى يقبلون.</string>
+  <!--LeaveGroupDialog-->
+  <string name="LeaveGroupDialog_leave_group">ترك المجموعة؟</string>
+  <string name="LeaveGroupDialog_you_will_no_longer_be_able_to_send_or_receive_messages_in_this_group">لن تتمكن من إرسال أو استقبال رسائل في هذه المجموعة بعد اﻵن.</string>
+  <string name="LeaveGroupDialog_leave">غادر</string>
+  <string name="LeaveGroupDialog_choose_new_admin">اختر مشرفا جديدا</string>
+  <string name="LeaveGroupDialog_before_you_leave_you_must_choose_at_least_one_new_admin_for_this_group">قبل أن تغادر، يجب عليك أن تختار على الأقل مشرف واحد لهذه المجموعة.  </string>
+  <string name="LeaveGroupDialog_choose_admin">اختر المشرف</string>
   <!--LinkPreviewsMegaphone-->
   <string name="LinkPreviewsMegaphone_disable">تعطيل</string>
   <string name="LinkPreviewsMegaphone_preview_any_link">استعراض أيّة رابط</string>
   <string name="LinkPreviewsMegaphone_you_can_now_retrieve_link_previews_directly_from_any_website">تستطيع الآن جلب استعراض للروابط للرسائل التي ترسلها من  أيّة موقع مباشرةً.</string>
   <!--LinkPreviewView-->
   <string name="LinkPreviewView_no_link_preview_available">لا يتوفر استعراض للرابط</string>
+  <string name="LinkPreviewView_this_group_link_is_not_active">رابط هذه المجموعة غير مفعّل</string>
+  <!--LinkPreviewRepository-->
   <!--PendingMembersActivity-->
   <string name="PendingMemberInvitesActivity_pending_group_invites">دعوات معلّقة</string>
   <string name="PendingMembersActivity_people_you_invited">الأشخاص الذين دعوتهم</string>
@@ -499,6 +511,7 @@
     <item quantity="many">حدث خطأ أثناء سحب الدعوات</item>
     <item quantity="other">حدث خطأ أثناء سحب الدعوات</item>
   </plurals>
+  <!--RequestingMembersFragment-->
   <!--AddMembersActivity-->
   <string name="AddMembersActivity__done">تم</string>
   <string name="AddMembersActivity__this_person_cant_be_added_to_legacy_groups">لا يمكن إضافة هذا الشخص إلى المجموعات من الطراز القديم.</string>
@@ -510,6 +523,7 @@
     <item quantity="many">إضافة %3$d أعضاء إلى \"%2$s\"؟</item>
     <item quantity="other">إضافة  %3$d أعضاء إلى \"%2$s\"؟</item>
   </plurals>
+  <string name="AddMembersActivity__add">إضافة</string>
   <!--AddGroupDetailsFragment-->
   <string name="AddGroupDetailsFragment__name_this_group">سمّ هذه المجموعة</string>
   <string name="AddGroupDetailsFragment__create_group">إنشاء مجموعة</string>
@@ -547,8 +561,6 @@
   <string name="ManageGroupActivity_pending_group_invites">دعوات معلّقة</string>
   <string name="ManageGroupActivity_add_members">إضافة أعضاء</string>
   <string name="ManageGroupActivity_edit_group_info">تعديل معلومات المجموعة</string>
-  <string name="ManageGroupActivity_choose_who_can_edit_the_group_name_avatar_and_disappearing_messages">اختر من يمكنه تعديل اسم وصورة المجموعة والرسائل المٌختفية</string>
-  <string name="ManageGroupActivity_choose_who_can_add_or_invite_new_members">اختر من يمكنه إضافة أو دعوة أعضاء جدد.</string>
   <string name="ManageGroupActivity_block_group">حظر المجموعة</string>
   <string name="ManageGroupActivity_unblock_group">ألغِ الحظر المجموعة</string>
   <string name="ManageGroupActivity_leave_group">ترك المجموعة</string>
@@ -585,7 +597,6 @@
   <string name="ManageGroupActivity_failed_to_update_the_group_due_to_a_network_error_please_retry_later">فشل تحديث المجموعة بسبب خلل في الشبكة، الرجاء المحاولة لاحقاً</string>
   <string name="ManageGroupActivity_edit_name_and_picture">عدّل الاسم والصورة</string>
   <string name="ManageGroupActivity_legacy_group">مجموعة من الطراز القديم</string>
-  <string name="ManageGroupActivity_legacy_group_learn_more">هذه مجموعة من الطراز القديم. للوصول إلى ميزات مثل خاصية المشرفين، قم بإنشاء مجموعة من الطراز الحديث</string>
   <!--GroupMentionSettingDialog-->
   <string name="GroupMentionSettingDialog_notify_me_for_mentions">نبّهني عندما يذكر أحدهم اسمي</string>
   <string name="GroupMentionSettingDialog_receive_notifications_when_youre_mentioned_in_muted_chats">تلقي الإشعارات عندما يذكر اسمك في المحادثات المصمتة؟</string>
@@ -642,6 +653,12 @@
   <string name="CustomNotificationsDialogFragment__enabled">مفعل</string>
   <string name="CustomNotificationsDialogFragment__disabled">معطل</string>
   <string name="CustomNotificationsDialogFragment__default">افتراضي</string>
+  <!--ShareableGroupLinkDialogFragment-->
+  <string name="ShareableGroupLinkDialogFragment__share">شارك</string>
+  <string name="ShareableGroupLinkDialogFragment__enabled">مفعل</string>
+  <string name="ShareableGroupLinkDialogFragment__disabled">معطل</string>
+  <string name="ShareableGroupLinkDialogFragment__default">افتراضي</string>
+  <!--GroupLinkShareQrDialogFragment-->
   <!--GV2 Invite Revoke confirmation dialog-->
   <string name="InviteRevokeConfirmationDialog_revoke_own_single_invite">هل تريد سحب الدعوة التي أرسلتها إلى %1$s؟</string>
   <plurals name="InviteRevokeConfirmationDialog_revoke_others_invites">
@@ -654,10 +671,26 @@
   </plurals>
   <!--GroupJoinBottomSheetDialogFragment-->
   <string name="GroupJoinBottomSheetDialogFragment_you_are_already_a_member">أنت عضو بالفعل</string>
+  <string name="GroupJoinBottomSheetDialogFragment_join">انضم</string>
+  <string name="GroupJoinBottomSheetDialogFragment_request_to_join">أرسل طلب للانضمام</string>
+  <string name="GroupJoinBottomSheetDialogFragment_encountered_a_network_error">حدث خطأ فى الشبكة</string>
+  <string name="GroupJoinBottomSheetDialogFragment_this_group_link_is_not_active">رابط هذه المجموعة غير مفعّل</string>
+  <string name="GroupJoinBottomSheetDialogFragment_unable_to_get_group_information_please_try_again_later">فشل الحصول على معلومات المجموعة ، يرجى المحاولة مرة أخرى لاحقاً</string>
+  <string name="GroupJoinBottomSheetDialogFragment_direct_join">هل تريد الانضمام إلى هذه المجموعة ومشاركة اسمك وصورتك مع أعضائها؟</string>
+  <string name="GroupJoinBottomSheetDialogFragment_admin_approval_needed">لتستطيع الإنضمام إلى هذه المجموعة يجب أن يوافق مشرف من هذه المجموعة على طلب انضمامك. عندما ترسل طلب انضمام، سيتم مشاركة اسمك وصورتك مع أعضاء المجموعة.</string>
+  <plurals name="GroupJoinBottomSheetDialogFragment_group_dot_d_members">
+    <item quantity="zero">مجموعة · %1$d أعضاء</item>
+    <item quantity="one">مجموعة · %1$d عضو</item>
+    <item quantity="two">مجموعة · %1$d أعضاء</item>
+    <item quantity="few">مجموعة · %1$d أعضاء</item>
+    <item quantity="many">مجموعة · %1$d أعضاء</item>
+    <item quantity="other">مجموعة · %1$dأعضاء</item>
+  </plurals>
   <!--GroupJoinUpdateRequiredBottomSheetDialogFragment-->
   <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal_to_use_group_links">قم بتحديث Signal لاستخدام روابط المجموعة</string>
-  <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_message">إنّ نسخة Signal التي تستعملها لا تدعم روابط المجموعة القابلة للمشاركة. قم بالتحديث لأحدث نسخة لتستطيع الإنضمام إلى هذه المجموعة باستخدام رابط. </string>
   <string name="GroupJoinUpdateRequiredBottomSheetDialogFragment_update_signal">قم بتحديث Signal</string>
+  <!--GV2 Request confirmation dialog-->
+  <string name="RequestConfirmationDialog_add">إضافة</string>
   <!--CropImageActivity-->
   <string name="CropImageActivity_group_avatar">الصورة الرمزية للمجموعة</string>
   <string name="CropImageActivity_profile_avatar">الصورة الرمزية</string>
@@ -933,6 +966,20 @@
   <string name="MessageRecord_you_changed_who_can_edit_group_membership_to_s">أنت غيرت الأشخاص الذين يستطيعون تعديل عضوية المجموعة إلى \"%1$s\".</string>
   <string name="MessageRecord_s_changed_who_can_edit_group_membership_to_s">غير %1$s الأشخاص الذين يستطيعون تعديل عضوية المجموعة إلى \"%2$s\".</string>
   <string name="MessageRecord_who_can_edit_group_membership_has_been_changed_to_s">تم تغيير من يمكنهم تعديل عضوية المجموعة ليصبح : \"%1$s\".</string>
+  <!--GV2 group link invite access level change-->
+  <!--GV2 group link reset-->
+  <!--GV2 group link joins-->
+  <!--GV2 group link requests-->
+  <string name="MessageRecord_you_sent_a_request_to_join_the_group">لقد أرسلت طلب للانضمام للمجموعة.</string>
+  <!--GV2 group link approvals-->
+  <string name="MessageRecord_s_approved_your_request_to_join_the_group">قبل %1$sطلبك للانضمام للمجموعة.</string>
+  <string name="MessageRecord_s_approved_a_request_to_join_the_group_from_s">قبل %1$s طلب %2$s انضمام للمجموعة.</string>
+  <string name="MessageRecord_your_request_to_join_the_group_has_been_approved">تمت الموافقة على طلبك للانضمام للمجموعة.</string>
+  <string name="MessageRecord_a_request_to_join_the_group_from_s_has_been_approved">تمت الموافقة على طلب %1$s للانضمام للمجموعة.</string>
+  <!--GV2 group link deny-->
+  <string name="MessageRecord_your_request_to_join_the_group_has_been_denied_by_an_admin">تمّ رفض طلبك للانضمام للمجموعة من قبل مشرف.</string>
+  <string name="MessageRecord_s_denied_a_request_to_join_the_group_from_s">رفض %1$sطلب %2$s للانضمام للمجموعة.</string>
+  <string name="MessageRecord_a_request_to_join_the_group_from_s_has_been_denied">تمّ رفض طلب %1$sللانضمام للمجموعة.</string>
   <!--End of GV2 specific update messages-->
   <string name="MessageRecord_your_safety_number_with_s_has_changed">تم تغيير رقم السلامة الخاص بينك وبين %s.</string>
   <string name="MessageRecord_you_marked_your_safety_number_with_s_verified">لقد قمت بالتحقق من رقم السلامة مع %s</string>
@@ -1002,6 +1049,7 @@
   <string name="ExpirationDialog_disappearing_messages">الرسائل المختفية</string>
   <string name="ExpirationDialog_your_messages_will_not_expire">صلاحية رسائلك لن تنتهي.</string>
   <string name="ExpirationDialog_your_messages_will_disappear_s_after_they_have_been_seen">الرسائل الصادرة والواردة في هذه المحادثة سوف تختفي بعد %s من رؤيتها.</string>
+  <!--OutdatedBuildReminder-->
   <!--PassphrasePromptActivity-->
   <string name="PassphrasePromptActivity_enter_passphrase">أدخل العبارة السرية</string>
   <string name="PassphrasePromptActivity_watermark_content_description">أيقونة Signal</string>
@@ -1068,10 +1116,10 @@
   <!--RecipientProvider-->
   <string name="RecipientProvider_unnamed_group">مجموعة بلا اسم</string>
   <!--RedPhone-->
-  <string name="RedPhone_answering">جارٍ الرد</string>
-  <string name="RedPhone_ending_call">جارٍ إنهاء المكالمة</string>
-  <string name="RedPhone_dialing">جارٍ الاتصال</string>
-  <string name="RedPhone_ringing">رنين</string>
+  <string name="RedPhone_answering">جار الرد…</string>
+  <string name="RedPhone_ending_call">جارٍ إنهاء المكالمة…</string>
+  <string name="RedPhone_dialing">جارٍ الاتصال…</string>
+  <string name="RedPhone_ringing">رنين…</string>
   <string name="RedPhone_busy">مشغول</string>
   <string name="RedPhone_connected">متصل</string>
   <string name="RedPhone_recipient_unavailable">المتلقي غير متاح</string>
@@ -1087,6 +1135,7 @@
   <!--WebRtcCallView-->
   <string name="WebRtcCallView__signal_voice_call">مكالمة صوتية على Signal…</string>
   <string name="WebRtcCallView__signal_video_call">مكالمة فيديو على Signal….</string>
+  <!--CallParticipantsListDialog-->
   <!--RegistrationActivity-->
   <string name="RegistrationActivity_select_your_country">اختر بلدك</string>
   <string name="RegistrationActivity_you_must_specify_your_country_code">يجب عليك تحديد رمز دولتك</string>
@@ -1267,7 +1316,6 @@
   <string name="UnverifiedSendDialog_send">أرسل</string>
   <!--UsernameEditFragment-->
   <string name="UsernameEditFragment_username">اسم المستخدم</string>
-  <string name="UsernameEditFragment_submit">قدَم</string>
   <string name="UsernameEditFragment_delete">إحذف  </string>
   <string name="UsernameEditFragment_successfully_set_username">تم ضبط اسم المستخدم بنجاح.</string>
   <string name="UsernameEditFragment_successfully_removed_username">تم حذف اسم المستخدم بنجاح.</string>
@@ -1278,7 +1326,6 @@
   <string name="UsernameEditFragment_usernames_cannot_begin_with_a_number">اسم المستخدم لا يمكن أن يبدأ برقم.</string>
   <string name="UsernameEditFragment_username_is_invalid">اسم المستخدم غير صالح</string>
   <string name="UsernameEditFragment_usernames_must_be_between_a_and_b_characters">اسم المستخدم لا بد أن يكون بين %1$d و%2$d رمز.</string>
-  <string name="UsernameEditFragment_other_signal_users_can_send_message_requests_to_your_unique_username">يمكن لمستخدمي Signal الآخرين إرسال طلبات رسائل لإسم المستخدم الفريد والخاص بك دون أن يعرفوا رقم هاتفك. إختيار اسم المستخدم أمر إختياري.</string>
   <!--VerifyIdentityActivity-->
   <string name="VerifyIdentityActivity_your_contact_is_running_an_old_version_of_signal">جهة الاتصال هذه تستخدم إصدار قديم من Signal. اطلب منه تحديث التطبيق قبل التحقق من رقم السلامة.</string>
   <string name="VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal">جهة الاتصال هذه تستخدم نسخة أحدث من تطبيق Signal وصيغة رمز الاستجابة السريع أو QR فيها لا تتوافق مع نسختك. يرجى تحديث النسخة للمقارنة.</string>
@@ -1510,6 +1557,8 @@
   <string name="conversation_item_sent__message_read">تمّت قراءة الرسالة </string>
   <!--conversation_item_received-->
   <string name="conversation_item_received__contact_photo_description">صورة جهة الاتصال</string>
+  <!--ConversationUpdateItem-->
+  <string name="ConversationUpdateItem_loading">جارٍ التحميل</string>
   <!--audio_view-->
   <string name="audio_view__play_pause_accessibility_description">شغّل … توقف</string>
   <string name="audio_view__download_accessibility_description">تنزيل</string>
@@ -1864,13 +1913,9 @@
   <string name="preferences__mmsc_password">كلمة السر MMSC</string>
   <string name="preferences__sms_delivery_reports">تقارير تسليم رسائل SMS</string>
   <string name="preferences__request_a_delivery_report_for_each_sms_message_you_send">طلب تقرير تسليم لكل رسالة SMS ترسلها</string>
-  <string name="preferences__automatically_delete_older_messages_once_a_conversation_exceeds_a_specified_length">حذف الرسائل القديمة بالمحادثة عند تجاوز أقصى طول محدد.</string>
-  <string name="preferences__delete_old_messages">احذف الرسائل القديمة</string>
   <string name="preferences__chats">المحادثات والوسائط</string>
   <string name="preferences__storage">التخزين</string>
   <string name="preferences__conversation_length_limit">حد طول المحادثة</string>
-  <string name="preferences__trim_all_conversations_now">تقليم كل المحادثات الآن</string>
-  <string name="preferences__scan_through_all_conversations_and_enforce_conversation_length_limits">فحص وتقليم كل المحادثات وفق الحد الأقصى</string>
   <string name="preferences__linked_devices">الأجهزة المتصلة</string>
   <string name="preferences__light_theme">فاتح</string>
   <string name="preferences__dark_theme">داكن</string>
@@ -1900,13 +1945,14 @@
   <string name="preferences_chats__when_using_wifi">عند استخدام واي فاي</string>
   <string name="preferences_chats__when_roaming">عند استخدام التجوال</string>
   <string name="preferences_chats__media_auto_download">تنزلي تلقائي للوسائط</string>
-  <string name="preferences_chats__message_trimming">تقليم الرسالة</string>
   <string name="preferences_storage__storage_usage">استخدام سعة التخزين</string>
   <string name="preferences_storage__photos">الصور</string>
   <string name="preferences_storage__videos">الفيديوهات</string>
   <string name="preferences_storage__files">الملفات</string>
   <string name="preferences_storage__audio">صوت</string>
   <string name="preferences_storage__review_storage">مراجعة سعة التخزين</string>
+  <string name="preferences_storage__none">لا شيء </string>
+  <string name="preferences_storage__custom">مخصص</string>
   <string name="preferences_advanced__use_system_emoji">استخدام الرموز التعبيرية بالنظام</string>
   <string name="preferences_advanced__disable_signal_built_in_emoji_support">تعطيل الرموز التعبيرية المدمجة في Signal</string>
   <string name="preferences_advanced__relay_all_calls_through_the_signal_server_to_avoid_revealing_your_ip_address">تمرير جميع المكالمات عبر خادوم Signal لتجنّب الإفصاح عن عنوان بروتوكول الانترنت الخاص بك إلى جهة الاتصال. تفعيل الخاصيّة سيقلل من جودة المكالمة.</string>
@@ -2023,18 +2069,6 @@
   <string name="verify_display_fragment_context_menu__copy_to_clipboard">نسخ إلى الحافظة</string>
   <string name="verify_display_fragment_context_menu__compare_with_clipboard">قارن مع الحافظة</string>
   <!--reminder_header-->
-  <string name="reminder_header_outdated_build">لقد انتهت صلاحية هذه النسخة من Signal.</string>
-  <plurals name="reminder_header_outdated_build_details">
-    <item quantity="zero">سوف تنتهي صلاحية إصدارة Signal المستخدمة خلال %d يوم. أنقر من اجل التحديث إلى أحدث نسخة. </item>
-    <item quantity="one">سوف تنتهي صلاحية إصدارة Signal المستخدمة خلال %d يوم. أنقر من اجل التحديث إلى أحدث نسخة.</item>
-    <item quantity="two">سوف تنتهي صلاحية إصدارة Signal المستخدمة خلال %d يوم. أنقر من اجل التحديث إلى أحدث نسخة.</item>
-    <item quantity="few">سوف تنتهي صلاحية إصدارة Signal المستخدمة خلال %d يوم. أنقر من اجل التحديث إلى أحدث نسخة.</item>
-    <item quantity="many">سوف تنتهي صلاحية إصدارة Signal المستخدمة خلال %d يوم. أنقر من اجل التحديث إلى أحدث نسخة.</item>
-    <item quantity="other">سوف تنتهي صلاحية هذه النسخة من Signal خلال %dيوم. انقر للتحديث لآخر إصدار.</item>
-  </plurals>
-  <string name="reminder_header_outdated_build_details_today">ستنتهي صلاحية هذه النسخة من Signal اليوم. انقر للتحديث لآخر إصدار.</string>
-  <string name="reminder_header_expired_build">لقد انتهت صلاحية هذه النسخة من Signal!</string>
-  <string name="reminder_header_expired_build_details">لن ترسل الرسائل بنجاح بعد الآن. ألمس لتحديث التطبيق.</string>
   <string name="reminder_header_sms_default_title">الاستخدام كالتطبيق الافتراضي لرسائل SMS</string>
   <string name="reminder_header_sms_default_text">انقر لجعل Signal التطبيق الافتراضي لرسائل SMS.</string>
   <string name="reminder_header_sms_import_title">استيراد رسائل SMS من النظام</string>
@@ -2204,9 +2238,10 @@
   <string name="KbsMegaphone__update_pin">تحديث الرقم التعريفي الشخصي</string>
   <string name="KbsMegaphone__well_remind_you_later_creating_a_pin">سنذّكرك لاحقاً. اختيار كلمة مرور رقمية سيكون إجبارياً في %1$dأيام.</string>
   <string name="KbsMegaphone__well_remind_you_later_confirming_your_pin">سنذكّرك لاحقاً ، إدخال كلمة السر الرقمية ستكون إجبارية بعد %1$d أيام.</string>
-  <!--Mention Megaphone-->
-  <string name="MentionsMegaphone__introducing_mentions">نقدم لكم ميزة معرفة عندما يذكر اسمك</string>
-  <string name="MentionsMegaphone__get_someones_attention_in_a_group_by_typing">احصل على انتباه أحدهم في المجموعات من الطراز الجديد بكتابة @</string>
+  <!--Research Megaphone-->
+  <string name="ResearchMegaphone_learn_more">لمعرفة المزيد</string>
+  <string name="ResearchMegaphone_dismiss">إلغاء</string>
+  <string name="ResearchMegaphoneDialog_no_thanks">لا شكرا</string>
   <!--transport_selection_list_item-->
   <string name="transport_selection_list_item__transport_icon">أيقونة النقل.</string>
   <string name="ConversationListFragment_loading">قيد التحميل…</string>
@@ -2265,6 +2300,7 @@
   <string name="RegistrationActivity_code_support_subject">تسجيل Signal - رمز التّحقق لِ Android</string>
   <string name="BackupUtil_never">أبداً</string>
   <string name="BackupUtil_unknown">مجهول</string>
+  <string name="PhoneNumberPrivacy_nobody">لا أحد</string>
   <string name="preferences_app_protection__screen_lock">قفل الشاشة</string>
   <string name="preferences_app_protection__lock_signal_access_with_android_screen_lock_or_fingerprint">منع الوصول إلى Signal عبر قفل الشاشة أو بصمة الإصبع</string>
   <string name="preferences_app_protection__screen_lock_inactivity_timeout">نفاذ مهلة قفل الشاشة</string>
@@ -2339,8 +2375,6 @@
   <string name="RecipientBottomSheet_insecure_voice_call_description">مكالمة صوتية غير آمنة</string>
   <string name="RecipientBottomSheet_video_call_description">مكالمة فيديو</string>
   <string name="RecipientBottomSheet_remove_s_as_group_admin">إزالة %1$s من كونه مشرفاً في المجموعة؟</string>
-  <string name="RecipientBottomSheet_s_will_be_able_to_edit_group">سيستطيع %1$s تعديل خصائص وأعضاء هذه المجموعة</string>
-  <string name="RecipientBottomSheet_remove_s_from_s">أأزيل %1$s من \"%2$s\"؟</string>
   <string name="RecipientBottomSheet_remove">إزالة</string>
   <string name="RecipientBottomSheet_copied_to_clipboard">تمّ النسخ إلى الحافظة</string>
   <string name="GroupRecipientListItem_admin">مشرف</string>
@@ -2348,8 +2382,10 @@
   <string name="GroupsLearnMore_legacy_vs_new_groups">المجموعات من الطراز القديم مقارنة بالمجموعات من الطراز القديم</string>
   <string name="GroupsLearnMore_what_are_legacy_groups">ماهي المجموعات من الطراز القديم؟</string>
   <string name="GroupsLearnMore_paragraph_1">المجموعات من الطراز القديم هي المجموعات الغير متوائمة مع الميزات الجديدة الموجودة في الطراز الجديد مثل خاصية المشرفين وتحديثات وصف المجموعة.</string>
-  <string name="GroupsLearnMore_how_do_i_use_new_groups">كيف استعمل المجموعات من الطراز الجديد؟</string>
-  <string name="GroupsLearnMore_paragraph_2">المجموعات من الطراز القديم لا يمكن تحويلها إلى الطراز الجديد، ولكن يمكنك أن تنشأ مجموعة جديدة بنفس الأعضاء ولكن من الطراز الجديد.</string>
-  <string name="GroupsLearnMore_paragraph_3">عندما تنشئ مجموعة من الطراز الجديد، جميع الأعضاء يتوجب عليهم تحديث Signal لأحدث نسخة.</string>
+  <!--GroupLinkBottomSheetDialogFragment-->
+  <string name="GroupLinkBottomSheet_copy">نسخ</string>
+  <string name="GroupLinkBottomSheet_qr_code">كود QR</string>
+  <string name="GroupLinkBottomSheet_share">شارك</string>
+  <string name="GroupLinkBottomSheet_copied_to_clipboard">تمّ النسخ إلى الحافظة</string>
   <!--EOF-->
 </resources>

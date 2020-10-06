@@ -42,9 +42,6 @@ public class SignalServiceProfile {
   private Capabilities capabilities;
 
   @JsonProperty
-  private String username;
-
-  @JsonProperty
   @JsonSerialize(using = JsonUtil.UuidSerializer.class)
   @JsonDeserialize(using = JsonUtil.UuidDeserializer.class)
   private UUID uuid;
@@ -81,10 +78,6 @@ public class SignalServiceProfile {
     return capabilities;
   }
 
-  public String getUsername() {
-    return username;
-  }
-
   public UUID getUuid() {
     return uuid;
   }
@@ -109,12 +102,6 @@ public class SignalServiceProfile {
 
     @JsonCreator
     public Capabilities() {}
-
-    public Capabilities(boolean uuid, boolean gv2, boolean storage) {
-      this.uuid    = uuid;
-      this.gv2     = gv2;
-      this.storage = storage;
-    }
 
     public boolean isUuid() {
       return uuid;

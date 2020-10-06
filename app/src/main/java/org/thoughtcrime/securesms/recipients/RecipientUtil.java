@@ -29,7 +29,7 @@ import org.whispersystems.libsignal.util.guava.Optional;
 import org.whispersystems.signalservice.api.push.SignalServiceAddress;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class RecipientUtil {
@@ -39,7 +39,8 @@ public class RecipientUtil {
   /**
    * This method will do it's best to craft a fully-populated {@link SignalServiceAddress} based on
    * the provided recipient. This includes performing a possible network request if no UUID is
-   * available.
+   * available. If the request to get a UUID fails, the exception is swallowed an an E164-only
+   * recipient is returned.
    */
   @WorkerThread
   public static @NonNull SignalServiceAddress toSignalServiceAddressBestEffort(@NonNull Context context, @NonNull Recipient recipient) {
@@ -54,7 +55,7 @@ public class RecipientUtil {
   /**
    * This method will do it's best to craft a fully-populated {@link SignalServiceAddress} based on
    * the provided recipient. This includes performing a possible network request if no UUID is
-   * available.
+   * available. If the request to get a UUID fails, an IOException is thrown.
    */
   @WorkerThread
   public static @NonNull SignalServiceAddress toSignalServiceAddress(@NonNull Context context, @NonNull Recipient recipient)
@@ -66,7 +67,7 @@ public class RecipientUtil {
       throw new AssertionError(recipient.getId() + " - No UUID or phone number!");
     }
 
-    if (FeatureFlags.cds() && !recipient.getUuid().isPresent()) {
+    if (!recipient.getUuid().isPresent()) {
       Log.i(TAG, recipient.getId() + " is missing a UUID...");
       RegisteredState state = DirectoryHelper.refreshDirectoryFor(context, recipient, false);
 
@@ -80,30 +81,42 @@ public class RecipientUtil {
   public static @NonNull List<SignalServiceAddress> toSignalServiceAddresses(@NonNull Context context, @NonNull List<RecipientId> recipients)
       throws IOException
   {
-    List<SignalServiceAddress> addresses = new ArrayList<>(recipients.size());
-
-    for (RecipientId id : recipients) {
-      addresses.add(toSignalServiceAddress(context, Recipient.resolved(id)));
-    }
-
-    return addresses;
+    return toSignalServiceAddressesFromResolved(context, Recipient.resolvedList(recipients));
   }
 
   public static @NonNull List<SignalServiceAddress> toSignalServiceAddressesFromResolved(@NonNull Context context, @NonNull List<Recipient> recipients)
       throws IOException
   {
-    List<SignalServiceAddress> addresses = new ArrayList<>(recipients.size());
+    ensureUuidsAreAvailable(context, recipients);
 
-    for (Recipient recipient : recipients) {
-      addresses.add(toSignalServiceAddress(context, recipient));
+    return Stream.of(recipients)
+                 .map(Recipient::resolve)
+                 .map(r -> new SignalServiceAddress(r.getUuid().orNull(), r.getE164().orNull()))
+                 .toList();
+  }
+
+  public static void ensureUuidsAreAvailable(@NonNull Context context, @NonNull Collection<Recipient> recipients)
+      throws IOException
+  {
+    List<Recipient> recipientsWithoutUuids = Stream.of(recipients)
+                                                   .map(Recipient::resolve)
+                                                   .filterNot(Recipient::hasUuid)
+                                                   .toList();
+
+    if (recipientsWithoutUuids.size() > 0) {
+      DirectoryHelper.refreshDirectoryFor(context, recipientsWithoutUuids, false);
     }
-
-    return addresses;
   }
 
   public static boolean isBlockable(@NonNull Recipient recipient) {
     Recipient resolved = recipient.resolve();
     return resolved.isPushGroup() || resolved.hasServiceIdentifier();
+  }
+
+  public static List<Recipient> getEligibleForSending(@NonNull List<Recipient> recipients) {
+    return Stream.of(recipients)
+                 .filter(r -> r.getRegistered() != RegisteredState.NOT_REGISTERED)
+                 .toList();
   }
 
   /**
@@ -160,6 +173,7 @@ public class RecipientUtil {
     }
 
     DatabaseFactory.getRecipientDatabase(context).setBlocked(recipient.getId(), false);
+    DatabaseFactory.getRecipientDatabase(context).setProfileSharing(recipient.getId(), true);
     ApplicationDependencies.getJobManager().add(new MultiDeviceBlockedUpdateJob());
     StorageSyncHelper.scheduleSyncForDataChange();
     ApplicationDependencies.getJobManager().add(MultiDeviceMessageRequestResponseJob.forAccept(recipient.getId()));
@@ -226,7 +240,7 @@ public class RecipientUtil {
 
   @WorkerThread
   public static void shareProfileIfFirstSecureMessage(@NonNull Context context, @NonNull Recipient recipient) {
-    long threadId = DatabaseFactory.getThreadDatabase(context).getThreadIdIfExistsFor(recipient);
+    long threadId = DatabaseFactory.getThreadDatabase(context).getThreadIdIfExistsFor(recipient.getId());
 
     if (isPreMessageRequestThread(context, threadId)) {
       return;
