@@ -47,7 +47,7 @@
   <string name="ApplicationPreferencesActivity_pins_are_required_for_registration_lock">پین‌ها برای قفل ثبت‌نام لازم هستند. برای غیرفعال کردن پین‌ها، لطفاً ابتدا قفل ثبت‌نام را غیرفعال کنید.</string>
   <string name="ApplicationPreferencesActivity_pin_created">پین ایجاد شد.</string>
   <string name="ApplicationPreferencesActivity_pin_disabled">پین غیرفعال شد.</string>
-  <string name="ApplicationPreferencesActivity_hide">مخفی سازی</string>
+  <string name="ApplicationPreferencesActivity_hide">پنهان کردن</string>
   <string name="ApplicationPreferencesActivity_hide_reminder">پنهان کردن یادآور؟</string>
   <!--AppProtectionPreferenceFragment-->
   <plurals name="AppProtectionPreferenceFragment_minutes">
@@ -127,7 +127,7 @@
   <string name="ClearProfileActivity_remove_profile_photo">حذف عکس پروفایل؟</string>
   <string name="ClearProfileActivity_remove_group_photo">حذف عکس گروه؟</string>
   <!--ClientDeprecatedActivity-->
-  <string name="ClientDeprecatedActivity_update_signal">بروزرسانی Signal</string>
+  <string name="ClientDeprecatedActivity_update_signal">به‌روزرسانی Signal</string>
   <string name="ClientDeprecatedActivity_this_version_of_the_app_is_no_longer_supported">این نسخهٔ برنامه دیگر پشتیبانی نمی‌شود. برای ادامهٔ ارسال و دریافت پیام‌ها، به آخرین نسخه به‌روزرسانی کنید.</string>
   <string name="ClientDeprecatedActivity_update">به‌روزرسانی</string>
   <string name="ClientDeprecatedActivity_dont_update">به‌روزرسانی نکن</string>
@@ -217,7 +217,7 @@
   <string name="ConversationActivity_unable_to_record_audio">امکان ضبط صدا وجود ندارد!</string>
   <string name="ConversationActivity_you_cant_send_messages_to_this_group">نمی‌توانید به این گروه پیام ارسال کنید، چون دیگر عضو نیستید.</string>
   <string name="ConversationActivity_there_is_no_app_available_to_handle_this_link_on_your_device">هیچ برنامه‌ای برای باز کردن این پیوند بر روی دستگاه شما وجود ندارد.</string>
-  <string name="ConversationActivity_your_request_to_join_has_been_sent_to_the_group_admin">درخواست شما برای پیوستن به مدیر گروه ارسال شد. هنگامی که به درخواست‌ شما پاسخ دهند، مطلع خواهید شد.</string>
+  <string name="ConversationActivity_your_request_to_join_has_been_sent_to_the_group_admin">درخواست شما برای پیوستن به مدیر گروه ارسال شد. هنگامی که به درخواست شما پاسخ دهند مطلع خواهید شد.</string>
   <string name="ConversationActivity_cancel_request">لغو درخواست</string>
   <string name="ConversationActivity_to_send_audio_messages_allow_signal_access_to_your_microphone">برای ارسال پیام‌ های صوتی، به Signal اجازه دهید تا به میکروفون شما دسترسی داشته باشد.</string>
   <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">Signal به منظور ارسال پیام های صوتی Signal نیاز به مجوز میکروفون دارد، ولی این اجازه به صورت دائم رد شده است. لطفاً به تنظیمات برنامه رفته، «مجوزها» را انتخاب کنید و «میکروفون» را فعال کنید.</string>
@@ -245,7 +245,7 @@
   <string name="ConversationActivity_delete_and_leave">حذف و ترک گروه</string>
   <string name="ConversationActivity__to_call_s_signal_needs_access_to_your_microphone">برای تماس با %1$s، Signal به دسترسی میکروفون شما نیاز دارد.</string>
   <string name="ConversationActivity__to_call_s_signal_needs_access_to_your_microphone_and_camera">برای تماس با %1$s، سیگنال به دسترسی میکروفون و دوربین شما نیاز دارد.</string>
-  <string name="ConversationActivity__more_options_now_in_group_settings">امکانات بیشتر هم اکنون در «تنظیمات گروه»</string>
+  <string name="ConversationActivity__more_options_now_in_group_settings">امکانات بیشتر هم‌اکنون در «تنظیمات گروه»</string>
   <!--ConversationAdapter-->
   <plurals name="ConversationAdapter_n_unread_messages">
     <item quantity="one">%d پیام خوانده نشده</item>
@@ -286,7 +286,7 @@
   <string name="ConversationFragment_deleting_messages">حذف پیام‌‌ها…</string>
   <string name="ConversationFragment_delete_for_me">حذف برای من</string>
   <string name="ConversationFragment_delete_for_everyone">حذف برای همه</string>
-  <string name="ConversationFragment_this_message_will_be_permanently_deleted_for_everyone">این پیام به طور دائم برای همه در این مکالمه حذف خواهد شد. اعضا قادر خواهند بود تا ببینند که شما پیامی را حذف کرده‌اید.</string>
+  <string name="ConversationFragment_this_message_will_be_deleted_for_everyone_in_the_conversation">این پیام برای همه در این مکالمه حذف خواهد شد اگر آن‌ها از نسخه‌های اخیر Signal استفاده کنند. آن‌ها قادر خواهند بود ببینند که شما پیامی را پاک کردید.</string>
   <string name="ConversationFragment_quoted_message_not_found">پیام اصلی یافت نشد</string>
   <string name="ConversationFragment_quoted_message_no_longer_available">پیام اصلی دیگر در دسترس نیست</string>
   <string name="ConversationFragment_failed_to_open_message">عدم موفقیت در باز کردن پیام</string>
@@ -393,8 +393,8 @@
   <string name="AddToGroupActivity_add_member">افزودن عضو؟</string>
   <string name="AddToGroupActivity_add_s_to_s">افزودن «%1$s» به «%2$s»؟</string>
   <string name="AddToGroupActivity_s_added_to_s">«%1$s» به «%2$s» افزوده شد.</string>
-  <string name="AddToGroupActivity_add_to_group">اضافه کردن به گروه</string>
-  <string name="AddToGroupActivity_add_to_groups">اضافه کردن به گروه‌ها</string>
+  <string name="AddToGroupActivity_add_to_group">افزودن به گروه</string>
+  <string name="AddToGroupActivity_add_to_groups">افزودن به گروه‌ها</string>
   <string name="AddToGroupActivity_this_person_cant_be_added_to_legacy_groups">این فرد نمی‌تواند به گروه‌های قدیمی اضافه شود.</string>
   <string name="AddToGroupActivity_add">افزودن</string>
   <!--ChooseNewAdminActivity-->
@@ -474,7 +474,7 @@
   </plurals>
   <string name="AddMembersActivity__add">افزودن</string>
   <!--AddGroupDetailsFragment-->
-  <string name="AddGroupDetailsFragment__name_this_group">برای گروه نامی انتخاب کنید</string>
+  <string name="AddGroupDetailsFragment__name_this_group">نامی برای گروه انتخاب کنید</string>
   <string name="AddGroupDetailsFragment__create_group">ایجاد گروه</string>
   <string name="AddGroupDetailsFragment__create">ایجاد</string>
   <string name="AddGroupDetailsFragment__members">اعضا</string>
@@ -515,7 +515,7 @@
   <string name="ManageGroupActivity_until_s">تا %1$s</string>
   <string name="ManageGroupActivity_off">خاموش</string>
   <string name="ManageGroupActivity_on">روشن</string>
-  <string name="ManageGroupActivity_view_all_members">نمایش همه اعضا</string>
+  <string name="ManageGroupActivity_view_all_members">نمایش همهٔ اعضا</string>
   <string name="ManageGroupActivity_see_all">مشاهدهٔ همه</string>
   <string name="ManageGroupActivity_none">هیچکدام</string>
   <plurals name="ManageGroupActivity_invited">
@@ -526,6 +526,9 @@
     <item quantity="one">%d اضافه شد.</item>
     <item quantity="other">%d عضو اضافه شدند.</item>
   </plurals>
+  <string name="ManageGroupActivity_only_admins_can_enable_or_disable_the_sharable_group_link">فقط مدیران می‌توانند پیوند قابل اشتراک گروه را فعال یا غیرفعال کنند.</string>
+  <string name="ManageGroupActivity_only_admins_can_enable_or_disable_the_option_to_approve_new_members">فقط مدیران می‌توانند امکان تأیید کاربران جدید را فعال یا غیرفعال کنند.</string>
+  <string name="ManageGroupActivity_only_admins_can_reset_the_sharable_group_link">فقط مدیران می‌توانند پیوند قابل اشتراک گروه را بازنشانی کنند.</string>
   <string name="ManageGroupActivity_you_dont_have_the_rights_to_do_this">شما اجازهٔ انجام این کار را ندارید</string>
   <string name="ManageGroupActivity_not_capable">کسی که شما به گروه اضافه کردید از گروه‌های جدید پشتیبانی نمی‌کند و باید Signal را به‌روزرسانی کند</string>
   <string name="ManageGroupActivity_failed_to_update_the_group">به‌روزرسانی گروه با اشکال مواجه شد</string>
@@ -618,7 +621,7 @@
   <string name="GroupJoinBottomSheetDialogFragment_this_group_link_is_not_active">این پیوند گروه فعال نیست</string>
   <string name="GroupJoinBottomSheetDialogFragment_unable_to_get_group_information_please_try_again_later">دریافت اطلاعات گروه ممکن نبود. لطفاً‌ دوباره امتحان کنید</string>
   <string name="GroupJoinBottomSheetDialogFragment_direct_join">آیا می‌خواهید به این گروه بپیوندید و شماره و عکس خود را با اعضای آن به اشتراک بگذارید؟</string>
-  <string name="GroupJoinBottomSheetDialogFragment_admin_approval_needed">یک مدیر از این گروه باید با درخواست شما را قبل از اینکه به آن بپیوندید، موافقت کند. هنگامی که درخواست عضویت می‌دهید، نام و عکس شما با اعضای گروه به اشتراک گذاشته خواهد شد.</string>
+  <string name="GroupJoinBottomSheetDialogFragment_admin_approval_needed">یک مدیر از این گروه باید با درخواست شما قبل از پیوستن به گروه، موافقت کند. هنگامی که درخواست عضویت می‌دهید، نام و عکس شما با اعضای گروه به اشتراک گذاشته خواهد شد.</string>
   <plurals name="GroupJoinBottomSheetDialogFragment_group_dot_d_members">
     <item quantity="one">گروه · %1$d عضو</item>
     <item quantity="other">گروه · %1$d عضو</item>
@@ -786,7 +789,7 @@
   <string name="MessageRecord_changed_their_profile_name_from_to">%1$s نام پروفایل خود را از %2$s  به %3$s تغییر داد.</string>
   <string name="MessageRecord_changed_their_profile">%1$s پروفایل خود را تغییر داد.</string>
   <!--GV2 specific-->
-  <string name="MessageRecord_you_created_the_group">شما گروه رو خلق کردی</string>
+  <string name="MessageRecord_you_created_the_group">شما گروه را ایجاد کردید.</string>
   <string name="MessageRecord_group_updated">گروه ، به روز رسانی شده است.</string>
   <!--GV2 member additions-->
   <string name="MessageRecord_you_added_s">شما %1$s را اضافه کردید.</string>
@@ -864,15 +867,21 @@
   <string name="MessageRecord_s_changed_who_can_edit_group_membership_to_s">%1$s قابلیت ویرایش اعضای گروه را به «%2$s» انتقال داد.</string>
   <string name="MessageRecord_who_can_edit_group_membership_has_been_changed_to_s">قابلیت ویرایش اعضای گروه به «%1$s» انتقال یافت.</string>
   <!--GV2 group link invite access level change-->
-  <string name="MessageRecord_you_turned_on_the_group_link_with_admin_approval_off">شما پیوند گروه را بدون نیاز به موافقت مدیر فعال کردید.</string>
-  <string name="MessageRecord_you_turned_on_the_group_link_with_admin_approval_on">شما پیوند گروه را با نیاز به موافقت مدیر فعال کردید.</string>
+  <string name="MessageRecord_you_turned_on_the_group_link_with_admin_approval_off">شما پیوند گروه را بدون موافقت مدیر فعال کردید.</string>
+  <string name="MessageRecord_you_turned_on_the_group_link_with_admin_approval_on">شما پیوند گروه را با موافقت مدیر فعال کردید.</string>
   <string name="MessageRecord_you_turned_off_the_group_link">شما پیوند گروه را غیرفعال کردید.</string>
-  <string name="MessageRecord_s_turned_on_the_group_link_with_admin_approval_off">%1$s پیوند گروه را بدون نیاز به موافقت مدیر غیرفعال کرد.</string>
-  <string name="MessageRecord_s_turned_on_the_group_link_with_admin_approval_on">%1$s پیوند گروه را با نیاز به موافقت مدیر فعال کرد.</string>
+  <string name="MessageRecord_s_turned_on_the_group_link_with_admin_approval_off">%1$s پیوند گروه را بدون موافقت مدیر غیرفعال کرد.</string>
+  <string name="MessageRecord_s_turned_on_the_group_link_with_admin_approval_on">%1$s پیوند گروه را با موافقت مدیر فعال کرد.</string>
   <string name="MessageRecord_s_turned_off_the_group_link">%1$s پیوند گروه را غیرفعال کرد.</string>
-  <string name="MessageRecord_the_group_link_has_been_turned_on_with_admin_approval_off">پیوند گروه بدون نیاز به موافقت مدیر فعال شد.</string>
-  <string name="MessageRecord_the_group_link_has_been_turned_on_with_admin_approval_on">پیوند گروه با نیاز به موافقت مدیر فعال شد.</string>
+  <string name="MessageRecord_the_group_link_has_been_turned_on_with_admin_approval_off">پیوند گروه بدون موافقت مدیر فعال شد.</string>
+  <string name="MessageRecord_the_group_link_has_been_turned_on_with_admin_approval_on">پیوند گروه با موافقت مدیر فعال شد.</string>
   <string name="MessageRecord_the_group_link_has_been_turned_off">پیوند گروه غیرفعال شده است.</string>
+  <string name="MessageRecord_you_turned_off_admin_approval_for_the_group_link">شما موافقت مدیر را برای پیوند گروه غیرفعال کردید.</string>
+  <string name="MessageRecord_s_turned_off_admin_approval_for_the_group_link">%1$s موافقت مدیر را برای پیوند گروه غیرفعال کرد.</string>
+  <string name="MessageRecord_the_admin_approval_for_the_group_link_has_been_turned_off">موافقت مدیر برای پیوند گروه غیرفعال شد.</string>
+  <string name="MessageRecord_you_turned_on_admin_approval_for_the_group_link">شما موافقت مدیر را برای پیوند گروه فعال کردید.</string>
+  <string name="MessageRecord_s_turned_on_admin_approval_for_the_group_link">%1$s موافقت مدیر را برای پیوند گروه فعال کرد.</string>
+  <string name="MessageRecord_the_admin_approval_for_the_group_link_has_been_turned_on">موافقت مدیر برای پیوند گروه روشن شد.</string>
   <!--GV2 group link reset-->
   <string name="MessageRecord_you_reset_the_group_link">شما پیوند گروه را بازنشانی کردید.</string>
   <string name="MessageRecord_s_reset_the_group_link">%1$s پیوند گروه را بازنشانی کرد.</string>
@@ -909,13 +918,14 @@
   <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_they_wont_know_youve_seen_their_messages_until_you_accept">به %1$s اجازه می‌دهید که به شما پیام دهد و نام و عکس خود را با آن‌ها به اشتراک می‌گذارید؟ تا زمانی که نپذیرید آن‌ها متوجه نمی‌شوند که پیام‌شان را خوانده‌اید.</string>
   <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_wont_receive_any_messages_until_you_unblock_them">به %1$s اجازه می‌دهید که به شما پیام دهد و نام و عکس خود را با آن‌ها به اشتراک می‌گذارید؟ تا زمانی که مسدودیت ‌آن‌ها را رفع نکنید هیچ پیامی دریافت نخواهید کرد.</string>
   <string name="MessageRequestBottomView_do_you_want_to_join_this_group_they_wont_know_youve_seen_their_messages_until_you_accept">آیا می‌خواهید به این گروه بپیوندید و نام و عکس خود را با اعضای آن به اشتراک بگذارید؟ تا زمانی که نپذیرید آن‌ها متوجه نمی‌شوند که پیام‌شان را خوانده‌اید.</string>
+  <string name="MessageRequestBottomView_join_this_group_they_wont_know_youve_seen_their_messages_until_you_accept">به این گروه می‌پیوندید؟ تا زمانی که نپذیرید آن‌ها متوجه نخواهند شد که پیام‌شان را خوانده‌اید.</string>
   <string name="MessageRequestBottomView_unblock_this_group_and_share_your_name_and_photo_with_its_members">مسدودیت این گروه را رفع کرده و نام و عکس‌ خود را با اعضای آن به اشتراک می‌گذارید؟ تا زمانی که مسدودیت آن‌ها را رفع نکنید هیچ پیامی دریافت نخواهید کرد.</string>
   <string name="MessageRequestProfileView_member_of_one_group">عضو %1$s</string>
   <string name="MessageRequestProfileView_member_of_two_groups">عضو %1$s و %2$s</string>
   <string name="MessageRequestProfileView_member_of_many_groups">عضو %1$s، %2$s و %3$s </string>
   <plurals name="MessageRequestProfileView_members">
-    <item quantity="one">عضو %1$d</item>
-    <item quantity="other">اعضای %1$d</item>
+    <item quantity="one">%1$d عضو</item>
+    <item quantity="other">%1$d عضو</item>
   </plurals>
   <plurals name="MessageRequestProfileView_members_and_invited">
     <item quantity="one">%1$d عضو (+%2$d دعوت شدند)</item>
@@ -1878,7 +1888,7 @@
   <!--****************************************-->
   <!--contact_selection_list-->
   <string name="contact_selection_list__unknown_contact">پیام جدید به …</string>
-  <string name="contact_selection_list__unknown_contact_add_to_group">اضافه کردن به گروه</string>
+  <string name="contact_selection_list__unknown_contact_add_to_group">افزودن به گروه</string>
   <!--conversation_callable_insecure-->
   <string name="conversation_callable_insecure__menu_call">تماس</string>
   <!--conversation_callable_secure-->
@@ -2185,7 +2195,7 @@
   <string name="preferences_app_protection__change_your_pin">پین خود را تغییر دهید</string>
   <string name="preferences_app_protection__pin_reminders">یاد‌آورهای پین</string>
   <string name="preferences_app_protection__pins_keep_information_stored_with_signal_encrypted">پین‌ها اطلاعات ذخیره شده در Signal را رمز‌گذاری می‌کنند تا فقط شما قادر به دسترسی به آن‌ها باشید. پروفایل، تنظیمات و مخاطبین شما هنگام نصب دوبارهٔ Signal بازگردانی می‌شوند.</string>
-  <string name="preferences_app_protection__add_extra_security_by_requiring_your_signal_pin_to_register">امنیت بیشتر با افزودن درخواست پین Signal برای ثبت‌نام دوباره</string>
+  <string name="preferences_app_protection__add_extra_security_by_requiring_your_signal_pin_to_register">یک لایهٔ امنیتی بیشتر با درخواست پین Signal برای ثبت‌نام دوباره با شمارهٔ خود در Signal اضافه کنید.</string>
   <string name="preferences_app_protection__reminders_help_you_remember_your_pin">یادآورها به شما در به‌خاطرسپردن پین‌ کمک می‌کنند، چون پین‌ها قابل بازیابی نیستند. در طول زمان کمتر از شما پرسیده خواهد شد.</string>
   <string name="preferences_app_protection__turn_off">خاموش</string>
   <string name="preferences_app_protection__confirm_pin">پین را تأیید کنید</string>
@@ -2240,8 +2250,8 @@
   <string name="RecipientBottomSheet_block">مسدود کردن</string>
   <string name="RecipientBottomSheet_unblock">رفع مسدودیت</string>
   <string name="RecipientBottomSheet_add_to_contacts">افزودن به مخاطبین</string>
-  <string name="RecipientBottomSheet_add_to_a_group">اضافه کردن به گروه</string>
-  <string name="RecipientBottomSheet_add_to_another_group">اضافه کردن به گروهی دیگر</string>
+  <string name="RecipientBottomSheet_add_to_a_group">افزودن به گروه</string>
+  <string name="RecipientBottomSheet_add_to_another_group">افزودن به گروهی دیگر</string>
   <string name="RecipientBottomSheet_view_safety_number">مشاهدهٔ شمارهٔ امنیتی</string>
   <string name="RecipientBottomSheet_make_group_admin">ارتقا به مدیر گروه</string>
   <string name="RecipientBottomSheet_remove_as_admin">حذف بعنوان مدیر</string>

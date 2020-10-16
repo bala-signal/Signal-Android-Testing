@@ -22,6 +22,8 @@ import android.database.Cursor;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.annimon.stream.Stream;
+
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteQueryBuilder;
 
@@ -33,7 +35,9 @@ import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.whispersystems.libsignal.util.Pair;
 
 import java.io.Closeable;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class MmsSmsDatabase extends Database {
@@ -157,6 +161,30 @@ public class MmsSmsDatabase extends Database {
 
     return null;
   }
+
+
+  public @NonNull List<MessageRecord> getMessagesBeforeVoiceNoteExclusive(long messageId, long limit) throws NoSuchMessageException {
+    MessageRecord       origin = DatabaseFactory.getMmsDatabase(context).getMessageRecord(messageId);
+    List<MessageRecord> mms    = DatabaseFactory.getMmsDatabase(context).getMessagesInThreadBeforeExclusive(origin.getThreadId(), origin.getDateReceived(), limit);
+    List<MessageRecord> sms    = DatabaseFactory.getSmsDatabase(context).getMessagesInThreadBeforeExclusive(origin.getThreadId(), origin.getDateReceived(), limit);
+
+    mms.addAll(sms);
+    Collections.sort(mms, (a, b) -> Long.compare(a.getDateReceived(), b.getDateReceived()));
+
+    return Stream.of(mms).skip(Math.max(0, mms.size() - limit)).toList();
+  }
+
+  public @NonNull List<MessageRecord> getMessagesAfterVoiceNoteInclusive(long messageId, long limit) throws NoSuchMessageException {
+    MessageRecord       origin = DatabaseFactory.getMmsDatabase(context).getMessageRecord(messageId);
+    List<MessageRecord> mms    = DatabaseFactory.getMmsDatabase(context).getMessagesInThreadAfterInclusive(origin.getThreadId(), origin.getDateReceived(), limit);
+    List<MessageRecord> sms    = DatabaseFactory.getSmsDatabase(context).getMessagesInThreadAfterInclusive(origin.getThreadId(), origin.getDateReceived(), limit);
+
+    mms.addAll(sms);
+    Collections.sort(mms, (a, b) -> Long.compare(a.getDateReceived(), b.getDateReceived()));
+
+    return Stream.of(mms).limit(limit).toList();
+  }
+
 
   public Cursor getConversation(long threadId, long offset, long limit) {
     String order     = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
@@ -314,7 +342,7 @@ public class MmsSmsDatabase extends Database {
 
   public int getQuotedMessagePosition(long threadId, long quoteId, @NonNull RecipientId recipientId) {
     String order     = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
-    String selection = MmsSmsColumns.THREAD_ID + " = " + threadId;
+    String selection = MmsSmsColumns.THREAD_ID + " = " + threadId + " AND " + MmsSmsColumns.REMOTE_DELETED + " = 0";
 
     try (Cursor cursor = queryTables(new String[]{ MmsSmsColumns.NORMALIZED_DATE_SENT, MmsSmsColumns.RECIPIENT_ID}, selection, order, null)) {
       boolean isOwnNumber = Recipient.resolved(recipientId).isLocalNumber();
@@ -333,7 +361,7 @@ public class MmsSmsDatabase extends Database {
 
   public int getMessagePositionInConversation(long threadId, long receivedTimestamp, @NonNull RecipientId recipientId) {
     String order     = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
-    String selection = MmsSmsColumns.THREAD_ID + " = " + threadId;
+    String selection = MmsSmsColumns.THREAD_ID + " = " + threadId + " AND " + MmsSmsColumns.REMOTE_DELETED + " = 0";
 
     try (Cursor cursor = queryTables(new String[]{ MmsSmsColumns.NORMALIZED_DATE_RECEIVED, MmsSmsColumns.RECIPIENT_ID}, selection, order, null)) {
       boolean isOwnNumber = Recipient.resolved(recipientId).isLocalNumber();
@@ -364,7 +392,9 @@ public class MmsSmsDatabase extends Database {
    */
   public int getMessagePositionInConversation(long threadId, long receivedTimestamp) {
     String order     = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
-    String selection = MmsSmsColumns.THREAD_ID + " = " + threadId + " AND " + MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " > " + receivedTimestamp;
+    String selection = MmsSmsColumns.THREAD_ID + " = " + threadId + " AND " +
+                       MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " > " + receivedTimestamp + " AND " +
+                       MmsSmsColumns.REMOTE_DELETED + " = 0";
 
     try (Cursor cursor = queryTables(new String[]{ "COUNT(*)" }, selection, order, null)) {
       if (cursor != null && cursor.moveToFirst()) {

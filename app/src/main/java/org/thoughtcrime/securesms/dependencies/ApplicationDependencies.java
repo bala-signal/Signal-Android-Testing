@@ -6,6 +6,7 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 
 import org.thoughtcrime.securesms.BuildConfig;
+import org.thoughtcrime.securesms.KbsEnclave;
 import org.thoughtcrime.securesms.messages.IncomingMessageProcessor;
 import org.thoughtcrime.securesms.messages.BackgroundMessageRetriever;
 import org.thoughtcrime.securesms.groups.GroupsV2AuthorizationMemoryValueCache;
@@ -15,6 +16,7 @@ import org.thoughtcrime.securesms.keyvalue.KeyValueStore;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.megaphone.MegaphoneRepository;
 import org.thoughtcrime.securesms.notifications.MessageNotifier;
+import org.thoughtcrime.securesms.pin.KbsEnclaves;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.LiveRecipientCache;
 import org.thoughtcrime.securesms.messages.IncomingMessageObserver;
@@ -111,11 +113,11 @@ public class ApplicationDependencies {
     return groupsV2Operations;
   }
 
-  public static synchronized @NonNull KeyBackupService getKeyBackupService() {
+  public static synchronized @NonNull KeyBackupService getKeyBackupService(@NonNull KbsEnclave enclave) {
     return getSignalServiceAccountManager().getKeyBackupService(IasKeyStore.getIasKeyStore(application),
-                                                                BuildConfig.KBS_ENCLAVE_NAME,
-                                                                Hex.fromStringOrThrow(BuildConfig.KBS_SERVICE_ID),
-                                                                BuildConfig.KBS_MRENCLAVE,
+                                                                enclave.getEnclaveName(),
+                                                                Hex.fromStringOrThrow(enclave.getServiceId()),
+                                                                enclave.getMrEnclave(),
                                                                 10);
   }
 
@@ -214,16 +216,6 @@ public class ApplicationDependencies {
     return frameRateTracker;
   }
 
-  public static synchronized @NonNull KeyValueStore getKeyValueStore() {
-    assertInitialization();
-
-    if (keyValueStore == null) {
-      keyValueStore = provider.provideKeyValueStore();
-    }
-
-    return keyValueStore;
-  }
-
   public static synchronized @NonNull MegaphoneRepository getMegaphoneRepository() {
     assertInitialization();
 
@@ -281,7 +273,6 @@ public class ApplicationDependencies {
     @NonNull LiveRecipientCache provideRecipientCache();
     @NonNull JobManager provideJobManager();
     @NonNull FrameRateTracker provideFrameRateTracker();
-    @NonNull KeyValueStore provideKeyValueStore();
     @NonNull MegaphoneRepository provideMegaphoneRepository();
     @NonNull EarlyMessageCache provideEarlyMessageCache();
     @NonNull MessageNotifier provideMessageNotifier();

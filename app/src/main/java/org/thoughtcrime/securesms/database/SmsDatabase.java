@@ -58,8 +58,10 @@ import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.whispersystems.libsignal.util.Pair;
 import org.whispersystems.libsignal.util.guava.Optional;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -373,6 +375,7 @@ public class SmsDatabase extends MessageDatabase {
     ContentValues values = new ContentValues();
     values.put(REMOTE_DELETED, 1);
     values.putNull(BODY);
+    values.putNull(REACTIONS);
     db.update(TABLE_NAME, values, ID_WHERE, new String[] { String.valueOf(id) });
 
     long threadId = getThreadIdForMessage(id);
@@ -983,6 +986,53 @@ public class SmsDatabase extends MessageDatabase {
   }
 
   @Override
+  public List<MessageRecord> getMessagesInThreadBeforeExclusive(long threadId, long timestamp, long limit) {
+    String   where = TABLE_NAME + "." + MmsSmsColumns.THREAD_ID + " = ? AND " +
+                     TABLE_NAME + "." + getDateReceivedColumnName() + " < ?";
+    String[] args  = SqlUtil.buildArgs(threadId, timestamp);
+
+    try (Reader reader = readerFor(queryMessages(where, args, true, limit))) {
+      List<MessageRecord> results = new ArrayList<>(reader.cursor.getCount());
+
+      while (reader.getNext() != null) {
+        results.add(reader.getCurrent());
+      }
+
+      return results;
+    }
+  }
+
+  @Override
+  public List<MessageRecord> getMessagesInThreadAfterInclusive(long threadId, long timestamp, long limit) {
+    String   where = TABLE_NAME + "." + MmsSmsColumns.THREAD_ID + " = ? AND " +
+                     TABLE_NAME + "." + getDateReceivedColumnName() + " >= ?";
+    String[] args  = SqlUtil.buildArgs(threadId, timestamp);
+
+    try (Reader reader = readerFor(queryMessages(where, args, false, limit))) {
+      List<MessageRecord> results = new ArrayList<>(reader.cursor.getCount());
+
+      while (reader.getNext() != null) {
+        results.add(reader.getCurrent());
+      }
+
+      return results;
+    }
+  }
+
+  private Cursor queryMessages(@NonNull String where, @NonNull String[] args, boolean reverse, long limit) {
+    SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+    return db.query(TABLE_NAME,
+                    MESSAGE_PROJECTION,
+                    where,
+                    args,
+                    null,
+                    null,
+                    reverse ? ID + " DESC" : null,
+                    limit > 0 ? String.valueOf(limit) : null);
+  }
+
+  @Override
   void deleteThreads(@NonNull Set<Long> threadIds) {
     SQLiteDatabase db = databaseHelper.getWritableDatabase();
     String where      = "";
@@ -1184,7 +1234,7 @@ public class SmsDatabase extends MessageDatabase {
     }
   }
 
-  public static class Reader {
+  public static class Reader implements Closeable {
 
     private final Cursor  cursor;
     private final Context context;
@@ -1255,6 +1305,7 @@ public class SmsDatabase extends MessageDatabase {
       return new LinkedList<>();
     }
 
+    @Override
     public void close() {
       cursor.close();
     }

@@ -52,6 +52,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.text.HtmlCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,6 +71,8 @@ import org.thoughtcrime.securesms.components.ConversationScrollToView;
 import org.thoughtcrime.securesms.components.ConversationTypingView;
 import org.thoughtcrime.securesms.components.TooltipPopup;
 import org.thoughtcrime.securesms.components.recyclerview.SmoothScrollingLinearLayoutManager;
+import org.thoughtcrime.securesms.components.voice.VoiceNoteMediaController;
+import org.thoughtcrime.securesms.components.voice.VoiceNotePlaybackState;
 import org.thoughtcrime.securesms.contactshare.Contact;
 import org.thoughtcrime.securesms.contactshare.ContactUtil;
 import org.thoughtcrime.securesms.contactshare.SharedContactDetailsActivity;
@@ -115,7 +118,6 @@ import org.thoughtcrime.securesms.stickers.StickerLocator;
 import org.thoughtcrime.securesms.stickers.StickerPackPreviewActivity;
 import org.thoughtcrime.securesms.util.CachedInflater;
 import org.thoughtcrime.securesms.util.CommunicationActions;
-import org.thoughtcrime.securesms.util.FeatureFlags;
 import org.thoughtcrime.securesms.util.HtmlUtil;
 import org.thoughtcrime.securesms.util.RemoteDeleteUtil;
 import org.thoughtcrime.securesms.util.SaveAttachmentTask;
@@ -179,6 +181,7 @@ public class ConversationFragment extends LoggingFragment {
   private Animation                   mentionButtonOutAnimation;
   private OnScrollListener            conversationScrollListener;
   private int                         pulsePosition = -1;
+  private VoiceNoteMediaController    voiceNoteMediaController;
 
   public static void prepare(@NonNull Context context) {
     FrameLayout parent = new FrameLayout(context);
@@ -226,7 +229,10 @@ public class ConversationFragment extends LoggingFragment {
 
     new ConversationItemSwipeCallback(
             conversationMessage -> actionMode == null &&
-                                   MenuState.canReplyToMessage(MenuState.isActionMessage(conversationMessage.getMessageRecord()), conversationMessage.getMessageRecord(), messageRequestViewModel.shouldShowMessageRequest()),
+                                   MenuState.canReplyToMessage(recipient.get(),
+                                                               MenuState.isActionMessage(conversationMessage.getMessageRecord()),
+                                                               conversationMessage.getMessageRecord(),
+                                                               messageRequestViewModel.shouldShowMessageRequest()),
             this::handleReplyMessage
     ).attachToRecyclerView(list);
 
@@ -303,6 +309,7 @@ public class ConversationFragment extends LoggingFragment {
     initializeResources();
     initializeMessageRequestViewModel();
     initializeListAdapter();
+    voiceNoteMediaController = new VoiceNoteMediaController((AppCompatActivity) requireActivity());
   }
 
   @Override
@@ -345,9 +352,17 @@ public class ConversationFragment extends LoggingFragment {
       actionMode.finish();
     }
 
+    long oldThreadId = threadId;
+
     initializeResources();
     messageRequestViewModel.setConversationInfo(recipient.getId(), threadId);
-    initializeListAdapter();
+
+    int startingPosition = getStartPosition();
+    if (startingPosition != -1 && oldThreadId == threadId) {
+      list.post(() -> moveToPosition(startingPosition, () -> Log.w(TAG, "Could not scroll to requested message.")));
+    } else {
+      initializeListAdapter();
+    }
   }
 
   public void moveToLastSeen() {
@@ -363,6 +378,10 @@ public class ConversationFragment extends LoggingFragment {
 
     int position = getListAdapter().getAdapterPositionForMessagePosition(conversationViewModel.getLastSeenPosition());
     snapToTopDataObserver.requestScrollPosition(position);
+  }
+
+  private int getStartPosition() {
+    return requireActivity().getIntent().getIntExtra(ConversationActivity.STARTING_POSITION_EXTRA, -1);
   }
 
   private void initializeMessageRequestViewModel() {
@@ -452,7 +471,7 @@ public class ConversationFragment extends LoggingFragment {
   private void initializeResources() {
     long oldThreadId = threadId;
 
-    int startingPosition  = this.getActivity().getIntent().getIntExtra(ConversationActivity.STARTING_POSITION_EXTRA, -1);
+    int startingPosition  = getStartPosition();
 
     this.recipient         = Recipient.live(getActivity().getIntent().getParcelableExtra(ConversationActivity.RECIPIENT_EXTRA));
     this.threadId          = this.getActivity().getIntent().getLongExtra(ConversationActivity.THREAD_ID_EXTRA, -1);
@@ -573,7 +592,7 @@ public class ConversationFragment extends LoggingFragment {
       return;
     }
 
-    MenuState menuState = MenuState.getMenuState(Stream.of(messages).map(ConversationMessage::getMessageRecord).collect(Collectors.toSet()), messageRequestViewModel.shouldShowMessageRequest());
+    MenuState menuState = MenuState.getMenuState(recipient.get(), Stream.of(messages).map(ConversationMessage::getMessageRecord).collect(Collectors.toSet()), messageRequestViewModel.shouldShowMessageRequest());
 
     menu.findItem(R.id.menu_context_forward).setVisible(menuState.shouldShowForwardAction());
     menu.findItem(R.id.menu_context_reply).setVisible(menuState.shouldShowReplyAction());
@@ -662,53 +681,7 @@ public class ConversationFragment extends LoggingFragment {
 
   private void handleDeleteMessages(final Set<ConversationMessage> conversationMessages) {
     Set<MessageRecord> messageRecords = Stream.of(conversationMessages).map(ConversationMessage::getMessageRecord).collect(Collectors.toSet());
-    if (FeatureFlags.remoteDelete()) {
-      buildRemoteDeleteConfirmationDialog(messageRecords).show();
-    } else {
-      buildLegacyDeleteConfirmationDialog(messageRecords).show();
-    }
-  }
-
-  private AlertDialog.Builder buildLegacyDeleteConfirmationDialog(Set<MessageRecord> messageRecords) {
-    int                 messagesCount = messageRecords.size();
-    AlertDialog.Builder builder       = new AlertDialog.Builder(getActivity());
-
-    builder.setIconAttribute(R.attr.dialog_alert_icon);
-    builder.setTitle(getActivity().getResources().getQuantityString(R.plurals.ConversationFragment_delete_selected_messages, messagesCount, messagesCount));
-    builder.setMessage(getActivity().getResources().getQuantityString(R.plurals.ConversationFragment_this_will_permanently_delete_all_n_selected_messages, messagesCount, messagesCount));
-    builder.setCancelable(true);
-
-    builder.setPositiveButton(R.string.delete, (dialog, which) -> {
-      new ProgressDialogAsyncTask<Void, Void, Void>(getActivity(),
-                                                    R.string.ConversationFragment_deleting,
-                                                    R.string.ConversationFragment_deleting_messages)
-      {
-        @Override
-        protected Void doInBackground(Void... voids) {
-          for (MessageRecord messageRecord : messageRecords) {
-            boolean threadDeleted;
-
-            if (messageRecord.isMms()) {
-              threadDeleted = DatabaseFactory.getMmsDatabase(getActivity()).deleteMessage(messageRecord.getId());
-            } else {
-              threadDeleted = DatabaseFactory.getSmsDatabase(getActivity()).deleteMessage(messageRecord.getId());
-            }
-
-            if (threadDeleted) {
-              threadId = -1;
-              conversationViewModel.clearThreadId();
-              messageCountsViewModel.clearThreadId();
-              listener.setThreadId(threadId);
-            }
-          }
-
-          return null;
-        }
-      }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    });
-
-    builder.setNegativeButton(android.R.string.cancel, null);
-    return builder;
+    buildRemoteDeleteConfirmationDialog(messageRecords).show();
   }
 
   private AlertDialog.Builder buildRemoteDeleteConfirmationDialog(Set<MessageRecord> messageRecords) {
@@ -769,7 +742,7 @@ public class ConversationFragment extends LoggingFragment {
       deleteForEveryone.run();
     } else {
       new AlertDialog.Builder(requireActivity())
-                     .setMessage(R.string.ConversationFragment_this_message_will_be_permanently_deleted_for_everyone)
+                     .setMessage(R.string.ConversationFragment_this_message_will_be_deleted_for_everyone_in_the_conversation)
                      .setPositiveButton(R.string.ConversationFragment_delete_for_everyone, (dialog, which) -> {
                        SignalStore.uiHints().markHasConfirmedDeleteForEveryoneOnce();
                        deleteForEveryone.run();
@@ -1223,11 +1196,12 @@ public class ConversationFragment extends LoggingFragment {
 
       MessageRecord messageRecord = conversationMessage.getMessageRecord();
 
-      if (messageRecord.isSecure()                            &&
-          !messageRecord.isRemoteDelete()                     &&
-          !messageRecord.isUpdate()                           &&
-          !recipient.get().isBlocked()                        &&
-          !messageRequestViewModel.shouldShowMessageRequest() &&
+      if (messageRecord.isSecure()                                        &&
+          !messageRecord.isRemoteDelete()                                 &&
+          !messageRecord.isUpdate()                                       &&
+          !recipient.get().isBlocked()                                    &&
+          !messageRequestViewModel.shouldShowMessageRequest()             &&
+          (!recipient.get().isGroup() || recipient.get().isActiveGroup()) &&
           ((ConversationAdapter) list.getAdapter()).getSelectedItems().isEmpty())
       {
         isReacting = true;
@@ -1395,6 +1369,31 @@ public class ConversationFragment extends LoggingFragment {
     @Override
     public void onMessageWithErrorClicked(@NonNull MessageRecord messageRecord) {
       listener.onMessageWithErrorClicked(messageRecord);
+    }
+
+    @Override
+    public void onVoiceNotePause(@NonNull Uri uri) {
+      voiceNoteMediaController.pausePlayback(uri);
+    }
+
+    @Override
+    public void onVoiceNotePlay(@NonNull Uri uri, long messageId, double progress) {
+      voiceNoteMediaController.startConsecutivePlayback(uri, messageId, progress);
+    }
+
+    @Override
+    public void onVoiceNoteSeekTo(@NonNull Uri uri, double progress) {
+      voiceNoteMediaController.seekToPosition(uri, progress);
+    }
+
+    @Override
+    public void onRegisterVoiceNoteCallbacks(@NonNull Observer<VoiceNotePlaybackState> onPlaybackStartObserver) {
+      voiceNoteMediaController.getVoiceNotePlaybackState().observe(getViewLifecycleOwner(), onPlaybackStartObserver);
+    }
+
+    @Override
+    public void onUnregisterVoiceNoteCallbacks(@NonNull Observer<VoiceNotePlaybackState> onPlaybackStartObserver) {
+      voiceNoteMediaController.getVoiceNotePlaybackState().removeObserver(onPlaybackStartObserver);
     }
 
     @Override

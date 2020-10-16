@@ -132,6 +132,11 @@
         <item name="android:windowExitAnimation">@anim/slide_to_top</item>
     </style>
 
+    <style name="FadeScale" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/fade_scale_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_scale_out</item>
+    </style>
+
     <style name="StickerPopupAnimation" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
         <item name="android:windowExitAnimation">@anim/fade_out</item>
@@ -157,6 +162,10 @@
         <item name="theme_type">light</item>
         <item name="icon_tint">@color/core_grey_75</item>
         <item name="icon_tint_dark">@color/core_grey_15</item>
+
+        <item name="folder_icon">@drawable/ic_folder_outline_24</item>
+        <item name="backup_enable_dialog_divider_background">@color/core_grey_20</item>
+        <item name="backup_enable_subhead_color">@color/core_grey_65</item>
 
         <item name="insight_modal_background">@drawable/insights_modal_background</item>
         <item name="insight_modal_button_background">@color/core_grey_10</item>
@@ -488,6 +497,10 @@
         <item name="theme_type">dark</item>
         <item name="icon_tint">@color/core_grey_15</item>
         <item name="icon_tint_dark">?icon_tint</item>
+
+        <item name="folder_icon">@drawable/ic_folder_solid_24</item>
+        <item name="backup_enable_dialog_divider_background">@color/core_grey_60</item>
+        <item name="backup_enable_subhead_color">@color/core_grey_25</item>
 
         <item name="insight_modal_background">@drawable/insights_modal_background_dark</item>
         <item name="insight_modal_button_background">@color/core_grey_60</item>
@@ -911,6 +924,14 @@
         <item name="bottomSheetStyle">@style/Widget.Signal.BottomSheet.ReactWithAny.Light</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Signal.BottomSheet.Rounded</item>
+    </style>
+
+    <style name="TextSecure.DarkTheme.AnimatedDialog">
+        <item name="android:windowAnimationStyle">@style/FadeScale</item>
+    </style>
+
+    <style name="TextSecure.LightTheme.AnimatedDialog">
+        <item name="android:windowAnimationStyle">@style/FadeScale</item>
     </style>
 
     <style name="Widget.Signal.BottomSheet.ReactWithAny" parent="Widget.MaterialComponents.BottomSheet">
