@@ -88,6 +88,8 @@ final class VoiceNotePlaybackPreparer implements MediaSessionConnector.PlaybackP
 
   @Override
   public void onPrepareFromUri(final Uri uri, Bundle extras) {
+    Log.d(TAG, "onPrepareFromUri: " + uri);
+
     long    messageId      = extras.getLong(VoiceNoteMediaController.EXTRA_MESSAGE_ID);
     double  progress       = extras.getDouble(VoiceNoteMediaController.EXTRA_PROGRESS, 0);
     boolean singlePlayback = extras.getBoolean(VoiceNoteMediaController.EXTRA_PLAY_SINGLE, false);
@@ -145,7 +147,11 @@ final class VoiceNotePlaybackPreparer implements MediaSessionConnector.PlaybackP
 
       if (holderIndex != -1) {
         queueDataAdapter.remove(holderIndex);
-        queueDataAdapter.remove(holderIndex);
+
+        if (!queueDataAdapter.isEmpty()) {
+          queueDataAdapter.remove(holderIndex);
+        }
+
         queueDataAdapter.add(holderIndex, createNextClone(description));
         queueDataAdapter.add(holderIndex, description);
 
@@ -155,7 +161,10 @@ final class VoiceNotePlaybackPreparer implements MediaSessionConnector.PlaybackP
         }
 
         if (currentIndex != holderIndex + 1) {
-          dataSource.removeMediaSource(holderIndex + 1);
+          if (dataSource.getSize() > 1) {
+            dataSource.removeMediaSource(holderIndex + 1);
+          }
+
           dataSource.addMediaSource(holderIndex + 1, mediaSourceFactory.createMediaSource(next));
         }
       } else {
@@ -173,12 +182,15 @@ final class VoiceNotePlaybackPreparer implements MediaSessionConnector.PlaybackP
     MediaDescriptionCompat last      = queueDataAdapter.getMediaDescription(lastIndex);
 
     if (Objects.equals(last.getMediaUri(), NEXT_URI)) {
-      MediaDescriptionCompat end = createEndClone(last);
-
       queueDataAdapter.remove(lastIndex);
-      queueDataAdapter.add(lastIndex, end);
       dataSource.removeMediaSource(lastIndex);
-      dataSource.addMediaSource(lastIndex, mediaSourceFactory.createMediaSource(end));
+
+      if (queueDataAdapter.size() > 1) {
+        MediaDescriptionCompat end = createEndClone(last);
+
+        queueDataAdapter.add(lastIndex, end);
+        dataSource.addMediaSource(lastIndex, mediaSourceFactory.createMediaSource(end));
+      }
     }
   }
 
@@ -237,10 +249,9 @@ final class VoiceNotePlaybackPreparer implements MediaSessionConnector.PlaybackP
   @WorkerThread
   private @NonNull List<MediaDescriptionCompat> loadMediaDescriptionsForConsecutivePlayback(long messageId) {
     try {
-      List<MessageRecord> recordsBefore = DatabaseFactory.getMmsSmsDatabase(context).getMessagesBeforeVoiceNoteExclusive(messageId, LIMIT);
       List<MessageRecord> recordsAfter  = DatabaseFactory.getMmsSmsDatabase(context).getMessagesAfterVoiceNoteInclusive(messageId, LIMIT);
 
-      return Stream.of(buildFilteredMessageRecordList(recordsBefore, recordsAfter))
+      return Stream.of(buildFilteredMessageRecordList(recordsAfter))
                    .map(record -> VoiceNoteMediaDescriptionCompatFactory.buildMediaDescription(context, record))
                    .toList();
     } catch (NoSuchMessageException e) {
@@ -249,20 +260,9 @@ final class VoiceNotePlaybackPreparer implements MediaSessionConnector.PlaybackP
     }
   }
 
-  @VisibleForTesting
-  static @NonNull List<MessageRecord> buildFilteredMessageRecordList(@NonNull List<MessageRecord> recordsBefore, @NonNull List<MessageRecord> recordsAfter) {
-    Collections.reverse(recordsBefore);
-    List<MessageRecord> filteredBefore = Stream.of(recordsBefore)
-                                               .takeWhile(MessageRecordUtil::hasAudio)
-                                               .toList();
-    Collections.reverse(filteredBefore);
-
-    List<MessageRecord> filteredAfter = Stream.of(recordsAfter)
-                                              .takeWhile(MessageRecordUtil::hasAudio)
-                                              .toList();
-
-    filteredBefore.addAll(filteredAfter);
-
-    return filteredBefore;
+  private static @NonNull List<MessageRecord> buildFilteredMessageRecordList(@NonNull List<MessageRecord> recordsAfter) {
+    return Stream.of(recordsAfter)
+                 .takeWhile(MessageRecordUtil::hasAudio)
+                 .toList();
   }
 }

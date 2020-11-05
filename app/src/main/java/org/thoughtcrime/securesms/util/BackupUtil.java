@@ -174,13 +174,14 @@ public class BackupUtil {
 
       return new BackupInfo(backupTimestamp, documentFile.length(), documentFile.getUri());
     } else {
+      logIssueWithDocumentFile(documentFile);
       Log.w(TAG, "Could not load backup info.");
       return null;
     }
   }
 
   private static List<BackupInfo> getAllBackupsNewestFirstLegacy() throws NoExternalStorageException {
-    File             backupDirectory = StorageUtil.getBackupDirectory();
+    File             backupDirectory = StorageUtil.getOrCreateBackupDirectory();
     File[]           files           = backupDirectory.listFiles();
     List<BackupInfo> backups         = new ArrayList<>(files.length);
 
@@ -212,6 +213,26 @@ public class BackupUtil {
     return result;
   }
 
+  public static boolean hasBackupFiles(@NonNull Context context) {
+    if (Permissions.hasAll(context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+      try {
+        File directory = StorageUtil.getBackupDirectory();
+
+        if (directory.exists() && directory.isDirectory()) {
+          File[] files = directory.listFiles();
+          return files != null && files.length > 0;
+        } else {
+          return false;
+        }
+      } catch (NoExternalStorageException e) {
+        Log.w(TAG, "Failed to read storage!", e);
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   private static long getBackupTimestamp(@NonNull String backupName) {
     String[] prefixSuffix = backupName.split("[.]");
 
@@ -239,11 +260,25 @@ public class BackupUtil {
     return -1;
   }
 
+  private static void logIssueWithDocumentFile(@Nullable DocumentFile documentFile) {
+    if (documentFile == null) {
+      throw new AssertionError("We do not support platforms prior to KitKat.");
+    } else if (!documentFile.exists()) {
+      Log.w(TAG, "The document at the specified Uri cannot be found.");
+    } else if (!documentFile.canRead()) {
+      Log.w(TAG, "The document at the specified Uri cannot be read.");
+    } else if (!documentFile.canWrite()) {
+      Log.w(TAG, "The document at the specified Uri cannot be written to.");
+    } else if (!documentFile.getName().endsWith(".backup")) {
+      Log.w(TAG, "The document at the specified Uri has an unsupported file extension.");
+    }
+  }
+
   public static class BackupInfo {
 
     private final long timestamp;
     private final long size;
-    private final Uri uri;
+    private final Uri  uri;
 
     BackupInfo(long timestamp, long size, Uri uri) {
       this.timestamp = timestamp;
@@ -264,22 +299,24 @@ public class BackupUtil {
     }
 
     private void delete() {
-      DocumentFile document = DocumentFile.fromSingleUri(ApplicationDependencies.getApplication(), uri);
-      if (document != null && document.exists()) {
-          Log.i(TAG, "Deleting: " + uri);
+      File file = new File(Objects.requireNonNull(uri.getPath()));
 
-          if (!document.delete()) {
-            Log.w(TAG, "Delete failed: " + uri);
-          }
-      } else {
-        File file = new File(uri.toString());
-        Log.i(TAG, "Deleting: " + file.getAbsolutePath());
+      if (file.exists()) {
+        Log.i(TAG, "Deleting File: " + file.getAbsolutePath());
 
         if (!file.delete()) {
           Log.w(TAG, "Delete failed: " + file.getAbsolutePath());
         }
-      }
+      } else {
+        DocumentFile document = DocumentFile.fromSingleUri(ApplicationDependencies.getApplication(), uri);
+        if (document != null && document.exists()) {
+          Log.i(TAG, "Deleting DocumentFile: " + uri);
 
+          if (!document.delete()) {
+            Log.w(TAG, "Delete failed: " + uri);
+          }
+        }
+      }
     }
   }
 }

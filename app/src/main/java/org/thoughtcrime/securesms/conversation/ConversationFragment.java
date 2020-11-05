@@ -16,12 +16,12 @@
  */
 package org.thoughtcrime.securesms.conversation;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -89,6 +89,7 @@ import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.database.model.MmsMessageRecord;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.groups.GroupId;
+import org.thoughtcrime.securesms.groups.ui.migration.GroupsV1MigrationBottomSheetDialogFragment;
 import org.thoughtcrime.securesms.jobs.DirectoryRefreshJob;
 import org.thoughtcrime.securesms.jobs.MultiDeviceViewOnceOpenJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
@@ -102,6 +103,8 @@ import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.mms.OutgoingMediaMessage;
 import org.thoughtcrime.securesms.mms.PartAuthority;
 import org.thoughtcrime.securesms.mms.Slide;
+import org.thoughtcrime.securesms.permissions.Permissions;
+import org.thoughtcrime.securesms.phonenumbers.PhoneNumberFormatter;
 import org.thoughtcrime.securesms.profiles.UnknownSenderView;
 import org.thoughtcrime.securesms.providers.BlobProvider;
 import org.thoughtcrime.securesms.reactions.ReactionsBottomSheetDialogFragment;
@@ -123,6 +126,7 @@ import org.thoughtcrime.securesms.util.RemoteDeleteUtil;
 import org.thoughtcrime.securesms.util.SaveAttachmentTask;
 import org.thoughtcrime.securesms.util.SnapToTopDataObserver;
 import org.thoughtcrime.securesms.util.StickyHeaderDecoration;
+import org.thoughtcrime.securesms.util.StorageUtil;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
@@ -430,7 +434,7 @@ public class ConversationFragment extends LoggingFragment {
       } else if (isSelf) {
         conversationBanner.setSubtitle(context.getString(R.string.ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation));
       } else {
-        String subtitle = recipient.getE164().orNull();
+        String subtitle = recipient.getE164().transform(PhoneNumberFormatter::prettyPrint).orNull();
 
         if (subtitle == null || subtitle.equals(title)) {
           conversationBanner.hideSubtitle();
@@ -854,24 +858,38 @@ public class ConversationFragment extends LoggingFragment {
       throw new AssertionError("Cannot save a view-once message.");
     }
 
-    SaveAttachmentTask.showWarningDialog(getActivity(), new DialogInterface.OnClickListener() {
-      public void onClick(DialogInterface dialog, int which) {
-        List<SaveAttachmentTask.Attachment> attachments = Stream.of(message.getSlideDeck().getSlides())
-                                                                .filter(s -> s.getUri() != null && (s.hasImage() || s.hasVideo() || s.hasAudio() || s.hasDocument()))
-                                                                .map(s -> new SaveAttachmentTask.Attachment(s.getUri(), s.getContentType(), message.getDateReceived(), s.getFileName().orNull()))
-                                                                .toList();
-        if (!Util.isEmpty(attachments)) {
-          SaveAttachmentTask saveTask = new SaveAttachmentTask(getActivity());
-          saveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, attachments.toArray(new SaveAttachmentTask.Attachment[0]));
-          return;
-        }
-
-        Log.w(TAG, "No slide with attachable media found, failing nicely.");
-        Toast.makeText(getActivity(),
-                       getResources().getQuantityString(R.plurals.ConversationFragment_error_while_saving_attachments_to_sd_card, 1),
-                       Toast.LENGTH_LONG).show();
+    SaveAttachmentTask.showWarningDialog(getActivity(), (dialog, which) -> {
+      if (StorageUtil.canWriteToMediaStore()) {
+        performSave(message);
+        return;
       }
+
+      Permissions.with(this)
+                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                 .ifNecessary()
+                 .withPermanentDenialDialog(getString(R.string.MediaPreviewActivity_signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied))
+                 .onAnyDenied(() -> Toast.makeText(requireContext(), R.string.MediaPreviewActivity_unable_to_write_to_external_storage_without_permission, Toast.LENGTH_LONG).show())
+                 .onAllGranted(() -> performSave(message))
+                 .execute();
     });
+  }
+
+  private void performSave(final MediaMmsMessageRecord message) {
+    List<SaveAttachmentTask.Attachment> attachments = Stream.of(message.getSlideDeck().getSlides())
+                                                            .filter(s -> s.getUri() != null && (s.hasImage() || s.hasVideo() || s.hasAudio() || s.hasDocument()))
+                                                            .map(s -> new SaveAttachmentTask.Attachment(s.getUri(), s.getContentType(), message.getDateReceived(), s.getFileName().orNull()))
+                                                            .toList();
+
+    if (!Util.isEmpty(attachments)) {
+      SaveAttachmentTask saveTask = new SaveAttachmentTask(getActivity());
+      saveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, attachments.toArray(new SaveAttachmentTask.Attachment[0]));
+      return;
+    }
+
+    Log.w(TAG, "No slide with attachable media found, failing nicely.");
+    Toast.makeText(getActivity(),
+                   getResources().getQuantityString(R.plurals.ConversationFragment_error_while_saving_attachments_to_sd_card, 1),
+                   Toast.LENGTH_LONG).show();
   }
 
   private void clearHeaderIfNotTyping(ConversationAdapter adapter) {
@@ -1399,6 +1417,11 @@ public class ConversationFragment extends LoggingFragment {
     @Override
     public boolean onUrlClicked(@NonNull String url) {
       return CommunicationActions.handlePotentialGroupLinkUrl(requireActivity(), url);
+    }
+
+    @Override
+    public void onGroupMigrationLearnMoreClicked(@NonNull List<RecipientId> pendingRecipients) {
+      GroupsV1MigrationBottomSheetDialogFragment.showForLearnMore(requireFragmentManager(), pendingRecipients);
     }
   }
 

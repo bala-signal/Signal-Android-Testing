@@ -151,8 +151,8 @@ public class MmsSmsDatabase extends Database {
       MessageRecord messageRecord;
 
       while ((messageRecord = reader.getNext()) != null) {
-        if ((Recipient.resolved(author).isLocalNumber() && messageRecord.isOutgoing()) ||
-            (!Recipient.resolved(author).isLocalNumber() && messageRecord.getIndividualRecipient().getId().equals(author)))
+        if ((Recipient.resolved(author).isSelf() && messageRecord.isOutgoing()) ||
+            (!Recipient.resolved(author).isSelf() && messageRecord.getIndividualRecipient().getId().equals(author)))
         {
           return messageRecord;
         }
@@ -160,18 +160,6 @@ public class MmsSmsDatabase extends Database {
     }
 
     return null;
-  }
-
-
-  public @NonNull List<MessageRecord> getMessagesBeforeVoiceNoteExclusive(long messageId, long limit) throws NoSuchMessageException {
-    MessageRecord       origin = DatabaseFactory.getMmsDatabase(context).getMessageRecord(messageId);
-    List<MessageRecord> mms    = DatabaseFactory.getMmsDatabase(context).getMessagesInThreadBeforeExclusive(origin.getThreadId(), origin.getDateReceived(), limit);
-    List<MessageRecord> sms    = DatabaseFactory.getSmsDatabase(context).getMessagesInThreadBeforeExclusive(origin.getThreadId(), origin.getDateReceived(), limit);
-
-    mms.addAll(sms);
-    Collections.sort(mms, (a, b) -> Long.compare(a.getDateReceived(), b.getDateReceived()));
-
-    return Stream.of(mms).skip(Math.max(0, mms.size() - limit)).toList();
   }
 
   public @NonNull List<MessageRecord> getMessagesAfterVoiceNoteInclusive(long messageId, long limit) throws NoSuchMessageException {
@@ -345,7 +333,7 @@ public class MmsSmsDatabase extends Database {
     String selection = MmsSmsColumns.THREAD_ID + " = " + threadId + " AND " + MmsSmsColumns.REMOTE_DELETED + " = 0";
 
     try (Cursor cursor = queryTables(new String[]{ MmsSmsColumns.NORMALIZED_DATE_SENT, MmsSmsColumns.RECIPIENT_ID}, selection, order, null)) {
-      boolean isOwnNumber = Recipient.resolved(recipientId).isLocalNumber();
+      boolean isOwnNumber = Recipient.resolved(recipientId).isSelf();
 
       while (cursor != null && cursor.moveToNext()) {
         boolean quoteIdMatches     = cursor.getLong(0) == quoteId;
@@ -364,7 +352,7 @@ public class MmsSmsDatabase extends Database {
     String selection = MmsSmsColumns.THREAD_ID + " = " + threadId + " AND " + MmsSmsColumns.REMOTE_DELETED + " = 0";
 
     try (Cursor cursor = queryTables(new String[]{ MmsSmsColumns.NORMALIZED_DATE_RECEIVED, MmsSmsColumns.RECIPIENT_ID}, selection, order, null)) {
-      boolean isOwnNumber = Recipient.resolved(recipientId).isLocalNumber();
+      boolean isOwnNumber = Recipient.resolved(recipientId).isSelf();
 
       while (cursor != null && cursor.moveToNext()) {
         boolean timestampMatches   = cursor.getLong(0) == receivedTimestamp;

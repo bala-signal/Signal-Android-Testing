@@ -1,3 +1,7 @@
+import org.signal.signing.ApkSignerUtil
+
+import java.security.MessageDigest
+
 buildscript {
     repositories {
         google()
@@ -76,8 +80,8 @@ protobuf {
     }
 }
 
-def canonicalVersionCode = 722
-def canonicalVersionName = "4.74.1"
+def canonicalVersionCode = 734
+def canonicalVersionName = "4.76.1"
 
 def postFixSize = 10
 def abiPostFix = ['universal'   : 0,
@@ -86,30 +90,28 @@ def abiPostFix = ['universal'   : 0,
                   'x86'         : 3,
                   'x86_64'      : 4]
 
+def keystores = [ 'debug'  : loadKeystoreProperties('keystore.debug.properties') ]
+
 android {
-    flavorDimensions "none"
+    flavorDimensions 'distribution', 'environment'
     compileSdkVersion 29
     buildToolsVersion '29.0.3'
     useLibrary 'org.apache.http.legacy'
 
-        lintOptions {
-            disable 'MissingTranslation'
-            checkReleaseBuilds false
-        }
-
-        dexOptions {
-            javaMaxHeapSize "4g"
-        }
-
-    signingConfigs {
-        release {
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
-        }
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
 
+    signingConfigs {
+        if (keystores.debug != null) {
+            debug {
+                storeFile file("${project.rootDir}/${keystores.debug.storeFile}")
+                storePassword keystores.debug.storePassword
+                keyAlias keystores.debug.keyAlias
+                keyPassword keystores.debug.keyPassword
+            }
+        }
+    }
 
     defaultConfig {
         versionCode canonicalVersionCode * postFixSize
@@ -182,6 +184,10 @@ android {
 
     buildTypes {
         debug {
+            if (keystores['debug'] != null) {
+                signingConfig signingConfigs.debug
+            }
+            isDefault true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard/proguard-firebase-messaging.pro',
@@ -205,8 +211,49 @@ android {
             testProguardFiles 'proguard/proguard-automation.pro',
                     'proguard/proguard.cfg'
         }
-        staging {
+        flipper {
             initWith debug
+            isDefault false
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled true
+            proguardFiles = buildTypes.debug.proguardFiles
+        }
+    }
+
+    productFlavors {
+        play {
+            dimension 'distribution'
+            isDefault true
+            ext.websiteUpdateUrl = "null"
+            buildConfigField "boolean", "PLAY_STORE_DISABLED", "false"
+            buildConfigField "String", "NOPLAY_UPDATE_URL", "$ext.websiteUpdateUrl"
+        }
+
+        website {
+            dimension 'distribution'
+            ext.websiteUpdateUrl = "https://updates.signal.org/android"
+            buildConfigField "boolean", "PLAY_STORE_DISABLED", "true"
+            buildConfigField "String", "NOPLAY_UPDATE_URL", "\"$ext.websiteUpdateUrl\""
+        }
+
+        internal {
+            dimension 'distribution'
+            ext.websiteUpdateUrl = "null"
+            buildConfigField "boolean", "PLAY_STORE_DISABLED", "false"
+            buildConfigField "String", "NOPLAY_UPDATE_URL", "$ext.websiteUpdateUrl"
+        }
+
+        prod {
+            dimension 'environment'
+
+            isDefault true
+        }
+
+        staging {
+            dimension 'environment'
+
             applicationIdSuffix ".staging"
 
             buildConfigField "String", "SIGNAL_URL", "\"https://textsecure-service-staging.whispersystems.org\""
@@ -215,38 +262,13 @@ android {
             buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn2-staging.signal.org\""
             buildConfigField "String", "SIGNAL_CONTACT_DISCOVERY_URL", "\"https://api-staging.directory.signal.org\""
             buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api-staging.backup.signal.org\""
-            buildConfigField "String", "CDS_MRENCLAVE", "\"bd123560b01c8fa92935bc5ae15cd2064e5c45215f23f0bd40364d521329d2ad\""
+            buildConfigField "String", "CDS_MRENCLAVE", "\"c98e00a4e3ff977a56afefe7362a27e4961e4f19e211febfbb19b897e6b80b15\""
             buildConfigField "KbsEnclave", "KBS_ENCLAVE", "new KbsEnclave(\"823a3b2c037ff0cbe305cc48928cfcc97c9ed4a8ca6d49af6f7d6981fb60a4e9\", " +
                                                                          "\"038c40bbbacdc873caa81ac793bb75afde6dfe436a99ab1f15e3f0cbb7434ced\", " +
                                                                          "\"a3baab19ef6ce6f34ab9ebb25ba722725ae44a8872dc0ff08ad6d83a9489de87\")"
             buildConfigField "KbsEnclave[]", "KBS_FALLBACKS", "new KbsEnclave[0]"
             buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BbqY1DzohE4NUZoVF+L18oUPrK3kILllLEJh2UnPSsEx\""
             buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"ABSY21VckQcbSXVNCGRYJcfWHiAMZmpTtTELcDmxgdFbtp/bWsSxZdMKzfCp8rvIs8ocCU3B37fT3r4Mi5qAemeGeR2X+/YmOGR5ofui7tD5mDQfstAI9i+4WpMtIe8KC3wU5w3Inq3uNWVmoGtpKndsNfwJrCg0Hd9zmObhypUnSkfYn2ooMOOnBpfdanRtrvetZUayDMSC5iSRcXKpdls=\""
-        }
-        flipper {
-            initWith debug
-            minifyEnabled false
-        }
-        release {
-            minifyEnabled true
-            proguardFiles = buildTypes.debug.proguardFiles
-            signingConfig signingConfigs.release
-        }
-    }
-
-    productFlavors {
-        play {
-            dimension "none"
-            ext.websiteUpdateUrl = "null"
-            buildConfigField "boolean", "PLAY_STORE_DISABLED", "false"
-            buildConfigField "String", "NOPLAY_UPDATE_URL", "$ext.websiteUpdateUrl"
-        }
-
-        website {
-            dimension "none"
-            ext.websiteUpdateUrl = "https://updates.signal.org/android"
-            buildConfigField "boolean", "PLAY_STORE_DISABLED", "true"
-            buildConfigField "String", "NOPLAY_UPDATE_URL", "\"$ext.websiteUpdateUrl\""
         }
     }
 
@@ -323,13 +345,11 @@ dependencies {
     implementation 'org.signal:aesgcmprovider:0.0.3'
 
     implementation project(':libsignal-service')
-    implementation project(':toast')
-    implementation 'org.signal:zkgroup-android:0.4.1'
     implementation 'org.signal:zkgroup-android:0.7.0'
 
     implementation 'org.signal:argon2:13.1@aar'
 
-    implementation 'org.signal:ringrtc-android:2.7.0'
+    implementation 'org.signal:ringrtc-android:2.7.3'
 
     implementation "me.leolin:ShortcutBadger:1.1.16"
     implementation 'se.emilsjolander:stickylistheaders:2.7.0'
@@ -398,16 +418,15 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation project(path: ':toast')
 }
 
 dependencyVerification {
-    configuration = '(play|website)(Debug|Release)RuntimeClasspath'
+    configuration = '(play|website)(Prod|Staging)(Debug|Release)RuntimeClasspath'
 }
 
 
-    def assembleWebsiteDescriptor = { variant, file ->
-        /*if (file.exists()) {
+def assembleWebsiteDescriptor = { variant, file ->
+    if (file.exists()) {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         file.eachByte 4096, {bytes, size ->
             md.update(bytes, 0, size);
@@ -427,13 +446,10 @@ dependencyVerification {
         File descriptorFile = new File(file.getParent(), apkName.replace(".apk", ".json"))
 
         descriptorFile.write(descriptor)
-    }*/
     }
+}
 
-    def signProductionRelease = { variant ->
-        /*String apkName    = variant.outputs[0].outputFile.name
-    File   inputFile  = new File(variant.outputs[0].outputFile.path);
-    File   outputFile = new File(variant.outputs[0].outputFile.parent, apkName.replace("-unsigned", ""));
+def signProductionRelease = { variant ->
     variant.outputs.collect { output ->
         String apkName    = output.outputFile.name
         File   inputFile  = new File(output.outputFile.path)
@@ -445,26 +461,30 @@ dependencyVerification {
                           'file:pkcs11.password').calculateSignature(inputFile.getAbsolutePath(),
                                                                      outputFile.getAbsolutePath())
 
-    inputFile.delete();
-    return outputFile
         inputFile.delete()
         outputFile
-    }*/
     }
+}
 
-    task signProductionPlayRelease {
-        /*doLast {
-        signProductionRelease(android.applicationVariants.find { (it.name == 'playRelease') })
-    }*/
+task signProductionPlayRelease {
+    doLast {
+        signProductionRelease(android.applicationVariants.find { (it.name == 'playProdRelease') })
     }
+}
 
-    task signProductionWebsiteRelease {
-        /*doLast {
+task signProductionInternalRelease {
+    doLast {
+        signProductionRelease(android.applicationVariants.find { (it.name == 'internalProdRelease') })
+    }
+}
+
+task signProductionWebsiteRelease {
+    doLast {
         def  variant       = android.applicationVariants.find { (it.name == 'websiteRelease') }
         File signedRelease = signProductionRelease(variant).find { it.name.contains('universal') }
         assembleWebsiteDescriptor(variant, signedRelease)
-    }*/
     }
+}
 
 def getLastCommitTimestamp() {
     new ByteArrayOutputStream().withStream { os ->
@@ -485,5 +505,16 @@ tasks.withType(Test) {
         showCauses true
         showExceptions true
         showStackTraces true
+    }
+}
+
+def loadKeystoreProperties(filename) {
+    def keystorePropertiesFile = file("${project.rootDir}/${filename}")
+    if (keystorePropertiesFile.exists()) {
+        def keystoreProperties = new Properties()
+        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+        return keystoreProperties;
+    } else {
+        return null;
     }
 }
