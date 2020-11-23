@@ -102,6 +102,13 @@ android {
         javaMaxHeapSize "4g"
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
     signingConfigs {
         if (keystores.debug != null) {
             debug {
@@ -345,6 +352,7 @@ dependencies {
     implementation 'org.signal:aesgcmprovider:0.0.3'
 
     implementation project(':libsignal-service')
+    implementation project(':toast')
     implementation 'org.signal:zkgroup-android:0.7.0'
 
     implementation 'org.signal:argon2:13.1@aar'

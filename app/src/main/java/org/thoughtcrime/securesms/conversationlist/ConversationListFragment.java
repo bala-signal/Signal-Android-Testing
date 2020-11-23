@@ -39,7 +39,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import org.signal.toast.Toast;;
+import org.signal.toast.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
