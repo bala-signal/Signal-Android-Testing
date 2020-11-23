@@ -140,12 +140,20 @@ public abstract class DisplayRecord {
     return SmsDatabase.Types.isJoinedType(type);
   }
 
-  public boolean isIncomingCall() {
-    return SmsDatabase.Types.isIncomingCall(type);
+  public boolean isIncomingAudioCall() {
+    return SmsDatabase.Types.isIncomingAudioCall(type);
   }
 
-  public boolean isOutgoingCall() {
-    return SmsDatabase.Types.isOutgoingCall(type);
+  public boolean isIncomingVideoCall() {
+    return SmsDatabase.Types.isIncomingVideoCall(type);
+  }
+
+  public boolean isOutgoingAudioCall() {
+    return SmsDatabase.Types.isOutgoingAudioCall(type);
+  }
+
+  public boolean isOutgoingVideoCall() {
+    return SmsDatabase.Types.isOutgoingVideoCall(type);
   }
 
   public final boolean isMissedAudioCall() {
@@ -154,6 +162,10 @@ public abstract class DisplayRecord {
 
   public final boolean isMissedVideoCall() {
     return SmsDatabase.Types.isMissedVideoCall(type);
+  }
+
+  public final boolean isGroupCall() {
+    return SmsDatabase.Types.isGroupCall(type);
   }
 
   public boolean isVerificationStatusChange() {

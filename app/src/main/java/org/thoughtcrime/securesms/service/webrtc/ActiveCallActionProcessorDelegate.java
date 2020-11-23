@@ -116,7 +116,7 @@ public class ActiveCallActionProcessorDelegate extends WebRtcActionProcessor {
 
     Log.i(tag, "handleRemoteVideoEnable(): call_id: " + activePeer.getCallId());
 
-    CallParticipant oldParticipant = Objects.requireNonNull(currentState.getCallInfoState().getRemoteParticipant(activePeer.getRecipient()));
+    CallParticipant oldParticipant = Objects.requireNonNull(currentState.getCallInfoState().getRemoteCallParticipant(activePeer.getRecipient()));
     CallParticipant newParticipant = oldParticipant.withVideoEnabled(enable);
 
     return currentState.builder()
@@ -149,8 +149,13 @@ public class ActiveCallActionProcessorDelegate extends WebRtcActionProcessor {
   }
 
   @Override
-  protected @NonNull WebRtcServiceState handleCallConcluded(@NonNull WebRtcServiceState currentState, @NonNull RemotePeer remotePeer) {
+  protected @NonNull WebRtcServiceState handleCallConcluded(@NonNull WebRtcServiceState currentState, @Nullable RemotePeer remotePeer) {
     Log.i(tag, "handleCallConcluded():");
+
+    if (remotePeer == null) {
+      return currentState;
+    }
+
     Log.i(tag, "delete remotePeer callId: " + remotePeer.getCallId() + " key: " + remotePeer.hashCode());
     return currentState.builder()
                        .changeCallInfoState()
@@ -232,7 +237,7 @@ public class ActiveCallActionProcessorDelegate extends WebRtcActionProcessor {
   protected @NonNull WebRtcServiceState handleEnded(@NonNull WebRtcServiceState currentState, @NonNull String action, @NonNull RemotePeer remotePeer) {
     Log.i(tag, "handleEnded(): call_id: " + remotePeer.getCallId() + " action: " + action);
 
-    if (remotePeer.callIdEquals(currentState.getCallInfoState().getActivePeer())) {
+    if (remotePeer.callIdEquals(currentState.getCallInfoState().getActivePeer()) && !currentState.getCallInfoState().getCallState().isErrorState()) {
       currentState = currentState.builder()
                                  .changeCallInfoState()
                                  .callState(WebRtcViewModel.State.NETWORK_FAILURE)

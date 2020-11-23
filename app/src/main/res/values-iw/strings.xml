@@ -85,8 +85,17 @@
   <string name="AttachmentUploadJob_compressing_video_start">דוחס סרטון…</string>
   <!--AudioSlidePlayer-->
   <string name="AudioSlidePlayer_error_playing_audio">שגיאה בניגון שמע!</string>
-  <!--BlockedContactsActivity-->
-  <string name="BlockedContactsActivity_blocked_contacts">אנשי קשר חסומים</string>
+  <!--BlockedUsersActivity-->
+  <string name="BlockedUsersActivity__blocked_users">משתמשים חסומים</string>
+  <string name="BlockedUsersActivity__add_blocked_user">הוסף משתמש חסום</string>
+  <string name="BlockedUsersActivity__blocked_users_will">משתמשים חסומים לא יוכלו להתקשר אליך או לשלוח לך הודעות.</string>
+  <string name="BlockedUsersActivity__no_blocked_users">אין משתמשים חסומים</string>
+  <string name="BlockedUsersActivity__block_user">לחסום משתמש?</string>
+  <string name="BlockedUserActivity__s_will_not_be_able_to">\"%1$s\" לא יוכל/תוכל להתקשר אליך או לשלוח לך הודעות.</string>
+  <string name="BlockedUsersActivity__block">חסום</string>
+  <string name="BlockedUsersActivity__unblock_user">לבטל חסימת משתמש?</string>
+  <string name="BlockedUsersActivity__do_you_want_to_unblock_s">האם אתה רוצה לבטל חסימה של \"%1$s\"?</string>
+  <string name="BlockedUsersActivity__unblock">בטל חסימה</string>
   <!--BlockUnblockDialog-->
   <string name="BlockUnblockDialog_block_and_leave_s">לחסום ולעזוב את %1$s?</string>
   <string name="BlockUnblockDialog_block_s">לחסום את %1$s?</string>
@@ -315,6 +324,10 @@
   <string name="ConversationFragment_outgoing_view_once_media_files_are_automatically_removed">קבצי מדיה יוצאים לצפייה חד־פעמית מוסרים באופן אוטומטי לאחר שהם נשלחים</string>
   <string name="ConversationFragment_you_already_viewed_this_message">צפית כבר בהודעה זו</string>
   <string name="ConversationFragment__you_can_add_notes_for_yourself_in_this_conversation">אתה יכול להוסיף הערות לעצמך בשיחה זו.\nאם לחשבון שלך יש מכשירים מקושרים כלשהם, הערות חדשות יסונכרנו.</string>
+  <string name="ConversationFragment__d_group_members_have_the_same_name">אל %1$d חברי קבוצה יש אותו שם.</string>
+  <string name="ConversationFragment__tap_to_review">הקש כדי לסקור</string>
+  <string name="ConversationFragment__review_requests_carefully">סקור בקשות בזהירות</string>
+  <string name="ConversationFragment__signal_found_another_contact_with_the_same_name">Signal מצא איש קשר אחר עם אותו שם.</string>
   <!--ConversationListActivity-->
   <string name="ConversationListActivity_there_is_no_browser_installed_on_your_device">אין דפדפן מותקן במכשיר שלך.</string>
   <!--ConversationListFragment-->
@@ -425,6 +438,11 @@
   <string name="DeviceListItem_today">היום</string>
   <!--DocumentView-->
   <string name="DocumentView_unnamed_file">קובץ ללא שם</string>
+  <!--DonateMegaphone-->
+  <string name="DonateMegaphone_donate_to_signal">תרום אל Signal</string>
+  <string name="DonateMegaphone_Signal_is_powered_by_people_like_you_show_your_support_today">Signal ממונע על ידי אנשים כמוך. הראה לנו את תמיכתך היום!</string>
+  <string name="DonateMegaphone_donate">תרום</string>
+  <string name="DonateMegaphone_no_thanks">לא תודה</string>
   <!--DozeReminder-->
   <string name="DozeReminder_optimize_for_missing_play_services">מטב עבור שירותי Play חסרים</string>
   <string name="DozeReminder_this_device_does_not_support_play_services_tap_to_disable_system_battery">מכשיר זה אינו תומך בשירותי Play. הקש כדי להשבית מיטובי סוללה של מערכת שמונעים מ־Signal לאחזר הודעות בעת אי־פעילות.</string>
@@ -485,6 +503,84 @@
   <string name="GroupManagement_invite_single_user">“%1$s” אינו יכול להתווסף באופן אוטומטי אל קבוצה זו על ידך.\n\nהוא הוזמן להצטרף, ולא יראה הודעות קבוצה כלשהן עד שהוא יסכים.</string>
   <string name="GroupManagement_learn_more">למד עוד</string>
   <string name="GroupManagement_invite_multiple_users">משתמשים אלו אינם יכולים להתווסף באופן אוטומטי אל קבוצה זו על ידך.\n\nהם הוזמנו להצטרף אל הקבוצה, ולא יראו הודעות קבוצה כלשהן עד שהם יסכימו.</string>
+  <!--GroupsV1MigrationLearnMoreBottomSheetDialogFragment-->
+  <string name="GroupsV1MigrationLearnMore_what_are_new_groups">מהן קבוצות חדשות?</string>
+  <string name="GroupsV1MigrationLearnMore_new_groups_have_features_like_mentions">לקבוצות חדשות יש מאפיינים כמו @אזכורים ומנהלני קבוצה, ויתמכו במאפיינים נוספים בעתיד.</string>
+  <string name="GroupsV1MigrationLearnMore_all_message_history_and_media_has_been_kept">כל היסטורית ההודעות וכל המדיה נשמרו מלפני השדרוג.</string>
+  <plurals name="GroupsV1MigrationLearnMore_these_members_will_need_to_accept_an_invite">
+    <item quantity="one">חבר קבוצה זה יצטרך לאשר הזמנה כדי להצטרף אל קבוצה זו שוב והוא לא יקבל הודעות קבוצה עד שהוא יאשר:</item>
+    <item quantity="two">חברי קבוצה אלו יצטרכו לאשר הזמנה כדי להצטרף אל קבוצה זו שוב והם לא יקבלו הודעות קבוצה עד שהם יאשרו:</item>
+    <item quantity="many">חברי קבוצה אלו יצטרכו לאשר הזמנה כדי להצטרף אל קבוצה זו שוב והם לא יקבלו הודעות קבוצה עד שהם יאשרו:</item>
+    <item quantity="other">חברי קבוצה אלו יצטרכו לאשר הזמנה כדי להצטרף אל קבוצה זו שוב והם לא יקבלו הודעות קבוצה עד שהם יאשרו:</item>
+  </plurals>
+  <!--GroupsV1MigrationInitiationBottomSheetDialogFragment-->
+  <string name="GroupsV1MigrationInitiation_upgrade_to_new_group">שדרג אל קבוצה חדשה</string>
+  <string name="GroupsV1MigrationInitiation_upgrade_this_group">שדרג קבוצה זו</string>
+  <string name="GroupsV1MigrationInitiation_new_groups_have_features_like_mentions">לקבוצות חדשות יש מאפיינים כמו @אזכורים ומנהלני קבוצה, ויתמכו במאפיינים נוספים בעתיד.</string>
+  <string name="GroupsV1MigrationInitiation_all_message_history_and_media_will_be_kept">כל היסטורית ההודעות והמדיה יישמרו מלפני השדרוג.</string>
+  <string name="GroupsV1MigrationInitiation_encountered_a_network_error">היישום נתקל בשגיאת רשת. נסה שוב מאוחר יותר.</string>
+  <string name="GroupsV1MigrationInitiation_failed_to_upgrade">נכשל לשדרג.</string>
+  <plurals name="GroupsV1MigrationInitiation_these_members_will_need_to_accept_an_invite">
+    <item quantity="one">חבר קבוצה זה יצטרך לאשר הזמנה כדי להצטרף אל קבוצה זו שוב והוא לא יקבל הודעות קבוצה עד שהוא יאשר:</item>
+    <item quantity="two">חברי קבוצה אלו יצטרכו לאשר הזמנה כדי להצטרף אל קבוצה זו שוב והם לא יקבלו הודעות קבוצה עד שהם יאשרו:</item>
+    <item quantity="many">חברי קבוצה אלו יצטרכו לאשר הזמנה כדי להצטרף אל קבוצה זו שוב והם לא יקבלו הודעות קבוצה עד שהם יאשרו:</item>
+    <item quantity="other">חברי קבוצה אלו יצטרכו לאשר הזמנה כדי להצטרף אל קבוצה זו שוב והם לא יקבלו הודעות קבוצה עד שהם יאשרו:</item>
+  </plurals>
+  <plurals name="GroupsV1MigrationInitiation_these_members_are_not_capable_of_joining_new_groups">
+    <item quantity="one">חבר קבוצה זה אינו מסוגל להצטרף אל קבוצות חדשות, והוא יוסר מהקבוצה:</item>
+    <item quantity="two">חברי קבוצה אלו אינם מסוגלים להצטרף אל קבוצות חדשות, והם יוסרו מהקבוצה:</item>
+    <item quantity="many">חברי קבוצה אלו אינם מסוגלים להצטרף אל קבוצות חדשות, והם יוסרו מהקבוצה:</item>
+    <item quantity="other">חברי קבוצה אלו אינם מסוגלים להצטרף אל קבוצות חדשות, והם יוסרו מהקבוצה:</item>
+  </plurals>
+  <!--GroupsV1MigrationInitiationReminder-->
+  <string name="GroupsV1MigrationInitiationReminder_to_access_new_features_like_mentions">כדי להשיג גישה אל מאפיינים חדשים כמו @אזכורים ומנהלנים, שדרג קבוצה זו.</string>
+  <string name="GroupsV1MigrationInitiationReminder_not_now">לא עכשיו</string>
+  <string name="GroupsV1MigrationInitiationReminder_update_group">עדכון קבוצה</string>
+  <!--GroupsV1MigrationSuggestionsReminder-->
+  <plurals name="GroupsV1MigrationSuggestionsReminder_members_couldnt_be_added_to_the_new_group">
+    <item quantity="one">%1$d חבר קבוצה לא היה יכול להתווסף מחדש אל הקבוצה החדשה. האם אתה רוצה להוסיף אותו עכשיו?</item>
+    <item quantity="two">%1$d חברי קבוצה לא יכלו להתווסף מחדש אל הקבוצה החדשה. האם אתה רוצה להוסיף אותם עכשיו?</item>
+    <item quantity="many">%1$d חברי קבוצה לא יכלו להתווסף מחדש אל הקבוצה החדשה. האם אתה רוצה להוסיף אותם עכשיו?</item>
+    <item quantity="other">%1$d חברי קבוצה לא יכלו להתווסף מחדש אל הקבוצה החדשה. האם אתה רוצה להוסיף אותם עכשיו?</item>
+  </plurals>
+  <plurals name="GroupsV1MigrationSuggestionsReminder_add_members">
+    <item quantity="one">הוסף חבר קבוצה</item>
+    <item quantity="two">הוסף חברי קבוצה</item>
+    <item quantity="many">הוסף חברי קבוצה</item>
+    <item quantity="other">הוסף חברי קבוצה</item>
+  </plurals>
+  <string name="GroupsV1MigrationSuggestionsReminder_not_now">לא עכשיו</string>
+  <!--GroupsV1MigrationSuggestionsDialog-->
+  <plurals name="GroupsV1MigrationSuggestionsDialog_add_members_question">
+    <item quantity="one">להוסיף חבר קבוצה?</item>
+    <item quantity="two">להוסיף חברי קבוצה?</item>
+    <item quantity="many">להוסיף חברי קבוצה?</item>
+    <item quantity="other">להוסיף חברי קבוצה?</item>
+  </plurals>
+  <plurals name="GroupsV1MigrationSuggestionsDialog_these_members_couldnt_be_automatically_added">
+    <item quantity="one">חבר קבוצה זה לא היה יכול להתווסף באופן אוטומטי אל הקבוצה החדשה כאשר היא שודרגה:</item>
+    <item quantity="two">חברי קבוצה אלו לא יכלו להתווסף באופן אוטומטי אל הקבוצה החדשה כאשר היא שודרגה:</item>
+    <item quantity="many">חברי קבוצה אלו לא יכלו להתווסף באופן אוטומטי אל הקבוצה החדשה כאשר היא שודרגה:</item>
+    <item quantity="other">חברי קבוצה אלו לא יכלו להתווסף באופן אוטומטי אל הקבוצה החדשה כאשר היא שודרגה:</item>
+  </plurals>
+  <plurals name="GroupsV1MigrationSuggestionsDialog_add_members">
+    <item quantity="one">הוסף חבר קבוצה</item>
+    <item quantity="two">הוסף חברי קבוצה</item>
+    <item quantity="many">הוסף חברי קבוצה</item>
+    <item quantity="other">הוסף חברי קבוצה</item>
+  </plurals>
+  <plurals name="GroupsV1MigrationSuggestionsDialog_failed_to_add_members_try_again_later">
+    <item quantity="one">כישלון בהוספת חבר קבוצה. נסה שוב מאוחר יותר.</item>
+    <item quantity="two">כישלון בהוספת חברי קבוצה. נסה שוב מאוחר יותר.</item>
+    <item quantity="many">כישלון בהוספת חברי קבוצה. נסה שוב מאוחר יותר.</item>
+    <item quantity="other">כישלון בהוספת חברי קבוצה. נסה שוב מאוחר יותר.</item>
+  </plurals>
+  <plurals name="GroupsV1MigrationSuggestionsDialog_cannot_add_members">
+    <item quantity="one">לא ניתן להוסיף חבר קבוצה.</item>
+    <item quantity="two">לא ניתן להוסיף חברי קבוצה.</item>
+    <item quantity="many">לא ניתן להוסיף חברי קבוצה.</item>
+    <item quantity="other">לא ניתן להוסיף חברי קבוצה.</item>
+  </plurals>
   <!--LeaveGroupDialog-->
   <string name="LeaveGroupDialog_leave_group">לעזוב קבוצה?</string>
   <string name="LeaveGroupDialog_you_will_no_longer_be_able_to_send_or_receive_messages_in_this_group">לא תוכל יותר לשלוח או לקבל הודעות בקבוצה זו.</string>
@@ -566,6 +662,12 @@
     <item quantity="many">%d חברי קבוצה אינם תומכים בקבוצות חדשות, כך שקבוצה זו תהיה קבוצה מיושנת.</item>
     <item quantity="other">%d חברי קבוצה אינם תומכים בקבוצות חדשות, כך שקבוצה זו תהיה קבוצה מיושנת.</item>
   </plurals>
+  <plurals name="AddGroupDetailsFragment__d_members_do_not_support_new_groups_so_this_group_cannot_be_created">
+    <item quantity="one">חבר קבוצה %d אינו תומך בקבוצות חדשות, כך שקבוצה זו אינה יכולה להיווצר.</item>
+    <item quantity="two">%d חברי קבוצה אינם תומכים בקבוצות חדשות, כך שקבוצה זו אינה יכולה להיווצר.</item>
+    <item quantity="many">%d חברי קבוצה אינם תומכים בקבוצות חדשות, כך שקבוצה זו אינה יכולה להיווצר.</item>
+    <item quantity="other">%d חברי קבוצה אינם תומכים בקבוצות חדשות, כך שקבוצה זו אינה יכולה להיווצר.</item>
+  </plurals>
   <!--NonGv2MemberDialog-->
   <string name="NonGv2MemberDialog_single_users_are_non_gv2_capable">קבוצה מיושנת תיוצר כי \"%1$s\" משתמש בגרסה ישנה של Signal. אתה יכול ליצור קבוצה בסגנון חדש איתו לאחר שהוא יעדכן את Signal, או להסיר אותו לפני יצירת הקבוצה.</string>
   <plurals name="NonGv2MemberDialog_d_users_are_non_gv2_capable">
@@ -573,6 +675,13 @@
     <item quantity="two">קבוצה מיושנת תיוצר כי %1$d חברי קבוצה משתמשים בגרסה ישנה של Signal. אתה יכול ליצור קבוצה בסגנון חדש איתם לאחר שהם יעדכנו את Signal, או להסיר אותם לפני יצירת הקבוצה.</item>
     <item quantity="many">קבוצה מיושנת תיוצר כי %1$d חברי קבוצה משתמשים בגרסה ישנה של Signal. אתה יכול ליצור קבוצה בסגנון חדש איתם לאחר שהם יעדכנו את Signal, או להסיר אותם לפני יצירת הקבוצה.</item>
     <item quantity="other">קבוצה מיושנת תיוצר כי %1$d חברי קבוצה משתמשים בגרסה ישנה של Signal. אתה יכול ליצור קבוצה בסגנון חדש איתם לאחר שהם יעדכנו את Signal, או להסיר אותם לפני יצירת הקבוצה.</item>
+  </plurals>
+  <string name="NonGv2MemberDialog_single_users_are_non_gv2_capable_forced_migration">קבוצה זו אינה יכולה להיווצר כי \"%1$s\" משתמש/ת בגרסה ישנה של Signal. אתה חייב להסיר אותו/אותה לפני יצירת הקבוצה.</string>
+  <plurals name="NonGv2MemberDialog_d_users_are_non_gv2_capable_forced_migration">
+    <item quantity="one">קבוצה זו אינה יכולה להיווצר כי חבר קבוצה %1$d משתמש בגרסה ישנה של Signal. אתה חייב להסיר אותו לפני יצירת הקבוצה.</item>
+    <item quantity="two">קבוצה זו אינה יכולה להיווצר כי %1$d חברי קבוצה משתמשים בגרסה ישנה של Signal. אתה חייב להסיר אותם לפני יצירת הקבוצה.</item>
+    <item quantity="many">קבוצה זו אינה יכולה להיווצר כי %1$d חברי קבוצה משתמשים בגרסה ישנה של Signal. אתה חייב להסיר אותם לפני יצירת הקבוצה.</item>
+    <item quantity="other">קבוצה זו אינה יכולה להיווצר כי %1$d חברי קבוצה משתמשים בגרסה ישנה של Signal. אתה חייב להסיר אותם לפני יצירת הקבוצה.</item>
   </plurals>
   <!--ManageGroupActivity-->
   <string name="ManageGroupActivity_disappearing_messages">הודעות נעלמות</string>
@@ -619,6 +728,9 @@
   <string name="ManageGroupActivity_edit_name_and_picture">ערוך שם ותמונה</string>
   <string name="ManageGroupActivity_legacy_group">קבוצה מיושנת</string>
   <string name="ManageGroupActivity_legacy_group_learn_more">זוהי קבוצה מיושנת. מאפיינים כמו מנהלני קבוצה זמינים רק בקבוצות חדשות.</string>
+  <string name="ManageGroupActivity_legacy_group_upgrade">זוהי קבוצה מיושנת. כדי להשיג גישה אל מאפיינים חדשים כמו @אזכורים ומנהלנים,</string>
+  <string name="ManageGroupActivity_legacy_group_too_large">קבוצה מיושנת זו אינה יכולה להשתדרג אל קבוצה חדשה מאחר שהיא גדולה מדי. גודל הקבוצה המרבי הוא %1$d.</string>
+  <string name="ManageGroupActivity_upgrade_this_group">שדרג קבוצה זו.</string>
   <string name="ManageGroupActivity_this_is_an_insecure_mms_group">זוהי קבוצת MMS בלתי מאובטחת. כדי להתכתב באופן פרטי ולהשיג גישה אל מאפיינים כמו שמות קבוצה, הזמן את אנשי הקשר שלך אל Signal.</string>
   <string name="ManageGroupActivity_invite_now">הזמן עכשיו</string>
   <!--GroupMentionSettingDialog-->
@@ -876,7 +988,8 @@
   <string name="MessageRecord_you_updated_group">עדכנת את הקבוצה.</string>
   <string name="MessageRecord_the_group_was_updated">הקבוצה עודכנה.</string>
   <string name="MessageRecord_you_called_date">את/ה התקשרת · %1$s</string>
-  <!-- Removed by excludeNonTranslatables <string name="MessageRecord_missed_call_date">שיחה שלא נענתה · %1$s</string> -->
+  <string name="MessageRecord_missed_audio_call_date">שיחת שמע שלא נענתה · %1$s</string>
+  <string name="MessageRecord_missed_video_call_date">שיחת וידאו שלא נענתה · %1$s</string>
   <string name="MessageRecord_s_updated_group">%s עדכן את הקבוצה.</string>
   <string name="MessageRecord_s_called_you_date">%1$s התקשר/ה אליך · %2$s</string>
   <string name="MessageRecord_called_s">התקשרת אל %s</string>
@@ -886,6 +999,13 @@
   <string name="MessageRecord_you_set_disappearing_message_time_to_s">הִגְדַּרְתָּ את קוצב הזמן של ההודעות הנעלמות אל %1$s.</string>
   <string name="MessageRecord_s_set_disappearing_message_time_to_s">%1$sהגדיר את קוצב הזמן של ההודעות הנעלמות אל %2$s. </string>
   <string name="MessageRecord_disappearing_message_time_set_to_s">קוצב הזמן של ההודעות הנעלמות הוגדר אל %1$s.</string>
+  <string name="MessageRecord_this_group_was_updated_to_a_new_group">קבוצה זו עודכנה אל קבוצה חדשה.</string>
+  <plurals name="MessageRecord_members_couldnt_be_added_to_the_new_group_and_have_been_invited">
+    <item quantity="one">חבר קבוצה %1$s לא היה יכול להתווסף אל הקבוצה החדשה והם הוזמנו להצטרף.</item>
+    <item quantity="two">%1$s חברי קבוצה לא יכלו להתווסף אל הקבוצה החדשה והם הוזמנו להצטרף.</item>
+    <item quantity="many">%1$s חברי קבוצה לא יכלו להתווסף אל הקבוצה החדשה והם הוזמנו להצטרף.</item>
+    <item quantity="other">%1$s חברי קבוצה לא יכלו להתווסף אל הקבוצה החדשה והם הוזמנו להצטרף.</item>
+  </plurals>
   <!--Profile change updates-->
   <string name="MessageRecord_changed_their_profile_name_to">%1$s שינה/שינתה את שם הפרופיל שלו/שלה אל %2$s.</string>
   <string name="MessageRecord_changed_their_profile_name_from_to">%1$s שינה/שינתה את שם הפרופיל שלו/שלה מן %2$s אל %3$s.</string>
@@ -906,7 +1026,7 @@
   <string name="MessageRecord_you_left_the_group">עזבת את הקבוצה.</string>
   <string name="MessageRecord_s_left_the_group">%1$s עזב את הקבוצה.</string>
   <string name="MessageRecord_you_are_no_longer_in_the_group">אינך בקבוצה יותר.</string>
-  <string name="MessageRecord_s_is_no_longer_in_the_group">%1$s לא נמצא יותר בקבוצה.</string>
+  <string name="MessageRecord_s_is_no_longer_in_the_group">%1$s לא בקבוצה יותר.</string>
   <!--GV2 role change-->
   <string name="MessageRecord_you_made_s_an_admin">עשית את %1$s מנהלן.</string>
   <string name="MessageRecord_s_made_s_an_admin">%1$s עשה את %2$s מנהלן.</string>
@@ -1022,6 +1142,20 @@
   <string name="MessageRecord_you_marked_your_safety_number_with_s_verified_from_another_device">סימנת את מספר הביטחון שלך עם %s כמוודא ממכשיר אחר</string>
   <string name="MessageRecord_you_marked_your_safety_number_with_s_unverified">סימנת את מספר הביטחון שלך עם %s כבלתי מוודא</string>
   <string name="MessageRecord_you_marked_your_safety_number_with_s_unverified_from_another_device">סימנת את מספר הביטחון שלך עם %s כבלתי מוודא ממכשיר אחר</string>
+  <!--Group Calling update messages-->
+  <string name="MessageRecord_s_started_a_group_call_s">%1$s התחיל/ה שיחה קבוצתית · %2$s</string>
+  <string name="MessageRecord_s_is_in_the_group_call_s">%1$s בשיחה הקבוצתית · %2$s</string>
+  <string name="MessageRecord_you_are_in_the_group_call_s">את/ה בשיחה הקבוצתית · %2$s</string>
+  <string name="MessageRecord_s_and_s_are_in_the_group_call_s">%1$s וגם %2$s בשיחה הקבוצתית · %3$s</string>
+  <string name="MessageRecord_s_s_and_s_are_in_the_group_call_s">%1$s, %2$s וגם %3$s בשיחה הקבוצתית · %4$s</string>
+  <string name="MessageRecord_group_call_s">שיחה קבוצתית · %1$s</string>
+  <string name="MessageRecord_you">את/ה</string>
+  <plurals name="MessageRecord_s_s_and_d_others_are_in_the_group_call_s">
+    <item quantity="one">%1$s, %2$s, ועוד %3$d אחר בשיחה הקבוצתית · %4$s</item>
+    <item quantity="two">%1$s, %2$s ועוד %3$d אחרים בשיחה הקבוצתית · %4$s</item>
+    <item quantity="many">%1$s, %2$s ועוד %3$d אחרים בשיחה הקבוצתית · %4$s</item>
+    <item quantity="other">%1$s, %2$s ועוד %3$d אחרים בשיחה הקבוצתית · %4$s</item>
+  </plurals>
   <!--MessageRequestBottomView-->
   <string name="MessageRequestBottomView_accept">קבל</string>
   <string name="MessageRequestBottomView_continue">המשך</string>
@@ -1031,6 +1165,8 @@
   <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_they_wont_know_youve_seen_their_messages_until_you_accept">לאפשר אל %1$s לשלוח אליך הודעות? הצד השני לא יידע שראית את ההודעות שלו עד שלא תסכים.</string>
   <string name="MessageRequestBottomView_do_you_want_to_let_s_message_you_wont_receive_any_messages_until_you_unblock_them">לאפשר אל %1$s לשלוח אליך הודעות ולשתף את השם והתמונה שלך איתו/איתה? לא תקבל הודעות כלשהן עד שלא תבטל חסימה שלו/שלה.</string>
   <string name="MessageRequestBottomView_continue_your_conversation_with_this_group_and_share_your_name_and_photo">להמשיך את השיחה שלך עם קבוצה זו ולשתף את השם והתמונה שלך עם חברי הקבוצה?</string>
+  <string name="MessageRequestBottomView_upgrade_this_group_to_activate_new_features">שדרג קבוצה זו כדי להפעיל מאפיינים חדשים כמו @אזכורים ומנהלנים. חברי קבוצה שלא שיתפו את השם או התמונה שלהם בקבוצה זו יוזמנו להצטרף.</string>
+  <string name="MessageRequestBottomView_this_legacy_group_can_no_longer_be_used">קבוצה מיושנת זו אינה יכולה עוד להיות בשימוש מאחר שהיא גדולה מדי. גודל הקבוצה המרבי הוא %1$d.</string>
   <string name="MessageRequestBottomView_continue_your_conversation_with_s_and_share_your_name_and_photo">להמשיך את השיחה שלך עם %1$s ולשתף את השם והתמונה שלך איתו/איתה?</string>
   <string name="MessageRequestBottomView_do_you_want_to_join_this_group_they_wont_know_youve_seen_their_messages_until_you_accept">להצטרף אל קבוצה זו ולשתף את השם והתמונה שלך עם חברי הקבוצה? חברי הקבוצה לא יידעו שראית את ההודעה שלהם עד שלא תאשר.</string>
   <string name="MessageRequestBottomView_join_this_group_they_wont_know_youve_seen_their_messages_until_you_accept">להצטרף אל קבוצה זו? הקבוצה לא תידע שראית את ההודעות שלה עד שלא תסכים.</string>
@@ -1177,9 +1313,23 @@
   <string name="WebRtcCallView__signal_voice_call">שיחה קולית של Signal…</string>
   <string name="WebRtcCallView__signal_video_call">שיחת וידאו של Signal…</string>
   <string name="WebRtcCallView__start_call">התחל שיחה</string>
-  <string name="WebRtcCallView__group_call">שיחה קבוצתית</string>
+  <string name="WebRtcCallView__join_call">הצטרף לשיחה</string>
+  <string name="WebRtcCallView__s_group_call">\"%1$s\" שיחה קבוצתית</string>
   <string name="WebRtcCallView__view_participants_list">הצג משתתפים</string>
   <string name="WebRtcCallView__your_video_is_off">הוידאו שלך כבוי</string>
+  <string name="WebRtcCallView__connecting">מתחבר…</string>
+  <string name="WebRtcCallView__reconnecting">מתחבר מחדש…</string>
+  <string name="WebRtcCallView__joining">מצטרף…</string>
+  <string name="WebRtcCallView__disconnected">מנותק</string>
+  <string name="WebRtcCallView__no_one_else_is_here">אף אחד אחר לא כאן</string>
+  <string name="WebRtcCallView__s_is_in_this_call">%1$s בשיחה זו</string>
+  <string name="WebRtcCallView__s_and_s_are_in_this_call">%1$s וגם %2$s בשיחה זו</string>
+  <plurals name="WebRtcCallView__s_s_and_d_others_are_in_this_call">
+    <item quantity="one">%1$s, %2$s, ועוד %3$d אחר בשיחה זו</item>
+    <item quantity="two">%1$s, %2$s, ועוד %3$d אחרים בשיחה זו </item>
+    <item quantity="many">%1$s, %2$s, ועוד %3$d אחרים בשיחה זו</item>
+    <item quantity="other">%1$s, %2$s, ועוד %3$d אחרים בשיחה זו</item>
+  </plurals>
   <!--CallParticipantsListDialog-->
   <plurals name="CallParticipantsListDialog_in_this_call_d_people">
     <item quantity="one">בשיחה זו  · איש %1$d</item>
@@ -1246,7 +1396,7 @@
   <!--ScribbleActivity-->
   <string name="ScribbleActivity_save_failure">נכשל בשמירת שינויי תמונה</string>
   <!--Search-->
-  <string name="SearchFragment_no_results">לא נמצאו תוצאות עבור \'%s\'</string>
+  <string name="SearchFragment_no_results">תוצאות לא נמצאו עבור \'%s\'</string>
   <string name="SearchFragment_header_conversations">שיחות</string>
   <string name="SearchFragment_header_contacts">אנשי קשר</string>
   <string name="SearchFragment_header_messages">הודעות</string>
@@ -1327,7 +1477,8 @@
   <string name="ThreadRecord_draft">טיוטה:</string>
   <string name="ThreadRecord_called">התקשרת</string>
   <string name="ThreadRecord_called_you">התקשר אליך</string>
-  <!-- Removed by excludeNonTranslatables <string name="ThreadRecord_missed_call">שיחה שלא נענתה</string> -->
+  <string name="ThreadRecord_missed_audio_call">שיחת שמע שלא נענתה</string>
+  <string name="ThreadRecord_missed_video_call">שיחת וידאו שלא נענתה</string>
   <string name="ThreadRecord_media_message">הודעת מדיה</string>
   <string name="ThreadRecord_sticker">מדבקה</string>
   <string name="ThreadRecord_view_once_photo">תמונה לצפייה חד־פעמית</string>
@@ -1355,13 +1506,6 @@
   <!--UpdateApkReadyListener-->
   <string name="UpdateApkReadyListener_Signal_update">עדכון Signal</string>
   <string name="UpdateApkReadyListener_a_new_version_of_signal_is_available_tap_to_update">גרסה חדשה של Signal זמינה, הקש כדי לעדכן</string>
-  <!--UnknownSenderView-->
-  <string name="UnknownSenderView_block_s">לחסום את %s?</string>
-  <string name="UnknownSenderView_blocked_contacts_will_no_longer_be_able_to_send_you_messages_or_call_you">אנשי קשר חסומים לא יוכלו יותר לשלוח לך הודעות או להתקשר אליך.</string>
-  <string name="UnknownSenderView_block">חסום</string>
-  <string name="UnknownSenderView_share_profile_with_s">לשתף פרופיל עם %s?</string>
-  <string name="UnknownSenderView_the_easiest_way_to_share_your_profile_information_is_to_add_the_sender_to_your_contacts">הדרך הקלה ביותר לשתף את מידע הפרופיל שלך היא להוסיף את השולח אל אנשי הקשר שלך. אם אינך רוצה לעשות זאת, אתה עדין יכול לשתף את מידע הפרופיל שלך בדרך זו.</string>
-  <string name="UnknownSenderView_share_profile">שתף פרופיל</string>
   <!--UntrustedSendDialog-->
   <string name="UntrustedSendDialog_send_message">לשלוח הודעה?</string>
   <string name="UntrustedSendDialog_send">שלח</string>
@@ -1422,6 +1566,7 @@
   <string name="MediaPreviewActivity_media_delete_confirmation_message">זה ימחק לצמיתות הודעה זו.</string>
   <string name="MediaPreviewActivity_s_to_s">%1$s אל %2$s</string>
   <string name="MediaPreviewActivity_media_no_longer_available">מדיה אינה זמינה יותר.</string>
+  <string name="MediaPreviewActivity_cant_find_an_app_able_to_share_this_media">לא ניתן למצוא יישום שמסוגל לשתף מדיה זו.</string>
   <!--MessageNotifier-->
   <string name="MessageNotifier_d_new_messages_in_d_conversations">%1$d הודעות חדשות ב־%2$d שיחות</string>
   <string name="MessageNotifier_most_recent_from_s">הודעה אחרונה מאת: %1$s</string>
@@ -1620,6 +1765,9 @@
   <string name="conversation_item_received__contact_photo_description">תמונת איש קשר</string>
   <!--ConversationUpdateItem-->
   <string name="ConversationUpdateItem_loading">טוען</string>
+  <string name="ConversationUpdateItem_learn_more">למד עוד</string>
+  <string name="ConversationUpdateItem_join_call">הצטרף לשיחה</string>
+  <string name="ConversationUpdateItem_return_to_call">חזור לשיחה</string>
   <!--audio_view-->
   <string name="audio_view__play_pause_accessibility_description">נגן … השהה</string>
   <string name="audio_view__download_accessibility_description">הורד</string>
@@ -1714,7 +1862,7 @@
   <!--giphy_activity-->
   <string name="giphy_activity_toolbar__search_gifs_and_stickers">חפש קבצי GIF ומדבקות</string>
   <!--giphy_fragment-->
-  <string name="giphy_fragment__nothing_found">לא נמצא דבר</string>
+  <string name="giphy_fragment__nothing_found">שום דבר לא נמצא</string>
   <!--log_submit_activity-->
   <string name="log_submit_activity__log_fetch_failed">לא היה ניתן לקרוא את היומן במכשיר שלך. אתה עדין יכול להשתמש ב־ADB כדי לקבל יומן תקלים במקום.</string>
   <string name="log_submit_activity__thanks">תודה על עזרתך!</string>
@@ -1758,8 +1906,6 @@
     <item quantity="other">%1$s הצטרף אל הקבוצה.</item>
   </plurals>
   <string name="GroupUtil_group_name_is_now">שם הקבוצה עכשיו הוא \'%1$s\'.</string>
-  <!--profile_group_share_view-->
-  <string name="profile_group_share_view__make_your_profile_name_and_photo_visible_to_this_group">להפוך את השם והתמונה של הפרופיל שלך לנראים בפני קבוצה זו?</string>
   <!--prompt_passphrase_activity-->
   <string name="prompt_passphrase_activity__unlock">בטל נעילה</string>
   <!--prompt_mms_activity-->
@@ -1987,7 +2133,7 @@
   <string name="preferences__typing_indicators">מחווני הקלדה</string>
   <string name="preferences__if_typing_indicators_are_disabled_you_wont_be_able_to_see_typing_indicators">אם מחווני הקלדה מושבתים, לא תוכל לראות מחווני הקלדה מאחרים.</string>
   <string name="preferences__request_keyboard_to_disable_personalized_learning">בקש מהמקלדת להשבית למידה מותאמת אישית</string>
-  <string name="preferences_app_protection__blocked_contacts">אנשי קשר חסומים</string>
+  <string name="preferences_app_protection__blocked_users">משתמשים חסומים</string>
   <string name="preferences_chats__when_using_mobile_data">בעת שימוש בנתונים ניידים</string>
   <string name="preferences_chats__when_using_wifi">בעת שימוש ב־Wi-Fi</string>
   <string name="preferences_chats__when_roaming">בעת נדידה</string>
@@ -2045,11 +2191,15 @@
   <string name="preferences_setup_a_username">הגדר שם משתמש</string>
   <string name="configurable_single_select__customize_option">התאם אישית אפשרות</string>
   <!--Internal only preferences-->
+  <string name="preferences__internal_conversations_and_shortcuts">שיחות וקיצורי דרך</string>
+  <string name="preferences__internal_delete_all_dynamic_shortcuts">מחק את כל קיצורי הדרך הדינמיים</string>
+  <string name="preferences__internal_click_to_delete_all_dynamic_shortcuts">לחץ כדי למחוק את כל קיצורי הדרך הדינמיים</string>
   <!--****************************************-->
   <!--menus-->
   <!--****************************************-->
   <!--contact_selection_list-->
   <string name="contact_selection_list__unknown_contact">הודעה חדשה אל…</string>
+  <string name="contact_selection_list__unknown_contact_block">חסום משתמש</string>
   <string name="contact_selection_list__unknown_contact_add_to_group">הוסף לקבוצה</string>
   <!--conversation_callable_insecure-->
   <string name="conversation_callable_insecure__menu_call">התקשר</string>
@@ -2149,6 +2299,7 @@
   <!--media_preview-->
   <string name="media_preview__save_title">שמור</string>
   <string name="media_preview__forward_title">העבר הלאה</string>
+  <string name="media_preview__share_title">שתף</string>
   <string name="media_preview__all_media_title">כל המדיה</string>
   <!--media_preview_activity-->
   <string name="media_preview_activity__media_content_description">קדם־תצוגה של מדיה</string>
@@ -2474,5 +2625,39 @@
   <string name="VoiceNoteMediaDescriptionCompatFactory__s_to_s">%1$s אל %2$s</string>
   <!--StorageUtil-->
   <string name="StorageUtil__s_s">%1$s/%2$s</string>
+  <string name="BlockedUsersActivity__s_has_been_blocked">\"%1$s\" נחסם.</string>
+  <string name="BlockedUsersActivity__failed_to_block_s">כישלון בחסימה של \"%1$s\"</string>
+  <string name="BlockedUsersActivity__s_has_been_unblocked">חסימה של \"%1$s\" בוטלה.</string>
+  <!--ReviewCardDialogFragment-->
+  <string name="ReviewCardDialogFragment__review_members">סקור חברי קבוצה</string>
+  <string name="ReviewCardDialogFragment__review_request">סקור בקשה</string>
+  <string name="ReviewCardDialogFragment__d_group_members_have_the_same_name">אל %1$d חברי קבוצה יש אותו שם, סקור את חברי הקבוצה למטה ובחר לנקוט בפעולה.</string>
+  <string name="ReviewCardDialogFragment__if_youre_not_sure">אם אינך בטוח ממי הבקשה, סקור את חברי הקבוצה למטה ונקוט בפעולה.</string>
+  <string name="ReviewCardDialogFragment__no_other_groups_in_common">אין קבוצות אחרות במשותף.</string>
+  <string name="ReviewCardDialogFragment__no_groups_in_common">אין קבוצות במשותף.</string>
+  <plurals name="ReviewCardDialogFragment__d_other_groups_in_common">
+    <item quantity="one">קבוצה %d במשותף</item>
+    <item quantity="two">%d קבוצות במשותף</item>
+    <item quantity="many">%d קבוצות במשותף</item>
+    <item quantity="other">%d קבוצות במשותף</item>
+  </plurals>
+  <plurals name="ReviewCardDialogFragment__d_groups_in_common">
+    <item quantity="one">קבוצה %d במשותף</item>
+    <item quantity="two">%d קבוצות במשותף</item>
+    <item quantity="many">%d קבוצות במשותף</item>
+    <item quantity="other">%d קבוצות במשותף</item>
+  </plurals>
+  <string name="ReviewCardDialogFragment__remove_s_from_group">להסיר את %1$s מהקבוצה?</string>
+  <string name="ReviewCardDialogFragment__remove">הסר</string>
+  <string name="ReviewCardDialogFragment__failed_to_remove_group_member">כישלון בהסרת חבר קבוצה.</string>
+  <!--ReviewCard-->
+  <string name="ReviewCard__member">חבר קבוצה</string>
+  <string name="ReviewCard__request">בקשה</string>
+  <string name="ReviewCard__your_contact">איש הקשר שלך</string>
+  <string name="ReviewCard__remove_from_group">הסר מהקבוצה</string>
+  <string name="ReviewCard__update_contact">עדכן איש קשר</string>
+  <string name="ReviewCard__block">חסום</string>
+  <string name="ReviewCard__delete">מחק</string>
+  <string name="ReviewCard__recently_changed">שינה/שינתה לאחרונה את שם הפרופיל מן %1$s אל %2$s</string>
   <!--EOF-->
 </resources>

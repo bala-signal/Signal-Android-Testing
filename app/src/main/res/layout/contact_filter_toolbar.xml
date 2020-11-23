@@ -1,45 +1,80 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="horizontal">
 
+        <LinearLayout android:id="@+id/toggle_container"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="horizontal">
 
-    <LinearLayout android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="horizontal">
+            <EditText android:id="@+id/search_view"
+                      android:layout_height="wrap_content"
+                      android:layout_width="0px"
+                      android:layout_weight="1"
+                      android:hint="@string/contact_selection_activity__enter_name_or_number"
+                      android:inputType="textPersonName"
+                      android:textAppearance="@style/TextSecure.TitleTextStyle"
+                      android:background="@android:color/transparent"
+                      android:layout_gravity="center_vertical"
+                      android:gravity="center_vertical"
+                      android:textCursorDrawable="@null"
+                      android:fontFamily="sans-serif"/>
 
+            <org.thoughtcrime.securesms.components.AnimatingToggle
+                android:id="@+id/button_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:gravity="center">
 
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/search_dialpad"
+                    android:contentDescription="@string/contact_filter_toolbar__show_dial_pad_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:tint="@color/signal_icon_tint_primary"
+                    android:background="?actionBarItemBackground"
+                    app:srcCompat="@drawable/ic_number_pad_conversation_filter_24" />
 
-        <LinearLayout android:id="@+id/toggle_container" android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/search_keyboard"
+                    android:contentDescription="@string/contact_filter_toolbar__show_keyboard_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:visibility="gone"
+                    android:focusable="true"
+                    android:tint="@color/signal_icon_tint_primary"
+                    android:background="?actionBarItemBackground"
+                    app:srcCompat="@drawable/ic_keyboard_24" />
 
-
-
-            <EditText android:background="@android:color/transparent" android:contentDescription="contact_selection_activity__enter_name_or_number" android:fontFamily="sans-serif" android:gravity="center_vertical" android:hint="@string/contact_selection_activity__enter_name_or_number" android:id="@+id/search_view" android:inputType="textPersonName" android:layout_gravity="center_vertical" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="0px" android:textAppearance="@style/TextSecure.TitleTextStyle" android:textCursorDrawable="@null" />
-
-
-
-            <org.thoughtcrime.securesms.components.AnimatingToggle android:gravity="center" android:id="@+id/button_toggle" android:layout_gravity="center" android:layout_height="wrap_content" android:layout_width="wrap_content" android:paddingEnd="10dp" android:paddingStart="10dp">
-
-
-
-                <ImageView app:srcCompat="@drawable/ic_number_pad_conversation_filter_24" android:background="?actionBarItemBackground" android:clickable="true" android:contentDescription="contact_filter_toolbar__show_dial_pad_description" android:focusable="true" android:gravity="center_vertical" android:id="@+id/search_dialpad" android:layout_gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:tint="?contact_filter_toolbar_icon_tint" />
-
-
-
-                <ImageView app:srcCompat="?conversation_keyboard_toggle" android:background="?actionBarItemBackground" android:clickable="true" android:contentDescription="contact_filter_toolbar__show_keyboard_description" android:focusable="true" android:gravity="center_vertical" android:id="@+id/search_keyboard" android:layout_gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:tint="?contact_filter_toolbar_icon_tint" android:visibility="gone" />
-
-
-
-                <ImageView app:srcCompat="@drawable/ic_x_conversation_filter_24" android:background="?actionBarItemBackground" android:clickable="true" android:contentDescription="contact_filter_toolbar__clear_entered_text_description" android:gravity="center_vertical" android:id="@+id/search_clear" android:layout_gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:visibility="gone" />
-
-
+                <ImageView android:id="@+id/search_clear"
+                           android:contentDescription="@string/contact_filter_toolbar__clear_entered_text_description"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center_vertical"
+                           android:gravity="center_vertical"
+                           android:clickable="true"
+                           android:visibility="gone"
+                           android:background="?actionBarItemBackground"
+                           app:srcCompat="@drawable/ic_x_conversation_filter_24" />
 
             </org.thoughtcrime.securesms.components.AnimatingToggle>
 
-
-
         </LinearLayout>
 
-
-
     </LinearLayout>
-
-
 
 </merge>
