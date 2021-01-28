@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.annimon.stream.Stream;
 
+import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
 import org.thoughtcrime.securesms.database.RecipientDatabase;
 import org.thoughtcrime.securesms.database.RecipientDatabase.RecipientSettings;
@@ -17,7 +18,6 @@ import org.thoughtcrime.securesms.jobmanager.Data;
 import org.thoughtcrime.securesms.jobmanager.Job;
 import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
-import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.storage.GroupV2ExistenceChecker;
@@ -29,7 +29,6 @@ import org.thoughtcrime.securesms.storage.StorageSyncHelper.MergeResult;
 import org.thoughtcrime.securesms.storage.StorageSyncHelper.WriteOperationResult;
 import org.thoughtcrime.securesms.storage.StorageSyncModels;
 import org.thoughtcrime.securesms.storage.StorageSyncValidations;
-import org.thoughtcrime.securesms.tracing.Trace;
 import org.thoughtcrime.securesms.transport.RetryLaterException;
 import org.thoughtcrime.securesms.util.GroupUtil;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
@@ -64,7 +63,6 @@ import java.util.concurrent.TimeUnit;
  * This should be performed whenever a change is made locally, or whenever we want to retrieve
  * changes that have been made remotely.
  */
-@Trace
 public class StorageSyncJob extends BaseJob {
 
   public static final String KEY       = "StorageSyncJob";
@@ -75,7 +73,7 @@ public class StorageSyncJob extends BaseJob {
   public StorageSyncJob() {
     this(new Job.Parameters.Builder().addConstraint(NetworkConstraint.KEY)
                                      .setQueue(QUEUE_KEY)
-                                     .setMaxInstances(2)
+                                     .setMaxInstancesForFactory(2)
                                      .setLifespan(TimeUnit.DAYS.toMillis(1))
                                      .build());
   }

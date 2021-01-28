@@ -7,24 +7,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.tabs.TabLayout;
-
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import org.thoughtcrime.securesms.logging.Log;
-import android.view.View;
-import org.signal.toast.Toast;
-import android.widget.LinearLayout;
+import com.google.android.material.tabs.TabLayout;
 
-
+import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.PassphraseRequiredActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.providers.BlobProvider;
@@ -32,7 +29,6 @@ import org.thoughtcrime.securesms.util.DynamicDarkToolbarTheme;
 import org.thoughtcrime.securesms.util.DynamicLanguage;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.MediaUtil;
-import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.WindowUtil;
 
 import java.io.IOException;
@@ -77,7 +73,7 @@ public class GiphyActivity extends PassphraseRequiredActivity
 
   private void initializeToolbar() {
 
-    GiphyActivityToolbar toolbar = ViewUtil.findById(this, R.id.giphy_toolbar);
+    GiphyActivityToolbar toolbar = findViewById(R.id.giphy_toolbar);
     toolbar.setOnFilterChangedListener(this);
     toolbar.setOnLayoutChangedListener(this);
     toolbar.setPersistence(GiphyActivityToolbarTextSecurePreferencesPersistence.fromContext(this));
@@ -93,8 +89,8 @@ public class GiphyActivity extends PassphraseRequiredActivity
   }
 
   private void initializeResources() {
-    ViewPager viewPager = ViewUtil.findById(this, R.id.giphy_pager);
-    TabLayout tabLayout = ViewUtil.findById(this, R.id.tab_layout);
+    ViewPager viewPager = findViewById(R.id.giphy_pager);
+    TabLayout tabLayout = findViewById(R.id.tab_layout);
 
     this.gifFragment     = new GiphyGifFragment();
     this.stickerFragment = new GiphyStickerFragment();

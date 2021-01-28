@@ -1,24 +1,21 @@
 package org.thoughtcrime.securesms.crypto.storage;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 
+import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
-import org.thoughtcrime.securesms.database.RecipientDatabase;
 import org.thoughtcrime.securesms.database.SessionDatabase;
-import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.whispersystems.libsignal.SignalProtocolAddress;
 import org.whispersystems.libsignal.protocol.CiphertextMessage;
 import org.whispersystems.libsignal.state.SessionRecord;
 import org.whispersystems.libsignal.state.SessionStore;
-import org.whispersystems.signalservice.api.util.UuidUtil;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class TextSecureSessionStore implements SessionStore {
 
@@ -102,6 +99,16 @@ public class TextSecureSessionStore implements SessionStore {
       } else {
         Log.w(TAG, "Tried to get sub device sessions for " + name + ", but none existed!");
         return Collections.emptyList();
+      }
+    }
+  }
+
+  public void archiveSession(@NonNull RecipientId recipientId, int deviceId) {
+    synchronized (FILE_LOCK) {
+      SessionRecord session = DatabaseFactory.getSessionDatabase(context).load(recipientId, deviceId);
+      if (session != null) {
+        session.archiveCurrentState();
+        DatabaseFactory.getSessionDatabase(context).store(recipientId, deviceId, session);
       }
     }
   }

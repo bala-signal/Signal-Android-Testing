@@ -13,7 +13,6 @@ import org.whispersystems.libsignal.util.guava.Preconditions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +24,16 @@ public final class SqlUtil {
   public static boolean tableExists(@NonNull SQLiteDatabase db, @NonNull String table) {
     try (Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type=? AND name=?", new String[] { "table", table })) {
       return cursor != null && cursor.moveToNext();
+    }
+  }
+
+  public static boolean isEmpty(@NonNull SQLiteDatabase db, @NonNull String table) {
+    try (Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + table, null)) {
+      if (cursor.moveToFirst()) {
+        return cursor.getInt(0) == 0;
+      } else {
+        return true;
+      }
     }
   }
 

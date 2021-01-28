@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,13 +19,12 @@ import androidx.navigation.Navigation;
 
 import com.dd.CircularProgressButton;
 
-import org.signal.toast.Toast;
+import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.jobs.StorageAccountRestoreJob;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.lock.v2.PinKeyboardType;
-import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.pin.PinRestoreRepository.TokenData;
 import org.thoughtcrime.securesms.registration.service.CodeVerificationRequest;
 import org.thoughtcrime.securesms.registration.service.RegistrationService;
@@ -305,6 +304,7 @@ public final class RegistrationLockFragment extends BaseRegistrationFragment {
 
     long startTime = System.currentTimeMillis();
     SimpleTask.run(() -> {
+      SignalStore.onboarding().clearAll();
       return ApplicationDependencies.getJobManager().runSynchronously(new StorageAccountRestoreJob(), StorageAccountRestoreJob.LIFESPAN);
     }, result -> {
       long elapsedTime = System.currentTimeMillis() - startTime;

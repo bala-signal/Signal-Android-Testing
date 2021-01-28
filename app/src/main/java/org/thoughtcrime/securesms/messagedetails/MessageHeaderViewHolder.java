@@ -12,17 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.signal.core.util.concurrent.SignalExecutors;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.conversation.ConversationItem;
 import org.thoughtcrime.securesms.conversation.ConversationMessage;
-import org.thoughtcrime.securesms.conversation.ConversationMessage.ConversationMessageFactory;
 import org.thoughtcrime.securesms.database.model.MessageRecord;
 import org.thoughtcrime.securesms.mms.GlideRequests;
 import org.thoughtcrime.securesms.sms.MessageSender;
 import org.thoughtcrime.securesms.util.DateUtils;
 import org.thoughtcrime.securesms.util.ExpirationUtil;
 import org.thoughtcrime.securesms.util.Util;
-import org.thoughtcrime.securesms.util.concurrent.SignalExecutors;
 import org.whispersystems.libsignal.util.guava.Optional;
 
 import java.sql.Date;
@@ -89,7 +88,7 @@ final class MessageHeaderViewHolder extends RecyclerView.ViewHolder {
         conversationItem = (ConversationItem) receivedStub.inflate();
       }
     }
-    conversationItem.bind(lifecycleOwner, conversationMessage, Optional.absent(), Optional.absent(), glideRequests, Locale.getDefault(), new HashSet<>(), conversationMessage.getMessageRecord().getRecipient(), null, false);
+    conversationItem.bind(lifecycleOwner, conversationMessage, Optional.absent(), Optional.absent(), glideRequests, Locale.getDefault(), new HashSet<>(), conversationMessage.getMessageRecord().getRecipient(), null, false, false);
   }
 
   private void bindErrorState(MessageRecord messageRecord) {

@@ -9,13 +9,14 @@ import androidx.annotation.WorkerThread;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 
+import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.jobmanager.persistence.ConstraintSpec;
 import org.thoughtcrime.securesms.jobmanager.persistence.DependencySpec;
 import org.thoughtcrime.securesms.jobmanager.persistence.FullSpec;
 import org.thoughtcrime.securesms.jobmanager.persistence.JobSpec;
 import org.thoughtcrime.securesms.jobmanager.persistence.JobStorage;
-import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.util.Debouncer;
+import org.thoughtcrime.securesms.util.FeatureFlags;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Manages the queue of jobs. This is the only class that should write to {@link JobStorage} to
@@ -78,11 +80,6 @@ class JobController {
   }
 
   @WorkerThread
-  synchronized void flush() {
-    jobStorage.flush();
-  }
-
-  @WorkerThread
   synchronized void submitNewJobChain(@NonNull List<List<Job>> chain) {
     chain = Stream.of(chain).filterNot(List::isEmpty).toList();
 
@@ -94,7 +91,7 @@ class JobController {
     if (chainExceedsMaximumInstances(chain)) {
       Job solo = chain.get(0).get(0);
       jobTracker.onStateChange(solo, JobTracker.JobState.IGNORED);
-      Log.w(TAG, JobLogger.format(solo, "Already at the max instance count of " + solo.getParameters().getMaxInstances() + ". Skipping."));
+      Log.w(TAG, JobLogger.format(solo, "Already at the max instance count. Factory limit: " + solo.getParameters().getMaxInstancesForFactory() + ", Queue limit: " + solo.getParameters().getMaxInstancesForQueue() + ". Skipping."));
       return;
     }
 
@@ -110,7 +107,7 @@ class JobController {
 
     if (chainExceedsMaximumInstances(chain)) {
       jobTracker.onStateChange(job, JobTracker.JobState.IGNORED);
-      Log.w(TAG, JobLogger.format(job, "Already at the max instance count of " + job.getParameters().getMaxInstances() + ". Skipping."));
+      Log.w(TAG, JobLogger.format(job, "Already at the max instance count. Factory limit: " + job.getParameters().getMaxInstancesForFactory() + ", Queue limit: " + job.getParameters().getMaxInstancesForQueue() + ". Skipping."));
       return;
     }
 
@@ -166,7 +163,7 @@ class JobController {
   @WorkerThread
   synchronized void onRetry(@NonNull Job job) {
     int    nextRunAttempt     = job.getRunAttempt() + 1;
-    long   nextRunAttemptTime = calculateNextRunAttemptTime(System.currentTimeMillis(), nextRunAttempt, job.getParameters().getMaxBackoff());
+    long   nextRunAttemptTime = calculateNextRunAttemptTime(System.currentTimeMillis(), nextRunAttempt, TimeUnit.SECONDS.toMillis(FeatureFlags.getDefaultMaxBackoffSeconds()));
     String serializedData     = dataSerializer.serialize(job.serialize());
 
     jobStorage.updateJobAfterRetry(job.getId(), false, nextRunAttempt, nextRunAttemptTime, serializedData);
@@ -304,12 +301,22 @@ class JobController {
     if (chain.size() == 1 && chain.get(0).size() == 1) {
       Job solo = chain.get(0).get(0);
 
-      if (solo.getParameters().getMaxInstances() != Job.Parameters.UNLIMITED &&
-          jobStorage.getJobInstanceCount(solo.getFactoryKey()) >= solo.getParameters().getMaxInstances())
-      {
+      boolean exceedsFactory = solo.getParameters().getMaxInstancesForFactory() != Job.Parameters.UNLIMITED &&
+                               jobStorage.getJobCountForFactory(solo.getFactoryKey()) >= solo.getParameters().getMaxInstancesForFactory();
+
+      if (exceedsFactory) {
+        return true;
+      }
+
+      boolean exceedsQueue   = solo.getParameters().getQueue() != null                                    &&
+                               solo.getParameters().getMaxInstancesForQueue() != Job.Parameters.UNLIMITED &&
+                               jobStorage.getJobCountForQueue(solo.getParameters().getQueue()) >= solo.getParameters().getMaxInstancesForQueue();
+
+      if (exceedsQueue) {
         return true;
       }
     }
+
     return false;
   }
 
@@ -350,7 +357,6 @@ class JobController {
                                   job.getParameters().getMaxAttempts(),
                                   job.getParameters().getMaxBackoff(),
                                   job.getParameters().getLifespan(),
-                                  job.getParameters().getMaxInstances(),
                                   dataSerializer.serialize(job.serialize()),
                                   null,
                                   false,
@@ -447,9 +453,12 @@ class JobController {
   }
 
   private long calculateNextRunAttemptTime(long currentTime, int nextAttempt, long maxBackoff) {
-    int  boundedAttempt     = Math.min(nextAttempt, 30);
-    long exponentialBackoff = (long) Math.pow(2, boundedAttempt) * 1000;
-    long actualBackoff      = Math.min(exponentialBackoff, maxBackoff);
+    int    boundedAttempt     = Math.min(nextAttempt, 30);
+    long   exponentialBackoff = (long) Math.pow(2, boundedAttempt) * 1000;
+    long   actualBackoff      = Math.min(exponentialBackoff, maxBackoff);
+    double jitter             = 0.75 + (Math.random() * 0.5);
+
+    actualBackoff = (long) (actualBackoff * jitter);
 
     return currentTime + actualBackoff;
   }
@@ -464,7 +473,6 @@ class JobController {
                        jobSpec.getMaxAttempts(),
                        jobSpec.getMaxBackoff(),
                        jobSpec.getLifespan(),
-                       jobSpec.getMaxInstances(),
                        jobSpec.getSerializedData(),
                        dataSerializer.serialize(inputData),
                        jobSpec.isRunning(),

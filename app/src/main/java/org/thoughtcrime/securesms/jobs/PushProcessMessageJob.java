@@ -13,6 +13,7 @@ import androidx.annotation.WorkerThread;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 
+import org.signal.core.util.logging.Log;
 import org.signal.zkgroup.VerificationFailedException;
 import org.signal.zkgroup.profiles.ProfileKey;
 import org.thoughtcrime.securesms.ApplicationContext;
@@ -56,10 +57,8 @@ import org.thoughtcrime.securesms.jobmanager.Job;
 import org.thoughtcrime.securesms.jobmanager.JobManager;
 import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
-import org.thoughtcrime.securesms.linkpreview.Link;
 import org.thoughtcrime.securesms.linkpreview.LinkPreview;
 import org.thoughtcrime.securesms.linkpreview.LinkPreviewUtil;
-import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mms.IncomingMediaMessage;
 import org.thoughtcrime.securesms.mms.MmsException;
 import org.thoughtcrime.securesms.mms.OutgoingExpirationUpdateMessage;
@@ -82,7 +81,6 @@ import org.thoughtcrime.securesms.sms.OutgoingEndSessionMessage;
 import org.thoughtcrime.securesms.sms.OutgoingTextMessage;
 import org.thoughtcrime.securesms.stickers.StickerLocator;
 import org.thoughtcrime.securesms.storage.StorageSyncHelper;
-import org.thoughtcrime.securesms.tracing.Trace;
 import org.thoughtcrime.securesms.util.Base64;
 import org.thoughtcrime.securesms.util.FeatureFlags;
 import org.thoughtcrime.securesms.util.GroupUtil;
@@ -139,7 +137,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-@Trace
 public final class PushProcessMessageJob extends BaseJob {
 
   public static final String KEY          = "PushProcessJob";
@@ -433,6 +430,7 @@ public final class PushProcessMessageJob extends BaseJob {
 
         if      (message.isReadReceipt())     handleReadReceipt(content, message);
         else if (message.isDeliveryReceipt()) handleDeliveryReceipt(content, message);
+        else if (message.isViewedReceipt())   handleViewedReceipt(content, message);
       } else if (content.getTypingMessage().isPresent()) {
         handleTypingMessage(content, content.getTypingMessage().get());
       } else {
@@ -485,16 +483,6 @@ public final class PushProcessMessageJob extends BaseJob {
         handleInvalidVersionMessage(e.sender, e.senderDevice, timestamp, smsMessageId);
         break;
 
-      case CORRUPT_MESSAGE:
-        warn(TAG, String.valueOf(timestamp), "Handling corrupt message.");
-        handleCorruptMessage(e.sender, e.senderDevice, timestamp, smsMessageId);
-        break;
-
-      case NO_SESSION:
-        warn(TAG, String.valueOf(timestamp), "Handling no session.");
-        handleNoSessionMessage(e.sender, e.senderDevice, timestamp, smsMessageId);
-        break;
-
       case LEGACY_MESSAGE:
         warn(TAG, String.valueOf(timestamp), "Handling legacy message.");
         handleLegacyMessage(e.sender, e.senderDevice, timestamp, smsMessageId);
@@ -507,6 +495,12 @@ public final class PushProcessMessageJob extends BaseJob {
       case UNSUPPORTED_DATA_MESSAGE:
         warn(TAG, String.valueOf(timestamp), "Handling unsupported data message.");
         handleUnsupportedDataMessage(e.sender, e.senderDevice, Optional.fromNullable(e.groupId), timestamp, smsMessageId);
+        break;
+
+      case CORRUPT_MESSAGE:
+      case NO_SESSION:
+        warn(TAG, String.valueOf(timestamp), "Discovered old enqueued bad encrypted message. Scheduling reset.");
+        ApplicationDependencies.getJobManager().add(new AutomaticSessionResetJob(Recipient.external(context, e.sender).getId(), e.senderDevice, timestamp));
         break;
 
       default:
@@ -662,15 +656,12 @@ public final class PushProcessMessageJob extends BaseJob {
 
     RecipientId groupRecipientId = DatabaseFactory.getRecipientDatabase(context).getOrInsertFromPossiblyMigratedGroupId(groupId.get());
 
-    Intent intent = new Intent(context, WebRtcCallService.class);
+    DatabaseFactory.getSmsDatabase(context).insertOrUpdateGroupCall(groupRecipientId,
+                                                                    RecipientId.from(content.getSender()),
+                                                                    content.getServerReceivedTimestamp(),
+                                                                    message.getGroupCallUpdate().get().getEraId());
 
-    intent.setAction(WebRtcCallService.ACTION_GROUP_CALL_UPDATE_MESSAGE)
-          .putExtra(WebRtcCallService.EXTRA_GROUP_CALL_UPDATE_SENDER, RecipientId.from(content.getSender()).serialize())
-          .putExtra(WebRtcCallService.EXTRA_GROUP_CALL_UPDATE_GROUP, groupRecipientId.serialize())
-          .putExtra(WebRtcCallService.EXTRA_GROUP_CALL_ERA_ID, message.getGroupCallUpdate().get().getEraId())
-          .putExtra(WebRtcCallService.EXTRA_SERVER_RECEIVED_TIMESTAMP, content.getServerReceivedTimestamp());
-
-    context.startService(intent);
+    GroupCallPeekJob.enqueue(groupRecipientId);
   }
 
   private void handleEndSessionMessage(@NonNull SignalServiceContent content,
@@ -996,6 +987,8 @@ public final class PushProcessMessageJob extends BaseJob {
       } else if (message.getMessage().isGroupV2Update()) {
         handleSynchronizeSentGv2Update(content, message);
         threadId = DatabaseFactory.getThreadDatabase(context).getThreadIdFor(getSyncMessageDestination(message));
+      } else if (FeatureFlags.groupCalling() && message.getMessage().getGroupCallUpdate().isPresent()) {
+        handleGroupCallUpdateMessage(content, message.getMessage(), GroupUtil.idFromGroupContext(message.getMessage().getGroupContext()));
       } else if (message.getMessage().isEmptyGroupV2Message()) {
         // Do nothing
       } else if (message.getMessage().isExpirationUpdate()) {
@@ -1155,16 +1148,6 @@ public final class PushProcessMessageJob extends BaseJob {
       insertResult = database.insertSecureDecryptedMessageInbox(mediaMessage, -1);
 
       if (insertResult.isPresent()) {
-        List<DatabaseAttachment> allAttachments     = DatabaseFactory.getAttachmentDatabase(context).getAttachmentsForMessage(insertResult.get().getMessageId());
-        List<DatabaseAttachment> stickerAttachments = Stream.of(allAttachments).filter(Attachment::isSticker).toList();
-        List<DatabaseAttachment> attachments        = Stream.of(allAttachments).filterNot(Attachment::isSticker).toList();
-
-        forceStickerDownloadIfNecessary(stickerAttachments);
-
-        for (DatabaseAttachment attachment : attachments) {
-          ApplicationDependencies.getJobManager().add(new AttachmentDownloadJob(insertResult.get().getMessageId(), attachment.getAttachmentId(), false));
-        }
-
         if (smsMessageId.isPresent()) {
           DatabaseFactory.getSmsDatabase(context).deleteMessage(smsMessageId.get());
         }
@@ -1178,7 +1161,18 @@ public final class PushProcessMessageJob extends BaseJob {
     }
 
     if (insertResult.isPresent()) {
+      List<DatabaseAttachment> allAttachments     = DatabaseFactory.getAttachmentDatabase(context).getAttachmentsForMessage(insertResult.get().getMessageId());
+      List<DatabaseAttachment> stickerAttachments = Stream.of(allAttachments).filter(Attachment::isSticker).toList();
+      List<DatabaseAttachment> attachments        = Stream.of(allAttachments).filterNot(Attachment::isSticker).toList();
+
+      forceStickerDownloadIfNecessary(stickerAttachments);
+
+      for (DatabaseAttachment attachment : attachments) {
+        ApplicationDependencies.getJobManager().add(new AttachmentDownloadJob(insertResult.get().getMessageId(), attachment.getAttachmentId(), false));
+      }
+
       ApplicationDependencies.getMessageNotifier().updateNotification(context, insertResult.get().getThreadId());
+      ApplicationDependencies.getJobManager().add(new TrimThreadJob(insertResult.get().getThreadId()));
 
       if (message.isViewOnce()) {
         ApplicationContext.getInstance(context).getViewOnceMessageManager().scheduleIfNecessary();
@@ -1476,23 +1470,6 @@ public final class PushProcessMessageJob extends BaseJob {
     }
   }
 
-  private void handleNoSessionMessage(@NonNull String sender, int senderDevice, long timestamp,
-                                      @NonNull Optional<Long> smsMessageId)
-  {
-    MessageDatabase smsDatabase = DatabaseFactory.getSmsDatabase(context);
-
-    if (!smsMessageId.isPresent()) {
-      Optional<InsertResult> insertResult = insertPlaceholder(sender, senderDevice, timestamp);
-
-      if (insertResult.isPresent()) {
-        smsDatabase.markAsNoSession(insertResult.get().getMessageId());
-        ApplicationDependencies.getMessageNotifier().updateNotification(context, insertResult.get().getThreadId());
-      }
-    } else {
-      smsDatabase.markAsNoSession(smsMessageId.get());
-    }
-  }
-
   private void handleUnsupportedDataMessage(@NonNull String sender,
                                             int senderDevice,
                                             @NonNull Optional<GroupId> groupId,
@@ -1570,6 +1547,29 @@ public final class PushProcessMessageJob extends BaseJob {
                                           @NonNull SignalServiceDataMessage message)
   {
     ApplicationDependencies.getJobManager().add(new SendDeliveryReceiptJob(RecipientId.fromHighTrust(content.getSender()), message.getTimestamp()));
+  }
+
+  private void handleViewedReceipt(@NonNull SignalServiceContent content,
+                                   @NonNull SignalServiceReceiptMessage message)
+  {
+    if (!TextSecurePreferences.isReadReceiptsEnabled(context)) {
+      log(TAG, "Ignoring viewed receipts for IDs: " + Util.join(message.getTimestamps(), ", "));
+      return;
+    }
+
+    log(TAG, "Processing viewed reciepts for IDs: " + Util.join(message.getTimestamps(), ","));
+
+    Recipient                 sender    = Recipient.externalHighTrustPush(context, content.getSender());
+    List<SyncMessageId>       ids       = Stream.of(message.getTimestamps())
+                                                .map(t -> new SyncMessageId(sender.getId(), t))
+                                                .toList();
+    Collection<SyncMessageId> unhandled = DatabaseFactory.getMmsSmsDatabase(context)
+                                                         .incrementViewedReceiptCounts(ids, content.getTimestamp());
+
+    for (SyncMessageId id : unhandled) {
+      warn(TAG, String.valueOf(content.getTimestamp()), "[handleViewedReceipt] Could not find matching message! timestamp: " + id.getTimetamp() + "  author: " + sender.getId());
+      ApplicationDependencies.getEarlyMessageCache().store(sender.getId(), id.getTimetamp(), content);
+    }
   }
 
   @SuppressLint("DefaultLocale")
@@ -1775,9 +1775,10 @@ public final class PushProcessMessageJob extends BaseJob {
   }
 
   private Optional<List<LinkPreview>> getLinkPreviews(Optional<List<Preview>> previews, @NonNull String message) {
-    if (!previews.isPresent()) return Optional.absent();
+    if (!previews.isPresent() || previews.get().isEmpty()) return Optional.absent();
 
-    List<LinkPreview> linkPreviews = new ArrayList<>(previews.get().size());
+    List<LinkPreview>     linkPreviews  = new ArrayList<>(previews.get().size());
+    LinkPreviewUtil.Links urlsInMessage = LinkPreviewUtil.findValidPreviewUrls(message);
 
     for (Preview preview : previews.get()) {
       Optional<Attachment> thumbnail     = PointerAttachment.forPointer(preview.getImage());
@@ -1785,7 +1786,7 @@ public final class PushProcessMessageJob extends BaseJob {
       Optional<String>     title         = Optional.fromNullable(preview.getTitle());
       Optional<String>     description   = Optional.fromNullable(preview.getDescription());
       boolean              hasTitle      = !TextUtils.isEmpty(title.or(""));
-      boolean              presentInBody = url.isPresent() && Stream.of(LinkPreviewUtil.findValidPreviewUrls(message)).map(Link::getUrl).collect(Collectors.toSet()).contains(url.get());
+      boolean              presentInBody = url.isPresent() && urlsInMessage.containsUrl(url.get());
       boolean              validDomain   = url.isPresent() && LinkPreviewUtil.isValidPreviewUrl(url.get());
 
       if (hasTitle && presentInBody && validDomain) {
@@ -2027,8 +2028,8 @@ public final class PushProcessMessageJob extends BaseJob {
   public enum MessageState {
     DECRYPTED_OK,
     INVALID_VERSION,
-    CORRUPT_MESSAGE,
-    NO_SESSION,
+    CORRUPT_MESSAGE, // Not used, but can't remove due to serialization
+    NO_SESSION,      // Not used, but can't remove due to serialization
     LEGACY_MESSAGE,
     DUPLICATE_MESSAGE,
     UNSUPPORTED_DATA_MESSAGE

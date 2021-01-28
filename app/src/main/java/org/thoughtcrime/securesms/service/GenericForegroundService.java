@@ -13,9 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.MainActivity;
 import org.thoughtcrime.securesms.R;
-import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.notifications.NotificationChannels;
 
 import java.util.Iterator;
@@ -108,7 +108,7 @@ public final class GenericForegroundService extends Service {
                                                            .setSmallIcon(active.iconRes)
                                                            .setContentTitle(active.title)
                                                            .setProgress(active.progressMax, active.progress, active.indeterminate)
-                                                           .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0))
+                                                           .setContentIntent(PendingIntent.getActivity(this, 0, MainActivity.clearTop(this), 0))
                                                            .build());
   }
 

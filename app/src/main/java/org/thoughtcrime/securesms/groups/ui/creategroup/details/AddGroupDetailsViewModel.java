@@ -117,23 +117,18 @@ public final class AddGroupDetailsViewModel extends ViewModel {
     Set<RecipientId>                         memberIds   = Stream.of(members).map(member -> member.getMember().getId()).collect(Collectors.toSet());
     byte[]                                   avatarBytes = avatar.getValue();
     boolean                                  isGroupMms  = isMms.getValue() == Boolean.TRUE;
-    String                                   groupName   = isGroupMms ? "" : name.getValue();
+    String                                   groupName   = name.getValue();
 
     if (!isGroupMms && TextUtils.isEmpty(groupName)) {
       groupCreateResult.postValue(GroupCreateResult.error(GroupCreateResult.Error.Type.ERROR_INVALID_NAME));
       return;
     }
 
-    if (memberIds.isEmpty()) {
-      groupCreateResult.postValue(GroupCreateResult.error(GroupCreateResult.Error.Type.ERROR_INVALID_MEMBER_COUNT));
-      return;
-    }
-
-    repository.createPushGroup(memberIds,
-                               avatarBytes,
-                               groupName,
-                               isGroupMms,
-                               groupCreateResult::postValue);
+    repository.createGroup(memberIds,
+                           avatarBytes,
+                           groupName,
+                           isGroupMms,
+                           groupCreateResult::postValue);
   }
 
   private static @NonNull List<GroupMemberEntry.NewGroupCandidate> filterDeletedMembers(@NonNull List<GroupMemberEntry.NewGroupCandidate> members, @NonNull Set<RecipientId> deleted) {

@@ -10,15 +10,17 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.Pair;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.exifinterface.media.ExifInterface;
-import android.util.Pair;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import org.thoughtcrime.securesms.logging.Log;
+import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.mms.MediaConstraints;
 
@@ -263,6 +265,17 @@ public class BitmapUtil {
     if (bitmap == null) return null;
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+    return stream.toByteArray();
+  }
+
+  public static @Nullable byte[] toWebPByteArray(@Nullable Bitmap bitmap) {
+    if (bitmap == null) return null;
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    if (Build.VERSION.SDK_INT >= 30) {
+      bitmap.compress(CompressFormat.WEBP_LOSSLESS, 100, stream);
+    } else {
+      bitmap.compress(CompressFormat.WEBP, 100, stream);
+    }
     return stream.toByteArray();
   }
 
