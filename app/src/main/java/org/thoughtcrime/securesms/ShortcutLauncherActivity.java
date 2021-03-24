@@ -3,7 +3,7 @@ package org.thoughtcrime.securesms;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

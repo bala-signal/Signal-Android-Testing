@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.groups.ui.migration;
 
 import android.content.DialogInterface;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;

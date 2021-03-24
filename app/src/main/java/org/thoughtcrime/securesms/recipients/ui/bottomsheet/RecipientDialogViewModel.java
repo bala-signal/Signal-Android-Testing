@@ -2,7 +2,7 @@ package org.thoughtcrime.securesms.recipients.ui.bottomsheet;
 
 import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

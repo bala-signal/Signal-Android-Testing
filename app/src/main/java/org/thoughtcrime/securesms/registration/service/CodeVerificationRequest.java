@@ -212,6 +212,7 @@ public final class CodeVerificationRequest {
 
     Log.i(TAG, "Calling verifyAccountWithCode(): reglockV1? " + !TextUtils.isEmpty(registrationLockV1) + ", reglockV2? " + !TextUtils.isEmpty(registrationLockV2));
 
+    Log.i(TAG,"registrationId: " + registrationId + ", code: " + code + ", ");
     VerifyAccountResponse response = accountManager.verifyAccountWithCode(code,
                                                                           null,
                                                                           registrationId,

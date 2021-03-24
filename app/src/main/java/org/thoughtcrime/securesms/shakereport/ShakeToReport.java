@@ -3,7 +3,7 @@ package org.thoughtcrime.securesms.shakereport;
 import android.app.Activity;
 import android.app.Application;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;

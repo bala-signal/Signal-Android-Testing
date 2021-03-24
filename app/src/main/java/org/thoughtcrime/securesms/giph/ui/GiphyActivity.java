@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;

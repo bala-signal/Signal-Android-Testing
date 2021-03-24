@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;

@@ -3,7 +3,7 @@ package org.thoughtcrime.securesms.pin;
 import android.content.Context;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;

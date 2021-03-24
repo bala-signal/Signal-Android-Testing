@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.groups.ui.invitesandrequests.invited;
 
 import android.content.Context;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;

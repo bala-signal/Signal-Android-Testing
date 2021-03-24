@@ -342,10 +342,10 @@ dependencies {
     implementation 'org.signal:aesgcmprovider:0.0.3'
 
     implementation project(':libsignal-service')
-    implementation project(':toast')
     implementation project(':paging')
     implementation project(':core-util')
     implementation project(':video')
+    implementation project(':Toast')
 
     implementation 'org.signal:zkgroup-android:0.7.0'
     implementation 'org.whispersystems:signal-client-android:0.1.5'

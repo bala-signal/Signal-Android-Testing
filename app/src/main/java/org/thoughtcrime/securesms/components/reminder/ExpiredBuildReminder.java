@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import org.signal.toast.Toast;
-import org.thoughtcrime.securesms.logging.Log;
 
 
 import androidx.annotation.NonNull;

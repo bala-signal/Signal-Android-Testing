@@ -1,6 +1,6 @@
 package org.thoughtcrime.securesms.groups.ui;
 
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

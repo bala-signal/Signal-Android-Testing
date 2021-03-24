@@ -63,7 +63,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -1017,7 +1017,6 @@ public class ConversationActivity extends PassphraseRequiredActivity
       if (settingsMenuItem != null && settingsMenuItem.isVisible()) {
         Toast toast = Toast.makeText(this, R.string.ConversationActivity__more_options_now_in_group_settings, Toast.LENGTH_SHORT);
 
-        toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
 
         SignalStore.uiHints().markHasSeenGroupSettingsMenuToast();

@@ -177,6 +177,7 @@ public class SignalServiceMessageSender {
     this.eventListener    = eventListener;
     this.executor         = executor != null ? executor : Executors.newSingleThreadExecutor();
     this.maxEnvelopeSize  = maxEnvelopeSize;
+
   }
 
   /**

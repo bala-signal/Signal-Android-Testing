@@ -1,7 +1,7 @@
 package org.thoughtcrime.securesms.preferences;
 
 import android.os.Bundle;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

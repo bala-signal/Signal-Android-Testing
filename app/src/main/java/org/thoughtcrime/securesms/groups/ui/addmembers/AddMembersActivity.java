@@ -2,7 +2,7 @@ package org.thoughtcrime.securesms.groups.ui.addmembers;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
+import org.signal.toast.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
